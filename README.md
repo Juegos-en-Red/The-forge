@@ -94,6 +94,9 @@ El segundo jugador tendrá los siguientes controles:
 ## TRELLO
 Para coordinar el desarrollo utilizamos el siguiente tablero de trello: https://trello.com/b/rXEmfYBZ/the-forge
 
+## ENLACE PRESENTACIÓN POWERPOINT
+https://1drv.ms/p/s!Ake2wFBOjmIhhdoBoWvQU7ZfREAtjg
+
 ## FUENTES
 1. Imagen *Overcooked*: https://steamcdn-a.akamaihd.net/steam/apps/448510/ss_058c688a6f07a4624b4f775b3e71df8037ef4df2.1920x1080.jpg?t=1567203965
 2. Imagen *Dragon Age: Inquisition*: https://www.lagzero.net/wp-content/uploads/2014/10/dai.jpg
