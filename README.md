@@ -14,13 +14,13 @@ Juego de simulación de una herrería no realista competitivo. Basado en una Eda
 ### PÚBLICO
 Este juego está dirigido a jugadores con un amplio rango de edades, de forma que pueda ser jugado esporádicamente, sin progresión y compitiendo contra otros jugadores, ya sean estos amigos o usuarios online.
 ## HISTORIA
-En una Edad Media fantástica llena de dragones, hadas y brujos, un rey con una guerra en ciernes busca al mejor herrero de sus tierras, aquel elegido que pueda forjar las armas capaces de salvaguardar la corona.  
+En una Edad Media fantástica llena de dragones, hadas y brujos, un rey con una guerra en ciernes, busca al mejor herrero de sus tierras, aquel elegido que pueda forjar las armas capaces de salvaguardar la corona.  
 Dentro de sus dominios, cuatro condes proponen cada uno a un campeón, sus más hábiles trabajadores. Estas cuatro regiones se enfrentarán entre sí para decidir quién será aquel que se alce con el puesto del favorito del rey y les lleve a la victoria en las futuras contiendas contra imperios vecinos.  
 El ganador regresará a su hogar con grandes honores, tierras y tesoros para su gente y su familia. Cada duque manda a su campeón acompañado de un monstruo folclórico con el que competir contra el resto.  
 El trabajo del herrero será forjar las armas que llevará equipadas la criatura, quien dependerá completamente de su trabajo para ganar la cruenta batalla.
 Estas cuatro regiones son:  
-* El pueblo del hielo, que mandará a un elegido de gélido temperamento acompañado de un imponente yeti..
-* El pueblo del fuego; llegará su herrero al encuentro montado en un imponente y fiero dragón.
+* El pueblo del hielo, que mandará a un elegido de gélido temperamento acompañado de un imponente yeti.
+* El pueblo del fuego; llevará su herrero al encuentro montado en un imponente y fiero dragón.
 * El pueblo de los elfos oscuros, que con su magia invocan a los demonios más poderosos del infierno.
 * El pueblo de los nigromantes, torcidos humanos capaces de crear zombies con habilidades que superan toda lógica.
 ## DISEÑO DE NIVELES
