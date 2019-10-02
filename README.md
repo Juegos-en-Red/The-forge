@@ -8,7 +8,7 @@ Juego de la asignatura de Juegos en red desarrollado por:
 
 ## TEMÁTICA
 ### CONCEPTO 
-*The Forge* es un juego en el que asumes el control de un herrero que ha sido enviado por su pueblo para competir contra los demás pueblos de una mismo reino y decidir a qué población le deben adjudicar el honor de forjar las armas de la realeza, para lo que tendrás que forjar todo el arsenal que llevará el monstruo característico de tu región.  
+*The Forge* es un juego en el que asumes el control de un herrero que ha sido enviado por su pueblo para competir contra los demás pueblos de un mismo reino y decidir a qué población le deben adjudicar el honor de forjar las armas de la realeza, para lo que tendrás que forjar todo el arsenal que llevará el monstruo característico de tu región.  
 ### GÉNERO
 Juego de simulación de una herrería no realista competitivo. Basado en una Edad Media ficticia con toques de fantasía clásica. Presenta similitudes con los juegos de simulación de cocina en lo referente a la jugabilidad.  
 ### PÚBLICO
@@ -93,3 +93,10 @@ El segundo jugador tendrá los siguientes controles:
 
 ## TRELLO
 Para coordinar el desarrollo utilizamos el siguiente tablero de trello: https://trello.com/b/rXEmfYBZ/the-forge
+
+## FUENTES
+1. Imagen *Overcooked*: https://steamcdn-a.akamaihd.net/steam/apps/448510/ss_058c688a6f07a4624b4f775b3e71df8037ef4df2.1920x1080.jpg?t=1567203965
+2. Imagen *Dragon Age: Inquisition*: https://www.lagzero.net/wp-content/uploads/2014/10/dai.jpg
+3. Imagen *Clash of Clans*: https://i.postimg.cc/HxTB3NgV/Screenshot-20171224-223249.png
+4. Imagen *Hollow Knight*: https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/3c6ad2b7-76a1-4e34-b92a-0431101f82f8/ddbz6j3-277d7737-0026-43c7-a802-17bb3fb6c11a.png/v1/fill/w_1280,h_1280,q_80,strp/hollow_knight_characters_studies_2_by_art_revolver_ddbz6j3-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTI4MCIsInBhdGgiOiJcL2ZcLzNjNmFkMmI3LTc2YTEtNGUzNC1iOTJhLTA0MzExMDFmODJmOFwvZGRiejZqMy0yNzdkNzczNy0wMDI2LTQzYzctYTgwMi0xN2JiM2ZiNmMxMWEucG5nIiwid2lkdGgiOiI8PTEyODAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.SJhbkCYVSAYNPyNWjua9tW-oFFCRU2JfZ6Z_L6e36TY
+5. Image *The Swords of Ditto*: https://pbs.twimg.com/media/Di91nr5UUAA9J4o.jpg
