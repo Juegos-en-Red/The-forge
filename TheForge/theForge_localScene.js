@@ -1,32 +1,7 @@
-/*
-La licencia irá aquí si no me equivoco
-*/
 "use strict";
 
-//Variables globales
-
-var cont = {
-    p1: {
-        w: 87,
-        a: 65,
-        s: 83,
-        d: 68,
-        i1: 69,
-        i2: 81 //cambiar más adelante
-    },
-    p2: {
-        w: 38,
-        a: 37,
-        s: 40,
-        d: 39,
-        i1: 80, //cambiar más adelante
-        i2: 79 //cambiar más adelante
-    }
-}
-
-
 //Escena del juego en local
-var sc_juegoLocal = new Phaser.Scene('Game');
+var sc_juegoLocal = new Phaser.Scene('JuegoLocal');
 
 sc_juegoLocal.preload = function() {
     this.load.image('sky', 'assets/sky.png');
@@ -147,6 +122,36 @@ sc_juegoLocal.create = function() {
     this.physics.add.collider(sc_juegoLocal.player, sc_juegoLocal.moldes);
     this.physics.add.collider(sc_juegoLocal.player2, sc_juegoLocal.moldes); //en un futuro todos los colliders deberían estar agrupados
     
+    //inicializar hornos de 2 materiales
+    sc_juegoLocal.hornosd = this.physics.add.staticGroup();
+    sc_juegoLocal.hornosd.create(450, 50, 'horno');
+
+    sc_juegoLocal.hornosd.children.iterate(function(child){
+        child.heldObject1 = "none";
+        child.heldObject2 = "none";
+        child.timer = -1;
+        child.text = sc_juegoLocal.add.text(child.x-20, child.y-40, "", {color: '#000'});
+    });
+
+    this.physics.add.collider(sc_juegoLocal.player, sc_juegoLocal.hornosd);
+    this.physics.add.collider(sc_juegoLocal.player2, sc_juegoLocal.hornosd);
+
+    //inicializar yunques de 2 materiales
+    sc_juegoLocal.yunquesd = this.physics.add.staticGroup();
+    sc_juegoLocal.yunquesd.create(500, 50, 'yunque');
+
+    sc_juegoLocal.yunquesd.children.iterate(function(child){
+        child.heldObject1 = "none";
+        child.heldObject2 = "none";
+        child.timer = -1;
+        child.cooldown = 0;
+        child.text = sc_juegoLocal.add.text(child.x-20, child.y-40, "", {color: '#000'});
+    });
+
+    this.physics.add.collider(sc_juegoLocal.player, sc_juegoLocal.yunquesd);
+    this.physics.add.collider(sc_juegoLocal.player2, sc_juegoLocal.yunquesd); 
+
+
     this.input.keyboard.on('keyup', 
     function (event) {
         switch (event.keyCode) {
@@ -223,7 +228,11 @@ sc_juegoLocal.create = function() {
                         if (!interactuarHornos(sc_juegoLocal.player)) {
                             if (!interactuarYunques(sc_juegoLocal.player)) {
                                 if (!interactuarBarriles(sc_juegoLocal.player)) {
-                                    interactuarMoldes(sc_juegoLocal.player);
+                                    if (!interactuarMoldes(sc_juegoLocal.player)) {
+                                        if (!interactuarHornosd(sc_juegoLocal.player)) {
+                                            interactuarYunquesd(sc_juegoLocal.player);
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -251,7 +260,11 @@ sc_juegoLocal.create = function() {
                         if (!interactuarHornos(sc_juegoLocal.player2)) {
                             if (!interactuarYunques(sc_juegoLocal.player2)) {
                                 if (!interactuarBarriles(sc_juegoLocal.player2)) {
-                                    interactuarMoldes(sc_juegoLocal.player2);
+                                    if (!interactuarMoldes(sc_juegoLocal.player2)) {
+                                        if (!interactuarHornosd(sc_juegoLocal.player2)) {
+                                            interactuarYunquesd(sc_juegoLocal.player2);
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -294,13 +307,13 @@ sc_juegoLocal.update = function() {
     
     sc_juegoLocal.hornos.children.iterate(function(child){
         if (child.timer >= 0 && child.timer < 100) {
-            child.timer+=0.125;
+            child.timer+=/*0.125*/0.5;
             child.text.setText(Math.floor(child.timer) + "%");
         } else if (child.timer >= 100 && child.timer < 150) {
-            child.timer+=0.125;
+            child.timer+=/*0.125*/0.5;
             child.text.setText("100%");
         } else if (child.timer >= 150 && child.timer < 200) {
-            child.timer+=0.125;
+            child.timer+=/*0.125*/0.5;
             child.text.setText("QUEMADO");
         } else if (child.timer >= 200) {
             child.timer = -1;
@@ -332,35 +345,44 @@ sc_juegoLocal.update = function() {
 
     sc_juegoLocal.moldes.children.iterate(function(child){
         if (child.timer >= 0 && child.timer < 100) {
-            child.text.setText(Math.floor(child.timer) + "%");
-        } else if (child.timer >= 100 && child.timer < 200) {
             child.timer+=0.25;
             child.text.setText(Math.floor(child.timer) + "%");
-        } else if (child.timer >= 200) {
-            child.text.setText("200%");
+        } else if (child.timer >= 100) {
+            child.text.setText("100%");
         } else {
             child.text.setText("");
         }
     });
 
-}
-
-//Configuración de Phaser
-var config = {
-    type: Phaser.AUTO,
-    width: 800,
-    height: 600,
-    physics: {
-        default: 'arcade',
-        arcade: {
-            debug: false
+    sc_juegoLocal.hornosd.children.iterate(function(child){
+        if (child.timer >= 0 && child.timer < 100) {
+            child.timer+=/*0.125*/0.5;
+            child.text.setText(Math.floor(child.timer) + "%");
+        } else if (child.timer >= 100 && child.timer < 150) {
+            child.timer+=/*0.125*/0.5;
+            child.text.setText("100%");
+        } else if (child.timer >= 150 && child.timer < 200) {
+            child.timer+=/*0.125*/0.5;
+            child.text.setText("QUEMADO");
+        } else if (child.timer >= 200) {
+            child.timer = -1;
+            child.heldObject1 = "none";
+            child.heldObject2 = "none";
+        } else {
+            child.text.setText("");
         }
-    },
-    scene: sc_juegoLocal
-};
+    });
 
+    sc_juegoLocal.yunquesd.children.iterate(function(child){
+        if (child.cooldown > 0) {
+            child.cooldown--;
+        }
+        if (child.timer >= 0 && child.timer <= 100) {
+            child.text.setText(Math.floor(child.timer) + "%");
+        }
+    });
 
-var game = new Phaser.Game(config);
+}
 
 function interactuarCajones(p) {
     var result = false;
@@ -511,29 +533,130 @@ function interactuarBarriles(p) {
 
 function interactuarMoldes(p) {
     var result = false;
-    sc_juegoLocal.moldes.children.iterate(function (child) {
-        if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.displayWidth, child.displayHeight)+0.75*Math.max(p.displayWidth, p.displayHeight)) {
-            if (child.timer == -1 && child.heldObject == "none" && (p.heldObject == "metal1rojo" || p.heldObject == "metal2rojo")) {
-                child.heldObject = p.heldObject;
-                p.heldObject = "none";
-                child.timer = 0;
-            } else if (child.timer >= 0 && child.timer < 100) {
-                child.timer += 1;
-            } else if (child.timer >= 200 && p.heldObject == "none") {
-                switch (child.heldObject) {
-                    case "metal1rojo":
-                        p.heldObject = "metal1molde";
-                    break;
-                    case "metal2rojo":
-                        p.heldObject = "metal2molde";
-                    break;
-                    default:
-                            p.heldObject = "none";
-                    break;
+    if (p.interacted != true) {
+        sc_juegoLocal.moldes.children.iterate(function (child) {
+            if ((child.timer == -1 || (child.timer >= 100))) {
+                if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.displayWidth, child.displayHeight)+0.75*Math.max(p.displayWidth, p.displayHeight)) {
+                    if (child.heldObject == "none" && child.timer == -1 && (p.heldObject == "metal1rojo" || p.heldObject == "metal2rojo")) {
+                        child.heldObject = p.heldObject;
+                        p.heldObject = "none";
+                        child.timer = 0;
+                        result = true;
+                    } else {
+                        if (p.heldObject == "none" && child.timer >= 100 && child.heldObject != "none") {
+                            switch (child.heldObject) {
+                                case "metal1rojo":
+                                    p.heldObject = "metal1molde";
+                                break;
+                                case "metal2rojo":
+                                    p.heldObject = "metal2molde";
+                                break;
+                                default:
+                                        p.heldObject = "none";
+                                break;
+                            }
+                            child.heldObject = "none";
+                            child.timer = -1;
+                            result = true;
+                        }
+                    }
                 }
-                child.heldObject = "none";
-                child.timer = -1;
-                child.text.setText("");
+            }
+        });
+    }
+    
+    return result;
+}
+
+function interactuarHornosd(p) {
+    var result = false;
+    if (p.interacted != true) {
+        sc_juegoLocal.hornosd.children.iterate(function (child) {
+            if ((child.timer == -1 || (child.timer > 100 && child.timer < 150))) {
+                if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.displayWidth, child.displayHeight)+0.75*Math.max(p.displayWidth, p.displayHeight)) {
+                    if (child.heldObject1 == "none" && child.heldObject2 == "none" && child.timer == -1 && (p.heldObject == "metal1" || p.heldObject == "metal2")) {
+                        child.heldObject1 = p.heldObject;
+                        p.heldObject = "none";
+                        result = true;
+                    } else if (child.heldObject1 != "none" && child.heldObject2 == "none" && child.timer == -1 && (p.heldObject == "metal1" || p.heldObject == "metal2") && (p.heldObject != child.heldObject1)) {
+                        child.heldObject2 = p.heldObject;
+                        p.heldObject = "none";
+                        child.timer = 0;
+                        result = true;
+                    } else if (p.heldObject == "none" && child.timer > 100 && child.heldObject1 != "none" && child.heldObject2 != "none") {
+                        switch (child.heldObject1) {
+                            case "metal1":
+                                switch (child.heldObject2) {
+                                    case "metal2":
+                                        p.heldObject = "metal12rojo";
+                                    break;
+                                }
+                            break;
+                            case "metal2":
+                                switch (child.heldObject2) {
+                                    case "metal1":
+                                        p.heldObject = "metal12rojo";
+                                    break;
+                                }
+                            break;
+                            default:
+                                    p.heldObject = "none";
+                            break;
+                        }
+                        child.heldObject1 = "none";
+                        child.heldObject2 = "none";
+                        child.timer = -1;
+                        result = true;
+                    }
+                }
+            }
+        });
+    }
+    
+    return result;
+}
+
+function interactuarYunquesd(p) {
+    var result = false;
+    sc_juegoLocal.yunquesd.children.iterate(function (child) {
+        if (child.cooldown == 0 && p.interacted != true){
+            if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.displayWidth, child.displayHeight)+0.75*Math.max(p.displayWidth, p.displayHeight)) {
+                if (child.timer == -1 && child.heldObject1 == "none" && child.heldObject2 == "none" && (p.heldObject == "metal1rojo" || p.heldObject == "metal2rojo")) {
+                    child.heldObject1 = p.heldObject;
+                    p.heldObject = "none";
+                } else if (child.timer == -1 && child.heldObject1 != "none" && child.heldObject2 == "none" && (p.heldObject == "metal1rojo" || p.heldObject == "metal2rojo") && p.heldObject != child.heldObject1) {
+                    child.heldObject2 = p.heldObject;
+                    p.heldObject = "none";
+                    child.timer = 0;
+                    child.cooldown = 5;
+                } else if (child.timer >= 0 && child.timer < 100) {
+                    child.timer += 5;
+                    child.cooldown = 15;
+                } else if (child.timer >= 100 && p.heldObject == "none") {
+                    switch (child.heldObject1) {
+                        case "metal1rojo":
+                            switch (child.heldObject2) {
+                                case "metal2rojo":
+                                    p.heldObject = "metal12yunque";
+                                break;
+                            }
+                        break;
+                        case "metal2rojo":
+                                switch (child.heldObject2) {
+                                    case "metal1rojo":
+                                        p.heldObject = "metal12yunque";
+                                    break;
+                                }
+                        break;
+                        default:
+                                p.heldObject = "none";
+                        break;
+                    }
+                    child.heldObject1 = "none";
+                    child.heldObject2 = "none";
+                    child.timer = -1;
+                    child.text.setText("");
+                }
             }
         }
     });
