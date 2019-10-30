@@ -58,16 +58,12 @@ sc_juegoLocal.create = function() {
     sc_juegoLocal.cajonesMetal.create(50, 50, 'cajon').heldObject = "metal1";
     sc_juegoLocal.cajonesMetal.create(150, 50, 'cajon').heldObject = "metal2";
     
-    this.physics.add.collider(sc_juegoLocal.player, sc_juegoLocal.cajonesMetal);
-    this.physics.add.collider(sc_juegoLocal.player2, sc_juegoLocal.cajonesMetal);
 
     //inicializar mesas
     sc_juegoLocal.mesas = this.physics.add.staticGroup();
     sc_juegoLocal.mesas.create(100, 50, 'mesa').heldObject = "none";
     sc_juegoLocal.mesas.create(200, 50, 'mesa').heldObject = "none";
 
-    this.physics.add.collider(sc_juegoLocal.player, sc_juegoLocal.mesas);
-    this.physics.add.collider(sc_juegoLocal.player2, sc_juegoLocal.mesas);
 
     //inicializar hornos de 1 material
     sc_juegoLocal.hornos = this.physics.add.staticGroup();
@@ -79,8 +75,6 @@ sc_juegoLocal.create = function() {
         child.text = sc_juegoLocal.add.text(child.x-20, child.y-40, "", {color: '#000'});
     });
 
-    this.physics.add.collider(sc_juegoLocal.player, sc_juegoLocal.hornos);
-    this.physics.add.collider(sc_juegoLocal.player2, sc_juegoLocal.hornos);
 
     //inicializar yunques de 1 material
     sc_juegoLocal.yunques = this.physics.add.staticGroup();
@@ -93,8 +87,6 @@ sc_juegoLocal.create = function() {
         child.text = sc_juegoLocal.add.text(child.x-20, child.y-40, "", {color: '#000'});
     });
 
-    this.physics.add.collider(sc_juegoLocal.player, sc_juegoLocal.yunques);
-    this.physics.add.collider(sc_juegoLocal.player2, sc_juegoLocal.yunques); 
 
     //inicializar barriles de templado
     sc_juegoLocal.barriles = this.physics.add.staticGroup();
@@ -106,8 +98,6 @@ sc_juegoLocal.create = function() {
         child.text = sc_juegoLocal.add.text(child.x-20, child.y-40, "", {color: '#000'});
     });
 
-    this.physics.add.collider(sc_juegoLocal.player, sc_juegoLocal.barriles);
-    this.physics.add.collider(sc_juegoLocal.player2, sc_juegoLocal.barriles); 
     
     //inicializar moldes
     sc_juegoLocal.moldes = this.physics.add.staticGroup();
@@ -119,8 +109,6 @@ sc_juegoLocal.create = function() {
         child.text = sc_juegoLocal.add.text(child.x-20, child.y-40, "", {color: '#000'});
     });
 
-    this.physics.add.collider(sc_juegoLocal.player, sc_juegoLocal.moldes);
-    this.physics.add.collider(sc_juegoLocal.player2, sc_juegoLocal.moldes); //en un futuro todos los colliders deberían estar agrupados
     
     //inicializar hornos de 2 materiales
     sc_juegoLocal.hornosd = this.physics.add.staticGroup();
@@ -133,8 +121,7 @@ sc_juegoLocal.create = function() {
         child.text = sc_juegoLocal.add.text(child.x-20, child.y-40, "", {color: '#000'});
     });
 
-    this.physics.add.collider(sc_juegoLocal.player, sc_juegoLocal.hornosd);
-    this.physics.add.collider(sc_juegoLocal.player2, sc_juegoLocal.hornosd);
+
 
     //inicializar yunques de 2 materiales
     sc_juegoLocal.yunquesd = this.physics.add.staticGroup();
@@ -148,8 +135,19 @@ sc_juegoLocal.create = function() {
         child.text = sc_juegoLocal.add.text(child.x-20, child.y-40, "", {color: '#000'});
     });
 
-    this.physics.add.collider(sc_juegoLocal.player, sc_juegoLocal.yunquesd);
-    this.physics.add.collider(sc_juegoLocal.player2, sc_juegoLocal.yunquesd); 
+    //añadir colisiones a los jugadores
+    var that = this;
+    sc_juegoLocal.players.children.iterate(function(child) {
+
+        that.physics.add.collider(child, sc_juegoLocal.mesas);
+        that.physics.add.collider(child, sc_juegoLocal.cajonesMetal);
+        that.physics.add.collider(child, sc_juegoLocal.hornos);
+        that.physics.add.collider(child, sc_juegoLocal.yunques);
+        that.physics.add.collider(child, sc_juegoLocal.barriles);
+        that.physics.add.collider(child, sc_juegoLocal.moldes);
+        that.physics.add.collider(child, sc_juegoLocal.hornosd);
+        that.physics.add.collider(child, sc_juegoLocal.yunquesd);
+    });
 
 
     this.input.keyboard.on('keyup', 
@@ -223,21 +221,7 @@ sc_juegoLocal.create = function() {
                     sc_juegoLocal.player.spdX = 400;
             break;
             case cont.p1.i1:
-                if (!interactuarCajones(sc_juegoLocal.player)) {
-                    if (!interactuarMesas(sc_juegoLocal.player)) {
-                        if (!interactuarHornos(sc_juegoLocal.player)) {
-                            if (!interactuarYunques(sc_juegoLocal.player)) {
-                                if (!interactuarBarriles(sc_juegoLocal.player)) {
-                                    if (!interactuarMoldes(sc_juegoLocal.player)) {
-                                        if (!interactuarHornosd(sc_juegoLocal.player)) {
-                                            interactuarYunquesd(sc_juegoLocal.player);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                interactuar(sc_juegoLocal.player);
                 sc_juegoLocal.player.interacted = true;
             break;
 
@@ -255,21 +239,7 @@ sc_juegoLocal.create = function() {
                     sc_juegoLocal.player2.spdX = 400;
             break;
             case cont.p2.i1:
-                if (!interactuarCajones(sc_juegoLocal.player2)) {
-                    if (!interactuarMesas(sc_juegoLocal.player2)) {
-                        if (!interactuarHornos(sc_juegoLocal.player2)) {
-                            if (!interactuarYunques(sc_juegoLocal.player2)) {
-                                if (!interactuarBarriles(sc_juegoLocal.player2)) {
-                                    if (!interactuarMoldes(sc_juegoLocal.player2)) {
-                                        if (!interactuarHornosd(sc_juegoLocal.player2)) {
-                                            interactuarYunquesd(sc_juegoLocal.player2);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                interactuar(sc_juegoLocal.player2);
                 sc_juegoLocal.player2.interacted = true;
             break;
         }
@@ -384,6 +354,32 @@ sc_juegoLocal.update = function() {
 
 }
 
+function interactuar(p) {
+    if (!interactuarCajones(p)) {
+        if (!interactuarMesas(p)) {
+            if (!interactuarHornos(p)) {
+                if (!interactuarYunques(p)) {
+                    if (!interactuarBarriles(p)) {
+                        if (!interactuarMoldes(p)) {
+                            if (!interactuarHornosd(p)) {
+                                interactuarYunquesd(p);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/*function interactuarGenerico(p, estacion) {
+    var result = false;
+    estacion.children.iterate(function (child) {
+
+    });
+}*/
+
+
 function interactuarCajones(p) {
     var result = false;
     sc_juegoLocal.cajonesMetal.children.iterate(function (child) {
@@ -417,27 +413,27 @@ function interactuarMesas(p) {
 
 function interactuarHornos(p) {
     var result = false;
+
+    var tablaIO = [];
+    tablaIO["metal1"] = "metal1rojo";
+    tablaIO["metal2"] = "metal2rojo";
+    tablaIO["metal3"] = "metal3rojo";
+    tablaIO["metal4"] = "metal4rojo";
+    tablaIO["metal5"] = "metal5rojo";
+
     if (p.interacted != true) {
         sc_juegoLocal.hornos.children.iterate(function (child) {
             if ((child.timer == -1 || (child.timer > 100 && child.timer < 150))) {
                 if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.displayWidth, child.displayHeight)+0.75*Math.max(p.displayWidth, p.displayHeight)) {
-                    if (child.heldObject == "none" && child.timer == -1 && (p.heldObject == "metal1" || p.heldObject == "metal2")) {
+                    if (child.heldObject == "none" && child.timer == -1 && (tablaIO[p.heldObject] != undefined)) {
                         child.heldObject = p.heldObject;
                         p.heldObject = "none";
                         child.timer = 0;
                         result = true;
                     } else {
                         if (p.heldObject == "none" && child.timer > 100 && child.heldObject != "none") {
-                            switch (child.heldObject) {
-                                case "metal1":
-                                    p.heldObject = "metal1rojo";
-                                break;
-                                case "metal2":
-                                    p.heldObject = "metal2rojo";
-                                break;
-                                default:
-                                        p.heldObject = "none";
-                                break;
+                            if (tablaIO[child.heldObject] != undefined) {
+                                p.heldObject = tablaIO[child.heldObject];
                             }
                             child.heldObject = "none";
                             child.timer = -1;
@@ -454,10 +450,32 @@ function interactuarHornos(p) {
 
 function interactuarYunques(p) {
     var result = false;
+    
+    var tablaIO = [];
+    tablaIO["metal1rojo"] = "metal1yunque";
+    tablaIO["metal2rojo"] = "metal2yunque";
+    tablaIO["metal3rojo"] = "metal3yunque";
+    tablaIO["metal4rojo"] = "metal4yunque";
+    tablaIO["metal5rojo"] = "metal5yunque";
+    
+    tablaIO["metal12rojo"] = "metal12yunque";
+    tablaIO["metal13rojo"] = "metal13yunque";
+    tablaIO["metal14rojo"] = "metal14yunque";
+    tablaIO["metal15rojo"] = "metal15yunque";
+    
+    tablaIO["metal23rojo"] = "metal23yunque";
+    tablaIO["metal24rojo"] = "metal24yunque";
+    tablaIO["metal25rojo"] = "metal25yunque";
+    
+    tablaIO["metal34rojo"] = "metal34yunque";
+    tablaIO["metal35rojo"] = "metal35yunque";
+    
+    tablaIO["metal45rojo"] = "metal45yunque";
+
     sc_juegoLocal.yunques.children.iterate(function (child) {
         if (child.cooldown == 0 && p.interacted != true){
             if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.displayWidth, child.displayHeight)+0.75*Math.max(p.displayWidth, p.displayHeight)) {
-                if (child.timer == -1 && child.heldObject == "none" && (p.heldObject == "metal1rojo" || p.heldObject == "metal2rojo")) {
+                if (child.timer == -1 && child.heldObject == "none" && (tablaIO[p.heldObject] != undefined)) {
                     child.heldObject = p.heldObject;
                     p.heldObject = "none";
                     child.timer = 0;
@@ -466,16 +484,8 @@ function interactuarYunques(p) {
                     child.timer += 5;
                     child.cooldown = 15;
                 } else if (child.timer >= 100 && p.heldObject == "none") {
-                    switch (child.heldObject) {
-                        case "metal1rojo":
-                            p.heldObject = "metal1yunque";
-                        break;
-                        case "metal2rojo":
-                            p.heldObject = "metal2yunque";
-                        break;
-                        default:
-                                p.heldObject = "none";
-                        break;
+                    if (tablaIO[child.heldObject] != undefined) {
+                        p.heldObject = tablaIO[child.heldObject];
                     }
                     child.heldObject = "none";
                     child.timer = -1;
@@ -490,33 +500,46 @@ function interactuarYunques(p) {
 
 function interactuarBarriles(p) {
     var result = false;
+    
+    var tablaIO = [];
+    tablaIO["metal1yunque"] = "metal1yunquetemplado";
+    tablaIO["metal2yunque"] = "metal2yunquetemplado";
+    tablaIO["metal3yunque"] = "metal3yunquetemplado";
+    tablaIO["metal4yunque"] = "metal4yunquetemplado";
+    tablaIO["metal5yunque"] = "metal5yunquetemplado";
+    tablaIO["metal1molde"] = "metal1moldetemplado";
+    tablaIO["metal2molde"] = "metal2moldetemplado";
+    tablaIO["metal3molde"] = "metal3moldetemplado";
+    tablaIO["metal4molde"] = "metal4moldetemplado";
+    tablaIO["metal5molde"] = "metal5moldetemplado";
+
+    tablaIO["metal12yunque"] = "metal12yunquetemplado";
+    tablaIO["metal13yunque"] = "metal13yunquetemplado";
+    tablaIO["metal14yunque"] = "metal14yunquetemplado";
+    tablaIO["metal15yunque"] = "metal15yunquetemplado";
+    
+    tablaIO["metal23yunque"] = "metal23yunquetemplado";
+    tablaIO["metal24yunque"] = "metal24yunquetemplado";
+    tablaIO["metal25yunque"] = "metal25yunquetemplado";
+    
+    tablaIO["metal34yunque"] = "metal34yunquetemplado";
+    tablaIO["metal35yunque"] = "metal35yunquetemplado";
+    
+    tablaIO["metal45yunque"] = "metal45yunquetemplado";
+
     if (p.interacted != true) {
         sc_juegoLocal.barriles.children.iterate(function (child) {
             if ((child.timer == -1 || (child.timer >= 100))) {
                 if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.displayWidth, child.displayHeight)+0.75*Math.max(p.displayWidth, p.displayHeight)) {
-                    if (child.heldObject == "none" && child.timer == -1 && (p.heldObject == "metal1yunque" || p.heldObject == "metal2yunque" || p.heldObject == "metal1molde" || p.heldObject == "metal2molde")) {
+                    if (child.heldObject == "none" && child.timer == -1 && (tablaIO[p.heldObject] != undefined)) {
                         child.heldObject = p.heldObject;
                         p.heldObject = "none";
                         child.timer = 0;
                         result = true;
                     } else {
                         if (p.heldObject == "none" && child.timer >= 100 && child.heldObject != "none") {
-                            switch (child.heldObject) {
-                                case "metal1yunque":
-                                    p.heldObject = "metal1yunquetemplado";
-                                break;
-                                case "metal2yunque":
-                                    p.heldObject = "metal2yunquetemplado";
-                                break;
-                                case "metal1molde":
-                                    p.heldObject = "metal1moldetemplado";
-                                break;
-                                case "metal2molde":
-                                    p.heldObject = "metal2moldetemplado";
-                                break;
-                                default:
-                                        p.heldObject = "none";
-                                break;
+                            if (tablaIO[child.heldObject] != undefined) {
+                                p.heldObject = tablaIO[child.heldObject];
                             }
                             child.heldObject = "none";
                             child.timer = -1;
@@ -533,27 +556,27 @@ function interactuarBarriles(p) {
 
 function interactuarMoldes(p) {
     var result = false;
+    
+    var tablaIO = [];
+    tablaIO["metal1rojo"] = "metal1molde";
+    tablaIO["metal2rojo"] = "metal2molde";
+    tablaIO["metal3rojo"] = "metal3molde";
+    tablaIO["metal4rojo"] = "metal4molde";
+    tablaIO["metal5rojo"] = "metal5molde";
+
     if (p.interacted != true) {
         sc_juegoLocal.moldes.children.iterate(function (child) {
             if ((child.timer == -1 || (child.timer >= 100))) {
                 if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.displayWidth, child.displayHeight)+0.75*Math.max(p.displayWidth, p.displayHeight)) {
-                    if (child.heldObject == "none" && child.timer == -1 && (p.heldObject == "metal1rojo" || p.heldObject == "metal2rojo")) {
+                    if (child.heldObject == "none" && child.timer == -1 && (tablaIO[p.heldObject] != undefined)) {
                         child.heldObject = p.heldObject;
                         p.heldObject = "none";
                         child.timer = 0;
                         result = true;
                     } else {
                         if (p.heldObject == "none" && child.timer >= 100 && child.heldObject != "none") {
-                            switch (child.heldObject) {
-                                case "metal1rojo":
-                                    p.heldObject = "metal1molde";
-                                break;
-                                case "metal2rojo":
-                                    p.heldObject = "metal2molde";
-                                break;
-                                default:
-                                        p.heldObject = "none";
-                                break;
+                            if (tablaIO[child.heldObject] != undefined) {
+                                p.heldObject = tablaIO[child.heldObject];
                             }
                             child.heldObject = "none";
                             child.timer = -1;
@@ -570,39 +593,63 @@ function interactuarMoldes(p) {
 
 function interactuarHornosd(p) {
     var result = false;
+    
+    var tablaInputsValidos = [];
+    tablaInputsValidos["metal1"] = true;
+    tablaInputsValidos["metal2"] = true;
+    tablaInputsValidos["metal3"] = true;
+    tablaInputsValidos["metal4"] = true;
+    tablaInputsValidos["metal5"] = true;
+
+    var tablaIO = [];
+    tablaIO["metal1"] = [];
+    tablaIO["metal1"]["metal2"] = "metal12rojo";
+    tablaIO["metal1"]["metal3"] = "metal13rojo";
+    tablaIO["metal1"]["metal4"] = "metal14rojo";
+    tablaIO["metal1"]["metal5"] = "metal15rojo";
+    
+    tablaIO["metal2"] = [];
+    tablaIO["metal2"]["metal1"] = "metal12rojo";
+    tablaIO["metal2"]["metal3"] = "metal23rojo";
+    tablaIO["metal2"]["metal4"] = "metal24rojo";
+    tablaIO["metal2"]["metal5"] = "metal25rojo";
+    
+    tablaIO["metal3"] = [];
+    tablaIO["metal3"]["metal1"] = "metal13rojo";
+    tablaIO["metal3"]["metal2"] = "metal23rojo";
+    tablaIO["metal3"]["metal4"] = "metal34rojo";
+    tablaIO["metal3"]["metal5"] = "metal35rojo";
+    
+    tablaIO["metal4"] = [];
+    tablaIO["metal4"]["metal1"] = "metal14rojo";
+    tablaIO["metal4"]["metal2"] = "metal24rojo";
+    tablaIO["metal4"]["metal3"] = "metal34rojo";
+    tablaIO["metal4"]["metal5"] = "metal45rojo";
+    
+    tablaIO["metal5"] = [];
+    tablaIO["metal5"]["metal1"] = "metal15rojo";
+    tablaIO["metal5"]["metal2"] = "metal25rojo";
+    tablaIO["metal5"]["metal3"] = "metal35rojo";
+    tablaIO["metal5"]["metal4"] = "metal45rojo"; //hay un total de 10 metales mixtos
+
     if (p.interacted != true) {
         sc_juegoLocal.hornosd.children.iterate(function (child) {
             if ((child.timer == -1 || (child.timer > 100 && child.timer < 150))) {
                 if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.displayWidth, child.displayHeight)+0.75*Math.max(p.displayWidth, p.displayHeight)) {
-                    if (child.heldObject1 == "none" && child.heldObject2 == "none" && child.timer == -1 && (p.heldObject == "metal1" || p.heldObject == "metal2")) {
+                    if (child.heldObject1 == "none" && child.heldObject2 == "none" && child.timer == -1 && (tablaInputsValidos[p.heldObject])) {
                         child.heldObject1 = p.heldObject;
                         p.heldObject = "none";
                         result = true;
-                    } else if (child.heldObject1 != "none" && child.heldObject2 == "none" && child.timer == -1 && (p.heldObject == "metal1" || p.heldObject == "metal2") && (p.heldObject != child.heldObject1)) {
+                    } else if (child.heldObject1 != "none" && child.heldObject2 == "none" && child.timer == -1 && (tablaInputsValidos[p.heldObject]) && (p.heldObject != child.heldObject1)) {
                         child.heldObject2 = p.heldObject;
                         p.heldObject = "none";
                         child.timer = 0;
                         result = true;
                     } else if (p.heldObject == "none" && child.timer > 100 && child.heldObject1 != "none" && child.heldObject2 != "none") {
-                        switch (child.heldObject1) {
-                            case "metal1":
-                                switch (child.heldObject2) {
-                                    case "metal2":
-                                        p.heldObject = "metal12rojo";
-                                    break;
-                                }
-                            break;
-                            case "metal2":
-                                switch (child.heldObject2) {
-                                    case "metal1":
-                                        p.heldObject = "metal12rojo";
-                                    break;
-                                }
-                            break;
-                            default:
-                                    p.heldObject = "none";
-                            break;
+                        if (tablaIO[child.heldObject1][child.heldObject2] != undefined) {
+                            p.heldObject = tablaIO[child.heldObject1][child.heldObject2];
                         }
+                        
                         child.heldObject1 = "none";
                         child.heldObject2 = "none";
                         child.timer = -1;
@@ -618,13 +665,51 @@ function interactuarHornosd(p) {
 
 function interactuarYunquesd(p) {
     var result = false;
+    
+    var tablaInputsValidos = [];
+    tablaInputsValidos["metal1rojo"] = true;
+    tablaInputsValidos["metal2rojo"] = true;
+    tablaInputsValidos["metal3rojo"] = true;
+    tablaInputsValidos["metal4rojo"] = true;
+    tablaInputsValidos["metal5rojo"] = true;
+
+    var tablaIO = [];
+    tablaIO["metal1rojo"] = [];
+    tablaIO["metal1rojo"]["metal2rojo"] = "metal12espada";
+    tablaIO["metal1rojo"]["metal3rojo"] = "metal13espada";
+    tablaIO["metal1rojo"]["metal4rojo"] = "metal14espada";
+    tablaIO["metal1rojo"]["metal5rojo"] = "metal15espada";
+
+    tablaIO["metal2rojo"] = [];
+    tablaIO["metal2rojo"]["metal1rojo"] = "metal12espada";
+    tablaIO["metal2rojo"]["metal3rojo"] = "metal23espada";
+    tablaIO["metal2rojo"]["metal4rojo"] = "metal24espada";
+    tablaIO["metal2rojo"]["metal5rojo"] = "metal25espada";
+
+    tablaIO["metal3rojo"] = [];
+    tablaIO["metal3rojo"]["metal1rojo"] = "metal13espada";
+    tablaIO["metal3rojo"]["metal2rojo"] = "metal23espada";
+    tablaIO["metal3rojo"]["metal4rojo"] = "metal34espada";
+    tablaIO["metal3rojo"]["metal5rojo"] = "metal35espada";
+
+    tablaIO["metal4rojo"] = [];
+    tablaIO["metal4rojo"]["metal1rojo"] = "metal14espada";
+    tablaIO["metal4rojo"]["metal2rojo"] = "metal24espada";
+    tablaIO["metal4rojo"]["metal3rojo"] = "metal34espada";
+    tablaIO["metal4rojo"]["metal5rojo"] = "metal45espada";
+    
+    tablaIO["metal5rojo"] = [];
+    tablaIO["metal5rojo"]["metal1rojo"] = "metal15espada";
+    tablaIO["metal5rojo"]["metal2rojo"] = "metal25espada";
+    tablaIO["metal5rojo"]["metal3rojo"] = "metal35espada";
+    tablaIO["metal5rojo"]["metal4rojo"] = "metal45espada"; //hay un total de 10 espadas distintas
     sc_juegoLocal.yunquesd.children.iterate(function (child) {
         if (child.cooldown == 0 && p.interacted != true){
             if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.displayWidth, child.displayHeight)+0.75*Math.max(p.displayWidth, p.displayHeight)) {
-                if (child.timer == -1 && child.heldObject1 == "none" && child.heldObject2 == "none" && (p.heldObject == "metal1rojo" || p.heldObject == "metal2rojo")) {
+                if (child.timer == -1 && child.heldObject1 == "none" && child.heldObject2 == "none" && (tablaInputsValidos[p.heldObject])) {
                     child.heldObject1 = p.heldObject;
                     p.heldObject = "none";
-                } else if (child.timer == -1 && child.heldObject1 != "none" && child.heldObject2 == "none" && (p.heldObject == "metal1rojo" || p.heldObject == "metal2rojo") && p.heldObject != child.heldObject1) {
+                } else if (child.timer == -1 && child.heldObject1 != "none" && child.heldObject2 == "none" && (tablaInputsValidos[p.heldObject]) && p.heldObject != child.heldObject1) {
                     child.heldObject2 = p.heldObject;
                     p.heldObject = "none";
                     child.timer = 0;
@@ -633,24 +718,9 @@ function interactuarYunquesd(p) {
                     child.timer += 5;
                     child.cooldown = 15;
                 } else if (child.timer >= 100 && p.heldObject == "none") {
-                    switch (child.heldObject1) {
-                        case "metal1rojo":
-                            switch (child.heldObject2) {
-                                case "metal2rojo":
-                                    p.heldObject = "metal12yunque";
-                                break;
-                            }
-                        break;
-                        case "metal2rojo":
-                                switch (child.heldObject2) {
-                                    case "metal1rojo":
-                                        p.heldObject = "metal12yunque";
-                                    break;
-                                }
-                        break;
-                        default:
-                                p.heldObject = "none";
-                        break;
+                    if (tablaIO[child.heldObject1][child.heldObject2] != undefined) {
+                        p.heldObject = tablaIO[child.heldObject1][child.heldObject2];
+                        console.log(p.heldObject);
                     }
                     child.heldObject1 = "none";
                     child.heldObject2 = "none";
