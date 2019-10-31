@@ -4,11 +4,10 @@
 var sc_juegoLocal = new Phaser.Scene('JuegoLocal');
 
 sc_juegoLocal.preload = function() {
+    //Escenario
     this.load.image('sky', 'assets/sky.png');
-    /*this.load.image('ground', 'assets/platform.png');
-    this.load.image('star', 'assets/star.png');
-    this.load.image('bomb', 'assets/bomb.png');*/
-    this.load.image('metal1', 'assets/metal1.png');
+    //Modificaciones de los metales 
+    this.load.image('metal material', 'assets/metal material.png');
     this.load.image('metal2', 'assets/metal2.png');
     this.load.image('metal1rojo', 'assets/metal1rojo.png');
     this.load.image('metal2rojo', 'assets/metal2rojo.png');
@@ -20,16 +19,87 @@ sc_juegoLocal.preload = function() {
     this.load.image('metal2molde', 'assets/metal2molde.png'); 
     this.load.image('metal1moldetemplado', 'assets/metal1moldetemplado.png'); 
     this.load.image('metal2moldetemplado', 'assets/metal2moldetemplado.png'); 
+    //Partes de la armadura
+    this.load.image('casco', 'assets/casco.png');
+    this.load.image('CascoElfoD', 'assets/CascoElfoD.png');
+    this.load.image('CascoElfoI', 'assets/CascoElfoI.png');
+    this.load.image('CascoHieloD', 'assets/CascoHieloD.png');
+    this.load.image('CascoHieloI', 'assets/CascoHieloI.png');
+    this.load.image('espada', 'assets/espada.png');
+    this.load.image('EspadaElfoD', 'assets/EspadaElfoD.png');
+    this.load.image('EspadaElfoI', 'assets/EspadaElfoI.png');
+    this.load.image('EspadaHieloD', 'assets/EspadaHieloD.png');
+    this.load.image('EspadaHieloI', 'assets/EspadaHieloI.png');
+    this.load.image('pechera', 'assets/pechera.png');
+    this.load.image('PecheraElfoD', 'assets/PecheraElfoD.png');
+    this.load.image('PecheraElfoI', 'assets/PecheraElfoI.png');
+    this.load.image('PecheraHieloD', 'assets/PecheraHieloD.png');
+    this.load.image('PecheraHieloI', 'assets/PecheraHieloI.png');
+    this.load.image('protecciones piernas', 'assets/protecciones piernas.png');
+    this.load.image('ProtPiernasElfoD', 'assets/ProtPiernasElfoD.png');
+    this.load.image('ProtPiernasElfoI', 'assets/ProtPiernasElfoI.png');
+    this.load.image('ProtPiernasHieloD', 'assets/ProtPiernasHieloD.png');
+    this.load.image('ProtPiernasHieloI', 'assets/ProtPiernasHieloI.png');
+    //Elementos del escenario
     this.load.image('empty', 'assets/empty.png');
-    this.load.image('cajon', 'assets/cajon.png');
+    this.load.image('cajon1', 'assets/cajon1.png');
+    this.load.image('cajon2', 'assets/cajon2.png');
+    this.load.image('cajon3', 'assets/cajon3.png');
+    this.load.image('cajon4', 'assets/cajon4.png');
+    this.load.image('cajon5', 'assets/cajon5.png');
     this.load.image('mesa', 'assets/mesa.png');
     this.load.image('horno', 'assets/horno.png');
+    this.load.image('hornoU', 'assets/hornoU.png');
+    this.load.image('horno doble', 'assets/horno doble.png');
+    this.load.image('horno dobleU', 'assets/horno dobleU.png');
     this.load.image('yunque', 'assets/yunque.png');
-    this.load.image('barril', 'assets/barril.png');
+    this.load.image('yunque doble', 'assets/yunque doble.png');
+    this.load.image('barril de templado', 'assets/barril de templado.png');
     this.load.image('molde', 'assets/molde.png');
-    this.load.spritesheet('dude', 
+    this.load.image('moldeU', 'assets/moldeU.png');
+    this.load.image('barreras', 'assets/barreras.png');
+    //Otros extras (trampas)
+    this.load.image('barril explosivo', 'assets/barril explosivo.png');
+    this.load.image('explosion', 'assets/explosion.png');
+    this.load.image('reloj', 'assets/reloj.png');
+    this.load.image('trampa muro', 'assets/trampa muro.png');
+    //Monstruos
+    this.load.image('MElfoD', 'assets/MElfoD.png');
+    this.load.image('MElfoI', 'assets/MElfoI.png');
+    this.load.image('MHieloD', 'assets/MHieloD.png');
+    this.load.image('MHieloI', 'assets/MHieloI.png');
+    //De aquí para abajo los spritesheet
+    /*this.load.spritesheet('dude', 
         'assets/dude.png',
         { frameWidth: 32, frameHeight: 48 }
+    );*/
+    this.load.spritesheet('SSElfa1', 
+        'assets/SSElfa1.png',
+        { frameWidth: 117, frameHeight: 128 }
+    );
+    this.load.spritesheet('SSElfaCasco', 
+        'assets/SSElfaCasco.png',
+        { frameWidth: 117, frameHeight: 128 }
+    );
+    this.load.spritesheet('SSElfaEspada', 
+        'assets/SSElfaEspada.png',
+        { frameWidth: 117, frameHeight: 128 }
+    );
+    this.load.spritesheet('SSElfaMetal', 
+        'assets/SSElfaMetal.png',
+        { frameWidth: 117, frameHeight: 128 }
+    );
+    this.load.spritesheet('SSElfaMetalCaliente', 
+        'assets/SSElfaMetalCaliente.png',
+        { frameWidth: 117, frameHeight: 128 }
+    );
+    this.load.spritesheet('SSElfaPechera', 
+        'assets/SSElfaPechera.png',
+        { frameWidth: 117, frameHeight: 128 }
+    );
+    this.load.spritesheet('SSElfaProtecPiernas', 
+        'assets/SSElfaProtecPiernas.png',
+        { frameWidth: 117, frameHeight: 128 }
     );
     this.load.spritesheet('SSHielo1', 
         'assets/SSHielo1.png',
@@ -37,6 +107,26 @@ sc_juegoLocal.preload = function() {
     );
     this.load.spritesheet('SSHieloCasco', 
         'assets/SSHieloCasco.png',
+        { frameWidth: 90, frameHeight: 93 }
+    );
+    this.load.spritesheet('SSHieloEspada', 
+        'assets/SSHieloEspada.png',
+        { frameWidth: 90, frameHeight: 93 }
+    );
+    this.load.spritesheet('SSHieloMetal', 
+        'assets/SSHieloMetal.png',
+        { frameWidth: 90, frameHeight: 93 }
+    );
+    this.load.spritesheet('SSHieloMetalCaliente', 
+        'assets/SSHieloMetalCaliente.png',
+        { frameWidth: 90, frameHeight: 93 }
+    );
+    this.load.spritesheet('SSHieloPechera', 
+        'assets/SSHieloPechera.png',
+        { frameWidth: 90, frameHeight: 93 }
+    );
+    this.load.spritesheet('SSHieloProtecPiernas', 
+        'assets/SSHieloProtecPiernas.png',
         { frameWidth: 90, frameHeight: 93 }
     );
 }
@@ -57,8 +147,8 @@ sc_juegoLocal.create = function() {
         child.spdY = 0;
         child.heldObject = "none";
         //child.hos = that.physics.add.group();
+        child.heldObjectSprite = sc_juegoLocal.add.image(child.x, child.y, child.texture);
         child.setTexture('empty');
-        child.heldObjectSprite = sc_juegoLocal.add.image(child.x, child.y, 'empty');
         child.heldObjectSprite2 = sc_juegoLocal.add.image(child.x, child.y, 'empty');
         child.setCollideWorldBounds(true);
         //child.heldObjectSprite.setCollideWorldBounds(true);
@@ -72,19 +162,30 @@ sc_juegoLocal.create = function() {
 
     //inicializar cajones
     sc_juegoLocal.cajonesMetal = this.physics.add.staticGroup();
-    sc_juegoLocal.cajonesMetal.create(50, 50, 'cajon').heldObject = "metal1";
-    sc_juegoLocal.cajonesMetal.create(150, 50, 'cajon').heldObject = "metal2";
+    sc_juegoLocal.cajonesMetal.create(80, 570, 'cajon1').heldObject = "metal1";
+    sc_juegoLocal.cajonesMetal.create(140, 570, 'cajon2').heldObject = "metal2";
+    sc_juegoLocal.cajonesMetal.create(200, 570, 'cajon3').heldObject = "metal3";
+    sc_juegoLocal.cajonesMetal.create(260, 570, 'cajon4').heldObject = "metal4";
+    sc_juegoLocal.cajonesMetal.create(320, 570, 'cajon5').heldObject = "metal5";
+    sc_juegoLocal.cajonesMetal.create(720, 570, 'cajon1').heldObject = "metal1";
+    sc_juegoLocal.cajonesMetal.create(660, 570, 'cajon2').heldObject = "metal2";
+    sc_juegoLocal.cajonesMetal.create(600, 570, 'cajon3').heldObject = "metal3";
+    sc_juegoLocal.cajonesMetal.create(540, 570, 'cajon4').heldObject = "metal4";
+    sc_juegoLocal.cajonesMetal.create(480, 570, 'cajon5').heldObject = "metal5";
     
 
     //inicializar mesas
     sc_juegoLocal.mesas = this.physics.add.staticGroup();
-    sc_juegoLocal.mesas.create(100, 50, 'mesa').heldObject = "none";
-    sc_juegoLocal.mesas.create(200, 50, 'mesa').heldObject = "none";
+    sc_juegoLocal.mesas.create(103, 218, 'mesa').heldObject = "none";
+    sc_juegoLocal.mesas.create(103, 400, 'mesa').heldObject = "none";
+    sc_juegoLocal.mesas.create(667, 218, 'mesa').heldObject = "none";
+    sc_juegoLocal.mesas.create(667, 400, 'mesa').heldObject = "none";
 
 
     //inicializar hornos de 1 material
     sc_juegoLocal.hornos = this.physics.add.staticGroup();
-    sc_juegoLocal.hornos.create(250, 50, 'horno');
+    sc_juegoLocal.hornos.create(70, 40, 'horno');
+    sc_juegoLocal.hornos.create(670, 40, 'horno');
 
     sc_juegoLocal.hornos.children.iterate(function(child){
         child.heldObject = "none";
@@ -95,7 +196,8 @@ sc_juegoLocal.create = function() {
 
     //inicializar yunques de 1 material
     sc_juegoLocal.yunques = this.physics.add.staticGroup();
-    sc_juegoLocal.yunques.create(300, 50, 'yunque');
+    sc_juegoLocal.yunques.create(283, 300, 'yunque');
+    sc_juegoLocal.yunques.create(517, 300, 'yunque');
 
     sc_juegoLocal.yunques.children.iterate(function(child){
         child.heldObject = "none";
@@ -107,7 +209,8 @@ sc_juegoLocal.create = function() {
 
     //inicializar barriles de templado
     sc_juegoLocal.barriles = this.physics.add.staticGroup();
-    sc_juegoLocal.barriles.create(350, 50, 'barril');
+    sc_juegoLocal.barriles.create(283, 218, 'barril de templado');
+    sc_juegoLocal.barriles.create(517, 218, 'barril de templado');
 
     sc_juegoLocal.barriles.children.iterate(function(child){
         child.heldObject = "none";
@@ -118,7 +221,8 @@ sc_juegoLocal.create = function() {
     
     //inicializar moldes
     sc_juegoLocal.moldes = this.physics.add.staticGroup();
-    sc_juegoLocal.moldes.create(400, 50, 'molde');
+    sc_juegoLocal.moldes.create(283, 400, 'molde');
+    sc_juegoLocal.moldes.create(517, 400, 'molde');
 
     sc_juegoLocal.moldes.children.iterate(function(child){
         child.heldObject = "none";
@@ -129,7 +233,8 @@ sc_juegoLocal.create = function() {
     
     //inicializar hornos de 2 materiales
     sc_juegoLocal.hornosd = this.physics.add.staticGroup();
-    sc_juegoLocal.hornosd.create(450, 50, 'horno');
+    sc_juegoLocal.hornosd.create(140, 40, 'horno doble');
+    sc_juegoLocal.hornosd.create(600, 40, 'horno doble');
 
     sc_juegoLocal.hornosd.children.iterate(function(child){
         child.heldObject1 = "none";
@@ -142,7 +247,8 @@ sc_juegoLocal.create = function() {
 
     //inicializar yunques de 2 materiales
     sc_juegoLocal.yunquesd = this.physics.add.staticGroup();
-    sc_juegoLocal.yunquesd.create(500, 50, 'yunque');
+    sc_juegoLocal.yunquesd.create(283, 125, 'yunque doble');
+    sc_juegoLocal.yunquesd.create(517, 125, 'yunque doble');
 
     sc_juegoLocal.yunquesd.children.iterate(function(child){
         child.heldObject1 = "none";
