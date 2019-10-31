@@ -47,7 +47,7 @@ sc_juegoLocal.create = function() {
     //inicializar jugadores
     sc_juegoLocal.players = this.physics.add.group();
 
-    sc_juegoLocal.player = sc_juegoLocal.players.create(100, 450, 'SSHielo1');
+    sc_juegoLocal.player = sc_juegoLocal.players.create(100, 450, '');
     sc_juegoLocal.player2 = sc_juegoLocal.players.create(200, 450, 'dude');
 
     //inicializar características comunes a ambos jugadores
@@ -56,12 +56,14 @@ sc_juegoLocal.create = function() {
         child.spdX = 0;
         child.spdY = 0;
         child.heldObject = "none";
-        child.hos = that.physics.add.group();
-        child.heldObjectSprite = child.hos.create(child.x, child.y, 'empty');
+        //child.hos = that.physics.add.group();
+        child.heldObjectSprite = sc_juegoLocal.add.image(child.x, child.y, 'empty');
+        child.heldObjectSprite2 = sc_juegoLocal.add.image(child.x, child.y, 'empty');
         child.setCollideWorldBounds(true);
-        child.heldObjectSprite.setCollideWorldBounds(true);
+        //child.heldObjectSprite.setCollideWorldBounds(true);
+        //child.heldObjectSprite2.setCollideWorldBounds(true);
         child.setSize(121, 128);
-        child.heldObjectSprite.setSize(121, 128);
+        //child.heldObjectSprite.setSize(121, 128);
         child.interacted = false;
         child.chocado = false;
     });
@@ -162,14 +164,14 @@ sc_juegoLocal.create = function() {
         that.physics.add.collider(child, sc_juegoLocal.hornosd);
         that.physics.add.collider(child, sc_juegoLocal.yunquesd);
 
-        that.physics.add.collider(child.heldObjectSprite, sc_juegoLocal.mesas);
+        /*that.physics.add.collider(child.heldObjectSprite, sc_juegoLocal.mesas);
         that.physics.add.collider(child.heldObjectSprite, sc_juegoLocal.cajonesMetal);
         that.physics.add.collider(child.heldObjectSprite, sc_juegoLocal.hornos);
         that.physics.add.collider(child.heldObjectSprite, sc_juegoLocal.yunques);
         that.physics.add.collider(child.heldObjectSprite, sc_juegoLocal.barriles);
         that.physics.add.collider(child.heldObjectSprite, sc_juegoLocal.moldes);
         that.physics.add.collider(child.heldObjectSprite, sc_juegoLocal.hornosd);
-        that.physics.add.collider(child.heldObjectSprite, sc_juegoLocal.yunquesd);
+        that.physics.add.collider(child.heldObjectSprite, sc_juegoLocal.yunquesd);*/
     });
 
 
@@ -272,29 +274,37 @@ sc_juegoLocal.create = function() {
 sc_juegoLocal.update = function(time, delta) {
 
     sc_juegoLocal.players.children.iterate(function(child){
-        var hoSpdX, hoSpdY;
+        //var hoSpdX, hoSpdY;
         if (child.heldObject == "none") {
             child.setVelocityY(child.spdY);
             child.setVelocityX(child.spdX);
-            hoSpdX = child.spdX;
-            hoSpdY = child.spdY;
+            //hoSpdX = child.spdX;
+            //hoSpdY = child.spdY;
         } else {
             
             child.setVelocityY(child.spdY/2);
             child.setVelocityX(child.spdX/2);
-            hoSpdX = child.spdX/2;
-            hoSpdY = child.spdY/2;
+            //hoSpdX = child.spdX/2;
+            //hoSpdY = child.spdY/2;
         }
-        child.heldObjectSprite.setVelocityX(hoSpdX);
+        child.heldObjectSprite.setX(child.x);
+        child.heldObjectSprite.setY(child.y);
+
+        child.heldObjectSprite2.setX(child.x);
+        child.heldObjectSprite2.setY(child.y);
+
+        /*child.heldObjectSprite.setVelocityX(hoSpdX);
         child.heldObjectSprite.setVelocityY(hoSpdY);
         if (child.heldObjectSprite.x != child.x) {child.heldObjectSprite.setX(child.x);child.heldObjectSprite.setVelocityX(0);}
-        if (child.heldObjectSprite.y != child.y) {child.heldObjectSprite.setY(child.y);child.heldObjectSprite.setVelocityY(0);}
+        if (child.heldObjectSprite.y != child.y) {child.heldObjectSprite.setY(child.y);child.heldObjectSprite.setVelocityY(0);}*/
 
         if (child.heldObject == "none") {
-            child.heldObjectSprite.setTexture('empty');
-            //child.heldObjectSprite.setTexture('SSHieloCasco'); //quitar esta linea por favor
+            child.heldObjectSprite.setTexture('SSHielo1'); //quitar esta linea por favor
+            child.heldObjectSprite2.setTexture('empty');
         } else {
-            child.heldObjectSprite.setTexture(child.heldObject); //de momento
+            //child.heldObjectSprite.setTexture(child.heldObject); //de momento
+            child.heldObjectSprite.setTexture('SSHieloCasco'); //quitar esta linea por favor
+            child.heldObjectSprite2.setTexture(child.heldObject);
         }
         switch (child.heldObject) {
             case "":
@@ -416,7 +426,7 @@ function interactuar(p) {
     var result = false;
     estacion.children.iterate(function (child) {
         if ((child.timer == -1 || (child.timer > 100 && child.timer < 150))) {
-            if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.displayWidth, child.displayHeight)+0.75*Math.max(p.displayWidth, p.displayHeight)) {
+            if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.body.width, child.body.height)+0.75*Math.max(p.body.width, p.body.height)) {
                 if (child.heldObject == "none" && child.timer == -1 && (tablaIO[p.heldObject] != undefined)) {
                     child.heldObject = p.heldObject;
                     p.heldObject = "none";
@@ -439,7 +449,7 @@ function interactuar(p) {
 
 /*function cambiarObjetos(cond1, cond2, child, p){
     var result = false;
-    if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.displayWidth, child.displayHeight)+0.75*Math.max(p.displayWidth, p.displayHeight)) {
+    if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.body.width, child.body.height)+0.75*Math.max(p.body.width, p.body.height)) {
         if (cond1) {
             child.heldObject = p.heldObject;
             p.heldObject = "none";
@@ -461,7 +471,7 @@ function interactuar(p) {
 function interactuarCajones(p) {
     var result = false;
     sc_juegoLocal.cajonesMetal.children.iterate(function (child) {
-        if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.displayWidth, child.displayHeight)+0.75*Math.max(p.displayWidth, p.displayHeight)) {
+        if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.body.width, child.body.height)+0.75*Math.max(p.body.width, p.body.height)) {
             if (p.heldObject == "none") {
                 p.heldObject = child.heldObject;
             }
@@ -477,7 +487,7 @@ function interactuarCajones(p) {
 function interactuarMesas(p) {
     var result = false;
     sc_juegoLocal.mesas.children.iterate(function (child) {
-        if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.displayWidth, child.displayHeight)+0.75*Math.max(p.displayWidth, p.displayHeight)) {
+        if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.body.width, child.body.height)+0.75*Math.max(p.body.width, p.body.height)) {
             var temp = child.heldObject;
             child.heldObject = p.heldObject;
             p.heldObject = temp;
@@ -504,7 +514,7 @@ function interactuarHornos(p) {
     if (p.interacted != true) {
         sc_juegoLocal.hornos.children.iterate(function (child) {
             if ((child.timer == -1 || (child.timer > 100 && child.timer < 150))) {
-                if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.displayWidth, child.displayHeight)+0.75*Math.max(p.displayWidth, p.displayHeight)) {
+                if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.body.width, child.body.height)+0.75*Math.max(p.body.width, p.body.height)) {
                     if (child.heldObject == "none" && child.timer == -1 && (tablaIO[p.heldObject] != undefined)) {
                         child.heldObject = p.heldObject;
                         p.heldObject = "none";
@@ -554,7 +564,7 @@ function interactuarYunques(p) {
 
     sc_juegoLocal.yunques.children.iterate(function (child) {
         if (child.cooldown == 0 && p.interacted != true){
-            if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.displayWidth, child.displayHeight)+0.75*Math.max(p.displayWidth, p.displayHeight)) {
+            if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.body.width, child.body.height)+0.75*Math.max(p.body.width, p.body.height)) {
                 if (child.timer == -1 && child.heldObject == "none" && (tablaIO[p.heldObject] != undefined)) {
                     child.heldObject = p.heldObject;
                     p.heldObject = "none";
@@ -610,7 +620,7 @@ function interactuarBarriles(p) {
     if (p.interacted != true) {
         sc_juegoLocal.barriles.children.iterate(function (child) {
             if ((child.timer == -1 || (child.timer >= 100))) {
-                if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.displayWidth, child.displayHeight)+0.75*Math.max(p.displayWidth, p.displayHeight)) {
+                if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.body.width, child.body.height)+0.75*Math.max(p.body.width, p.body.height)) {
                     if (child.heldObject == "none" && child.timer == -1 && (tablaIO[p.heldObject] != undefined)) {
                         child.heldObject = p.heldObject;
                         p.heldObject = "none";
@@ -647,7 +657,7 @@ function interactuarMoldes(p) {
     if (p.interacted != true) {
         sc_juegoLocal.moldes.children.iterate(function (child) {
             if ((child.timer == -1 || (child.timer >= 100))) {
-                if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.displayWidth, child.displayHeight)+0.75*Math.max(p.displayWidth, p.displayHeight)) {
+                if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.body.width, child.body.height)+0.75*Math.max(p.body.width, p.body.height)) {
                     if (child.heldObject == "none" && child.timer == -1 && (tablaIO[p.heldObject] != undefined)) {
                         child.heldObject = p.heldObject;
                         p.heldObject = "none";
@@ -715,7 +725,7 @@ function interactuarHornosd(p) {
     if (p.interacted != true) {
         sc_juegoLocal.hornosd.children.iterate(function (child) {
             if ((child.timer == -1 || (child.timer > 100 && child.timer < 150))) {
-                if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.displayWidth, child.displayHeight)+0.75*Math.max(p.displayWidth, p.displayHeight)) {
+                if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.body.width, child.body.height)+0.75*Math.max(p.body.width, p.body.height)) {
                     if (child.heldObject1 == "none" && child.heldObject2 == "none" && child.timer == -1 && (tablaInputsValidos[p.heldObject])) {
                         child.heldObject1 = p.heldObject;
                         p.heldObject = "none";
@@ -785,7 +795,7 @@ function interactuarYunquesd(p) {
     tablaIO["metal5rojo"]["metal4rojo"] = "metal45espada"; //hay un total de 10 espadas distintas
     sc_juegoLocal.yunquesd.children.iterate(function (child) {
         if (child.cooldown == 0 && p.interacted != true){
-            if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.displayWidth, child.displayHeight)+0.75*Math.max(p.displayWidth, p.displayHeight)) {
+            if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.body.width, child.body.height)+0.75*Math.max(p.body.width, p.body.height)) {
                 if (child.timer == -1 && child.heldObject1 == "none" && child.heldObject2 == "none" && (tablaInputsValidos[p.heldObject])) {
                     child.heldObject1 = p.heldObject;
                     p.heldObject = "none";
