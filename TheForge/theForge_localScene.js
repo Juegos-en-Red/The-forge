@@ -103,31 +103,31 @@ sc_juegoLocal.preload = function() {
     );
     this.load.spritesheet('SSHielo1', 
         'assets/SSHielo1.png',
-        { frameWidth: 90, frameHeight: 93 }
+        { frameWidth: 90, frameHeight: 92 }
     );
     this.load.spritesheet('SSHieloCasco', 
         'assets/SSHieloCasco.png',
-        { frameWidth: 90, frameHeight: 93 }
+        { frameWidth: 90, frameHeight: 92 }
     );
     this.load.spritesheet('SSHieloEspada', 
         'assets/SSHieloEspada.png',
-        { frameWidth: 90, frameHeight: 93 }
+        { frameWidth: 90, frameHeight: 92 }
     );
     this.load.spritesheet('SSHieloMetal', 
         'assets/SSHieloMetal.png',
-        { frameWidth: 90, frameHeight: 93 }
+        { frameWidth: 90, frameHeight: 92 }
     );
     this.load.spritesheet('SSHieloMetalCaliente', 
         'assets/SSHieloMetalCaliente.png',
-        { frameWidth: 90, frameHeight: 93 }
+        { frameWidth: 90, frameHeight: 92 }
     );
     this.load.spritesheet('SSHieloPechera', 
         'assets/SSHieloPechera.png',
-        { frameWidth: 90, frameHeight: 93 }
+        { frameWidth: 90, frameHeight: 92 }
     );
     this.load.spritesheet('SSHieloProtecPiernas', 
         'assets/SSHieloProtecPiernas.png',
-        { frameWidth: 90, frameHeight: 93 }
+        { frameWidth: 90, frameHeight: 92 }
     );
 }
 
@@ -178,8 +178,8 @@ sc_juegoLocal.create = function() {
     sc_juegoLocal.mesas = this.physics.add.staticGroup();
     sc_juegoLocal.mesas.create(103, 218, 'mesa').heldObject = "none";
     sc_juegoLocal.mesas.create(103, 400, 'mesa').heldObject = "none";
-    sc_juegoLocal.mesas.create(667, 218, 'mesa').heldObject = "none";
-    sc_juegoLocal.mesas.create(667, 400, 'mesa').heldObject = "none";
+    sc_juegoLocal.mesas.create(697, 218, 'mesa').heldObject = "none";
+    sc_juegoLocal.mesas.create(697, 400, 'mesa').heldObject = "none";
 
 
     //inicializar hornos de 1 material
