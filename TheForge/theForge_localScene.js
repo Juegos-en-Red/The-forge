@@ -33,11 +33,11 @@ sc_juegoLocal.preload = function() {
     );
     this.load.spritesheet('SSHielo1', 
         'assets/SSHielo1.png',
-        { frameWidth: 121, frameHeight: 128 }
+        { frameWidth: 90, frameHeight: 93 }
     );
     this.load.spritesheet('SSHieloCasco', 
         'assets/SSHieloCasco.png',
-        { frameWidth: 121, frameHeight: 128 }
+        { frameWidth: 90, frameHeight: 93 }
     );
 }
 
@@ -47,7 +47,7 @@ sc_juegoLocal.create = function() {
     //inicializar jugadores
     sc_juegoLocal.players = this.physics.add.group();
 
-    sc_juegoLocal.player = sc_juegoLocal.players.create(100, 450, '');
+    sc_juegoLocal.player = sc_juegoLocal.players.create(100, 450, 'SSHielo1');
     sc_juegoLocal.player2 = sc_juegoLocal.players.create(200, 450, 'dude');
 
     //inicializar características comunes a ambos jugadores
@@ -57,12 +57,13 @@ sc_juegoLocal.create = function() {
         child.spdY = 0;
         child.heldObject = "none";
         //child.hos = that.physics.add.group();
+        child.setTexture('empty');
         child.heldObjectSprite = sc_juegoLocal.add.image(child.x, child.y, 'empty');
         child.heldObjectSprite2 = sc_juegoLocal.add.image(child.x, child.y, 'empty');
         child.setCollideWorldBounds(true);
         //child.heldObjectSprite.setCollideWorldBounds(true);
         //child.heldObjectSprite2.setCollideWorldBounds(true);
-        child.setSize(121, 128); //cambiar este tamaño por favor
+        child.setSize(90, 93); //cambiar este tamaño por favor
         //child.heldObjectSprite.setSize(121, 128);
         child.interacted = false;
         child.chocado = false;
