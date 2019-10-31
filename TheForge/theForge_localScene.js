@@ -31,6 +31,14 @@ sc_juegoLocal.preload = function() {
         'assets/dude.png',
         { frameWidth: 32, frameHeight: 48 }
     );
+    this.load.spritesheet('SSHielo1', 
+        'assets/SSHielo1.png',
+        { frameWidth: 121, frameHeight: 128 }
+    );
+    this.load.spritesheet('SSHieloCasco', 
+        'assets/SSHieloCasco.png',
+        { frameWidth: 121, frameHeight: 128 }
+    );
 }
 
 sc_juegoLocal.create = function() {
@@ -39,17 +47,23 @@ sc_juegoLocal.create = function() {
     //inicializar jugadores
     sc_juegoLocal.players = this.physics.add.group();
 
-    sc_juegoLocal.player = sc_juegoLocal.players.create(100, 450, 'dude');
+    sc_juegoLocal.player = sc_juegoLocal.players.create(100, 450, 'SSHielo1');
     sc_juegoLocal.player2 = sc_juegoLocal.players.create(200, 450, 'dude');
 
     //inicializar características comunes a ambos jugadores
+    var that = this;
     sc_juegoLocal.players.children.iterate(function (child) {
         child.spdX = 0;
         child.spdY = 0;
         child.heldObject = "none";
-        child.heldObjectSprite = sc_juegoLocal.add.image(child.x, child.y, 'empty');
+        child.hos = that.physics.add.group();
+        child.heldObjectSprite = child.hos.create(child.x, child.y, 'empty');
         child.setCollideWorldBounds(true);
+        child.heldObjectSprite.setCollideWorldBounds(true);
+        child.setSize(121, 128);
+        child.heldObjectSprite.setSize(121, 128);
         child.interacted = false;
+        child.chocado = false;
     });
     
 
@@ -147,6 +161,15 @@ sc_juegoLocal.create = function() {
         that.physics.add.collider(child, sc_juegoLocal.moldes);
         that.physics.add.collider(child, sc_juegoLocal.hornosd);
         that.physics.add.collider(child, sc_juegoLocal.yunquesd);
+
+        that.physics.add.collider(child.heldObjectSprite, sc_juegoLocal.mesas);
+        that.physics.add.collider(child.heldObjectSprite, sc_juegoLocal.cajonesMetal);
+        that.physics.add.collider(child.heldObjectSprite, sc_juegoLocal.hornos);
+        that.physics.add.collider(child.heldObjectSprite, sc_juegoLocal.yunques);
+        that.physics.add.collider(child.heldObjectSprite, sc_juegoLocal.barriles);
+        that.physics.add.collider(child.heldObjectSprite, sc_juegoLocal.moldes);
+        that.physics.add.collider(child.heldObjectSprite, sc_juegoLocal.hornosd);
+        that.physics.add.collider(child.heldObjectSprite, sc_juegoLocal.yunquesd);
     });
 
 
@@ -246,24 +269,36 @@ sc_juegoLocal.create = function() {
     });
 }
 
-sc_juegoLocal.update = function() {
+sc_juegoLocal.update = function(time, delta) {
 
     sc_juegoLocal.players.children.iterate(function(child){
+        var hoSpdX, hoSpdY;
         if (child.heldObject == "none") {
             child.setVelocityY(child.spdY);
             child.setVelocityX(child.spdX);
+            hoSpdX = child.spdX;
+            hoSpdY = child.spdY;
         } else {
             
             child.setVelocityY(child.spdY/2);
             child.setVelocityX(child.spdX/2);
+            hoSpdX = child.spdX/2;
+            hoSpdY = child.spdY/2;
         }
+        child.heldObjectSprite.setVelocityX(hoSpdX);
+        child.heldObjectSprite.setVelocityY(hoSpdY);
+        if (child.heldObjectSprite.x != child.x) {child.heldObjectSprite.setX(child.x);child.heldObjectSprite.setVelocityX(0);}
+        if (child.heldObjectSprite.y != child.y) {child.heldObjectSprite.setY(child.y);child.heldObjectSprite.setVelocityY(0);}
 
         if (child.heldObject == "none") {
             child.heldObjectSprite.setTexture('empty');
+            //child.heldObjectSprite.setTexture('SSHieloCasco'); //quitar esta linea por favor
         } else {
             child.heldObjectSprite.setTexture(child.heldObject); //de momento
-            child.heldObjectSprite.setX(child.x);
-            child.heldObjectSprite.setY(child.y);
+        }
+        switch (child.heldObject) {
+            case "":
+                break;
         }
     });
     
@@ -352,6 +387,11 @@ sc_juegoLocal.update = function() {
         }
     });
 
+
+
+    /*sc_juegoLocal.players.children.iterate(function (child) {
+        child.chocado = false;
+    });*/
 }
 
 function interactuar(p) {
@@ -372,11 +412,49 @@ function interactuar(p) {
     }
 }
 
-/*function interactuarGenerico(p, estacion) {
+/*function interactuarEstacion(p, estacion, tablaIO, tablaInputsValidos) {
     var result = false;
     estacion.children.iterate(function (child) {
-
+        if ((child.timer == -1 || (child.timer > 100 && child.timer < 150))) {
+            if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.displayWidth, child.displayHeight)+0.75*Math.max(p.displayWidth, p.displayHeight)) {
+                if (child.heldObject == "none" && child.timer == -1 && (tablaIO[p.heldObject] != undefined)) {
+                    child.heldObject = p.heldObject;
+                    p.heldObject = "none";
+                    child.timer = 0;
+                    result = true;
+                } else {
+                    if (p.heldObject == "none" && child.timer > 100 && child.heldObject != "none") {
+                        if (tablaIO[child.heldObject] != undefined) {
+                            p.heldObject = tablaIO[child.heldObject];
+                        }
+                        child.heldObject = "none";
+                        child.timer = -1;
+                        result = true;
+                    }
+                }
+            }
+        }
     });
+}*/
+
+/*function cambiarObjetos(cond1, cond2, child, p){
+    var result = false;
+    if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.displayWidth, child.displayHeight)+0.75*Math.max(p.displayWidth, p.displayHeight)) {
+        if (cond1) {
+            child.heldObject = p.heldObject;
+            p.heldObject = "none";
+            child.timer = 0;
+            result = true;
+        } else if (cond2) {
+            if (tablaIO[child.heldObject] != undefined) {
+                p.heldObject = tablaIO[child.heldObject];
+            }
+            child.heldObject = "none";
+            child.timer = -1;
+            result = true;
+        }
+    }
+    return result;
 }*/
 
 
@@ -421,6 +499,8 @@ function interactuarHornos(p) {
     tablaIO["metal4"] = "metal4rojo";
     tablaIO["metal5"] = "metal5rojo";
 
+    //interactuarEstacion(p, sc_juegoLocal.hornos, tablaIO);
+
     if (p.interacted != true) {
         sc_juegoLocal.hornos.children.iterate(function (child) {
             if ((child.timer == -1 || (child.timer > 100 && child.timer < 150))) {
@@ -458,19 +538,19 @@ function interactuarYunques(p) {
     tablaIO["metal4rojo"] = "metal4yunque";
     tablaIO["metal5rojo"] = "metal5yunque";
     
-    tablaIO["metal12rojo"] = "metal12yunque";
-    tablaIO["metal13rojo"] = "metal13yunque";
-    tablaIO["metal14rojo"] = "metal14yunque";
-    tablaIO["metal15rojo"] = "metal15yunque";
+    tablaIO["metal12rojo"] = "metal12yunque"; //12 = a
+    tablaIO["metal13rojo"] = "metal13yunque"; //13 = b
+    tablaIO["metal14rojo"] = "metal14yunque"; //14 = c
+    tablaIO["metal15rojo"] = "metal15yunque"; //15 = d
     
-    tablaIO["metal23rojo"] = "metal23yunque";
-    tablaIO["metal24rojo"] = "metal24yunque";
-    tablaIO["metal25rojo"] = "metal25yunque";
+    tablaIO["metal23rojo"] = "metal23yunque"; //23 = e
+    tablaIO["metal24rojo"] = "metal24yunque"; //24 = f
+    tablaIO["metal25rojo"] = "metal25yunque"; //25 = g
     
-    tablaIO["metal34rojo"] = "metal34yunque";
-    tablaIO["metal35rojo"] = "metal35yunque";
+    tablaIO["metal34rojo"] = "metal34yunque"; //34 = h
+    tablaIO["metal35rojo"] = "metal35yunque"; //35 = i
     
-    tablaIO["metal45rojo"] = "metal45yunque";
+    tablaIO["metal45rojo"] = "metal45yunque"; //45 = j
 
     sc_juegoLocal.yunques.children.iterate(function (child) {
         if (child.cooldown == 0 && p.interacted != true){
@@ -732,4 +812,8 @@ function interactuarYunquesd(p) {
     });
     
     return result;
+}
+
+function chocar(p, e) {
+    p.chocado = true;
 }
