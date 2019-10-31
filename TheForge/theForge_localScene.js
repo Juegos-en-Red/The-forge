@@ -62,7 +62,7 @@ sc_juegoLocal.create = function() {
         child.setCollideWorldBounds(true);
         //child.heldObjectSprite.setCollideWorldBounds(true);
         //child.heldObjectSprite2.setCollideWorldBounds(true);
-        child.setSize(121, 128);
+        child.setSize(121, 128); //cambiar este tamaño por favor
         //child.heldObjectSprite.setSize(121, 128);
         child.interacted = false;
         child.chocado = false;
