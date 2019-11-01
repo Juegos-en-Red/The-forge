@@ -77,6 +77,10 @@ sc_juegoLocal.preload = function() {
         'assets/SSElfa1.png',
         { frameWidth: 122, frameHeight: 128 }
     );
+    this.load.spritesheet('SSElfaEmpty', 
+        'assets/SSElfaOverlay.png',
+        { frameWidth: 122, frameHeight: 128 }
+    );
     this.load.spritesheet('SSElfaCasco', 
         'assets/SSElfaCasco.png',
         { frameWidth: 122, frameHeight: 128 }
@@ -87,6 +91,10 @@ sc_juegoLocal.preload = function() {
     );
     this.load.spritesheet('SSElfaMetal', 
         'assets/SSElfaMetal.png',
+        { frameWidth: 122, frameHeight: 128 }
+    );
+    this.load.spritesheet('SSElfaMetalOverlay', 
+        'assets/SSElfaMetalOverlay.png',
         { frameWidth: 122, frameHeight: 128 }
     );
     this.load.spritesheet('SSElfaMetalCaliente', 
@@ -152,9 +160,9 @@ sc_juegoLocal.create = function() {
 
     //inicializar mesas
     sc_juegoLocal.mesas = this.physics.add.staticGroup();
-    sc_juegoLocal.mesas.create(103, 218, 'mesa').heldObject = "none";
+    sc_juegoLocal.mesas.create(103, 268, 'mesa').heldObject = "none";
     sc_juegoLocal.mesas.create(103, 400, 'mesa').heldObject = "none";
-    sc_juegoLocal.mesas.create(697, 218, 'mesa').heldObject = "none";
+    sc_juegoLocal.mesas.create(697, 268, 'mesa').heldObject = "none";
     sc_juegoLocal.mesas.create(697, 400, 'mesa').heldObject = "none";
 
 
@@ -256,7 +264,15 @@ sc_juegoLocal.create = function() {
         child.setCollideWorldBounds(true);
         //child.heldObjectSprite.setCollideWorldBounds(true);
         //child.heldObjectSprite2.setCollideWorldBounds(true);
-        child.setSize(90, 93); //cambiar este tamaño por favor
+        //alert(child.defaultTexture);
+        switch(child.defaultTexture.key) {
+            case 'SSHielo1':
+                child.setSize(90, 93); //cambiar este tamaño por favor
+                break;
+            case 'SSElfa1':
+                child.setSize(90, 128); //cambiar este tamaño por favor
+                break;
+        }
         //child.heldObjectSprite.setSize(121, 128);
         child.interacted = false;
         child.chocado = false;
@@ -337,25 +353,31 @@ sc_juegoLocal.create = function() {
                 sc_juegoLocal.player2.interacted = false;
             break;
         }
+        getAnim(sc_juegoLocal.player);
+        getAnim(sc_juegoLocal.player2);
     });
 
     this.input.keyboard.on('keydown', 
     function (event) { 
-        console.log(event.keyCode);
+        //console.log(event.keyCode);
         switch (event.keyCode) {
             //jugador 1
             //movimiento
             case cont.p1.w:
                     sc_juegoLocal.player.spdY = -400;
+                    //sc_juegoLocal.player.heldObjectSprite.anims.play('pHUpM', true);
             break;
             case cont.p1.s:
                     sc_juegoLocal.player.spdY = 400;
+                    //sc_juegoLocal.player.heldObjectSprite.anims.play('pHDownM', true);
             break;
             case cont.p1.a:
                     sc_juegoLocal.player.spdX = -400;
+                    //sc_juegoLocal.player.heldObjectSprite.anims.play('pHLeftM', true);
             break;
             case cont.p1.d:
                     sc_juegoLocal.player.spdX = 400;
+                    //sc_juegoLocal.player.heldObjectSprite.anims.play('pHRightM', true);
             break;
             case cont.p1.i1:
                 interactuar(sc_juegoLocal.player);
@@ -365,16 +387,19 @@ sc_juegoLocal.create = function() {
             //jugador 2
             case cont.p2.w:
                     sc_juegoLocal.player2.spdY = -400;
-                    sc_juegoLocal.player2.heldObjectSprite.anims.play('pDownM', false);
+                    //sc_juegoLocal.player2.heldObjectSprite.anims.play('pEUpM', true); //getAnim(player2, 0);
             break;
             case cont.p2.s:
                     sc_juegoLocal.player2.spdY = 400;
+                    //sc_juegoLocal.player2.heldObjectSprite.anims.play('pEDownM', true);
             break;
             case cont.p2.a:
                     sc_juegoLocal.player2.spdX = -400;
+                    //sc_juegoLocal.player2.heldObjectSprite.anims.play('pELeftM', true);
             break;
             case cont.p2.d:
                     sc_juegoLocal.player2.spdX = 400;
+                    //sc_juegoLocal.player2.heldObjectSprite.anims.play('pERightM', true);
             break;
             case cont.p2.i1:
                 interactuar(sc_juegoLocal.player2);
@@ -384,12 +409,7 @@ sc_juegoLocal.create = function() {
     });
 
     //Inicialización de animaciones
-    this.anims.create({
-        key: 'pDownM',
-        frames: this.anims.generateFrameNumbers('SSElfa1', { start: 0, end: 3 }),
-        frameRate: 1,
-        repeat: -1
-    });
+    initAnimations(this);
 
 
 
@@ -398,6 +418,11 @@ sc_juegoLocal.create = function() {
 sc_juegoLocal.update = function(time, delta) {
 
     sc_juegoLocal.players.children.iterate(function(child){
+        if (child.spdX == 0 && child.spdY == 0) {
+            child.heldObjectSprite.anims.stopOnRepeat();
+            child.heldObjectSprite2.anims.stopOnRepeat();
+        }
+        getAnim(child);
         //var hoSpdX, hoSpdY;
         if (child.heldObject == "none") {
             child.setVelocityY(child.spdY);
@@ -417,12 +442,7 @@ sc_juegoLocal.update = function(time, delta) {
         child.heldObjectSprite2.setX(child.x);
         child.heldObjectSprite2.setY(child.y);
 
-        /*child.heldObjectSprite.setVelocityX(hoSpdX);
-        child.heldObjectSprite.setVelocityY(hoSpdY);
-        if (child.heldObjectSprite.x != child.x) {child.heldObjectSprite.setX(child.x);child.heldObjectSprite.setVelocityX(0);}
-        if (child.heldObjectSprite.y != child.y) {child.heldObjectSprite.setY(child.y);child.heldObjectSprite.setVelocityY(0);}*/
-
-        if (child.heldObject == "none") {
+        /*if (child.heldObject == "none") {
             //child.heldObjectSprite.setTexture(child.defaultTexture); //quitar esta linea por favor
             child.heldObjectSprite2.setTexture('empty');
         } else {
@@ -433,7 +453,7 @@ sc_juegoLocal.update = function(time, delta) {
         switch (child.heldObject) {
             case "":
                 break;
-        }
+        }*/
     });
     
     sc_juegoLocal.mesas.children.iterate(function(child){
@@ -528,6 +548,388 @@ sc_juegoLocal.update = function(time, delta) {
     });*/
 }
 
+function initAnimations(that) {
+    //Animaciones de la elfa
+    //Sin objetos
+    that.anims.create({
+        key: 'pEDown',
+        frames: that.anims.generateFrameNumbers('SSElfa1', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pEUp',
+        frames: that.anims.generateFrameNumbers('SSElfa1', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pELeft',
+        frames: that.anims.generateFrameNumbers('SSElfa1', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pERight',
+        frames: that.anims.generateFrameNumbers('SSElfa1', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //Metal
+    that.anims.create({
+        key: 'pEDownM',
+        frames: that.anims.generateFrameNumbers('SSElfaMetal', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pEUpM',
+        frames: that.anims.generateFrameNumbers('SSElfaMetal', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pELeftM',
+        frames: that.anims.generateFrameNumbers('SSElfaMetal', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pERightM',
+        frames: that.anims.generateFrameNumbers('SSElfaMetal', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //Metal caliente
+    that.anims.create({
+        key: 'pEDownMC',
+        frames: that.anims.generateFrameNumbers('SSElfaMetalCaliente', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pEUpMC',
+        frames: that.anims.generateFrameNumbers('SSElfaMetalCaliente', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pELeftMC',
+        frames: that.anims.generateFrameNumbers('SSElfaMetalCaliente', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pERightMC',
+        frames: that.anims.generateFrameNumbers('SSElfaMetalCaliente', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //casco
+    that.anims.create({
+        key: 'pEDownC',
+        frames: that.anims.generateFrameNumbers('SSElfaCasco', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pEUpC',
+        frames: that.anims.generateFrameNumbers('SSElfaCasco', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pELeftC',
+        frames: that.anims.generateFrameNumbers('SSElfaCasco', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pERightC',
+        frames: that.anims.generateFrameNumbers('SSElfaCasco', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //pechera
+    that.anims.create({
+        key: 'pEDownP',
+        frames: that.anims.generateFrameNumbers('SSElfaPechera', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pEUpP',
+        frames: that.anims.generateFrameNumbers('SSElfaPechera', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pELeftP',
+        frames: that.anims.generateFrameNumbers('SSElfaPechera', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pERightP',
+        frames: that.anims.generateFrameNumbers('SSElfaPechera', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //piernas
+    that.anims.create({
+        key: 'pEDownI',
+        frames: that.anims.generateFrameNumbers('SSElfaProtecPiernas', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pEUpI',
+        frames: that.anims.generateFrameNumbers('SSElfaProtecPiernas', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pELeftI',
+        frames: that.anims.generateFrameNumbers('SSElfaProtecPiernas', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pERightI',
+        frames: that.anims.generateFrameNumbers('SSElfaProtecPiernas', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //espada
+    that.anims.create({
+        key: 'pEDownE',
+        frames: that.anims.generateFrameNumbers('SSElfaEspada', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pEUpE',
+        frames: that.anims.generateFrameNumbers('SSElfaEspada', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pELeftE',
+        frames: that.anims.generateFrameNumbers('SSElfaEspada', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pERightE',
+        frames: that.anims.generateFrameNumbers('SSElfaEspada', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+
+//OBJETOS de la elfa
+    //Sin objetos
+    that.anims.create({
+        key: 'iEDown',
+        frames: that.anims.generateFrameNumbers('SSElfaEmpty', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iEUp',
+        frames: that.anims.generateFrameNumbers('SSElfaEmpty', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iELeft',
+        frames: that.anims.generateFrameNumbers('SSElfaEmpty', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iERight',
+        frames: that.anims.generateFrameNumbers('SSElfaEmpty', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //Metal
+    that.anims.create({
+        key: 'iEDownM',
+        frames: that.anims.generateFrameNumbers('SSElfaMetalOverlay', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iEUpM',
+        frames: that.anims.generateFrameNumbers('SSElfaMetalOverlay', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iELeftM',
+        frames: that.anims.generateFrameNumbers('SSElfaMetalOverlay', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iERightM',
+        frames: that.anims.generateFrameNumbers('SSElfaMetalOverlay', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //Metal caliente
+    that.anims.create({
+        key: 'iEDownMC',
+        frames: that.anims.generateFrameNumbers('SSElfaEmpty', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iEUpMC',
+        frames: that.anims.generateFrameNumbers('SSElfaEmpty', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iELeftMC',
+        frames: that.anims.generateFrameNumbers('SSElfaEmpty', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iERightMC',
+        frames: that.anims.generateFrameNumbers('SSElfaEmpty', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //casco
+    that.anims.create({
+        key: 'iEDownC',
+        frames: that.anims.generateFrameNumbers('SSElfaCasco', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iEUpC',
+        frames: that.anims.generateFrameNumbers('SSElfaCasco', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iELeftC',
+        frames: that.anims.generateFrameNumbers('SSElfaCasco', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iERightC',
+        frames: that.anims.generateFrameNumbers('SSElfaCasco', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //pechera
+    that.anims.create({
+        key: 'iEDownP',
+        frames: that.anims.generateFrameNumbers('SSElfaPechera', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iEUpP',
+        frames: that.anims.generateFrameNumbers('SSElfaPechera', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iELeftP',
+        frames: that.anims.generateFrameNumbers('SSElfaPechera', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iERightP',
+        frames: that.anims.generateFrameNumbers('SSElfaPechera', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //piernas
+    that.anims.create({
+        key: 'iEDownI',
+        frames: that.anims.generateFrameNumbers('SSElfaProtecPiernas', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iEUpI',
+        frames: that.anims.generateFrameNumbers('SSElfaProtecPiernas', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iELeftI',
+        frames: that.anims.generateFrameNumbers('SSElfaProtecPiernas', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iERightI',
+        frames: that.anims.generateFrameNumbers('SSElfaProtecPiernas', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //espada
+    that.anims.create({
+        key: 'iEDownE',
+        frames: that.anims.generateFrameNumbers('SSElfaEspada', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iEUpE',
+        frames: that.anims.generateFrameNumbers('SSElfaEspada', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iELeftE',
+        frames: that.anims.generateFrameNumbers('SSElfaEspada', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iERightE',
+        frames: that.anims.generateFrameNumbers('SSElfaEspada', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+
+    //Hielo
+    that.anims.create({
+        key: 'pHDownM',
+        frames: that.anims.generateFrameNumbers('SSHielo1', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pHUpM',
+        frames: that.anims.generateFrameNumbers('SSHielo1', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pHLeftM',
+        frames: that.anims.generateFrameNumbers('SSHielo1', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pHRightM',
+        frames: that.anims.generateFrameNumbers('SSHielo1', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+}
+
 function interactuar(p) {
     if (!interactuarCajones(p)) {
         if (!interactuarMesas(p)) {
@@ -611,7 +1013,7 @@ function interactuarCajones(p) {
 function interactuarMesas(p) {
     var result = false;
     sc_juegoLocal.mesas.children.iterate(function (child) {
-        if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.body.width, child.body.height)+0.5*Math.max(p.body.width, p.body.height)) {
+        if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.55*Math.max(child.body.width, child.body.height)+0.55*Math.max(p.body.width, p.body.height)) {
             var temp = child.heldObject;
             child.heldObject = p.heldObject;
             p.heldObject = temp;
@@ -740,6 +1142,20 @@ function interactuarBarriles(p) {
     tablaIO["metal35yunque"] = "metal35yunquetemplado";
     
     tablaIO["metal45yunque"] = "metal45yunquetemplado";
+
+    tablaIO["metal12espada"] = "metal12espadatemplado";
+    tablaIO["metal13espada"] = "metal13espadatemplado";
+    tablaIO["metal14espada"] = "metal14espadatemplado";
+    tablaIO["metal15espada"] = "metal15espadatemplado";
+    
+    tablaIO["metal23espada"] = "metal23espadatemplado";
+    tablaIO["metal24espada"] = "metal24espadatemplado";
+    tablaIO["metal25espada"] = "metal25espadatemplado";
+    
+    tablaIO["metal34espada"] = "metal34espadatemplado";
+    tablaIO["metal35espada"] = "metal35espadatemplado";
+    
+    tablaIO["metal45espada"] = "metal45espadatemplado";
 
     if (p.interacted != true) {
         sc_juegoLocal.barriles.children.iterate(function (child) {
@@ -934,7 +1350,7 @@ function interactuarYunquesd(p) {
                 } else if (child.timer >= 100 && p.heldObject == "none") {
                     if (tablaIO[child.heldObject1][child.heldObject2] != undefined) {
                         p.heldObject = tablaIO[child.heldObject1][child.heldObject2];
-                        console.log(p.heldObject);
+                        //console.log(p.heldObject);
                     }
                     child.heldObject1 = "none";
                     child.heldObject2 = "none";
@@ -950,4 +1366,139 @@ function interactuarYunquesd(p) {
 
 function chocar(p, e) {
     p.chocado = true;
+}
+
+function getAnim(p) {
+    var index = "";
+    var tint1 = 0xFFFFFF;
+    var tint2 = 0xFFFFFF;
+    var red = false;
+    var anim = "Down";
+    var animKey = p.defaultTexture.key.slice(2,3);
+    if (p.heldObject != "none") {
+        var ho = p.heldObject;
+        switch(ho.slice(5,6)) {
+            case "1":
+                tint1 = 0xD5AC21;
+                break;
+            case "2":
+                tint1 = 0xD521CD;
+                break;
+            case "3":
+                tint1 = 0x16DF29;
+                break;
+            case "4":
+                tint1 = 0x2125D5;
+                break;
+            case "5":
+                tint1 = 0xA7AA9D;
+                break;
+        }
+        if (isNaN(ho.slice(6,7)) || (ho.slice(6,7) == "")) {
+            //Si el sexto caracter no es un número, no hay mezcla de metales
+            tint2 = tint1;
+            switch (ho.slice(6)) {
+                case "":
+                    index = "M";
+                    break;
+                case "rojo":
+                    index = "MC";
+                    break;
+                case "yunque":
+                    index = "I";
+                    red = true;
+                    break;
+                case "yunquetemplado":
+                    index = "I";
+                    break;
+                case "molde":
+                    index = "C";
+                    red = true;
+                    break;
+                case "moldetemplado":
+                    index = "C";
+                    break;
+            }
+        } else {
+            //Si el sexto caracter es un número, hay mezcla de metales
+            switch(ho.slice(6,7)) {
+                case "1":
+                    tint2 = 0xD5AC21;
+                    break;
+                case "2":
+                    tint2 = 0xD521CD;
+                    break;
+                case "3":
+                    tint2 = 0x16DF29;
+                    break;
+                case "4":
+                    tint2 = 0x2125D5;
+                    break;
+                case "5":
+                    tint2 = 0xA7AA9D;
+                    break;
+            }
+            switch (ho.slice(7)) {
+                case "":
+                    index = "M";
+                    break;
+                case "rojo":
+                    index = "MC";
+                    break;
+                case "yunque":
+                    index = "P";
+                    red = true;
+                    break;
+                case "yunquetemplado":
+                    index = "P";
+                    break;
+                case "espada":
+                    index = "E";
+                    red = true;
+                    break;
+                case "espadatemplado":
+                    index = "E";
+                    break;
+            }
+        }
+    }
+    "metal1-5";  //1
+    "metal1-5rojo"; //2
+    "metal12-45rojo"; //2
+    "metal1-5yunque"; //3
+    "metal12-45yunque"; //7
+    "metal1-5yunquetemplado"; //4
+    "metal12-45yunquetemplado"; //8
+    "metal1-5molde"; //5
+    "metal1-5moldetemplado"; //6
+    "metal12-45espada"; //9
+    if (p.spdY == 0 && p.spdX != 0) {
+        if (p.spdX < 0) {
+            anim = "Left";
+        } else {
+            anim = "Right";
+        }
+    } else if (p.spdY > 0) {
+        anim = "Down";
+    } else if (p.spdY < 0) {
+        anim = "Up";
+    }
+    //if (p.spdX != 0 || p.spdY != 0) {
+        //console.log("p"+animKey+anim+index);
+        p.heldObjectSprite.anims.play("p"+animKey+anim+index, true);
+        p.heldObjectSprite2.anims.play("i"+animKey+anim+index, true);
+        if (p.spdX == 0 && p.spdY == 0) {
+            p.heldObjectSprite.anims.stop();
+            p.heldObjectSprite2.anims.stop();
+        }
+    //}
+    if (index == "MC") {
+        p.heldObjectSprite2.setTint(0xFFFFFF);
+    } else {
+        if (red) {
+            tint1*=0xFF0000;
+            tint2*=0xFF0000;
+        }
+        p.heldObjectSprite2.setTint(tint1, tint1, tint2, tint2);
+    }
 }
