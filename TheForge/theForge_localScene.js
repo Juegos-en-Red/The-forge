@@ -75,31 +75,31 @@ sc_juegoLocal.preload = function() {
     );*/
     this.load.spritesheet('SSElfa1', 
         'assets/SSElfa1.png',
-        { frameWidth: 117, frameHeight: 128 }
+        { frameWidth: 122, frameHeight: 128 }
     );
     this.load.spritesheet('SSElfaCasco', 
         'assets/SSElfaCasco.png',
-        { frameWidth: 117, frameHeight: 128 }
+        { frameWidth: 122, frameHeight: 128 }
     );
     this.load.spritesheet('SSElfaEspada', 
         'assets/SSElfaEspada.png',
-        { frameWidth: 117, frameHeight: 128 }
+        { frameWidth: 122, frameHeight: 128 }
     );
     this.load.spritesheet('SSElfaMetal', 
         'assets/SSElfaMetal.png',
-        { frameWidth: 117, frameHeight: 128 }
+        { frameWidth: 122, frameHeight: 128 }
     );
     this.load.spritesheet('SSElfaMetalCaliente', 
         'assets/SSElfaMetalCaliente.png',
-        { frameWidth: 117, frameHeight: 128 }
+        { frameWidth: 122, frameHeight: 128 }
     );
     this.load.spritesheet('SSElfaPechera', 
         'assets/SSElfaPechera.png',
-        { frameWidth: 117, frameHeight: 128 }
+        { frameWidth: 122, frameHeight: 128 }
     );
     this.load.spritesheet('SSElfaProtecPiernas', 
         'assets/SSElfaProtecPiernas.png',
-        { frameWidth: 117, frameHeight: 128 }
+        { frameWidth: 122, frameHeight: 128 }
     );
     this.load.spritesheet('SSHielo1', 
         'assets/SSHielo1.png',
@@ -134,31 +134,7 @@ sc_juegoLocal.preload = function() {
 sc_juegoLocal.create = function() {
     this.add.image(400, 300, 'sky');
 
-    //inicializar jugadores
-    sc_juegoLocal.players = this.physics.add.group();
 
-    sc_juegoLocal.player = sc_juegoLocal.players.create(100, 450, 'SSHielo1');
-    sc_juegoLocal.player2 = sc_juegoLocal.players.create(200, 450, 'dude');
-
-    //inicializar características comunes a ambos jugadores
-    var that = this;
-    sc_juegoLocal.players.children.iterate(function (child) {
-        child.spdX = 0;
-        child.spdY = 0;
-        child.heldObject = "none";
-        //child.hos = that.physics.add.group();
-        child.heldObjectSprite = sc_juegoLocal.add.image(child.x, child.y, child.texture);
-        child.setTexture('empty');
-        child.heldObjectSprite2 = sc_juegoLocal.add.image(child.x, child.y, 'empty');
-        child.setCollideWorldBounds(true);
-        //child.heldObjectSprite.setCollideWorldBounds(true);
-        //child.heldObjectSprite2.setCollideWorldBounds(true);
-        child.setSize(90, 93); //cambiar este tamaño por favor
-        //child.heldObjectSprite.setSize(121, 128);
-        child.interacted = false;
-        child.chocado = false;
-    });
-    
 
     //inicializar cajones
     sc_juegoLocal.cajonesMetal = this.physics.add.staticGroup();
@@ -233,8 +209,8 @@ sc_juegoLocal.create = function() {
     
     //inicializar hornos de 2 materiales
     sc_juegoLocal.hornosd = this.physics.add.staticGroup();
-    sc_juegoLocal.hornosd.create(200, 40, 'horno doble');
-    sc_juegoLocal.hornosd.create(600, 40, 'horno doble');
+    sc_juegoLocal.hornosd.create(200, 39, 'horno doble');
+    sc_juegoLocal.hornosd.create(600, 39, 'horno doble');
 
     sc_juegoLocal.hornosd.children.iterate(function(child){
         child.heldObject1 = "none";
@@ -257,6 +233,35 @@ sc_juegoLocal.create = function() {
         child.cooldown = 0;
         child.text = sc_juegoLocal.add.text(child.x-20, child.y-40, "", {color: '#000'});
     });
+
+    //inicializar jugadores
+    sc_juegoLocal.players = this.physics.add.group();
+
+    sc_juegoLocal.player = sc_juegoLocal.players.create(100, 450, 'SSHielo1');
+    sc_juegoLocal.player2 = sc_juegoLocal.players.create(200, 450, 'SSElfa1');
+
+    //inicializar características comunes a ambos jugadores
+    var that = this;
+    sc_juegoLocal.players.children.iterate(function (child) {
+        child.spdX = 0;
+        child.spdY = 0;
+        child.heldObject = "none";
+        child.defaultTexture = child.texture;
+        child.hos = that.physics.add.group();
+        //child.heldObjectSprite = sc_juegoLocal.add.image(child.x, child.y, child.texture);
+        child.heldObjectSprite = child.hos.create(child.x, child.y, child.texture);
+        child.setTexture('empty');
+       // child.heldObjectSprite2 = sc_juegoLocal.add.image(child.x, child.y, 'empty');
+       child.heldObjectSprite2 = child.hos.create(child.x, child.y, 'empty');
+        child.setCollideWorldBounds(true);
+        //child.heldObjectSprite.setCollideWorldBounds(true);
+        //child.heldObjectSprite2.setCollideWorldBounds(true);
+        child.setSize(90, 93); //cambiar este tamaño por favor
+        //child.heldObjectSprite.setSize(121, 128);
+        child.interacted = false;
+        child.chocado = false;
+    });
+    
 
     //añadir colisiones a los jugadores
     var that = this;
@@ -360,6 +365,7 @@ sc_juegoLocal.create = function() {
             //jugador 2
             case cont.p2.w:
                     sc_juegoLocal.player2.spdY = -400;
+                    sc_juegoLocal.player2.heldObjectSprite.anims.play('pDownM', false);
             break;
             case cont.p2.s:
                     sc_juegoLocal.player2.spdY = 400;
@@ -376,6 +382,17 @@ sc_juegoLocal.create = function() {
             break;
         }
     });
+
+    //Inicialización de animaciones
+    this.anims.create({
+        key: 'pDownM',
+        frames: this.anims.generateFrameNumbers('SSElfa1', { start: 0, end: 3 }),
+        frameRate: 1,
+        repeat: -1
+    });
+
+
+
 }
 
 sc_juegoLocal.update = function(time, delta) {
@@ -406,7 +423,7 @@ sc_juegoLocal.update = function(time, delta) {
         if (child.heldObjectSprite.y != child.y) {child.heldObjectSprite.setY(child.y);child.heldObjectSprite.setVelocityY(0);}*/
 
         if (child.heldObject == "none") {
-            child.heldObjectSprite.setTexture('SSHielo1'); //quitar esta linea por favor
+            //child.heldObjectSprite.setTexture(child.defaultTexture); //quitar esta linea por favor
             child.heldObjectSprite2.setTexture('empty');
         } else {
             //child.heldObjectSprite.setTexture(child.heldObject); //de momento
