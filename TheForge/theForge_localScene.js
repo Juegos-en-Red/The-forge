@@ -85,8 +85,16 @@ sc_juegoLocal.preload = function() {
         'assets/SSElfaCasco.png',
         { frameWidth: 122, frameHeight: 128 }
     );
+    this.load.spritesheet('SSElfaCascoOverlay', 
+        'assets/SSElfaCascoOverlay.png',
+        { frameWidth: 122, frameHeight: 128 }
+    );
     this.load.spritesheet('SSElfaEspada', 
         'assets/SSElfaEspada.png',
+        { frameWidth: 122, frameHeight: 128 }
+    );
+    this.load.spritesheet('SSElfaEspadaOverlay', 
+        'assets/SSElfaEspadaOverlay.png',
         { frameWidth: 122, frameHeight: 128 }
     );
     this.load.spritesheet('SSElfaMetal', 
@@ -105,37 +113,69 @@ sc_juegoLocal.preload = function() {
         'assets/SSElfaPechera.png',
         { frameWidth: 122, frameHeight: 128 }
     );
+    this.load.spritesheet('SSElfaPecheraOverlay', 
+        'assets/SSElfaPecheraOverlay.png',
+        { frameWidth: 122, frameHeight: 128 }
+    );
     this.load.spritesheet('SSElfaProtecPiernas', 
         'assets/SSElfaProtecPiernas.png',
         { frameWidth: 122, frameHeight: 128 }
     );
+    this.load.spritesheet('SSElfaProtecPiernasOverlay', 
+        'assets/SSElfaProtecPiernasOverlay.png',
+        { frameWidth: 122, frameHeight: 128 }
+    );
     this.load.spritesheet('SSHielo1', 
         'assets/SSHielo1.png',
-        { frameWidth: 90, frameHeight: 92 }
+        { frameWidth: 70, frameHeight: 58 }
+    );
+    this.load.spritesheet('SSHieloEmpty', 
+        'assets/SSHieloEmpty.png',
+        { frameWidth: 70, frameHeight: 58 }
     );
     this.load.spritesheet('SSHieloCasco', 
         'assets/SSHieloCasco.png',
-        { frameWidth: 90, frameHeight: 92 }
+        { frameWidth: 70, frameHeight: 58 }
+    );
+    this.load.spritesheet('SSHieloCascoOverlay', 
+        'assets/SSHieloCascoOverlay.png',
+        { frameWidth: 70, frameHeight: 58 }
     );
     this.load.spritesheet('SSHieloEspada', 
         'assets/SSHieloEspada.png',
-        { frameWidth: 90, frameHeight: 92 }
+        { frameWidth: 70, frameHeight: 58 }
+    );
+    this.load.spritesheet('SSHieloEspadaOverlay', 
+        'assets/SSHieloEspadaOverlay.png',
+        { frameWidth: 70, frameHeight: 58 }
     );
     this.load.spritesheet('SSHieloMetal', 
         'assets/SSHieloMetal.png',
-        { frameWidth: 90, frameHeight: 92 }
+        { frameWidth: 70, frameHeight: 58 }
+    );
+    this.load.spritesheet('SSHieloMetalOverlay', 
+        'assets/SSHieloMetalOverlay.png',
+        { frameWidth: 70, frameHeight: 58 }
     );
     this.load.spritesheet('SSHieloMetalCaliente', 
         'assets/SSHieloMetalCaliente.png',
-        { frameWidth: 90, frameHeight: 92 }
+        { frameWidth: 70, frameHeight: 58 }
     );
     this.load.spritesheet('SSHieloPechera', 
         'assets/SSHieloPechera.png',
-        { frameWidth: 90, frameHeight: 92 }
+        { frameWidth: 70, frameHeight: 58 }
+    );
+    this.load.spritesheet('SSHieloPecheraOverlay', 
+        'assets/SSHieloPecheraOverlay.png',
+        { frameWidth: 70, frameHeight: 58 }
     );
     this.load.spritesheet('SSHieloProtecPiernas', 
         'assets/SSHieloProtecPiernas.png',
-        { frameWidth: 90, frameHeight: 92 }
+        { frameWidth: 70, frameHeight: 58 }
+    );
+    this.load.spritesheet('SSHieloProtecPiernasOverlay', 
+        'assets/SSHieloProtecPiernasOverlay.png',
+        { frameWidth: 70, frameHeight: 58 }
     );
 }
 
@@ -254,6 +294,7 @@ sc_juegoLocal.create = function() {
         child.spdX = 0;
         child.spdY = 0;
         child.heldObject = "none";
+        child.dir = "Down";
         child.defaultTexture = child.texture;
         child.hos = that.physics.add.group();
         //child.heldObjectSprite = sc_juegoLocal.add.image(child.x, child.y, child.texture);
@@ -267,7 +308,7 @@ sc_juegoLocal.create = function() {
         //alert(child.defaultTexture);
         switch(child.defaultTexture.key) {
             case 'SSHielo1':
-                child.setSize(90, 93); //cambiar este tamaño por favor
+                child.setSize(70, 58); //cambiar este tamaño por favor
                 break;
             case 'SSElfa1':
                 child.setSize(90, 128); //cambiar este tamaño por favor
@@ -805,125 +846,125 @@ function initAnimations(that) {
     //casco
     that.anims.create({
         key: 'iEDownC',
-        frames: that.anims.generateFrameNumbers('SSElfaCasco', { start: 0, end: 3 }),
+        frames: that.anims.generateFrameNumbers('SSElfaCascoOverlay', { start: 0, end: 3 }),
         frameRate: 7,
         repeat: -1
     });
     that.anims.create({
         key: 'iEUpC',
-        frames: that.anims.generateFrameNumbers('SSElfaCasco', { start: 4, end: 7 }),
+        frames: that.anims.generateFrameNumbers('SSElfaCascoOverlay', { start: 4, end: 7 }),
         frameRate: 7,
         repeat: -1
     });
     that.anims.create({
         key: 'iELeftC',
-        frames: that.anims.generateFrameNumbers('SSElfaCasco', { start: 8, end: 11 }),
+        frames: that.anims.generateFrameNumbers('SSElfaCascoOverlay', { start: 8, end: 11 }),
         frameRate: 7,
         repeat: -1
     });
     that.anims.create({
         key: 'iERightC',
-        frames: that.anims.generateFrameNumbers('SSElfaCasco', { start: 12, end: 15 }),
+        frames: that.anims.generateFrameNumbers('SSElfaCascoOverlay', { start: 12, end: 15 }),
         frameRate: 7,
         repeat: -1
     });
     //pechera
     that.anims.create({
         key: 'iEDownP',
-        frames: that.anims.generateFrameNumbers('SSElfaPechera', { start: 0, end: 3 }),
+        frames: that.anims.generateFrameNumbers('SSElfaPecheraOverlay', { start: 0, end: 3 }),
         frameRate: 7,
         repeat: -1
     });
     that.anims.create({
         key: 'iEUpP',
-        frames: that.anims.generateFrameNumbers('SSElfaPechera', { start: 4, end: 7 }),
+        frames: that.anims.generateFrameNumbers('SSElfaPecheraOverlay', { start: 4, end: 7 }),
         frameRate: 7,
         repeat: -1
     });
     that.anims.create({
         key: 'iELeftP',
-        frames: that.anims.generateFrameNumbers('SSElfaPechera', { start: 8, end: 11 }),
+        frames: that.anims.generateFrameNumbers('SSElfaPecheraOverlay', { start: 8, end: 11 }),
         frameRate: 7,
         repeat: -1
     });
     that.anims.create({
         key: 'iERightP',
-        frames: that.anims.generateFrameNumbers('SSElfaPechera', { start: 12, end: 15 }),
+        frames: that.anims.generateFrameNumbers('SSElfaPecheraOverlay', { start: 12, end: 15 }),
         frameRate: 7,
         repeat: -1
     });
     //piernas
     that.anims.create({
         key: 'iEDownI',
-        frames: that.anims.generateFrameNumbers('SSElfaProtecPiernas', { start: 0, end: 3 }),
+        frames: that.anims.generateFrameNumbers('SSElfaProtecPiernasOverlay', { start: 0, end: 3 }),
         frameRate: 7,
         repeat: -1
     });
     that.anims.create({
         key: 'iEUpI',
-        frames: that.anims.generateFrameNumbers('SSElfaProtecPiernas', { start: 4, end: 7 }),
+        frames: that.anims.generateFrameNumbers('SSElfaProtecPiernasOverlay', { start: 4, end: 7 }),
         frameRate: 7,
         repeat: -1
     });
     that.anims.create({
         key: 'iELeftI',
-        frames: that.anims.generateFrameNumbers('SSElfaProtecPiernas', { start: 8, end: 11 }),
+        frames: that.anims.generateFrameNumbers('SSElfaProtecPiernasOverlay', { start: 8, end: 11 }),
         frameRate: 7,
         repeat: -1
     });
     that.anims.create({
         key: 'iERightI',
-        frames: that.anims.generateFrameNumbers('SSElfaProtecPiernas', { start: 12, end: 15 }),
+        frames: that.anims.generateFrameNumbers('SSElfaProtecPiernasOverlay', { start: 12, end: 15 }),
         frameRate: 7,
         repeat: -1
     });
     //espada
     that.anims.create({
         key: 'iEDownE',
-        frames: that.anims.generateFrameNumbers('SSElfaEspada', { start: 0, end: 3 }),
+        frames: that.anims.generateFrameNumbers('SSElfaEspadaOverlay', { start: 0, end: 3 }),
         frameRate: 7,
         repeat: -1
     });
     that.anims.create({
         key: 'iEUpE',
-        frames: that.anims.generateFrameNumbers('SSElfaEspada', { start: 4, end: 7 }),
+        frames: that.anims.generateFrameNumbers('SSElfaEspadaOverlay', { start: 4, end: 7 }),
         frameRate: 7,
         repeat: -1
     });
     that.anims.create({
         key: 'iELeftE',
-        frames: that.anims.generateFrameNumbers('SSElfaEspada', { start: 8, end: 11 }),
+        frames: that.anims.generateFrameNumbers('SSElfaEspadaOverlay', { start: 8, end: 11 }),
         frameRate: 7,
         repeat: -1
     });
     that.anims.create({
         key: 'iERightE',
-        frames: that.anims.generateFrameNumbers('SSElfaEspada', { start: 12, end: 15 }),
+        frames: that.anims.generateFrameNumbers('SSElfaEspadaOverlay', { start: 12, end: 15 }),
         frameRate: 7,
         repeat: -1
     });
 
     //Hielo
     that.anims.create({
-        key: 'pHDownM',
+        key: 'pHDown',
         frames: that.anims.generateFrameNumbers('SSHielo1', { start: 0, end: 3 }),
         frameRate: 7,
         repeat: -1
     });
     that.anims.create({
-        key: 'pHUpM',
+        key: 'pHUp',
         frames: that.anims.generateFrameNumbers('SSHielo1', { start: 4, end: 7 }),
         frameRate: 7,
         repeat: -1
     });
     that.anims.create({
-        key: 'pHLeftM',
+        key: 'pHLeft',
         frames: that.anims.generateFrameNumbers('SSHielo1', { start: 8, end: 11 }),
         frameRate: 7,
         repeat: -1
     });
     that.anims.create({
-        key: 'pHRightM',
+        key: 'pHRight',
         frames: that.anims.generateFrameNumbers('SSHielo1', { start: 12, end: 15 }),
         frameRate: 7,
         repeat: -1
@@ -1373,7 +1414,7 @@ function getAnim(p) {
     var tint1 = 0xFFFFFF;
     var tint2 = 0xFFFFFF;
     var red = false;
-    var anim = "Down";
+    var anim = p.dir;
     var animKey = p.defaultTexture.key.slice(2,3);
     if (p.heldObject != "none") {
         var ho = p.heldObject;
@@ -1483,6 +1524,7 @@ function getAnim(p) {
     } else if (p.spdY < 0) {
         anim = "Up";
     }
+    p.dir = anim;
     //if (p.spdX != 0 || p.spdY != 0) {
         //console.log("p"+animKey+anim+index);
         p.heldObjectSprite.anims.play("p"+animKey+anim+index, true);
@@ -1496,8 +1538,8 @@ function getAnim(p) {
         p.heldObjectSprite2.setTint(0xFFFFFF);
     } else {
         if (red) {
-            tint1*=0xFF0000;
-            tint2*=0xFF0000;
+            tint1+=0xFF0000;
+            tint2+=0xFF0000;
         }
         p.heldObjectSprite2.setTint(tint1, tint1, tint2, tint2);
     }
