@@ -944,7 +944,8 @@ function initAnimations(that) {
         repeat: -1
     });
 
-    //Hielo
+    //Animaciones del de hielo
+    //Sin objetos
     that.anims.create({
         key: 'pHDown',
         frames: that.anims.generateFrameNumbers('SSHielo1', { start: 0, end: 3 }),
@@ -966,6 +967,333 @@ function initAnimations(that) {
     that.anims.create({
         key: 'pHRight',
         frames: that.anims.generateFrameNumbers('SSHielo1', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //Metal
+    that.anims.create({
+        key: 'pHDownM',
+        frames: that.anims.generateFrameNumbers('SSHieloMetal', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pHUpM',
+        frames: that.anims.generateFrameNumbers('SSHieloMetal', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pHLeftM',
+        frames: that.anims.generateFrameNumbers('SSHieloMetal', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pHRightM',
+        frames: that.anims.generateFrameNumbers('SSHieloMetal', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //Metal caliente
+    that.anims.create({
+        key: 'pHDownMC',
+        frames: that.anims.generateFrameNumbers('SSHieloMetalCaliente', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pHUpMC',
+        frames: that.anims.generateFrameNumbers('SSHieloMetalCaliente', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pHLeftMC',
+        frames: that.anims.generateFrameNumbers('SSHieloMetalCaliente', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pHRightMC',
+        frames: that.anims.generateFrameNumbers('SSHieloMetalCaliente', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //casco
+    that.anims.create({
+        key: 'pHDownC',
+        frames: that.anims.generateFrameNumbers('SSHieloCasco', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pHUpC',
+        frames: that.anims.generateFrameNumbers('SSHieloCasco', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pHLeftC',
+        frames: that.anims.generateFrameNumbers('SSHieloCasco', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pHRightC',
+        frames: that.anims.generateFrameNumbers('SSHieloCasco', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //pechera
+    that.anims.create({
+        key: 'pHDownP',
+        frames: that.anims.generateFrameNumbers('SSHieloPechera', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pHUpP',
+        frames: that.anims.generateFrameNumbers('SSHieloPechera', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pHLeftP',
+        frames: that.anims.generateFrameNumbers('SSHieloPechera', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pHRightP',
+        frames: that.anims.generateFrameNumbers('SSHieloPechera', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //piernas
+    that.anims.create({
+        key: 'pHDownI',
+        frames: that.anims.generateFrameNumbers('SSHieloProtecPiernas', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pHUpI',
+        frames: that.anims.generateFrameNumbers('SSHieloProtecPiernas', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pHLeftI',
+        frames: that.anims.generateFrameNumbers('SSHieloProtecPiernas', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pHRightI',
+        frames: that.anims.generateFrameNumbers('SSHieloProtecPiernas', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //espada
+    that.anims.create({
+        key: 'pHDownE',
+        frames: that.anims.generateFrameNumbers('SSHieloEspada', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pHUpE',
+        frames: that.anims.generateFrameNumbers('SSHieloEspada', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pHLeftE',
+        frames: that.anims.generateFrameNumbers('SSHieloEspada', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pHRightE',
+        frames: that.anims.generateFrameNumbers('SSHieloEspada', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+
+//OBJETOS del de hielo
+    //Sin objetos
+    that.anims.create({
+        key: 'iHDown',
+        frames: that.anims.generateFrameNumbers('SSHieloEmpty', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iHUp',
+        frames: that.anims.generateFrameNumbers('SSHieloEmpty', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iHLeft',
+        frames: that.anims.generateFrameNumbers('SSHieloEmpty', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iHRight',
+        frames: that.anims.generateFrameNumbers('SSHieloEmpty', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //Metal
+    that.anims.create({
+        key: 'iHDownM',
+        frames: that.anims.generateFrameNumbers('SSHieloMetalOverlay', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iHUpM',
+        frames: that.anims.generateFrameNumbers('SSHieloMetalOverlay', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iHLeftM',
+        frames: that.anims.generateFrameNumbers('SSHieloMetalOverlay', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iHRightM',
+        frames: that.anims.generateFrameNumbers('SSHieloMetalOverlay', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //Metal caliente
+    that.anims.create({
+        key: 'iHDownMC',
+        frames: that.anims.generateFrameNumbers('SSHieloEmpty', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iHUpMC',
+        frames: that.anims.generateFrameNumbers('SSHieloEmpty', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iHLeftMC',
+        frames: that.anims.generateFrameNumbers('SSHieloEmpty', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iHRightMC',
+        frames: that.anims.generateFrameNumbers('SSHieloEmpty', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //casco
+    that.anims.create({
+        key: 'iHDownC',
+        frames: that.anims.generateFrameNumbers('SSHieloCascoOverlay', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iHUpC',
+        frames: that.anims.generateFrameNumbers('SSHieloCascoOverlay', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iHLeftC',
+        frames: that.anims.generateFrameNumbers('SSHieloCascoOverlay', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iHRightC',
+        frames: that.anims.generateFrameNumbers('SSHieloCascoOverlay', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //pechera
+    that.anims.create({
+        key: 'iHDownP',
+        frames: that.anims.generateFrameNumbers('SSHieloPecheraOverlay', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iHUpP',
+        frames: that.anims.generateFrameNumbers('SSHieloPecheraOverlay', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iHLeftP',
+        frames: that.anims.generateFrameNumbers('SSHieloPecheraOverlay', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iHRightP',
+        frames: that.anims.generateFrameNumbers('SSHieloPecheraOverlay', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //piernas
+    that.anims.create({
+        key: 'iHDownI',
+        frames: that.anims.generateFrameNumbers('SSHieloProtecPiernasOverlay', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iHUpI',
+        frames: that.anims.generateFrameNumbers('SSHieloProtecPiernasOverlay', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iHLeftI',
+        frames: that.anims.generateFrameNumbers('SSHieloProtecPiernasOverlay', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iHRightI',
+        frames: that.anims.generateFrameNumbers('SSHieloProtecPiernasOverlay', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //espada
+    that.anims.create({
+        key: 'iHDownE',
+        frames: that.anims.generateFrameNumbers('SSHieloEspadaOverlay', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iHUpE',
+        frames: that.anims.generateFrameNumbers('SSHieloEspadaOverlay', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iHLeftE',
+        frames: that.anims.generateFrameNumbers('SSHieloEspadaOverlay', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iHRightE',
+        frames: that.anims.generateFrameNumbers('SSHieloEspadaOverlay', { start: 12, end: 15 }),
         frameRate: 7,
         repeat: -1
     });
