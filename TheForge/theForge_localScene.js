@@ -637,7 +637,6 @@ sc_juegoLocal.update = function() {
             child.cooldown--;
         }
         if (child.timer >= 0 && child.timer < 100) {
-            //child.text.setText(Math.floor(child.timer) + "%");
             if (child.cooldown > 0) {
                 child.status.setTexture("martillo2");
             } else {
@@ -649,6 +648,7 @@ sc_juegoLocal.update = function() {
     });
 }
 
+//Función initAnimations: Aquí se inicializan todas las animaciones de los personajes.
 function initAnimations(that) {
     //Animaciones de la elfa
     //Sin objetos
@@ -1359,6 +1359,9 @@ function initAnimations(that) {
     });
 }
 
+//Función interactuar: comprueba la interacción del jugador con las estaciones de trabajo
+//Cada función devuelve true si la interacción tuvo éxito, y false si no
+//La función no es visualmente agradable, pero va comprobando en cadena cada interacción, y si no tuvo éxito, pasa a la siguiente.
 function interactuar(p) {
     if (!interactuarCajones(p)) {
         if (!interactuarMesas(p)) {
@@ -1378,52 +1381,6 @@ function interactuar(p) {
         }
     }
 }
-
-/*function interactuarEstacion(p, estacion, tablaIO, tablaInputsValidos) {
-    var result = false;
-    estacion.children.iterate(function (child) {
-        if ((child.timer == -1 || (child.timer > 100 && child.timer < 150))) {
-            if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.body.width, child.body.height)+0.75*Math.max(p.body.width, p.body.height)) {
-                if (child.heldObject == "none" && child.timer == -1 && (tablaIO[p.heldObject] != undefined)) {
-                    child.heldObject = p.heldObject;
-                    p.heldObject = "none";
-                    child.timer = 0;
-                    result = true;
-                } else {
-                    if (p.heldObject == "none" && child.timer > 100 && child.heldObject != "none") {
-                        if (tablaIO[child.heldObject] != undefined) {
-                            p.heldObject = tablaIO[child.heldObject];
-                        }
-                        child.heldObject = "none";
-                        child.timer = -1;
-                        result = true;
-                    }
-                }
-            }
-        }
-    });
-}*/
-
-/*function cambiarObjetos(cond1, cond2, child, p){
-    var result = false;
-    if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.5*Math.max(child.body.width, child.body.height)+0.75*Math.max(p.body.width, p.body.height)) {
-        if (cond1) {
-            child.heldObject = p.heldObject;
-            p.heldObject = "none";
-            child.timer = 0;
-            result = true;
-        } else if (cond2) {
-            if (tablaIO[child.heldObject] != undefined) {
-                p.heldObject = tablaIO[child.heldObject];
-            }
-            child.heldObject = "none";
-            child.timer = -1;
-            result = true;
-        }
-    }
-    return result;
-}*/
-
 
 function interactuarCajones(p) {
     var result = false;
