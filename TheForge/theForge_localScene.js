@@ -1424,7 +1424,9 @@ function interactuarBasuras(p) {
     });
     return result;
 }
-
+//Función interactuarHornos: Si el jugador está suficientemente cerca, ocurrirá una cosa diferente según el valor de timer:
+//Si timer vale -1, y el objeto que lleva el jugador se encuentra en la tablaIO, el horno acepta el objeto y timer pasa a valer 0.
+//Si timer está entre 100 y 150, y el jugador no lleva ningún objeto, el jugador obtiene el objeto correspondiente según tablaIO.
 function interactuarHornos(p) {
     var result = false;
 
@@ -1464,6 +1466,10 @@ function interactuarHornos(p) {
     return result;
 }
 
+//Función interactuarYunques: Si el jugador está suficientemente cerca, y cooldown vale 0, ocurrirá una cosa diferente según el valor de timer:
+//Si timer vale -1, y el objeto que lleva el jugador se encuentra en la tablaIO, el yunque acepta el objeto y timer pasa a valer 0.
+//Si timer está entre 0 y 100, timer aumenta en 5 y cooldown pasa a valer 15.
+//Si timer vale más de 100, y el jugador no lleva ningún objeto, el jugador obtiene el objeto correspondiente según tablaIO.
 function interactuarYunques(p) {
     var result = false;
     
@@ -1505,7 +1511,6 @@ function interactuarYunques(p) {
                     }
                     child.heldObject = "none";
                     child.timer = -1;
-                    //child.text.setText("");
                     child.status.setTexture("empty");
                 }
             }
@@ -1515,6 +1520,9 @@ function interactuarYunques(p) {
     return result;
 }
 
+//Función interactuarBarriles: Si el jugador está suficientemente cerca, ocurrirá una cosa diferente según el valor de timer:
+//Si timer vale -1, y el objeto que lleva el jugador se encuentra en la tablaIO, el barril acepta el objeto y timer pasa a valer 0.
+//Si timer vale más de 100, y el jugador no lleva ningún objeto, el jugador obtiene el objeto correspondiente según tablaIO.
 function interactuarBarriles(p) {
     var result = false;
     
@@ -1585,6 +1593,9 @@ function interactuarBarriles(p) {
     return result;
 }
 
+//Función interactuarMoldes: Si el jugador está suficientemente cerca, ocurrirá una cosa diferente según el valor de timer:
+//Si timer vale -1, y el objeto que lleva el jugador se encuentra en la tablaIO, el molde acepta el objeto y timer pasa a valer 0.
+//Si timer vale más de 100, y el jugador no lleva ningún objeto, el jugador obtiene el objeto correspondiente según tablaIO.
 function interactuarMoldes(p) {
     var result = false;
     
@@ -1622,6 +1633,10 @@ function interactuarMoldes(p) {
     return result;
 }
 
+//Función interactuarHornosd: Si el jugador está suficientemente cerca, ocurrirá una cosa diferente según el valor de timer:
+//Si timer vale -1, el horno no tiene objetos, y el objeto que lleva el jugador se encuentra en la tablaIO, el horno acepta el objeto.
+//Si timer vale -1 y el horno ya tiene un objeto, y el objeto que lleva el jugador se encuentra en la tablaIO, el horno acepta el objeto y timer pasa a valer 0.
+//Si timer está entre 100 y 150, y el jugador no lleva ningún objeto, el jugador obtiene el objeto correspondiente según tablaIO.
 function interactuarHornosd(p) {
     var result = false;
     
@@ -1694,6 +1709,11 @@ function interactuarHornosd(p) {
     return result;
 }
 
+//Función interactuarYunquesd: Si el jugador está suficientemente cerca, y cooldown vale 0, ocurrirá una cosa diferente según el valor de timer:
+//Si timer vale -1, el yunque no tiene objetos, y el objeto que lleva el jugador se encuentra en la tablaIO, el yunque acepta el objeto.
+//Si timer vale -1 y el yunque ya tiene un objeto, y el objeto que lleva el jugador se encuentra en la tablaIO, el yunque acepta el objeto y timer pasa a valer 0.
+//Si timer está entre 0 y 100, timer aumenta en 5 y cooldown pasa a valer 15.
+//Si timer vale más de 100, y el jugador no lleva ningún objeto, el jugador obtiene el objeto correspondiente según tablaIO.
 function interactuarYunquesd(p) {
     var result = false;
     
@@ -1752,12 +1772,10 @@ function interactuarYunquesd(p) {
                 } else if (child.timer >= 100 && p.heldObject == "none") {
                     if (tablaIO[child.heldObject1][child.heldObject2] != undefined) {
                         p.heldObject = tablaIO[child.heldObject1][child.heldObject2];
-                        //console.log(p.heldObject);
                     }
                     child.heldObject1 = "none";
                     child.heldObject2 = "none";
                     child.timer = -1;
-                    //child.text.setText("");
                     child.status.setTexture("empty");
                 }
             }
