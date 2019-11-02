@@ -1,8 +1,9 @@
 "use strict";
 
-//Escena del juego en local
+//Inicialización de la escena del juego en local
 var sc_juegoLocal = new Phaser.Scene('JuegoLocal');
 
+//Función preload: Aquí se cargan todos los sprites necesarios para el juego.
 sc_juegoLocal.preload = function() {
     //Escenario
     this.load.image('sky', 'assets/sky.png');
@@ -45,6 +46,7 @@ sc_juegoLocal.preload = function() {
     this.load.image('yunque', 'assets/yunque.png');
     this.load.image('yunque doble', 'assets/yunque doble.png');
     this.load.image('barril de templado', 'assets/barril de templado.png');
+    this.load.image('basura', 'assets/basura.png');
     this.load.image('molde', 'assets/molde.png');
     this.load.image('moldeU', 'assets/moldeU.png');
     this.load.image('barreras', 'assets/barreras.png');
@@ -68,10 +70,6 @@ sc_juegoLocal.preload = function() {
     this.load.image('botonPausa', 'assets/botonPausa.png');
     this.load.image('pausedOverlay', 'assets/pausedOverlay.png');
     //De aquí para abajo los spritesheet
-    /*this.load.spritesheet('dude', 
-        'assets/dude.png',
-        { frameWidth: 32, frameHeight: 48 }
-    );*/
     this.load.spritesheet('SSElfa1', 
         'assets/SSElfa1.png',
         { frameWidth: 61, frameHeight: 64 }
@@ -178,12 +176,15 @@ sc_juegoLocal.preload = function() {
     );
 }
 
+//Función create: Aquí se inicializan todos los objetos del juego.
 sc_juegoLocal.create = function() {
+
+    //Aquí se carga el fondo del juego
     this.add.image(400, 300, 'sky');
 
-
-
-    //inicializar cajones
+    //Inicialización de cajones
+    //Primero se crea un grupo de cajones para poder iterar y después se crean los cajones de ambos jugadores
+    //La propiedad heldObject (que se repetirá mucho en el resto de objetos) guarda en forma de string el objeto que guarda el cajón
     sc_juegoLocal.cajonesMetal = this.physics.add.staticGroup();
     sc_juegoLocal.cajonesMetal.create(80, 570, 'cajon1').heldObject = "metal1";
     sc_juegoLocal.cajonesMetal.create(140, 570, 'cajon2').heldObject = "metal2";
@@ -197,12 +198,15 @@ sc_juegoLocal.create = function() {
     sc_juegoLocal.cajonesMetal.create(480, 570, 'cajon5').heldObject = "metal5";
     
 
-    //inicializar basuras
-    sc_juegoLocal.basuras = this.physics.add.staticGroup(); //cambiar el sprite
-    sc_juegoLocal.basuras.create(103, 400, 'barril de templado').heldObject = "none";
-    sc_juegoLocal.basuras.create(697, 400, 'barril de templado').heldObject = "none";
+    //Inicialización de basuras
+    //La inicialización de las basuras no necesita la propiedad heldObject, ya que sólo sirven para que el jugador se deshaga de objetos no deseados.
+    sc_juegoLocal.basuras = this.physics.add.staticGroup();
+    sc_juegoLocal.basuras.create(103, 400, 'basura');
+    sc_juegoLocal.basuras.create(697, 400, 'basura');
 
-    //inicializar hornos de 1 material
+    //Inicialización de hornos de 1 material
+    //En las estaciones de trabajo se añaden varias propiedades además de heldObject. 
+    //En este caso se añaden timer, que guarda el progreso del metal en su interior, y status, el sprite que mostrará el estado de la estación.
     sc_juegoLocal.hornos = this.physics.add.staticGroup();
     sc_juegoLocal.hornos.create(70, 40, 'horno');
     sc_juegoLocal.hornos.create(730, 40, 'horno');
@@ -210,12 +214,12 @@ sc_juegoLocal.create = function() {
     sc_juegoLocal.hornos.children.iterate(function(child){
         child.heldObject = "none";
         child.timer = -1;
-        //child.text = sc_juegoLocal.add.text(child.x-20, child.y-40, "", {color: '#000'});
         child.status = sc_juegoLocal.add.image(child.x-6, child.y-25, 'empty');
     });
 
 
-    //inicializar yunques de 1 material
+    //Inicialización de yunques de 1 material
+    //Es idéntica a la de los hornos, pero también se añade la propiedad cooldown, que impide al jugador interactuar con más frecuencia de la deseada.
     sc_juegoLocal.yunques = this.physics.add.staticGroup();
     sc_juegoLocal.yunques.create(283, 300, 'yunque');
     sc_juegoLocal.yunques.create(517, 300, 'yunque');
@@ -224,12 +228,11 @@ sc_juegoLocal.create = function() {
         child.heldObject = "none";
         child.timer = -1;
         child.cooldown = 0;
-        //child.text = sc_juegoLocal.add.text(child.x-20, child.y-40, "", {color: '#000'});
         child.status = sc_juegoLocal.add.image(child.x-6, child.y-25, 'empty');
     });
 
 
-    //inicializar barriles de templado
+    //Inicialización de barriles de templado
     sc_juegoLocal.barriles = this.physics.add.staticGroup();
     sc_juegoLocal.barriles.create(283, 218, 'barril de templado');
     sc_juegoLocal.barriles.create(517, 218, 'barril de templado');
@@ -237,12 +240,11 @@ sc_juegoLocal.create = function() {
     sc_juegoLocal.barriles.children.iterate(function(child){
         child.heldObject = "none";
         child.timer = -1;
-        //child.text = sc_juegoLocal.add.text(child.x-20, child.y-40, "", {color: '#000'});
         child.status = sc_juegoLocal.add.image(child.x-6, child.y-25, 'empty');
     });
 
     
-    //inicializar moldes
+    //Inicialización de moldes
     sc_juegoLocal.moldes = this.physics.add.staticGroup();
     sc_juegoLocal.moldes.create(283, 400, 'molde');
     sc_juegoLocal.moldes.create(517, 400, 'molde');
@@ -250,12 +252,12 @@ sc_juegoLocal.create = function() {
     sc_juegoLocal.moldes.children.iterate(function(child){
         child.heldObject = "none";
         child.timer = -1;
-        //child.text = sc_juegoLocal.add.text(child.x-20, child.y-40, "", {color: '#000'});
         child.status = sc_juegoLocal.add.image(child.x-6, child.y-25, 'empty');
     });
 
     
-    //inicializar hornos de 2 materiales
+    //Inicialización de  hornos de 2 materiales
+    //En este caso hay dos heldObjects, ya que se trata de un horno doble. Lo mismo ocurrirá en los yunques dobles.
     sc_juegoLocal.hornosd = this.physics.add.staticGroup();
     sc_juegoLocal.hornosd.create(200, 39, 'horno doble');
     sc_juegoLocal.hornosd.create(600, 39, 'horno doble');
@@ -264,13 +266,12 @@ sc_juegoLocal.create = function() {
         child.heldObject1 = "none";
         child.heldObject2 = "none";
         child.timer = -1;
-        //child.text = sc_juegoLocal.add.text(child.x-20, child.y-40, "", {color: '#000'});
         child.status = sc_juegoLocal.add.image(child.x-6, child.y-25, 'empty');
     });
 
 
 
-    //inicializar yunques de 2 materiales
+    //Inicialización de yunques de 2 materiales
     sc_juegoLocal.yunquesd = this.physics.add.staticGroup();
     sc_juegoLocal.yunquesd.create(283, 125, 'yunque doble');
     sc_juegoLocal.yunquesd.create(517, 125, 'yunque doble');
@@ -280,48 +281,63 @@ sc_juegoLocal.create = function() {
         child.heldObject2 = "none";
         child.timer = -1;
         child.cooldown = 0;
-        //child.text = sc_juegoLocal.add.text(child.x-20, child.y-40, "", {color: '#000'});
         child.status = sc_juegoLocal.add.image(child.x-6, child.y-25, 'empty');
     });
 
-    //inicializar jugadores
+    //Inicialización de jugadores
     sc_juegoLocal.players = this.physics.add.group();
 
-    sc_juegoLocal.player = sc_juegoLocal.players.create(100, 450, 'SSHielo1');
-    sc_juegoLocal.player2 = sc_juegoLocal.players.create(200, 450, 'SSElfa1');
+    //En cont.p1.char y cont.p2.char se guarda el spritesheet del personaje de cada jugador
+    //En la escena de selección de personaje se deberán cambiar estas variables
+    sc_juegoLocal.player = sc_juegoLocal.players.create(100, 450, cont.p1.ch);
+    sc_juegoLocal.player2 = sc_juegoLocal.players.create(200, 450, cont.p2.ch);
 
-    //inicializar características comunes a ambos jugadores
+    //Inicialización de características comunes a ambos jugadores
+    //Variable auxiliar that para hacer referencia a this
     var that = this;
+
+    //Al crear a los jugadores se inicializan una gran cantidad de variables
     sc_juegoLocal.players.children.iterate(function (child) {
+        //spdX y spdY guardan la velocidad del jugador
         child.spdX = 0;
         child.spdY = 0;
+
+        //heldObject funciona igual que en las estaciones de trabajo
         child.heldObject = "none";
+
+        //dir guarda la dirección en la que está mirando el jugador, para facilitar el uso de animaciones
         child.dir = "Down";
+
+        //defaultTexture guarda la textura del personaje para poder aplicar las animaciones correctas
         child.defaultTexture = child.texture;
+
+        //hos es un grupo de objetos físicos que agrupa a heldObjectSprite y heldObjectSprite2.
+        //Estos sprites son los que dibujan al jugador y al objeto que lleva, para poder aplicarle un tinte independiente a este último.
         child.hos = that.physics.add.group();
-        //child.heldObjectSprite = sc_juegoLocal.add.image(child.x, child.y, child.texture);
         child.heldObjectSprite = child.hos.create(child.x, child.y, child.texture);
+        //Es importante que la textura del jugador esté vacía, para no crear efectos visuales no deseados
         child.setTexture('empty');
-       // child.heldObjectSprite2 = sc_juegoLocal.add.image(child.x, child.y, 'empty');
-       child.heldObjectSprite2 = child.hos.create(child.x, child.y, 'empty');
+        child.heldObjectSprite2 = child.hos.create(child.x, child.y, 'empty');
+
+        //El personaje debe colisionar con los bordes del mapa.
         child.setCollideWorldBounds(true);
-        //child.heldObjectSprite.setCollideWorldBounds(true);
-        //child.heldObjectSprite2.setCollideWorldBounds(true);
-        //alert(child.defaultTexture);
+
+        //Según el personaje seleccionado, se establecerá un tamaño de colisión u otro.
         switch(child.defaultTexture.key) {
             case 'SSHielo1':
-                child.setSize(70, 58); //cambiar este tamaño por favor
+                child.setSize(70, 58);
                 break;
             case 'SSElfa1':
-                child.setSize(61, 64); //cambiar este tamaño por favor
+                child.setSize(61, 64);
                 break;
         }
-        //child.heldObjectSprite.setSize(121, 128);
+
+        //interacted se activa al pulsar la tecla de interacción y se desactiva al levantarla.
+        //Sirve para obligar al jugador a pulsar varias veces, ya que si no podría mantener el botón pulsado y se interactuaría constantemente.
         child.interacted = false;
-        child.chocado = false;
     });
     
-    //inicializar mesas
+    //Inicialización de mesas
     sc_juegoLocal.mesas = this.physics.add.staticGroup();
     sc_juegoLocal.mesas.create(103, 268, 'mesa');
     sc_juegoLocal.mesas.create(697, 268, 'mesa');
@@ -331,7 +347,9 @@ sc_juegoLocal.create = function() {
         child.heldObjectSprite = sc_juegoLocal.add.image(child.x, child.y, 'empty');
     });
 
-    //inicializar cosas del pausado
+    //Inicialización de elementos relativos al pausado del juego
+    //Por un lado tenemos el overlay, que oscurecerá toda la pantalla cuando el juego esté pausado
+    //Por otro lado tenemos el botón de pausa, el cual se podrá pulsar para activar o desactivar el pausado del juego.
     sc_juegoLocal.pausedOverlay = sc_juegoLocal.add.image(400, 300, 'empty');
     sc_juegoLocal.botonPausa = this.physics.add.sprite(400,585, 'botonPausa');
     sc_juegoLocal.botonPausa.paused = false;
@@ -345,8 +363,8 @@ sc_juegoLocal.create = function() {
             sc_juegoLocal.botonPausa.paused = false;}
     });
 
-    //añadir colisiones a los jugadores
-    var that = this;
+    //Colisiones
+    //Una vez están creados todos los objetos, se añade la colisión de cada jugador con cada grupo de objetos.
     sc_juegoLocal.players.children.iterate(function(child) {
 
         that.physics.add.collider(child, sc_juegoLocal.mesas);
@@ -358,17 +376,12 @@ sc_juegoLocal.create = function() {
         that.physics.add.collider(child, sc_juegoLocal.moldes);
         that.physics.add.collider(child, sc_juegoLocal.hornosd);
         that.physics.add.collider(child, sc_juegoLocal.yunquesd);
-
-        /*that.physics.add.collider(child.heldObjectSprite, sc_juegoLocal.mesas);
-        that.physics.add.collider(child.heldObjectSprite, sc_juegoLocal.cajonesMetal);
-        that.physics.add.collider(child.heldObjectSprite, sc_juegoLocal.hornos);
-        that.physics.add.collider(child.heldObjectSprite, sc_juegoLocal.yunques);
-        that.physics.add.collider(child.heldObjectSprite, sc_juegoLocal.barriles);
-        that.physics.add.collider(child.heldObjectSprite, sc_juegoLocal.moldes);
-        that.physics.add.collider(child.heldObjectSprite, sc_juegoLocal.hornosd);
-        that.physics.add.collider(child.heldObjectSprite, sc_juegoLocal.yunquesd);*/
     });
 
+    //Esta función se ejecutará al dejar de pulsar una tecla
+    //Se comprobarán las teclas definidas de forma global para realizar una acción u otra
+    //En el caso de las teclas de dirección, si el jugador se estaba moviendo en esa dirección, deja de hacerlo
+    //En el caso de la tecla de interacción, la variable interacted pasa a ser false
     this.input.keyboard.on('keyup', 
     function (event) {
         switch (event.keyCode) {
@@ -421,6 +434,10 @@ sc_juegoLocal.create = function() {
         }
     });
 
+    //Esta función se ejecutará mientras esté pulsada alguna tecla
+    //Se comprobarán las teclas definidas de forma global para realizar una acción u otra
+    //En el caso de las teclas de dirección, la velocidad del jugador en x o en y se actualiza al valor adecuado
+    //En el caso de la tecla de interacción, se llama a la función interactuar y la variable interacted pasa a ser true
     this.input.keyboard.on('keydown', 
     function (event) { 
         //console.log(event.keyCode);
@@ -429,19 +446,15 @@ sc_juegoLocal.create = function() {
             //movimiento
             case cont.p1.w:
                     sc_juegoLocal.player.spdY = -400;
-                    //sc_juegoLocal.player.heldObjectSprite.anims.play('pHUpM', true);
             break;
             case cont.p1.s:
                     sc_juegoLocal.player.spdY = 400;
-                    //sc_juegoLocal.player.heldObjectSprite.anims.play('pHDownM', true);
             break;
             case cont.p1.a:
                     sc_juegoLocal.player.spdX = -400;
-                    //sc_juegoLocal.player.heldObjectSprite.anims.play('pHLeftM', true);
             break;
             case cont.p1.d:
                     sc_juegoLocal.player.spdX = 400;
-                    //sc_juegoLocal.player.heldObjectSprite.anims.play('pHRightM', true);
             break;
             case cont.p1.i1:
                 interactuar(sc_juegoLocal.player);
@@ -451,19 +464,15 @@ sc_juegoLocal.create = function() {
             //jugador 2
             case cont.p2.w:
                     sc_juegoLocal.player2.spdY = -400;
-                    //sc_juegoLocal.player2.heldObjectSprite.anims.play('pEUpM', true); //getAnim(player2, 0);
             break;
             case cont.p2.s:
                     sc_juegoLocal.player2.spdY = 400;
-                    //sc_juegoLocal.player2.heldObjectSprite.anims.play('pEDownM', true);
             break;
             case cont.p2.a:
                     sc_juegoLocal.player2.spdX = -400;
-                    //sc_juegoLocal.player2.heldObjectSprite.anims.play('pELeftM', true);
             break;
             case cont.p2.d:
                     sc_juegoLocal.player2.spdX = 400;
-                    //sc_juegoLocal.player2.heldObjectSprite.anims.play('pERightM', true);
             break;
             case cont.p2.i1:
                 interactuar(sc_juegoLocal.player2);
@@ -474,8 +483,6 @@ sc_juegoLocal.create = function() {
 
     //Inicialización de animaciones
     initAnimations(this);
-
-
 
 }
 
@@ -649,12 +656,6 @@ sc_juegoLocal.update = function() {
             child.status.setTexture("tic");
         }
     });
-
-
-
-    /*sc_juegoLocal.players.children.iterate(function (child) {
-        child.chocado = false;
-    });*/
 }
 
 function initAnimations(that) {
@@ -1815,10 +1816,6 @@ function interactuarYunquesd(p) {
     });
     
     return result;
-}
-
-function chocar(p, e) {
-    p.chocado = true;
 }
 
 function getAnim(p, isPlayer) {
