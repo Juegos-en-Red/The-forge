@@ -1382,6 +1382,7 @@ function interactuar(p) {
     }
 }
 
+//Función interactuarCajones: Si el jugador está suficientemente cerca y no lleva objetos, pasa a tener el metal correspondiente al cajón
 function interactuarCajones(p) {
     var result = false;
     sc_juegoLocal.cajonesMetal.children.iterate(function (child) {
@@ -1398,6 +1399,7 @@ function interactuarCajones(p) {
     return result;
 }
 
+//Función interactuarMesas: Si el jugador está suficientemente cerca, intercambia sus objetos con los de la mesa
 function interactuarMesas(p) {
     var result = false;
     sc_juegoLocal.mesas.children.iterate(function (child) {
@@ -1411,6 +1413,7 @@ function interactuarMesas(p) {
     return result;
 }
 
+//Función interactuarBasuras: Si el jugador está suficientemente cerca, se elimina el objeto que lleve
 function interactuarBasuras(p) {
     var result = false;
     sc_juegoLocal.basuras.children.iterate(function (child) {
@@ -1421,8 +1424,6 @@ function interactuarBasuras(p) {
     });
     return result;
 }
-
-//todas estas funciones en un futuro se podrán agrupar probablemente
 
 function interactuarHornos(p) {
     var result = false;
