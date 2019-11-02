@@ -179,6 +179,11 @@ sc_juegoLocal.preload = function() {
 //Función create: Aquí se inicializan todos los objetos del juego.
 sc_juegoLocal.create = function() {
 
+    //Música. Si se añade más música es importante parar aquí toda la que haya
+    mus_menu.pause();
+    mus_menu.currentTime = 0;
+    mus_game.play();
+
     //Aquí se carga el fondo del juego
     this.add.image(400, 300, 'sky');
 
@@ -1505,6 +1510,9 @@ function interactuarYunques(p) {
                 } else if (child.timer >= 0 && child.timer < 100) {
                     child.timer += 5;
                     child.cooldown = 15;
+                    snd_yunque.pause();
+                    snd_yunque.currentTime = 0;
+                    snd_yunque.play();
                 } else if (child.timer >= 100 && p.heldObject == "none") {
                     if (tablaIO[child.heldObject] != undefined) {
                         p.heldObject = tablaIO[child.heldObject];
@@ -1769,6 +1777,9 @@ function interactuarYunquesd(p) {
                 } else if (child.timer >= 0 && child.timer < 100) {
                     child.timer += 5;
                     child.cooldown = 15;
+                    snd_yunque.pause();
+                    snd_yunque.currentTime = 0;
+                    snd_yunque.play();
                 } else if (child.timer >= 100 && p.heldObject == "none") {
                     if (tablaIO[child.heldObject1][child.heldObject2] != undefined) {
                         p.heldObject = tablaIO[child.heldObject1][child.heldObject2];
