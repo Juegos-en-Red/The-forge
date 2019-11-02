@@ -65,6 +65,8 @@ sc_juegoLocal.preload = function() {
     this.load.image('cruz', 'assets/cruz.png');
     this.load.image('tic', 'assets/tic.png');
     this.load.image('1de2', 'assets/1de2.png');
+    this.load.image('botonPausa', 'assets/botonPausa.png');
+    this.load.image('pausedOverlay', 'assets/pausedOverlay.png');
     //De aquí para abajo los spritesheet
     /*this.load.spritesheet('dude', 
         'assets/dude.png',
@@ -329,6 +331,20 @@ sc_juegoLocal.create = function() {
         child.heldObjectSprite = sc_juegoLocal.add.image(child.x, child.y, 'empty');
     });
 
+    //inicializar cosas del pausado
+    sc_juegoLocal.pausedOverlay = sc_juegoLocal.add.image(400, 300, 'empty');
+    sc_juegoLocal.botonPausa = this.physics.add.sprite(400,585, 'botonPausa');
+    sc_juegoLocal.botonPausa.paused = false;
+    sc_juegoLocal.botonPausa.setInteractive();
+    sc_juegoLocal.botonPausa.on('pointerup', function() {
+        if (!sc_juegoLocal.botonPausa.paused) {
+            sc_juegoLocal.pausedOverlay.setTexture('pausedOverlay');
+            sc_juegoLocal.botonPausa.paused = true;
+        } else {
+            sc_juegoLocal.pausedOverlay.setTexture('empty');
+            sc_juegoLocal.botonPausa.paused = false;}
+    });
+
     //añadir colisiones a los jugadores
     var that = this;
     sc_juegoLocal.players.children.iterate(function(child) {
@@ -464,6 +480,10 @@ sc_juegoLocal.create = function() {
 }
 
 sc_juegoLocal.update = function() {
+
+    if (sc_juegoLocal.botonPausa.paused) {
+        return;
+    }
 
     sc_juegoLocal.players.children.iterate(function(child){
         if (child.spdX == 0 && child.spdY == 0) {
