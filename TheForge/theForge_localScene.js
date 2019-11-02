@@ -1785,17 +1785,31 @@ function interactuarYunquesd(p) {
     return result;
 }
 
+//Función getAnim: Asigna las animaciones correctas al jugador proporcionado si isPlayer vale true, o a la mesa proporcionada si isPlayer vale false
 function getAnim(p, isPlayer) {
+    //Las siguientes variables guardarán partes del nombre de la animación que se ejecutará
+    //Index guarda el caracter que define el objeto que lleva el personaje
     var index = "";
-    var tint1 = 0xFFFFFF;
-    var tint2 = 0xFFFFFF;
-    var red = false;
-    var anim = p.dir;
+
+    //animKey guarda el caracter que define el personaje en cuestión, sólo si se trata de un personaje
     var animKey = "";
     if (isPlayer) {
         animKey = p.defaultTexture.key.slice(2,3);
     }
+
+    //anim guarda los caracteres que definen la dirección del jugador
+    var anim = p.dir;
+
+    //tint1 y tint2 definen el tinte que se aplicará al objeto que lleve el personaje
+    var tint1 = 0xFFFFFF;
+    var tint2 = 0xFFFFFF;
+
+    //red indica si se trata de un objeto terminado pero todavía caliente, por lo que se le aplicará otro tinte
+    var red = false;
+
+    //Si el jugador no lleva ningún objeto, no hace falta cambiar las variables anteriormente definidas
     if (p.heldObject != "none") {
+        //Según el quinto caracter del objeto se tratará de un metal u otro, por lo que se asignará un color de tinte diferente
         var ho = p.heldObject;
         switch(ho.slice(5,6)) {
             case "1":
@@ -1816,7 +1830,10 @@ function getAnim(p, isPlayer) {
         }
         if (isNaN(ho.slice(6,7)) || (ho.slice(6,7) == "")) {
             //Si el sexto caracter no es un número, no hay mezcla de metales
+            //Al no haber mezcla de metales, el segundo color de tinte es igual al primero
             tint2 = tint1;
+
+            //Según la terminación de la cadena, se asignará un valor apropiado a index
             switch (ho.slice(6)) {
                 case "":
                     index = "M";
@@ -1841,6 +1858,7 @@ function getAnim(p, isPlayer) {
             }
         } else {
             //Si el sexto caracter es un número, hay mezcla de metales
+            //El segundo color de tinte será el apropiado para cada metal
             switch(ho.slice(6,7)) {
                 case "1":
                     tint2 = 0xD5AC21;
@@ -1858,6 +1876,8 @@ function getAnim(p, isPlayer) {
                     tint2 = 0xA7AA9D;
                     break;
             }
+
+            //Según la terminación de la cadena, se asignará un valor apropiado a index
             switch (ho.slice(7)) {
                 case "":
                     index = "M";
@@ -1883,43 +1903,47 @@ function getAnim(p, isPlayer) {
         }
     }
     if (!isPlayer) {
-        if (ho == "none") {
-            p.heldObjectSprite.setTexture('empty');
-        } else {
-            switch (index) {
-                case "":
-                    p.heldObjectSprite.setTexture('empty');
-                    break;
-                case "M":
-                    p.heldObjectSprite.setTexture('metal material');
-                    break;
-                case "MC":
-                    p.heldObjectSprite.setTexture('metal caliente');
-                    break;
-                case "I":
-                    p.heldObjectSprite.setTexture('protecciones piernas');
-                    break;
-                case "C":
-                    p.heldObjectSprite.setTexture('casco');
-                    break;
-                case "P":
-                    p.heldObjectSprite.setTexture('pechera');
-                    break;
-                case "E":
-                    p.heldObjectSprite.setTexture('espada');
-                    break;
+        //Si no se trata de un jugador, se trata de una mesa. En vez de aplicar animaciones, aplicamos cambio de texturas.
+        switch (index) {
+            case "":
+                p.heldObjectSprite.setTexture('empty');
+                break;
+            case "M":
+                p.heldObjectSprite.setTexture('metal material');
+                break;
+            case "MC":
+                p.heldObjectSprite.setTexture('metal caliente');
+                break;
+            case "I":
+                p.heldObjectSprite.setTexture('protecciones piernas');
+                break;
+            case "C":
+                p.heldObjectSprite.setTexture('casco');
+                break;
+            case "P":
+                p.heldObjectSprite.setTexture('pechera');
+                break;
+            case "E":
+                p.heldObjectSprite.setTexture('espada');
+                break;
 
-            }
         }
         if (index == "MC") {
+            //Si el objeto es metal caliente, no se aplica tinte
             p.heldObjectSprite.setTint(0xFFFFFF);
         } else if (red) {
-            p.heldObjectSprite.setTint(tint1, 0xFF0000, tint2, 0xFF0000);
+            //Si el objeto es terminado pero caliente, se aplica un tinte diferente
+            p.heldObjectSprite.setTint(0xFF6600, 0xFF6600, 0xFF6600, 0xFF6600);
         } else {
+            //En otro caso, se aplica el tinte normalmente
             p.heldObjectSprite.setTint(tint1, tint1, tint2, tint2);
         }
+
+        //La función acaba, ya que el resto del código es válido únicamente para jugadores
         return;
     }
+
+    //Según la velocidad del jugador, se aplicará la animación en una dirección o en otra.
     if (p.spdY == 0 && p.spdX != 0) {
         if (p.spdX < 0) {
             anim = "Left";
@@ -1931,22 +1955,31 @@ function getAnim(p, isPlayer) {
     } else if (p.spdY < 0) {
         anim = "Up";
     }
+
+    //Se actualiza dir para que el jugador se quede mirando en la dirección correcta-.
     p.dir = anim;
-    //if (p.spdX != 0 || p.spdY != 0) {
-        //console.log("p"+animKey+anim+index);
-        p.heldObjectSprite.anims.play("p"+animKey+anim+index, true);
-        p.heldObjectSprite2.anims.play("i"+animKey+anim+index, true);
-        if (p.spdX == 0 && p.spdY == 0) {
-            p.heldObjectSprite.anims.stop();
-            p.heldObjectSprite2.anims.stop();
-        }
-    //}
+
+    //Se unen todas las cadenas para aplicar la animación correspondiente.
+    //El primer caracter indica si se trata del jugador (p) o del objeto que lleva (i)
+    p.heldObjectSprite.anims.play("p"+animKey+anim+index, true);
+    p.heldObjectSprite2.anims.play("i"+animKey+anim+index, true);
+    
+    //Si el jugador no se está moviendo, la animación para.
+    if (p.spdX == 0 && p.spdY == 0) {
+        p.heldObjectSprite.anims.stop();
+        p.heldObjectSprite2.anims.stop();
+    }
+
+    //Finalmente se aplica el tinte.
     if (index == "MC") {
+        //Si el objeto es metal caliente, no se aplica tinte
         p.heldObjectSprite2.setTint(0xFFFFFF);
     } else {
         if (red) {
-            p.heldObjectSprite2.setTint(tint1, 0xFF0000, tint2, 0xFF0000);
+            //Si el objeto es terminado pero caliente, se aplica un tinte diferente
+            p.heldObjectSprite2.setTint(0xFF6600, 0xFF6600, 0xFF6600, 0xFF6600);
         } else {
+            //En otro caso, se aplica el tinte normalmente
             p.heldObjectSprite2.setTint(tint1, tint1, tint2, tint2);
         }
     }
