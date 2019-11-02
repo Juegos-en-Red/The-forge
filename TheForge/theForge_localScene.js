@@ -315,7 +315,7 @@ sc_juegoLocal.create = function() {
         child.heldObject = "none";
         child.heldObjectSprite = sc_juegoLocal.add.image(child.x, child.y, 'empty');
     });
-    
+
     //añadir colisiones a los jugadores
     var that = this;
     sc_juegoLocal.players.children.iterate(function(child) {
@@ -450,7 +450,7 @@ sc_juegoLocal.create = function() {
 
 }
 
-sc_juegoLocal.update = function(time, delta) {
+sc_juegoLocal.update = function() {
 
     sc_juegoLocal.players.children.iterate(function(child){
         if (child.spdX == 0 && child.spdY == 0) {
@@ -497,18 +497,23 @@ sc_juegoLocal.update = function(time, delta) {
     
     sc_juegoLocal.hornos.children.iterate(function(child){
         if (child.timer >= 0 && child.timer < 100) {
+            child.setTexture("hornoU");
             child.timer+=/*0.125*/0.5;
             child.text.setText(Math.floor(child.timer) + "%");
         } else if (child.timer >= 100 && child.timer < 150) {
+            child.setTexture("hornoU");
             child.timer+=/*0.125*/0.5;
             child.text.setText("100%");
         } else if (child.timer >= 150 && child.timer < 200) {
+            child.setTexture("hornoU");
             child.timer+=/*0.125*/0.5;
             child.text.setText("QUEMADO");
         } else if (child.timer >= 200) {
+            child.setTexture("hornoU");
             child.timer = -1;
             child.heldObject = "none";
         } else {
+            child.setTexture("horno");
             child.text.setText("");
         }
     });
@@ -535,30 +540,38 @@ sc_juegoLocal.update = function(time, delta) {
 
     sc_juegoLocal.moldes.children.iterate(function(child){
         if (child.timer >= 0 && child.timer < 100) {
+            child.setTexture("moldeU");
             child.timer+=0.25;
             child.text.setText(Math.floor(child.timer) + "%");
         } else if (child.timer >= 100) {
+            child.setTexture("moldeU");
             child.text.setText("100%");
         } else {
+            child.setTexture("molde");
             child.text.setText("");
         }
     });
 
     sc_juegoLocal.hornosd.children.iterate(function(child){
         if (child.timer >= 0 && child.timer < 100) {
+            child.setTexture("horno dobleU");
             child.timer+=/*0.125*/0.5;
             child.text.setText(Math.floor(child.timer) + "%");
         } else if (child.timer >= 100 && child.timer < 150) {
+            child.setTexture("horno dobleU");
             child.timer+=/*0.125*/0.5;
             child.text.setText("100%");
         } else if (child.timer >= 150 && child.timer < 200) {
+            child.setTexture("horno dobleU");
             child.timer+=/*0.125*/0.5;
             child.text.setText("QUEMADO");
         } else if (child.timer >= 200) {
+            child.setTexture("horno dobleU");
             child.timer = -1;
             child.heldObject1 = "none";
             child.heldObject2 = "none";
         } else {
+            child.setTexture("horno doble");
             child.text.setText("");
         }
     });
