@@ -58,6 +58,13 @@ sc_juegoLocal.preload = function() {
     this.load.image('MElfoI', 'assets/MElfoI.png');
     this.load.image('MHieloD', 'assets/MHieloD.png');
     this.load.image('MHieloI', 'assets/MHieloI.png');
+    //Interfaz
+    this.load.image('martillo', 'assets/martillo.png');
+    this.load.image('martillo2', 'assets/martillo2.png');
+    this.load.image('relojinterfaz', 'assets/relojinterfaz.png');
+    this.load.image('cruz', 'assets/cruz.png');
+    this.load.image('tic', 'assets/tic.png');
+    this.load.image('1de2', 'assets/1de2.png');
     //De aquí para abajo los spritesheet
     /*this.load.spritesheet('dude', 
         'assets/dude.png',
@@ -201,7 +208,8 @@ sc_juegoLocal.create = function() {
     sc_juegoLocal.hornos.children.iterate(function(child){
         child.heldObject = "none";
         child.timer = -1;
-        child.text = sc_juegoLocal.add.text(child.x-20, child.y-40, "", {color: '#000'});
+        //child.text = sc_juegoLocal.add.text(child.x-20, child.y-40, "", {color: '#000'});
+        child.status = sc_juegoLocal.add.image(child.x-6, child.y-25, 'empty');
     });
 
 
@@ -214,7 +222,8 @@ sc_juegoLocal.create = function() {
         child.heldObject = "none";
         child.timer = -1;
         child.cooldown = 0;
-        child.text = sc_juegoLocal.add.text(child.x-20, child.y-40, "", {color: '#000'});
+        //child.text = sc_juegoLocal.add.text(child.x-20, child.y-40, "", {color: '#000'});
+        child.status = sc_juegoLocal.add.image(child.x-6, child.y-25, 'empty');
     });
 
 
@@ -226,7 +235,8 @@ sc_juegoLocal.create = function() {
     sc_juegoLocal.barriles.children.iterate(function(child){
         child.heldObject = "none";
         child.timer = -1;
-        child.text = sc_juegoLocal.add.text(child.x-20, child.y-40, "", {color: '#000'});
+        //child.text = sc_juegoLocal.add.text(child.x-20, child.y-40, "", {color: '#000'});
+        child.status = sc_juegoLocal.add.image(child.x-6, child.y-25, 'empty');
     });
 
     
@@ -238,7 +248,8 @@ sc_juegoLocal.create = function() {
     sc_juegoLocal.moldes.children.iterate(function(child){
         child.heldObject = "none";
         child.timer = -1;
-        child.text = sc_juegoLocal.add.text(child.x-20, child.y-40, "", {color: '#000'});
+        //child.text = sc_juegoLocal.add.text(child.x-20, child.y-40, "", {color: '#000'});
+        child.status = sc_juegoLocal.add.image(child.x-6, child.y-25, 'empty');
     });
 
     
@@ -251,7 +262,8 @@ sc_juegoLocal.create = function() {
         child.heldObject1 = "none";
         child.heldObject2 = "none";
         child.timer = -1;
-        child.text = sc_juegoLocal.add.text(child.x-20, child.y-40, "", {color: '#000'});
+        //child.text = sc_juegoLocal.add.text(child.x-20, child.y-40, "", {color: '#000'});
+        child.status = sc_juegoLocal.add.image(child.x-6, child.y-25, 'empty');
     });
 
 
@@ -266,7 +278,8 @@ sc_juegoLocal.create = function() {
         child.heldObject2 = "none";
         child.timer = -1;
         child.cooldown = 0;
-        child.text = sc_juegoLocal.add.text(child.x-20, child.y-40, "", {color: '#000'});
+        //child.text = sc_juegoLocal.add.text(child.x-20, child.y-40, "", {color: '#000'});
+        child.status = sc_juegoLocal.add.image(child.x-6, child.y-25, 'empty');
     });
 
     //inicializar jugadores
@@ -499,22 +512,26 @@ sc_juegoLocal.update = function() {
         if (child.timer >= 0 && child.timer < 100) {
             child.setTexture("hornoU");
             child.timer+=/*0.125*/0.5;
-            child.text.setText(Math.floor(child.timer) + "%");
+            //child.text.setText(Math.floor(child.timer) + "%");
+            child.status.setTexture("relojinterfaz");
         } else if (child.timer >= 100 && child.timer < 150) {
             child.setTexture("hornoU");
             child.timer+=/*0.125*/0.5;
-            child.text.setText("100%");
+            //child.text.setText("100%");
+            child.status.setTexture("tic");
         } else if (child.timer >= 150 && child.timer < 200) {
             child.setTexture("hornoU");
             child.timer+=/*0.125*/0.5;
-            child.text.setText("QUEMADO");
+            //child.text.setText("QUEMADO");
+            child.status.setTexture("cruz");
         } else if (child.timer >= 200) {
             child.setTexture("hornoU");
             child.timer = -1;
             child.heldObject = "none";
         } else {
             child.setTexture("horno");
-            child.text.setText("");
+            //child.text.setText("");
+            child.status.setTexture("empty");
         }
     });
 
@@ -522,19 +539,29 @@ sc_juegoLocal.update = function() {
         if (child.cooldown > 0) {
             child.cooldown--;
         }
-        if (child.timer >= 0 && child.timer <= 100) {
-            child.text.setText(Math.floor(child.timer) + "%");
+        if (child.timer >= 0 && child.timer < 100) {
+            //child.text.setText(Math.floor(child.timer) + "%");
+            if (child.cooldown > 0) {
+                child.status.setTexture("martillo2");
+            } else {
+                child.status.setTexture("martillo");
+            }
+        } else if (child.timer >= 100) {
+            child.status.setTexture("tic");
         }
     });
 
     sc_juegoLocal.barriles.children.iterate(function(child){
         if (child.timer >= 0 && child.timer < 100) {
             child.timer+=0.5;
-            child.text.setText(Math.floor(child.timer) + "%");
+            //child.text.setText(Math.floor(child.timer) + "%");
+            child.status.setTexture("relojinterfaz");
         } else if (child.timer >= 100) {
-            child.text.setText("100%");
+            //child.text.setText("100%");
+            child.status.setTexture("tic");
         } else {
-            child.text.setText("");
+            //child.text.setText("");
+            child.status.setTexture("empty");
         }
     });
 
@@ -542,13 +569,16 @@ sc_juegoLocal.update = function() {
         if (child.timer >= 0 && child.timer < 100) {
             child.setTexture("moldeU");
             child.timer+=0.25;
-            child.text.setText(Math.floor(child.timer) + "%");
+            //child.text.setText(Math.floor(child.timer) + "%");
+            child.status.setTexture("relojinterfaz");
         } else if (child.timer >= 100) {
             child.setTexture("moldeU");
-            child.text.setText("100%");
+            //child.text.setText("100%");
+            child.status.setTexture("tic");
         } else {
             child.setTexture("molde");
-            child.text.setText("");
+            //child.text.setText("");
+            child.status.setTexture("empty");
         }
     });
 
@@ -556,15 +586,18 @@ sc_juegoLocal.update = function() {
         if (child.timer >= 0 && child.timer < 100) {
             child.setTexture("horno dobleU");
             child.timer+=/*0.125*/0.5;
-            child.text.setText(Math.floor(child.timer) + "%");
+            //child.text.setText(Math.floor(child.timer) + "%");
+            child.status.setTexture("relojinterfaz");
         } else if (child.timer >= 100 && child.timer < 150) {
             child.setTexture("horno dobleU");
             child.timer+=/*0.125*/0.5;
-            child.text.setText("100%");
+            //child.text.setText("100%");
+            child.status.setTexture("tic");
         } else if (child.timer >= 150 && child.timer < 200) {
             child.setTexture("horno dobleU");
             child.timer+=/*0.125*/0.5;
-            child.text.setText("QUEMADO");
+            //child.text.setText("QUEMADO");
+            child.status.setTexture("cruz");
         } else if (child.timer >= 200) {
             child.setTexture("horno dobleU");
             child.timer = -1;
@@ -572,7 +605,12 @@ sc_juegoLocal.update = function() {
             child.heldObject2 = "none";
         } else {
             child.setTexture("horno doble");
-            child.text.setText("");
+            //child.text.setText("");
+            if (child.heldObject1 != "none" && child.heldObject2 == "none") {
+                child.status.setTexture("1de2");
+            } else {
+                child.status.setTexture("empty");
+            }
         }
     });
 
@@ -580,8 +618,15 @@ sc_juegoLocal.update = function() {
         if (child.cooldown > 0) {
             child.cooldown--;
         }
-        if (child.timer >= 0 && child.timer <= 100) {
-            child.text.setText(Math.floor(child.timer) + "%");
+        if (child.timer >= 0 && child.timer < 100) {
+            //child.text.setText(Math.floor(child.timer) + "%");
+            if (child.cooldown > 0) {
+                child.status.setTexture("martillo2");
+            } else {
+                child.status.setTexture("martillo");
+            }
+        } else if (child.timer >= 100) {
+            child.status.setTexture("tic");
         }
     });
 
@@ -1490,7 +1535,8 @@ function interactuarYunques(p) {
                     }
                     child.heldObject = "none";
                     child.timer = -1;
-                    child.text.setText("");
+                    //child.text.setText("");
+                    child.status.setTexture("empty");
                 }
             }
         }
@@ -1724,6 +1770,7 @@ function interactuarYunquesd(p) {
                 if (child.timer == -1 && child.heldObject1 == "none" && child.heldObject2 == "none" && (tablaInputsValidos[p.heldObject])) {
                     child.heldObject1 = p.heldObject;
                     p.heldObject = "none";
+                    child.status.setTexture("1de2");
                 } else if (child.timer == -1 && child.heldObject1 != "none" && child.heldObject2 == "none" && (tablaInputsValidos[p.heldObject]) && p.heldObject != child.heldObject1) {
                     child.heldObject2 = p.heldObject;
                     p.heldObject = "none";
@@ -1740,7 +1787,8 @@ function interactuarYunquesd(p) {
                     child.heldObject1 = "none";
                     child.heldObject2 = "none";
                     child.timer = -1;
-                    child.text.setText("");
+                    //child.text.setText("");
+                    child.status.setTexture("empty");
                 }
             }
         }
