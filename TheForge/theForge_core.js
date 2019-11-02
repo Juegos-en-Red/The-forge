@@ -11,7 +11,7 @@ var config = {
             debug: false
         }
     },
-    scene: [sc_menuPrincipal, sc_juegoLocal] //Importante meter todas las escenas aquí
+    scene: [sc_menuPrincipal, sc_menuAjustes, sc_juegoLocal] //Importante meter todas las escenas aquí
 };
 
 
