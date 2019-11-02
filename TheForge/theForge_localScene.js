@@ -8,17 +8,7 @@ sc_juegoLocal.preload = function() {
     this.load.image('sky', 'assets/sky.png');
     //Modificaciones de los metales 
     this.load.image('metal material', 'assets/metal material.png');
-    this.load.image('metal2', 'assets/metal2.png');
-    this.load.image('metal1rojo', 'assets/metal1rojo.png');
-    this.load.image('metal2rojo', 'assets/metal2rojo.png');
-    this.load.image('metal1yunque', 'assets/metal1yunque.png'); 
-    this.load.image('metal2yunque', 'assets/metal2yunque.png'); 
-    this.load.image('metal1yunquetemplado', 'assets/metal1yunquetemplado.png'); 
-    this.load.image('metal2yunquetemplado', 'assets/metal2yunquetemplado.png'); 
-    this.load.image('metal1molde', 'assets/metal1molde.png'); 
-    this.load.image('metal2molde', 'assets/metal2molde.png'); 
-    this.load.image('metal1moldetemplado', 'assets/metal1moldetemplado.png'); 
-    this.load.image('metal2moldetemplado', 'assets/metal2moldetemplado.png'); 
+    this.load.image('metal caliente', 'assets/metal caliente.png');
     //Partes de la armadura
     this.load.image('casco', 'assets/casco.png');
     this.load.image('CascoElfoD', 'assets/CascoElfoD.png');
@@ -198,13 +188,10 @@ sc_juegoLocal.create = function() {
     sc_juegoLocal.cajonesMetal.create(480, 570, 'cajon5').heldObject = "metal5";
     
 
-    //inicializar mesas
-    sc_juegoLocal.mesas = this.physics.add.staticGroup();
-    sc_juegoLocal.mesas.create(103, 268, 'mesa').heldObject = "none";
-    sc_juegoLocal.mesas.create(103, 400, 'mesa').heldObject = "none";
-    sc_juegoLocal.mesas.create(697, 268, 'mesa').heldObject = "none";
-    sc_juegoLocal.mesas.create(697, 400, 'mesa').heldObject = "none";
-
+    //inicializar basuras
+    sc_juegoLocal.basuras = this.physics.add.staticGroup(); //cambiar el sprite
+    sc_juegoLocal.basuras.create(103, 400, 'barril de templado').heldObject = "none";
+    sc_juegoLocal.basuras.create(697, 400, 'barril de templado').heldObject = "none";
 
     //inicializar hornos de 1 material
     sc_juegoLocal.hornos = this.physics.add.staticGroup();
@@ -319,12 +306,22 @@ sc_juegoLocal.create = function() {
         child.chocado = false;
     });
     
+    //inicializar mesas
+    sc_juegoLocal.mesas = this.physics.add.staticGroup();
+    sc_juegoLocal.mesas.create(103, 268, 'mesa');
+    sc_juegoLocal.mesas.create(697, 268, 'mesa');
 
+    sc_juegoLocal.mesas.children.iterate(function (child) {
+        child.heldObject = "none";
+        child.heldObjectSprite = sc_juegoLocal.add.image(child.x, child.y, 'empty');
+    });
+    
     //añadir colisiones a los jugadores
     var that = this;
     sc_juegoLocal.players.children.iterate(function(child) {
 
         that.physics.add.collider(child, sc_juegoLocal.mesas);
+        that.physics.add.collider(child, sc_juegoLocal.basuras);
         that.physics.add.collider(child, sc_juegoLocal.cajonesMetal);
         that.physics.add.collider(child, sc_juegoLocal.hornos);
         that.physics.add.collider(child, sc_juegoLocal.yunques);
@@ -342,7 +339,6 @@ sc_juegoLocal.create = function() {
         that.physics.add.collider(child.heldObjectSprite, sc_juegoLocal.hornosd);
         that.physics.add.collider(child.heldObjectSprite, sc_juegoLocal.yunquesd);*/
     });
-
 
     this.input.keyboard.on('keyup', 
     function (event) {
@@ -394,8 +390,6 @@ sc_juegoLocal.create = function() {
                 sc_juegoLocal.player2.interacted = false;
             break;
         }
-        getAnim(sc_juegoLocal.player);
-        getAnim(sc_juegoLocal.player2);
     });
 
     this.input.keyboard.on('keydown', 
@@ -463,7 +457,7 @@ sc_juegoLocal.update = function(time, delta) {
             child.heldObjectSprite.anims.stopOnRepeat();
             child.heldObjectSprite2.anims.stopOnRepeat();
         }
-        getAnim(child);
+        getAnim(child, true);
         //var hoSpdX, hoSpdY;
         if (child.heldObject == "none") {
             child.setVelocityY(child.spdY);
@@ -498,11 +492,7 @@ sc_juegoLocal.update = function(time, delta) {
     });
     
     sc_juegoLocal.mesas.children.iterate(function(child){
-        if (child.heldObject == "none") {
-            child.setTexture('mesa');
-        } else {
-            child.setTexture(child.heldObject);
-        }
+        getAnim(child, false);
     });
     
     sc_juegoLocal.hornos.children.iterate(function(child){
@@ -1307,7 +1297,9 @@ function interactuar(p) {
                     if (!interactuarBarriles(p)) {
                         if (!interactuarMoldes(p)) {
                             if (!interactuarHornosd(p)) {
-                                interactuarYunquesd(p);
+                                if (!interactuarYunquesd(p)) {
+                                    interactuarBasuras(p);
+                                }
                             }
                         }
                     }
@@ -1386,6 +1378,17 @@ function interactuarMesas(p) {
             var temp = child.heldObject;
             child.heldObject = p.heldObject;
             p.heldObject = temp;
+            result = true;
+        }
+    });
+    return result;
+}
+
+function interactuarBasuras(p) {
+    var result = false;
+    sc_juegoLocal.basuras.children.iterate(function (child) {
+        if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.55*Math.max(child.body.width, child.body.height)+0.55*Math.max(p.body.width, p.body.height)) {
+            p.heldObject = "none";
             result = true;
         }
     });
@@ -1737,13 +1740,16 @@ function chocar(p, e) {
     p.chocado = true;
 }
 
-function getAnim(p) {
+function getAnim(p, isPlayer) {
     var index = "";
     var tint1 = 0xFFFFFF;
     var tint2 = 0xFFFFFF;
     var red = false;
     var anim = p.dir;
-    var animKey = p.defaultTexture.key.slice(2,3);
+    var animKey = "";
+    if (isPlayer) {
+        animKey = p.defaultTexture.key.slice(2,3);
+    }
     if (p.heldObject != "none") {
         var ho = p.heldObject;
         switch(ho.slice(5,6)) {
@@ -1831,16 +1837,44 @@ function getAnim(p) {
             }
         }
     }
-    "metal1-5";  //1
-    "metal1-5rojo"; //2
-    "metal12-45rojo"; //2
-    "metal1-5yunque"; //3
-    "metal12-45yunque"; //7
-    "metal1-5yunquetemplado"; //4
-    "metal12-45yunquetemplado"; //8
-    "metal1-5molde"; //5
-    "metal1-5moldetemplado"; //6
-    "metal12-45espada"; //9
+    if (!isPlayer) {
+        if (ho == "none") {
+            p.heldObjectSprite.setTexture('empty');
+        } else {
+            switch (index) {
+                case "":
+                    p.heldObjectSprite.setTexture('empty');
+                    break;
+                case "M":
+                    p.heldObjectSprite.setTexture('metal material');
+                    break;
+                case "MC":
+                    p.heldObjectSprite.setTexture('metal caliente');
+                    break;
+                case "I":
+                    p.heldObjectSprite.setTexture('protecciones piernas');
+                    break;
+                case "C":
+                    p.heldObjectSprite.setTexture('casco');
+                    break;
+                case "P":
+                    p.heldObjectSprite.setTexture('pechera');
+                    break;
+                case "E":
+                    p.heldObjectSprite.setTexture('espada');
+                    break;
+
+            }
+        }
+        if (index == "MC") {
+            p.heldObjectSprite.setTint(0xFFFFFF);
+        } else if (red) {
+            p.heldObjectSprite.setTint(tint1, 0xFF0000, tint2, 0xFF0000);
+        } else {
+            p.heldObjectSprite.setTint(tint1, tint1, tint2, tint2);
+        }
+        return;
+    }
     if (p.spdY == 0 && p.spdX != 0) {
         if (p.spdX < 0) {
             anim = "Left";
