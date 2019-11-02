@@ -75,55 +75,55 @@ sc_juegoLocal.preload = function() {
     );*/
     this.load.spritesheet('SSElfa1', 
         'assets/SSElfa1.png',
-        { frameWidth: 122, frameHeight: 128 }
+        { frameWidth: 61, frameHeight: 64 }
     );
     this.load.spritesheet('SSElfaEmpty', 
         'assets/SSElfaOverlay.png',
-        { frameWidth: 122, frameHeight: 128 }
+        { frameWidth: 61, frameHeight: 64 }
     );
     this.load.spritesheet('SSElfaCasco', 
         'assets/SSElfaCasco.png',
-        { frameWidth: 122, frameHeight: 128 }
+        { frameWidth: 61, frameHeight: 64 }
     );
     this.load.spritesheet('SSElfaCascoOverlay', 
         'assets/SSElfaCascoOverlay.png',
-        { frameWidth: 122, frameHeight: 128 }
+        { frameWidth: 61, frameHeight: 64 }
     );
     this.load.spritesheet('SSElfaEspada', 
         'assets/SSElfaEspada.png',
-        { frameWidth: 122, frameHeight: 128 }
+        { frameWidth: 61, frameHeight: 64 }
     );
     this.load.spritesheet('SSElfaEspadaOverlay', 
         'assets/SSElfaEspadaOverlay.png',
-        { frameWidth: 122, frameHeight: 128 }
+        { frameWidth: 61, frameHeight: 64 }
     );
     this.load.spritesheet('SSElfaMetal', 
         'assets/SSElfaMetal.png',
-        { frameWidth: 122, frameHeight: 128 }
+        { frameWidth: 61, frameHeight: 64 }
     );
     this.load.spritesheet('SSElfaMetalOverlay', 
         'assets/SSElfaMetalOverlay.png',
-        { frameWidth: 122, frameHeight: 128 }
+        { frameWidth: 61, frameHeight: 64 }
     );
     this.load.spritesheet('SSElfaMetalCaliente', 
         'assets/SSElfaMetalCaliente.png',
-        { frameWidth: 122, frameHeight: 128 }
+        { frameWidth: 61, frameHeight: 64 }
     );
     this.load.spritesheet('SSElfaPechera', 
         'assets/SSElfaPechera.png',
-        { frameWidth: 122, frameHeight: 128 }
+        { frameWidth: 61, frameHeight: 64 }
     );
     this.load.spritesheet('SSElfaPecheraOverlay', 
         'assets/SSElfaPecheraOverlay.png',
-        { frameWidth: 122, frameHeight: 128 }
+        { frameWidth: 61, frameHeight: 64 }
     );
     this.load.spritesheet('SSElfaProtecPiernas', 
         'assets/SSElfaProtecPiernas.png',
-        { frameWidth: 122, frameHeight: 128 }
+        { frameWidth: 61, frameHeight: 64 }
     );
     this.load.spritesheet('SSElfaProtecPiernasOverlay', 
         'assets/SSElfaProtecPiernasOverlay.png',
-        { frameWidth: 122, frameHeight: 128 }
+        { frameWidth: 61, frameHeight: 64 }
     );
     this.load.spritesheet('SSHielo1', 
         'assets/SSHielo1.png',
@@ -311,7 +311,7 @@ sc_juegoLocal.create = function() {
                 child.setSize(70, 58); //cambiar este tamaño por favor
                 break;
             case 'SSElfa1':
-                child.setSize(90, 128); //cambiar este tamaño por favor
+                child.setSize(61, 64); //cambiar este tamaño por favor
                 break;
         }
         //child.heldObjectSprite.setSize(121, 128);
@@ -1866,9 +1866,9 @@ function getAnim(p) {
         p.heldObjectSprite2.setTint(0xFFFFFF);
     } else {
         if (red) {
-            tint1+=0xFF0000;
-            tint2+=0xFF0000;
+            p.heldObjectSprite2.setTint(tint1, 0xFF0000, tint2, 0xFF0000);
+        } else {
+            p.heldObjectSprite2.setTint(tint1, tint1, tint2, tint2);
         }
-        p.heldObjectSprite2.setTint(tint1, tint1, tint2, tint2);
     }
 }
