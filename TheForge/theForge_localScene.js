@@ -486,70 +486,63 @@ sc_juegoLocal.create = function() {
 
 }
 
+//Función update: Aquí se maneja todo lo que ocurre durante la partida.
 sc_juegoLocal.update = function() {
 
+    //Si el juego está pausado, la función no se ejecuta.
     if (sc_juegoLocal.botonPausa.paused) {
         return;
     }
 
+    //Esta función afecta a todos los jugadores
     sc_juegoLocal.players.children.iterate(function(child){
+        //Si el personaje no se está moviendo, sus animaciones paran
         if (child.spdX == 0 && child.spdY == 0) {
             child.heldObjectSprite.anims.stopOnRepeat();
             child.heldObjectSprite2.anims.stopOnRepeat();
         }
+
+        //Llamada a getAnim para actualizar las animaciones del jugador
         getAnim(child, true);
-        //var hoSpdX, hoSpdY;
+
+        //Aquí se ajusta la velocidad del jugador según su spdX y spdY. Si lleva un objeto, su velocidad se reduce a la mitad.
         if (child.heldObject == "none") {
             child.setVelocityY(child.spdY);
             child.setVelocityX(child.spdX);
-            //hoSpdX = child.spdX;
-            //hoSpdY = child.spdY;
         } else {
             
             child.setVelocityY(child.spdY/2);
             child.setVelocityX(child.spdX/2);
-            //hoSpdX = child.spdX/2;
-            //hoSpdY = child.spdY/2;
         }
+
+        //Ajuste de la posición de heldObjectSprite y heldObjectSprite2 a la posición del jugador.
         child.heldObjectSprite.setX(child.x);
         child.heldObjectSprite.setY(child.y);
 
         child.heldObjectSprite2.setX(child.x);
         child.heldObjectSprite2.setY(child.y);
 
-        /*if (child.heldObject == "none") {
-            //child.heldObjectSprite.setTexture(child.defaultTexture); //quitar esta linea por favor
-            child.heldObjectSprite2.setTexture('empty');
-        } else {
-            //child.heldObjectSprite.setTexture(child.heldObject); //de momento
-            child.heldObjectSprite.setTexture('SSHieloCasco'); //quitar esta linea por favor
-            child.heldObjectSprite2.setTexture(child.heldObject);
-        }
-        switch (child.heldObject) {
-            case "":
-                break;
-        }*/
     });
     
+    //Actualización de los sprites de las mesas
     sc_juegoLocal.mesas.children.iterate(function(child){
         getAnim(child, false);
     });
     
+    //Actualización de los hornos según su timer
+    //Aumenta timer cuando sea necesario, y cambia el gráfico de status al apropiado según el estado del horno.
     sc_juegoLocal.hornos.children.iterate(function(child){
         if (child.timer >= 0 && child.timer < 100) {
             child.setTexture("hornoU");
-            child.timer+=/*0.125*/0.5;
-            //child.text.setText(Math.floor(child.timer) + "%");
+            child.timer+=0.125;
             child.status.setTexture("relojinterfaz");
         } else if (child.timer >= 100 && child.timer < 150) {
             child.setTexture("hornoU");
-            child.timer+=/*0.125*/0.5;
-            //child.text.setText("100%");
+            child.timer+=0.125;
             child.status.setTexture("tic");
         } else if (child.timer >= 150 && child.timer < 200) {
             child.setTexture("hornoU");
-            child.timer+=/*0.125*/0.5;
-            //child.text.setText("QUEMADO");
+            child.timer+=0.125;
             child.status.setTexture("cruz");
         } else if (child.timer >= 200) {
             child.setTexture("hornoU");
@@ -557,17 +550,17 @@ sc_juegoLocal.update = function() {
             child.heldObject = "none";
         } else {
             child.setTexture("horno");
-            //child.text.setText("");
             child.status.setTexture("empty");
         }
     });
 
+    //Actualización de los yunques
+    //Si el yunque tiene un metal, saldrá el icono del martillo. Al interactuar con el yunque, se animará.
     sc_juegoLocal.yunques.children.iterate(function(child){
         if (child.cooldown > 0) {
             child.cooldown--;
         }
         if (child.timer >= 0 && child.timer < 100) {
-            //child.text.setText(Math.floor(child.timer) + "%");
             if (child.cooldown > 0) {
                 child.status.setTexture("martillo2");
             } else {
@@ -578,52 +571,49 @@ sc_juegoLocal.update = function() {
         }
     });
 
+    //Actualización de los barriles
+    //Similar a la de los hornos
     sc_juegoLocal.barriles.children.iterate(function(child){
         if (child.timer >= 0 && child.timer < 100) {
             child.timer+=0.5;
-            //child.text.setText(Math.floor(child.timer) + "%");
             child.status.setTexture("relojinterfaz");
         } else if (child.timer >= 100) {
-            //child.text.setText("100%");
             child.status.setTexture("tic");
         } else {
-            //child.text.setText("");
             child.status.setTexture("empty");
         }
     });
 
+    //Actualización de los moldes
+    //Similar a la de los hornos
     sc_juegoLocal.moldes.children.iterate(function(child){
         if (child.timer >= 0 && child.timer < 100) {
             child.setTexture("moldeU");
             child.timer+=0.25;
-            //child.text.setText(Math.floor(child.timer) + "%");
             child.status.setTexture("relojinterfaz");
         } else if (child.timer >= 100) {
             child.setTexture("moldeU");
-            //child.text.setText("100%");
             child.status.setTexture("tic");
         } else {
             child.setTexture("molde");
-            //child.text.setText("");
             child.status.setTexture("empty");
         }
     });
 
+    //Actualización de los hornos dobles
+    //Igual a la de los hornos, pero si sólo hay un metal dentro aparece un icono indicándolo
     sc_juegoLocal.hornosd.children.iterate(function(child){
         if (child.timer >= 0 && child.timer < 100) {
             child.setTexture("horno dobleU");
-            child.timer+=/*0.125*/0.5;
-            //child.text.setText(Math.floor(child.timer) + "%");
+            child.timer+=0.125;
             child.status.setTexture("relojinterfaz");
         } else if (child.timer >= 100 && child.timer < 150) {
             child.setTexture("horno dobleU");
-            child.timer+=/*0.125*/0.5;
-            //child.text.setText("100%");
+            child.timer+=0.125;
             child.status.setTexture("tic");
         } else if (child.timer >= 150 && child.timer < 200) {
             child.setTexture("horno dobleU");
-            child.timer+=/*0.125*/0.5;
-            //child.text.setText("QUEMADO");
+            child.timer+=0.125;
             child.status.setTexture("cruz");
         } else if (child.timer >= 200) {
             child.setTexture("horno dobleU");
@@ -632,7 +622,6 @@ sc_juegoLocal.update = function() {
             child.heldObject2 = "none";
         } else {
             child.setTexture("horno doble");
-            //child.text.setText("");
             if (child.heldObject1 != "none" && child.heldObject2 == "none") {
                 child.status.setTexture("1de2");
             } else {
@@ -641,6 +630,8 @@ sc_juegoLocal.update = function() {
         }
     });
 
+    //Actualización de los yunques dobles
+    //Igual a la de los yunques, pero si sólo hay un metal dentro aparece un icono indicándolo
     sc_juegoLocal.yunquesd.children.iterate(function(child){
         if (child.cooldown > 0) {
             child.cooldown--;
