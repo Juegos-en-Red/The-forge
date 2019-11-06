@@ -5,13 +5,13 @@ Juego de la asignatura de Juegos en red desarrollado por:
 * Javier Sendarrubias Otero. Correo: ja.sendarrubias.2017@alumnos.urjc.es, Github: [Javierso1](https://github.com/Javierso1)
 * Jorge Sendarrubias Otero. Correo: j.sendarrubias.2017@alumnos.urjc.es, Github: [JorgeURJC](https://github.com/JorgeURJC)
 
-
-## TEMÁTICA
-### CAMBIOS EN EL DOCUMENTO DE DISEÑO V1.1
+## CAMBIOS EN EL DOCUMENTO DE DISEÑO V1.1
 La orientación del juego se ha planteado para dos jugadores en vez de para cuatro. Además, de los cuatro reinos planeados, de momento solo existen dos disponibles para elegir y manejar. Todas las amoladoras se han cambiado por moldes, algo más coherente teniendo en cuenta el contexto general del juego y los objetos de una forja con los que podrían estar familiarizados los jugadores. 
 Se han eliminado trampas dentro de las planeadas y se le ha añadido una guía textual, accesible desde el menú. Dentro de la partida se contempla también la opción de deshacerse de los objetos creados por error. Además, al monstruo se le arma dándole directamente las piezas en vez de depositándolas en una mesa cercana. Al documento como tal se le han añadido las secciones Diagrama de navegación y de Muestras del diseño. 
 Se han añadido referencias a los sonidos empleados y a la fuente usada para los textos.
-### CONCEPTO Y TEMÁTICA
+
+## TEMÁTICA
+### CONCEPTO
 *The Forge* es un juego en el que asumes el control de un herrero que ha sido enviado por su pueblo para competir contra los demás pueblos de un mismo reino y decidir a qué población le deben adjudicar el honor de forjar las armas de la realeza, para lo que tendrás que forjar todo el arsenal que llevará el monstruo característico de tu región.
 ### GÉNERO
 Juego de simulación de una herrería no realista competitivo. Basado en una Edad Media ficticia con toques de fantasía clásica. Presenta similitudes con los juegos de simulación de cocina en lo referente a la jugabilidad.
@@ -129,3 +129,4 @@ https://1drv.ms/p/s!Ake2wFBOjmIhhdoBoWvQU7ZfREAtjg
 6. Música del menú principal: Northland de Antti Martikainen (https://www.youtube.com/watch?v=tUR6zJcQ6MA)
 7. Música de la partida: Super Hero 3 de Johannes Bornlöf (https://www.youtube.com/watch?v=2Tfw3YuE5_Q)
 8. Sonido del yunque: Sonido del yunque de minecraft (https://gamepedia.cursecdn.com/minecraft_gamepedia/8/8c/Anvil_land.ogg)
+9. Tipografía empleada en los textos: Enchanted Land (https://www.dafont.com/es/enchanted-land.font)
