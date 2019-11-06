@@ -120,6 +120,7 @@ Para coordinar el desarrollo utilizamos el siguiente tablero de trello: https://
 
 ## ENLACE PRESENTACIÓN POWERPOINT
 https://1drv.ms/p/s!Ake2wFBOjmIhhdoBoWvQU7ZfREAtjg
+https://drive.google.com/open?id=1rvBCVqbPnGor9RUyLEz24A49ELa_eSHKa5emECI2Yok
 
 ## FUENTES
 1. Imagen *Overcooked*: https://steamcdn-a.akamaihd.net/steam/apps/448510/ss_058c688a6f07a4624b4f775b3e71df8037ef4df2.1920x1080.jpg?t=1567203965
