@@ -94,6 +94,7 @@ El segundo jugador tendrá los siguientes controles:
 * P: Lanzar objetos
 
 ## DIAGRAMA DE NAVEGACIÓN
+![]https://drive.google.com/open?id=1HNJqdiAtCQiZBNSvNluv5ARKRbUIqSHk
 
 ## MUESTRAS DEL DISEÑO
 [CAPTURA DE PANTALLA DEL MENÚ]
