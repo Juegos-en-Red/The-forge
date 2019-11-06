@@ -88,6 +88,7 @@ Los controles al jugar online serán los mismos que los del primer jugador en mo
 * W, A, S, D: Movimiento del personaje
 * E: Coger objetos
 * Q: Lanzar objetos
+
 El segundo jugador tendrá los siguientes controles:
 * Flechas de dirección: Movimiento del personaje
 * O: Coger objetos
