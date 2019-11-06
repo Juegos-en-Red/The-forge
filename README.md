@@ -94,7 +94,7 @@ El segundo jugador tendrá los siguientes controles:
 * P: Lanzar objetos
 
 ## DIAGRAMA DE NAVEGACIÓN
-![Diagrama de navegación entre las distintas pantallas](https://drive.google.com/open?id=1HNJqdiAtCQiZBNSvNluv5ARKRbUIqSHk)
+![Diagrama de navegación entre las distintas pantallas](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/Diagrama.png)
 
 ## MUESTRAS DEL DISEÑO
 [CAPTURA DE PANTALLA DEL MENÚ]
