@@ -162,6 +162,24 @@ sc_Preloader.preload = function()
 
     // Monstruo elfo
     this.load.image("monstruoelfo", "../assets/mundo/monstruoElfo.png");
+
+    // Altar sin iluminar de las trampas
+    this.load.image("altar1", "../assets/mundo/altar1.png");
+
+    // Altar iluminado de las trampas
+    this.load.image("altar2", "../assets/mundo/altar2.png");
+
+    // Botón del altar
+    this.load.image("btnAltar", "../assets/mundo/botonAltar.png");
+
+    // Trampa de reloj
+    this.load.image("trampaReloj", "../assets/mundo/reloj.png");
+
+    // Trampa del muro
+    this.load.image("trampaMuro", "../assets/mundo/muro.png");
+
+    // Triple cartel de prohibido
+    this.load.image("tripleMuro", "../assets/mundo/prohibido3.png");
 }
 
 sc_Preloader.create = function()

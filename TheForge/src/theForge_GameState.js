@@ -4,7 +4,7 @@ var sc_Game = new Phaser.Scene("JuegoLocal");
 
 const INF = 0X3F3F3F3F;
 
-const MAX_SPEED = 300;
+const MAX_SPEED = 100;
 
 var mundo = new Mundo(40, 40, sc_Game);
 
@@ -29,6 +29,8 @@ var numHornoJ2 = 0;
 var unodedosJ1 = undefined;
 var unodedosJ2 = undefined;
 
+var timer = 0;
+
 sc_Game.create = function()
 {     
     initAnimations(sc_Game);    
@@ -37,10 +39,14 @@ sc_Game.create = function()
 
 sc_Game.update = function(time, delta)
 {
+    
     mundo.update();
+    timer++;
+    mundo.updateTrampa(timer % 2002);
+    console.log(timer);
 }
 
-function Player(posX, posY, nombre, escena, arriba, abajo, izda, derecha, interact, id)
+function Player(posX, posY, nombre, escena, arriba, abajo, izda, derecha, interact, accion, id)
 {
     /* VARIABLES */
 
@@ -53,20 +59,23 @@ function Player(posX, posY, nombre, escena, arriba, abajo, izda, derecha, intera
     // Posición en Y
     this.posY = posY;
 
-    // Tecla W
-    var W = undefined; 
+    // Tecla para movernos hacia arriba
+    var up = undefined; 
 
-    // Tecla S
-    var S = undefined;
+    // Tecla para movernos hacia abajo
+    var down = undefined;
 
-    // Tecla A
-    var A = undefined;
+    // Tecla para ir a la izda
+    var left = undefined;
 
-    // Tecla D
-    var D = undefined;
+    // Tecla para ir a la derecha
+    var right = undefined;
 
-    // Tecla E
-    var E = undefined;
+    // Tecla para interactuar con los objetos
+    var interactuar = undefined;
+    
+    // Tecla para lanzar trampas
+    var lanzar = undefined;
 
     // Velocidad del personaje
     var speed = undefined;
@@ -119,6 +128,15 @@ function Player(posX, posY, nombre, escena, arriba, abajo, izda, derecha, intera
     // Dirección del personaje
     var dir = "Down";
 
+    // Trampa que posee el personaje
+    this.trampa = undefined;
+
+    // Variable para saber si estamos lanzando una trampa
+    this.lanzarTrampa = false;
+
+    // Variable para saber si puede moverse
+    this.puedeMoverse = true;
+
     /* PUBLIC FUNCTIONS */
 
     this.create = function()
@@ -135,11 +153,19 @@ function Player(posX, posY, nombre, escena, arriba, abajo, izda, derecha, intera
 
     this.update = function(time, delta)
     {
+        this.lanzarTrampa = false;
         this.interactuando = false;
         this.martilleando = false;
-        if (E.isDown)
-            this.interactuando = true;        
-        updateMovimiento(this.cuadrado, this.animacion);
+        if (this.puedeMoverse)
+        {
+            if (interactuar.isDown)
+            this.interactuando = true;
+            if (lanzar.isDown && this.trampa != undefined)
+            {
+                this.lanzarTrampa = true;
+            }     
+            updateMovimiento(this.cuadrado, this.animacion);
+        }
     }
 
     this.x = function()
@@ -200,15 +226,26 @@ function Player(posX, posY, nombre, escena, arriba, abajo, izda, derecha, intera
         
     }
 
+    this.catchTrampa = function(nombre)
+    {
+        this.trampa = nombre;
+    }
+
+    this.useTrampa = function()
+    {
+        this.trampa = undefined;
+    }
+
     /* PRIVATE FUNCTIONS */
 
     function activeKeys()
     {
-        W = escena.input.keyboard.addKey(arriba);
-        S = escena.input.keyboard.addKey(abajo);
-        A = escena.input.keyboard.addKey(izda);
-        D = escena.input.keyboard.addKey(derecha);
-        E = escena.input.keyboard.addKey(interact);
+        up = escena.input.keyboard.addKey(arriba);
+        down = escena.input.keyboard.addKey(abajo);
+        left = escena.input.keyboard.addKey(izda);
+        right = escena.input.keyboard.addKey(derecha);
+        interactuar = escena.input.keyboard.addKey(interact);
+        lanzar = escena.input.keyboard.addKey(accion);
     }
 
     function move(velocity, personaje)
@@ -220,29 +257,29 @@ function Player(posX, posY, nombre, escena, arriba, abajo, izda, derecha, intera
     function updateMovimiento(cuadrado, animacion)
     {
         direction = {x: 0, y: 0};
-        var isMoving = D.isDown || A.isDown || S.isDown || W.isDown;
+        var isMoving = right.isDown || left.isDown || down.isDown || up.isDown;
 
         if (isMoving)
         {
             speed = MAX_SPEED;
 
-            if (D.isDown)
+            if (right.isDown)
             {
                 direction.x = 1;
                 dir = "Right";
                 
             }   
-            else if (A.isDown)
+            else if (left.isDown)
             {
                 direction.x = -1;
                 dir = "Left";
             }
-            if (S.isDown)
+            if (down.isDown)
             {
                 direction.y = 1;
                 dir = "Down";
             }
-            else if (W.isDown)
+            else if (up.isDown)
             {
                direction.y = -1;
                dir = "Up";
@@ -285,11 +322,27 @@ function Mundo(width, height, escena)
     var graphics = undefined;
 
     // Jugador 1
-    var player1 = new Player(4, 4, "H", escena, 'W', 'S', 'A', 'D', 'E', "jugador1");
+    var player1 = new Player(4, 4, "H", escena, 'W', 'S', 'A', 'D', 'E', 'Q', "jugador1");
 
-    var player2 = new Player(15, 4, "H", escena, 'up', 'down', 'left', 'right', 'shift', "jugador2");
+    var player2 = new Player(15, 4, "H", escena, 'up', 'down', 'left', 'right', 'shift', 'P', "jugador2");
 
-    // Variable para ver si el horno individual está libre
+    // Variable para ver si la trampa está activada
+    var trampaActivada = false;
+
+    // Variable para saber si la trampa tiene objeto
+    var tieneObjeto = false;
+
+    // Variable para saber qué objeto tiene la trampa
+    var objetoTrampa = undefined;
+
+    // Variable para saber si se traza o no el camino mas corto
+    var dijkstraJ1 = true;
+    var dijkstraJ2 = true;
+
+    // Trampas que pueden salir
+    var trampas = new Array();
+    trampas.push(new Trampa(10 * 40, 5 * 40, "trampaReloj", escena));
+    trampas.push(new Trampa(10 * 40, 5 * 40, "trampaMuro", escena));
 
     /* FUNCIONES PÚBLICAS */
 
@@ -299,9 +352,12 @@ function Mundo(width, height, escena)
         initWorld();        
         initGraphics();
         initDistances();
+        addButton(5, 8, "btnAltar", 18, false, false);
+        addButton(5, 11, "btnAltar", 18, false, false);
         player1.create();
-        player2.create();
+        player2.create();        
         wallCollision();
+        centerCollision();
         putObjects();
         initGlobals(escena);
     }
@@ -310,13 +366,56 @@ function Mundo(width, height, escena)
     {
         player1.update(time, delta);
         player2.update(time, delta);
-        dijkstra({f: player1.fromWorldToTile().fila, c: player1.fromWorldToTile().columna}, {f: player1.getTargetPosition().filaJ1, c: player1.getTargetPosition().columnaJ1 },
-                 {f: player2.fromWorldToTile().fila, c: player2.fromWorldToTile().columna}, {f: player2.getTargetPosition().filaJ2, c: player2.getTargetPosition().columnaJ2 });
+        var targetJ1 = player1.getTargetPosition();
+        var targetJ2 = player2.getTargetPosition();
+        if (!dijkstraJ1)
+            targetJ1 = {filaJ1: 0, columnaJ1: 0, filaJ2: 0, columnaJ2: 0};
+        if (!dijkstraJ2)
+            targetJ2 = {filaJ1: 0, columnaJ1: 0, filaJ2: 0, columnaJ2: 0}
+        dijkstra({f: player1.fromWorldToTile().fila, c: player1.fromWorldToTile().columna}, {f: targetJ1.filaJ1, c: targetJ1.columnaJ1 },
+                 {f: player2.fromWorldToTile().fila, c: player2.fromWorldToTile().columna}, {f: targetJ2.filaJ2, c: targetJ2.columnaJ2 });
         updateReceta(player1, "jugador1");
         updateReceta(player2, "jugador2");
+        updateTrampaPlayer(player1, "jugador1");
+        updateTrampaPlayer(player2, "jugador2");
+        lanzarTramplaPlayer(player1, "jugador1", player2);
+        lanzarTramplaPlayer(player2, "jugador2", player1);
+    }
+
+    this.updateTrampa = function(timer)
+    {
+        if (timer == 1000)
+        {
+            activateTrampa();
+        }
+        if (timer >= 2000)
+        {
+            defuseTrampa();
+            timer = 0;
+        }
     }
 
     /* FUNCIONES PRIVADAS */
+
+    function activateTrampa()
+    {
+        // Numero aleatorio para ver qué trampa sale
+        var random = Math.floor(Math.random() * 2);
+        objetoTrampa = escena.add.image(trampas[random].posX, trampas[random].posY, trampas[random].nombre);
+        world[5][9].object.visible = true;
+        trampaActivada = true;
+        tieneObjeto = true;
+    }
+
+    function defuseTrampa()
+    {
+        world[5][9].object.visible = false;
+        trampaActivada = false;
+        tieneObjeto = false;
+        timer = 0;
+        objetoTrampa.visible = false;
+        objetoTrampa = undefined;
+    }
 
     // Función para inicializar el mundo predeterminado
     function initWorld()
@@ -354,6 +453,7 @@ function Mundo(width, height, escena)
         putOneStaticTileIntoTheWorld(8, 1, "prohibido", 13, false, false);
         putTwoDynamicTilesIntoTheWorld(5, 7, "basura", 14, "basura_On", false, false);
         putOneDynamicTileIntoTheWorld(12, 1, "monstruohielo", 15, false, false);
+        putTwoStaticTilesIntoTheWorld(7, 7, "dobleProhibido", 12, false, false);
 
         /* LADO DERECHO */
 
@@ -372,6 +472,13 @@ function Mundo(width, height, escena)
         putOneStaticTileIntoTheWorld(8, 18, "prohibido", 12, false, false);
         putTwoDynamicTilesIntoTheWorld(5, 12, "basura", 13, "basura_On", true, false);
         putOneDynamicTileIntoTheWorld(12, 17, "monstruoelfo", 15, false, false);
+        putTwoStaticTilesIntoTheWorld(7, 12, "dobleProhibido", 12, false, false);
+
+        /* ZONA CENTRAL */
+        putFourDynamicTilesIntoTheWorld(4, 9, "altar1", 15, "", false, false);
+        putFourDynamicTilesIntoTheWorld(4, 9, "altar2", 16, "", false, false);
+        putOneStaticTileIntoTheWorld(4, 8, "wallCollider", 17, false, false);
+        putOneStaticTileIntoTheWorld(4, 11, "wallCollider", 17, false, false);
     }
 
     // Función para crear nuestro grafo predeterminado
@@ -468,6 +575,15 @@ function Mundo(width, height, escena)
         }
     }
 
+    function centerCollision()
+    {
+        for (var i = 6; i < config.height / height; i++)
+        {
+            putOneStaticTileIntoTheWorld(i, 9, "wallCollider", 1);
+            putOneStaticTileIntoTheWorld(i, 10, "wallCollider", 1);
+        }
+    }
+
     /* FUNCIONES PARA AÑADIR TILES CON Y SIN ANIMACIÓN */ 
     function putOneStaticTileIntoTheWorld(fila, columna, nombre, id, flipX, flipY)
     {
@@ -536,6 +652,44 @@ function Mundo(width, height, escena)
         world[fila + 2][columna].ocupada = id;
     }
 
+    function putFourDynamicTilesIntoTheWorld(fila, columna, nombre, id, animationName, flipX, flipY)
+    {
+        disconnectNeighbours(fila, columna);
+        disconnectNeighbours(fila, columna + 1);
+        disconnectNeighbours(fila + 1, columna);
+        disconnectNeighbours(fila + 1, columna + 1);
+        var objeto = escena.physics.add.image(columna * 40, fila * 40, nombre).setOrigin(0, 0).setImmovable();;
+        if (nombre == "altar1")
+        {            
+            objeto.visible = true;            
+        }
+        else
+        {
+            objeto.visible = false;
+        }
+        escena.physics.add.collider(objeto, player1.getSprite());
+        escena.physics.add.collider(objeto, player2.getSprite());
+        world[fila][columna].object = objeto;
+        world[fila][columna + 1].object = objeto;
+        world[fila + 1][columna].object = objeto;
+        world[fila + 1][columna + 1].object = objeto;
+    }
+
+    function putWall(fila, columna)
+    {
+        disconnectNeighbours(fila, columna);
+        disconnectNeighbours(fila, columna + 1);
+        disconnectNeighbours(fila, columna + 2);
+    } 
+
+    function addButton(fila, columna, nombre, id, flipX, flipY)
+    {
+        var objeto = escena.add.image(columna * 40, fila * 40, nombre).setOrigin(0, 0);
+        objeto.flipX = flipX;
+        objeto.flipY = flipY;
+        world[fila][columna].ocupada = id;
+    }
+
     // Desconectar los vecionos de un nodo del grafo
     function disconnectNeighbours(fila, columna)
     {
@@ -600,7 +754,8 @@ function Mundo(width, height, escena)
                 }
             }
         }   
-        graphics.fillRect(end1.c * width, end1.f * height, width, height);
+        if (end1.c != 0 && end1.f != 0)
+            graphics.fillRect(end1.c * width, end1.f * height, width, height);
         drawPath(prev, prev[end1.f][end1.c], {fila: start1.f, columna: start1.c});  
 
         /* JUGADOR 2 */
@@ -640,7 +795,8 @@ function Mundo(width, height, escena)
                 }
             }
         }
-        graphics.fillRect(end2.c * width, end2.f * height, width, height);
+        if (end2.c != 0 && end2.f != 0)
+            graphics.fillRect(end2.c * width, end2.f * height, width, height);
         drawPath(prev, prev[end2.f][end2.c], {fila: start2.f, columna: start2.c});     
     }    
 
@@ -969,8 +1125,129 @@ function Mundo(width, height, escena)
                 }
             }
         }
-    }                    
-            
+    }  
+    
+    function updateTrampaPlayer(cuadrado, id)
+    {
+        var pos = cuadrado.fromWorldToTile();
+        if (id == "jugador1")
+        {
+            if (pos.fila == 5 && pos.columna == 8 && cuadrado.interactuando)
+            {
+                if (tieneObjeto && cuadrado.trampa == undefined)
+                {
+                    if (objetoTrampa.width == 24) // RELOJ
+                    {
+                        cuadrado.trampa = "reloj";
+                    }
+                    else // MURO
+                    {
+                        cuadrado.trampa = "muro";
+                    }   
+                    defuseTrampa();                 
+                }
+            }
+        }
+        else
+        {
+            if (pos.fila == 5 && pos.columna == 11 && cuadrado.interactuando)
+            {
+                if (tieneObjeto && cuadrado.trampa == undefined)
+                {
+                    if (objetoTrampa.width == 24) // RELOJ
+                    {
+                        cuadrado.trampa = "reloj";
+                    }
+                    else // MURO
+                    {
+                        cuadrado.trampa = "muro";
+                    }
+                    defuseTrampa();
+                }
+            }
+        }
+    }
+    
+    function lanzarTramplaPlayer(cuadrado, id, enemigo)
+    {       
+        if (id == "jugador1")
+        {
+            if (cuadrado.lanzarTrampa)
+            {
+                if (cuadrado.trampa == "reloj")
+                {
+                    cuadrado.useTrampa();
+                    enemigo.puedeMoverse = false;
+                    enemigo.cuadrado.anims.stop();
+                    escena.time.delayedCall(4000, () =>
+                    {
+                        enemigo.puedeMoverse = true;
+                    });
+                }
+                else if (cuadrado.trampa != undefined)
+                {
+                    cuadrado.useTrampa();
+                    var objeto = escena.physics.add.image(14 * 40, 5 * 40, "tripleMuro").setOrigin(0, 0).setImmovable();
+                    putWall(5, 14);
+                    escena.physics.add.collider(objeto, enemigo.getSprite());
+                    dijkstraJ2 = false;
+                    escena.time.delayedCall(15000, () =>
+                    {
+                        objeto.destroy();
+                        objeto.visible = false;
+                        dijkstraJ2 = true;
+                    });
+                }
+            }
+        } 
+        else
+        {
+            if (cuadrado.lanzarTrampa)
+            {
+                if (cuadrado.trampa == "reloj")
+                {
+                    cuadrado.useTrampa();
+                    enemigo.puedeMoverse = false;
+                    enemigo.cuadrado.anims.stop();
+                    escena.time.delayedCall(4000, () =>
+                    {
+                        enemigo.puedeMoverse = true;
+                    });
+                }
+                else if (cuadrado.trampa != undefined)
+                {
+                    cuadrado.useTrampa();
+                    var objeto = escena.physics.add.image(3 * 40, 5 * 40, "tripleMuro").setOrigin(0, 0).setImmovable();
+                    putWall(5, 14);
+                    escena.physics.add.collider(objeto, enemigo.getSprite());
+                    dijkstraJ1 = false;
+                    escena.time.delayedCall(15000, () =>
+                    {
+                        objeto.destroy();
+                        objeto.visible = false;
+                        dijkstraJ1 = true;
+                    });
+                }
+            }
+        }
+    }
+}
+
+function Trampa(posX, posY, nombre, escena)
+{
+    // Posición x de la trampa
+    this.posX = posX;
+
+    // Posición y de la trampa
+    this.posY = posY;
+
+    // Nombre de la trampa
+    this.nombre = nombre;
+
+    // Si es visible o no
+    this.visible = false;
+
+
 }
 
 function initGlobals(escena)
