@@ -106,7 +106,7 @@ Menú principal de juego. Los botones permiten el acceso a las distintas pantall
 
 Se dispone de la opción de cambiar los controles que usen ambos jugadores y los volúmenes tanto de la música como de los efectos de sonido. Existe un botón para restablecer los controles por defecto.
 
-[CAPTURA DE PANTALLA DE LA GUIA](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/CapturaGuia.PNG)
+[CAPTURA DE PANTALLA DE LA GUIA](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/CapturaGuia.png)
 Guía textual y visual que permite pasar de unas páginas a otras para que el jugador vea todo lo que puede hacer y todos los controles disponibles.
 
 ![CAPTURA DE PANTALLA DEL MENÚ DE SELECCIÓN DE PJES](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/CapturaSeleccion.PNG)
@@ -117,7 +117,7 @@ El jugador uno puede elegir entre los dos personajes disponibles en este momento
 
 Captura de pantalla de una partida en proceso. Su funcionamiento queda detallado tanto en previos apartados del readme como en las instrucciones de la guía. En la imagen el juego acaba de empezar, por lo tanto se pueden ver las posiciones iniciales de ambos herreros y la disposición del escenario y de la interfaz disponible.
 
-[CAPTURA DE PANTALLA DEL FIN DE PARTIDA](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/CapturaVictoria.PNG)
+[CAPTURA DE PANTALLA DEL FIN DE PARTIDA](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/CapturaVictoria.png)
 Se indica el jugador ganador junto con un letrero de victoria. Vuelve al menú principal.
 
 ## TRELLO
@@ -125,6 +125,7 @@ Para coordinar el desarrollo utilizamos el siguiente tablero de trello: https://
 
 ## ENLACE PRESENTACIÓN POWERPOINT
 https://1drv.ms/p/s!Ake2wFBOjmIhhdoBoWvQU7ZfREAtjg
+
 https://drive.google.com/open?id=1rvBCVqbPnGor9RUyLEz24A49ELa_eSHKa5emECI2Yok
 
 ## FUENTES
