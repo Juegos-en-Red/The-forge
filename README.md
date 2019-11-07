@@ -132,3 +132,4 @@ https://drive.google.com/open?id=1rvBCVqbPnGor9RUyLEz24A49ELa_eSHKa5emECI2Yok
 7. Música de la partida: Super Hero 3 de Johannes Bornlöf (https://www.youtube.com/watch?v=2Tfw3YuE5_Q)
 8. Sonido del yunque: Sonido del yunque de minecraft (https://gamepedia.cursecdn.com/minecraft_gamepedia/8/8c/Anvil_land.ogg)
 9. Tipografía empleada en los textos: Enchanted Land (https://www.dafont.com/es/enchanted-land.font)
+10. Tutorial de la pantalla de carga (https://gamedevacademy.org/creating-a-preloading-screen-in-phaser-3/)
