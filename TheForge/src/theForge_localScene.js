@@ -1,5 +1,3 @@
-//CAMBIAR LO DE IR AL HORNO ANTES DEL TEMPLADO
-
 "use strict";
 
 //Inicialización de la escena del juego en local
