@@ -99,6 +99,7 @@ El segundo jugador tendrá los siguientes controles:
 
 ## MUESTRAS DEL DISEÑO
 ![CAPTURA DE PANTALLA DEL MENÚ](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/CapturaMenu.PNG)
+
 Menú principal de juego. Los botones permiten el acceso a las distintas pantallas disponibles. El botón de juego online permanecerá desactivado hasta la siguiente fase.
 
 [CAPTURA DE PANTALLA DE LA PANTALLA DE AJUSTES]
