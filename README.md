@@ -102,8 +102,9 @@ El segundo jugador tendrá los siguientes controles:
 
 Menú principal de juego. Los botones permiten el acceso a las distintas pantallas disponibles. El botón de juego online permanecerá desactivado hasta la siguiente fase.
 
-[CAPTURA DE PANTALLA DE LA PANTALLA DE AJUSTES]
-Se dispone de la opción de cambiar los controles que usen ambos jugadores y los volúmenes tanto de la música como del sonido. Existe un botón para restablecer los controles por defecto.
+![CAPTURA DE PANTALLA DE LA PANTALLA DE AJUSTES](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/CapturaAjustes.PNG)
+
+Se dispone de la opción de cambiar los controles que usen ambos jugadores y los volúmenes tanto de la música como de los efectos de sonido. Existe un botón para restablecer los controles por defecto.
 
 [CAPTURA DE PANTALLA DE LA GUIA]
 Guía textual y visual que permite pasar de unas páginas a otras para que el jugador vea todo lo que puede hacer y todos los controles disponibles.
@@ -114,7 +115,7 @@ El jugador uno puede elegir entre los dos personajes disponibles en este momento
 
 ![CAPTURA DE PANTALLA DEL JUEGO](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/CapturaPartida.PNG)
 
-Captura de pantalla de una partida en proceso. Su funcionamiento queda detallado tanto en previos apartados del readme como en las instrucciones de la guía. [Insertar descripción de acciones]
+Captura de pantalla de una partida en proceso. Su funcionamiento queda detallado tanto en previos apartados del readme como en las instrucciones de la guía. En la imagen el juego acaba de empezar, por lo tanto se pueden ver las posiciones iniciales de ambos herreros y la disposición del escenario y de la interfaz disponible.
 
 [CAPTURA DE PANTALLA DEL FIN DE PARTIDA]
 Se indica el jugador ganador junto con un letrero de victoria. Vuelve al menú principal.
