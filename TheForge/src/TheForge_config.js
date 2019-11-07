@@ -12,7 +12,7 @@ var config = {
         },
         fps: 50
     },
-    scene: [sc_Preloader, sc_menuPrincipal, sc_SeleccionPersonaje, sc_Game] //Importante meter todas las escenas aquí
+    scene: [sc_Preloader, sc_menuPrincipal, sc_SeleccionPersonaje, sc_Game, sc_Guia] //Importante meter todas las escenas aquí
 };
 
 

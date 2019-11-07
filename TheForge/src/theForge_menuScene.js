@@ -163,6 +163,11 @@ function Menu(escena)
             buttonPress.visible = false;
             if (type == "local" && pressed === true)
                 escena.scene.start("SeleccionPersonaje");
+
+            if (type == "guia" && pressed === true)
+            {                
+                escena.scene.start("Guia");
+            }
             pressed = false;
         });
     }

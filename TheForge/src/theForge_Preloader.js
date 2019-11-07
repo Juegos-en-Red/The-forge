@@ -180,6 +180,35 @@ sc_Preloader.preload = function()
 
     // Triple cartel de prohibido
     this.load.image("tripleMuro", "../assets/mundo/prohibido3.png");
+
+    // Imágenes de la guía
+    this.load.image("botonDer", "../assets/guia/botonDer.png");
+
+    this.load.image("botonIzda", "../assets/guia/botonIzda.png");
+
+    this.load.image("historia", "../assets/guia/historia.png");
+
+    this.load.image("controles", "../assets/guia/controles.png");
+
+    this.load.image("cajones", "../assets/guia/cajones.png");
+
+    this.load.image("hornos", "../assets/guia/hornos.png");
+
+    this.load.image("moldeguia", "../assets/guia/moldeGuia.png");
+
+    this.load.image("yunques", "../assets/guia/yunques.png");
+
+    this.load.image("mesaguia", "../assets/guia/mesaGuia.png");
+
+    this.load.image("barrilTemp", "../assets/guia/barrilTemp.png");
+
+    this.load.image("monstruo", "../assets/guia/monstruo.png");
+
+    this.load.image("basuraguia", "../assets/guia/basuraGuia.png");
+
+    this.load.image("trampas", "../assets/guia/trampas.png");
+
+    this.load.image("cruz", "../assets/guia/cruz.png");
 }
 
 sc_Preloader.create = function()
