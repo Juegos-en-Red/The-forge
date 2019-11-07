@@ -20,6 +20,7 @@ sc_juegoLocal.create = function() {
     mus_menu.currentTime = 0;
     mus_game.play();
 
+
     //Aquí se carga el fondo del juego
     this.add.image(400, 300, 'sky');
 
@@ -130,6 +131,17 @@ sc_juegoLocal.create = function() {
         child.status = sc_juegoLocal.add.image(child.x-6, child.y-25, 'empty');
     });
 
+    //Inicialización de trampas
+    sc_juegoLocal.altarTrampas = this.physics.add.staticSprite(400,  510, 'altar1');
+    sc_juegoLocal.altarTrampas.trampa = "none";
+    sc_juegoLocal.altarTrampas.timer = 0;
+    sc_juegoLocal.altarTrampas.trampaSprite = sc_juegoLocal.add.image(sc_juegoLocal.altarTrampas.x, sc_juegoLocal.altarTrampas.y, 'empty');
+    sc_juegoLocal.trampasb = this.physics.add.staticGroup();
+    sc_juegoLocal.trampasb.create(340, 530, 'btnAltar');
+    sc_juegoLocal.trampasb.create(460, 530, 'btnAltar');
+
+    sc_juegoLocal.muros = this.physics.add.staticGroup();
+
     //Inicialización de jugadores
     sc_juegoLocal.players = this.physics.add.group();
 
@@ -181,6 +193,8 @@ sc_juegoLocal.create = function() {
         //interacted se activa al pulsar la tecla de interacción y se desactiva al levantarla.
         //Sirve para obligar al jugador a pulsar varias veces, ya que si no podría mantener el botón pulsado y se interactuaría constantemente.
         child.interacted = false;
+        child.trampa = "none";
+        child.tiempoInmovil = 0;
     });
     
     //Inicialización de mesas
@@ -240,6 +254,9 @@ sc_juegoLocal.create = function() {
         that.physics.add.collider(child, sc_juegoLocal.hornosd);
         that.physics.add.collider(child, sc_juegoLocal.yunquesd);
         that.physics.add.collider(child, sc_juegoLocal.monstruos);
+        that.physics.add.collider(child, sc_juegoLocal.altarTrampas);
+        that.physics.add.collider(child, sc_juegoLocal.muros);
+        that.physics.add.overlap(child, sc_juegoLocal.trampasb, cogerTrampa, null, that);
     });
 
     //Esta función se ejecutará al dejar de pulsar una tecla
@@ -324,6 +341,18 @@ sc_juegoLocal.create = function() {
                 interactuar(sc_juegoLocal.player);
                 sc_juegoLocal.player.interacted = true;
             break;
+            case cont.p1.i2:
+                switch(sc_juegoLocal.player.trampa) {
+                    case "trampaReloj":
+                        sc_juegoLocal.player2.tiempoInmovil = 250;
+                        sc_juegoLocal.player.trampa = "none";
+                        break;
+                    case "trampaMuro":
+                        sc_juegoLocal.muros.create(590, 320, 'tripleMuro').timer = 1000;
+                        sc_juegoLocal.player.trampa = "none";
+                        break;
+                }
+            break;
 
             //jugador 2
             case cont.p2.w:
@@ -341,6 +370,18 @@ sc_juegoLocal.create = function() {
             case cont.p2.i1:
                 interactuar(sc_juegoLocal.player2);
                 sc_juegoLocal.player2.interacted = true;
+            break;
+            case cont.p2.i2:
+                switch(sc_juegoLocal.player2.trampa) {
+                    case "trampaReloj":
+                        sc_juegoLocal.player.tiempoInmovil = 250;
+                        sc_juegoLocal.player2.trampa = "none";
+                        break;
+                    case "trampaMuro":
+                        sc_juegoLocal.muros.create(210, 320, 'tripleMuro').timer = 1000;
+                        sc_juegoLocal.player2.trampa = "none";
+                        break;
+                }
             break;
         }
     });
@@ -467,8 +508,42 @@ sc_juegoLocal.update = function() {
     //Llamar a actualizarRecetas();
     actualizarRecetas();
 
+    //Altar trampas
+    if (sc_juegoLocal.altarTrampas.timer == 1000) {
+        //activar trampa
+        if (Phaser.Math.Between(1, 2) == 2) {
+            sc_juegoLocal.altarTrampas.trampa = "trampaReloj";
+            sc_juegoLocal.altarTrampas.trampaSprite.setTexture("trampaReloj");
+            sc_juegoLocal.altarTrampas.setTexture("altar2");
+        } else {
+            sc_juegoLocal.altarTrampas.trampa = "trampaMuro";
+            sc_juegoLocal.altarTrampas.trampaSprite.setTexture("trampaMuro");
+            sc_juegoLocal.altarTrampas.setTexture("altar2");
+        }
+        sc_juegoLocal.altarTrampas.timer++;
+    } else if (sc_juegoLocal.altarTrampas.timer >= 2000) {
+        //defusear trampa
+        sc_juegoLocal.altarTrampas.trampa = "none";
+        sc_juegoLocal.altarTrampas.trampaSprite.setTexture("empty");
+        sc_juegoLocal.altarTrampas.setTexture("altar1");
+        sc_juegoLocal.altarTrampas.timer = 0;
+    } else {
+        sc_juegoLocal.altarTrampas.timer++;
+    }
+
+    sc_juegoLocal.muros.children.iterate(function(child){
+        if (child.timer > 0) child.timer--;
+        if (child.timer == 0) child.destroy();
+    });
+
     //Esta función afecta a todos los jugadores
     sc_juegoLocal.players.children.iterate(function(child){
+        if (child.tiempoInmovil > 0) {
+            child.spdX = 0;
+            child.spdY = 0;
+            child.tiempoInmovil--;
+            //console.log(child.tiempoInmovil);
+        }
         //Si el personaje no se está moviendo, sus animaciones paran
         if (child.spdX == 0 && child.spdY == 0) {
             child.heldObjectSprite.anims.stopOnRepeat();
@@ -494,6 +569,8 @@ sc_juegoLocal.update = function() {
 
         child.heldObjectSprite2.setX(child.x);
         child.heldObjectSprite2.setY(child.y);
+
+        
 
     });
     
@@ -2203,9 +2280,9 @@ function interactuarMonstruos(p) {
                 sc_juegoLocal.pausedOverlay.setTexture('pausedOverlay');
                 sc_juegoLocal.botonPausa.removeInteractive();
                 sc_juegoLocal.pausedOverlay.setInteractive();
-                sc_localScene.that = this;
+                sc_juegoLocal.that = this;
                 sc_juegoLocal.pausedOverlay.on('pointerup', function() {
-                    sc_localScene.that.scene.start("MenuPrincipal");
+                    sc_juegoLocal.scene.start("MenuPrincipal");
                 });
                 sc_juegoLocal.victory = sc_juegoLocal.add.image(400, 200, 'victoria');
                 if (cont.p1.ch == "SSHielo1") {
@@ -2216,7 +2293,6 @@ function interactuarMonstruos(p) {
             }
         }
     }
-
     if (sc_juegoLocal.recetas2[0] == p.heldObject) {
         if (Phaser.Math.Distance.Between(p.x, p.y, sc_juegoLocal.monstruo2.x, sc_juegoLocal.monstruo2.y) < 0.55*Math.max(sc_juegoLocal.monstruo2.body.width, sc_juegoLocal.monstruo2.body.height)+0.55*Math.max(p.body.width, p.body.height)) {
             armarMonstruo(sc_juegoLocal.monstruo2, p.heldObject)
@@ -2229,9 +2305,9 @@ function interactuarMonstruos(p) {
                 sc_juegoLocal.pausedOverlay.setTexture('pausedOverlay');
                 sc_juegoLocal.botonPausa.removeInteractive();
                 sc_juegoLocal.pausedOverlay.setInteractive();
-                sc_localScene.that = this;
+                sc_juegoLocal.that = this;
                 sc_juegoLocal.pausedOverlay.on('pointerup', function() {
-                    sc_localScene.that.scene.start("MenuPrincipal");
+                    sc_juegoLocal.scene.start("MenuPrincipal");
                 });
                 sc_juegoLocal.victory = sc_juegoLocal.add.image(400, 200, 'victoria');
                 if (cont.p2.ch == "SSHielo1") {
@@ -2311,4 +2387,13 @@ function armarMonstruo(m, ho) {
                 break;
         }
     }
+}
+
+function cogerTrampa(p, t) {
+    if (sc_juegoLocal.altarTrampas.trampa == "none") return;
+    p.trampa = sc_juegoLocal.altarTrampas.trampa;
+    sc_juegoLocal.altarTrampas.trampa = "none";
+    sc_juegoLocal.altarTrampas.timer = 0;
+    sc_juegoLocal.altarTrampas.trampaSprite.setTexture("empty");
+    sc_juegoLocal.altarTrampas.setTexture("altar1");
 }

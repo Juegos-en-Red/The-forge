@@ -171,6 +171,8 @@ function Menu(escena)
                 escena.scene.start("SeleccionPersonaje");
             if (type == "ajustes" && pressed === true)
                 escena.scene.start("MenuAjustes");
+            if (type == "guia" && pressed === true)
+                escena.scene.start("Guia");
             pressed = false;
         });
     }
