@@ -88,6 +88,7 @@ Los controles al jugar online serán los mismos que los del primer jugador en mo
 * W, A, S, D: Movimiento del personaje
 * E: Coger objetos
 * Q: Lanzar objetos
+
 El segundo jugador tendrá los siguientes controles:
 * Flechas de dirección: Movimiento del personaje
 * O: Coger objetos
@@ -97,7 +98,8 @@ El segundo jugador tendrá los siguientes controles:
 ![Diagrama de navegación entre las distintas pantallas](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/Diagrama.png)
 
 ## MUESTRAS DEL DISEÑO
-[CAPTURA DE PANTALLA DEL MENÚ]
+![CAPTURA DE PANTALLA DEL MENÚ](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/CapturaMenu.PNG)
+
 Menú principal de juego. Los botones permiten el acceso a las distintas pantallas disponibles. El botón de juego online permanecerá desactivado hasta la siguiente fase.
 
 [CAPTURA DE PANTALLA DE LA PANTALLA DE AJUSTES]
