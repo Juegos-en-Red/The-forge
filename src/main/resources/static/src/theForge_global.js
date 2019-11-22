@@ -26,7 +26,9 @@ var cont = {
         ch: 'SSElfa1'
     },
     mus_vol: 0.5,
-    snd_vol: 0.5
+    snd_vol: 0.5,
+    online: true,
+    server_ip: null
 }
 
 //funciones de música por aquí

@@ -66,7 +66,7 @@ function Menu(escena)
         // Cambiamos el origen de coordenadas al punto (0.5, 0)
         this.online.setOrigin(0.5, 0);
         // Cambiamos el alpha de este botón para indicar que no está disponible
-        this.online.alpha = 0.2;
+        this.online.alpha = cont.online?1:0.2;
 
         // Botón de ajustes
         this.ajustes = escena.add.sprite(config.width / 2, 400, "ajustes_btn").setPipeline('Light2D');
@@ -94,7 +94,7 @@ function Menu(escena)
         // Lo ponemos invisible
         this.onlinePress.visible = false;    
         // Cambiamos el alpha de este botón para indicar que no está disponible
-        this.onlinePress.alpha = 0.2;    
+        this.onlinePress.alpha = cont.online?1:0.2;    
 
         // Botón de ajustes
         this.ajustesPress = escena.add.sprite(config.width / 2, 400, "ajustes_btnPressed").setPipeline('Light2D');
@@ -123,6 +123,10 @@ function Menu(escena)
         // Botón de local
         mouseClick(this.local, this.localPress, "local");
 
+        // Botón de online
+        if (cont.online)
+            mouseClick(this.online, this.onlinePress, "online");
+
         // Botón de ajustes
         mouseClick(this.ajustes, this.ajustesPress, "ajustes");
 
@@ -134,6 +138,10 @@ function Menu(escena)
 
         // Botón de local
         mouseBg(this.localPress, this.bg);
+
+        // Botón de online
+        if (cont.online)
+            mouseBg(this.onlinePress, this.bg);
 
         // Botón de ajustes
         mouseBg(this.ajustesPress, this.bg);
@@ -173,6 +181,8 @@ function Menu(escena)
                 escena.scene.start("MenuAjustes");
             if (type == "guia" && pressed === true)
                 escena.scene.start("Guia");
+            if (type == "online" && pressed === true && cont.online)
+                escena.scene.start("OnlineIP");
             pressed = false;
         });
     }

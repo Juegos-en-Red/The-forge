@@ -30,7 +30,7 @@ sc_Guia.create = function(escena)
     cross = this.add.image(650, 20, "cruz2").setOrigin(0, 0);
     cross.setInteractive().on("pointerdown", function(pointer)
     {
-        sc_Guia.scene.switch("MenuPrincipal");
+        sc_Guia.scene.start("MenuPrincipal");
     })
     cross.inputEnabled = true;
 
@@ -77,7 +77,7 @@ sc_Guia.update = function(time, delta)
         
     if (Phaser.Input.Keyboard.JustDown(escape))
         {
-            sc_Guia.scene.switch("MenuPrincipal");
+            sc_Guia.scene.start("MenuPrincipal");
         }
 }
 
