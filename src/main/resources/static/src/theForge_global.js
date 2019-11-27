@@ -28,7 +28,8 @@ var cont = {
     mus_vol: 0.5,
     snd_vol: 0.5,
     online: true,
-    server_ip: null
+    server_ip: null,
+    connected: false
 }
 
 //funciones de música por aquí
@@ -48,3 +49,19 @@ snd_yunque.src = "../assets/audio/snd_yunque.ogg";
 snd_yunque.loop = false;
 snd_yunque.volume = cont.snd_vol;
 
+function contactServer() {
+    if (cont.connected) {
+        $.ajax({
+            method: "PUT",
+            url: "http://" + cont.server_ip + ":8080/players/1",
+            data: JSON.stringify({
+                name: "PACO",
+                timeout: 10
+            })
+        }).done(function (item) {
+            console.log("Item created: " + JSON.stringify(item));
+            callback(item);
+        });
+        setTimeout(contactServer, 3000)
+    }
+}

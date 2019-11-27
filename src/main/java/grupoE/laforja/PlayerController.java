@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableScheduling
 @RestController
 public class PlayerController {
-	private Player[] players = new Player[2];
-	private boolean[] ids = new boolean[2]; //Array que guarda si los ids de los jugadores están ocupados
+	private Player[] players = new Player[100];
+	private boolean[] ids = new boolean[100]; //Array que guarda si los ids de los jugadores están ocupados
 	
 	//Método get de los jugadores
 	@GetMapping("/players/")
@@ -27,22 +27,30 @@ public class PlayerController {
 		return players;
 	}
 	
+	//Método para que los clientes sepan si hay huecos
+	@GetMapping("/freeSlots/")
+	public int freeSlots() {
+		int i = ids.length;
+		for (int j = 0; j < ids.length; j++) {
+			if (ids[j]) {
+				i--;
+			}
+		}
+		return i;
+	}
+	
 	//Conexión del cliente por primera vez
 	@PostMapping("/players/")
 	public ResponseEntity<Player> newPlayer(@RequestBody Player player) {
-		if (!ids[0]) {
-			player.setId(0);
-			players[0] = player;
-			ids[0] = true;
-			return new ResponseEntity<>(player,HttpStatus.OK);
-		} else if (!ids[1]) {
-			player.setId(1);
-			players[1] = player;
-			ids[1] = true;
-			return new ResponseEntity<>(player,HttpStatus.OK);
-		} else {
-			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		for (int i = 0; i < ids.length; i++) {
+			if (!ids[i]) {
+				player.setId(i);
+				players[i] = player;
+				ids[i] = true;
+				return new ResponseEntity<>(player,HttpStatus.OK);
+			}
 		}
+		return new ResponseEntity<>(HttpStatus.CONFLICT);
 		
 	}
 	
@@ -77,6 +85,10 @@ public class PlayerController {
 		for (int i = 0; i < players.length; i++) {
 			if (players[i] != null) {
 				players[i].setTimeout(players[i].getTimeout()-1);
+				if (players[i].getTimeout() == 0) {
+					players[i] = null;
+					ids[i] = false;
+				}
 			}
 		}
 	}
