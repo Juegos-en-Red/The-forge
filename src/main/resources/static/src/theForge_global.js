@@ -53,14 +53,17 @@ function contactServer() {
     if (cont.connected) {
         $.ajax({
             method: "PUT",
-            url: "http://" + cont.server_ip + ":8080/players/1",
+            url: "http://" + cont.server_ip + "/players/0",
             data: JSON.stringify({
                 name: "PACO",
                 timeout: 10
-            })
+            }),
+            processData: false,
+            headers: {
+                "Content-type": "application/json"
+            }
         }).done(function (item) {
-            console.log("Item created: " + JSON.stringify(item));
-            callback(item);
+            console.log("Item updated: " + JSON.stringify(item));
         });
         setTimeout(contactServer, 3000)
     }

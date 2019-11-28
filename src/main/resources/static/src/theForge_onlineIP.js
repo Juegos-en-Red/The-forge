@@ -27,22 +27,38 @@ sc_onlineIP.create = function() {
                     url: 'http://' + cont.server_ip + '/freeSlots/',
                     timeout: 5000,
                     success: function(item, textStatus, jqXHR) {
-                        console.log("Item created: " + JSON.stringify(item));
+                        console.log("Slots available: " + JSON.stringify(item));
                         console.log("Status: " + jqXHR.status + " " + textStatus);
-                        if (jqXHR.status == 200) {
+                        if (jqXHR.status === 200) {
                             $.ajax({
                                 method: "POST",
-                                url: "http://" + cont.server_ip + ":8080/players/",
+                                url: "http://" + cont.server_ip + "/players/",
                                 data: JSON.stringify({
                                     name: "PACO",
                                     timeout: 10
-                                })
-                            }).done(function (item) {
+                                }),
+                                processData: false,
+                                headers: {
+                                    "Content-type": "application/json"
+                                }
+                            }).success(function (item) {
                                 console.log("Item created: " + JSON.stringify(item));
-                                callback(item);
+                                cont.connected = true;
+                                contactServer();
+                            }).error(function (jqXhr, textStatus, errorMessage) {
+                                console.log("Error: " + errorMessage);
+                                console.log("TEXT STATUS: " + textStatus);
+                                sc_onlineIP.fadeOutTween.stop();
+                                sc_onlineIP.tweens.add({
+                                    targets: input,
+                                    alpha: {from: 0, to: 1},
+                                    ease: 'Linear',
+                                    onStart: function() {
+                                        input.setVisible(true);
+                                        input.addListener('click');
+                                    }
+                                });
                             });
-                            cont.connected = true;
-                            contactServer();
                         }
                     },
                     error: function(jqXhr, textStatus, errorMessage){

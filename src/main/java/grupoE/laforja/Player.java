@@ -3,6 +3,7 @@ package grupoE.laforja;
 public class Player {
 	private int id = -1;
 	private String name;
+	private String password;
 	private int timeout;
 	private String character;
 	private int opponentId = -1;
@@ -12,14 +13,23 @@ public class Player {
 	public Player() {}
 	public Player(String name, int timeout) {
 		this.name = name;
+		this.password = password;
 		this.timeout = timeout;
 		this.character = null;
 	}
 	
 	public Player(String name, int timeout, String character) {
 		this.name = name;
+		this.password = password;
 		this.timeout = timeout;
 		this.character = character;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	public int getId() {
 		return id;
