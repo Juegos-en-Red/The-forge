@@ -29,7 +29,9 @@ var cont = {
     snd_vol: 0.5,
     online: true,
     server_ip: null,
-    connected: false
+    connected: false, 
+    id: -1,
+    ch: 'SSHielo1'
 }
 
 //funciones de música por aquí
@@ -51,13 +53,11 @@ snd_yunque.volume = cont.snd_vol;
 
 function contactServer() {
     if (cont.connected) {
+        console.log(cont.id);
         $.ajax({
             method: "PUT",
-            url: "http://" + cont.server_ip + "/players/0",
-            data: JSON.stringify({
-                name: "PACO",
-                timeout: 10
-            }),
+            url: "http://" + cont.server_ip + "/reminder/"+cont.id,
+            data: JSON.stringify({timeout: 10}),
             processData: false,
             headers: {
                 "Content-type": "application/json"

@@ -3,6 +3,13 @@ package grupoE.laforja;
 
 import grupoE.laforja.Player;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.annotation.PostConstruct;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -22,6 +29,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class PlayerController {
 	private Player[] players = new Player[100];
 	private boolean[] ids = new boolean[100]; //Array que guarda si los ids de los jugadores están ocupados
+	private ArrayList<Player> registeredPlayers = new ArrayList<Player>();
+	
+	@PostConstruct
+	public void init() {
+		
+	}
+	
 	
 	//Método get de los jugadores
 	@GetMapping("/players/")
@@ -41,16 +55,25 @@ public class PlayerController {
 		return i;
 	}
 	
-	//Conexión del cliente por primera vez
+	private int getFirstFreeSlot() {
+		for(int i = 0; i < ids.length; i++) {
+			if (!ids[i]) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	//Conexión del cliente por primera vez. Devuelve su id. Igual ni se va a usar.
 	@PostMapping("/players/")
-	public ResponseEntity<Player> newPlayer(@RequestBody Player player) {
+	public ResponseEntity<Integer> newPlayer(@RequestBody Player player) {
 		for (int i = 0; i < ids.length; i++) {
 			if (!ids[i]) {
 				System.out.println(i);
 				player.setId(i);
 				players[i] = player;
 				ids[i] = true;
-				return new ResponseEntity<>(player,HttpStatus.OK);
+				return new ResponseEntity<>(i,HttpStatus.OK);
 			}
 		}
 		return new ResponseEntity<>(HttpStatus.CONFLICT);
@@ -59,23 +82,71 @@ public class PlayerController {
 	
 	//Método login
 	@PostMapping("/login/")
-	public ResponseEntity<Player> login(@RequestBody Player player) {
-		for (int i = 0; i < players.length; i++) {
-			if (players[i].getName() == player.getName()) {
-				if (players[i].getPassword() == player.getPassword()) {
-					player.setId(i);
-					players[i] = player;
-					ids[i] = true;
-					return new ResponseEntity<>(player,HttpStatus.OK);
+	public ResponseEntity<Integer> login(@RequestBody Player player) {
+		/*for (int i = 0; i < players.length; i++) {
+			if (ids[i]) {
+				if (players[i].getName() == player.getName()) {
+					if (players[i].getPassword() == player.getPassword()) {
+						player.setId(i);
+						players[i] = player;
+						ids[i] = true;
+						//System.out.println("OK");
+						return new ResponseEntity<>(i,HttpStatus.OK);
+					} else {
+						//System.out.println("UNAUTHORIZED");
+						return new ResponseEntity<>(-1, HttpStatus.UNAUTHORIZED);
+					}
+				}
+			}
+		}*/
+		
+		for (Player p : registeredPlayers) {
+			if (p.getName().equals(player.getName())) {
+				if (p.getPassword().equals(player.getPassword())) {
+					player.setId(getFirstFreeSlot());
+					players[player.getId()] = player;
+					ids[player.getId()] = true;
+					//System.out.println("OK");
+					return new ResponseEntity<>(player.getId(),HttpStatus.OK);
 				} else {
-					return new ResponseEntity<>(player, HttpStatus.UNAUTHORIZED);
+					//System.out.println("UNAUTHORIZED");
+					return new ResponseEntity<>(-1, HttpStatus.UNAUTHORIZED);
 				}
 			}
 		}
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		
+		//System.out.println("NOT FOUND");
+		return new ResponseEntity<>(-1, HttpStatus.NOT_FOUND);
 	}
 	
 	//Método registrarse
+	@PostMapping("/register/")
+	public ResponseEntity<Integer> register(@RequestBody Player player) {
+		int firstEmptyId = getFirstFreeSlot();
+		
+		//System.out.print(registeredPlayers.isEmpty());
+		for (Player p : registeredPlayers) {
+			if (p.getName().equals(player.getName())) {
+				return new ResponseEntity<>(HttpStatus.CONFLICT);
+			}
+		}
+		registeredPlayers.add(player);
+		player.setId(firstEmptyId);
+		players[firstEmptyId] = player;
+		ids[firstEmptyId] = true;
+		try {
+			BufferedWriter out = new BufferedWriter(new FileWriter ("users.txt", true));
+			out.append(player.getName() + " " + player.getPassword() + " " + player.getWins() + " " + player.getLosses());
+			out.newLine();
+			out.close();
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+		return new ResponseEntity<>(firstEmptyId,HttpStatus.CREATED);
+	}
+	
+	
 	
 	//Método que actualiza los datos del jugador
 	@PutMapping("/players/{id}")
@@ -84,6 +155,17 @@ public class PlayerController {
 			player.setId(id);
 			players[id] = player;
 			return new ResponseEntity<>(player,HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
+	}
+	
+	@PutMapping("/reminder/{id}")
+	public ResponseEntity<Integer> resetTimeout(@PathVariable int id, @RequestBody Timeout timeout) {
+		if (ids[id]) {
+			players[id].setTimeout(timeout.getTimeout());
+			return new ResponseEntity<>(timeout.getTimeout(),HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}

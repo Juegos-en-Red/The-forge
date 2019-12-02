@@ -9,16 +9,18 @@ public class Player {
 	private int opponentId = -1;
 	private String opponentName = null;
 	private boolean inGame = false;
+	private int wins = 0;
+	private int losses = 0;
 	
 	public Player() {}
-	public Player(String name, int timeout) {
+	public Player(String name, String password, int timeout) {
 		this.name = name;
 		this.password = password;
 		this.timeout = timeout;
 		this.character = null;
 	}
 	
-	public Player(String name, int timeout, String character) {
+	public Player(String name, String password, int timeout, String character) {
 		this.name = name;
 		this.password = password;
 		this.timeout = timeout;
@@ -72,6 +74,18 @@ public class Player {
 	}
 	public void setInGame(boolean inGame) {
 		this.inGame = inGame;
+	}
+	public int getWins() {
+		return wins;
+	}
+	public void setWins(int wins) {
+		this.wins = wins;
+	}
+	public int getLosses() {
+		return losses;
+	}
+	public void setLosses(int losses) {
+		this.losses = losses;
 	}
 	
 }
