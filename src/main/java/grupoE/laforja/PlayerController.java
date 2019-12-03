@@ -42,7 +42,6 @@ public class PlayerController {
 			
 			while (line != null) {
 				String[] data = line.split(" ");
-				//System.out.println(data[0]+","+data[1]+","+data[2]+","+data[3]);
 				registeredPlayers.add(new Player(data[0],data[1],Integer.parseInt(data[2]),data[3]));
 				line = in.readLine();
 			}

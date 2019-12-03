@@ -403,6 +403,14 @@ sc_Preloader.preload = function()
 
     this.load.image("cruz2", "../assets/guia/cruz2.png");
 
+    //ONLINE
+    
+    this.load.image("fondo online-lobby", "../assets/online/fondo online-lobby.png");
+    this.load.image("botonConectar", "../assets/online/botonConectar.png");
+    this.load.image("botonIniciarSesion", "../assets/online/botonIniciarSesion.png");
+    this.load.image("botonRegistrarse", "../assets/online/botonRegistrarse.png");
+
+
 }
 
 sc_Preloader.create = function()

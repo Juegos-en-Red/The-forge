@@ -11,12 +11,15 @@ sc_onlineIP.preload = function() {
 
 sc_onlineIP.create = function() {
 
+    this.bg = sc_onlineIP.add.image(400, 300, "fondo online-lobby");
+    var inputButton = sc_onlineIP.add.sprite(400, 350, "botonConectar");
+
     sc_onlineIP.textInfo = sc_onlineIP.add.text(400, 200, "\nIntroduce la dirección del servidor", {fontSize: '30px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2, align: 'center'}).setOrigin(0.5, 0.5);
     var input = this.add.dom(400,300).createFromCache('input');
 
-    input.on('click', function (event) {
-        if (event.target.name === 'playButton') {
-            var inputText = this.getChildByName('nameField');
+    inputButton.on('pointerdown', function (event) {
+        //if (event.target.name === 'playButton') {
+            var inputText = input.getChildByName('nameField');
             if (inputText.value !== '') {
 
                 sc_onlineIP.fadeOutTween.play();
@@ -34,39 +37,6 @@ sc_onlineIP.create = function() {
                         console.log("Status: " + jqXHR.status + " " + textStatus);
                         if (jqXHR.status === 200) {
                             showLoginPrompt();
-
-
-                            /*$.ajax({
-                                method: "POST",
-                                url: "http://" + cont.server_ip + "/players/",
-                                data: JSON.stringify({
-                                    name: "PACO",
-                                    timeout: 10
-                                }),
-                                processData: false,
-                                headers: {
-                                    "Content-type": "application/json"
-                                }
-                            }).success(function (item) {
-                                cont.id = item;
-                                console.log(item);
-                                //console.log("Item created: " + JSON.stringify(item));
-                                cont.connected = true;
-                                contactServer();
-                            }).error(function (jqXhr, textStatus, errorMessage) {
-                                console.log("Error: " + errorMessage);
-                                console.log("TEXT STATUS: " + textStatus);
-                                sc_onlineIP.fadeOutTween.stop();
-                                sc_onlineIP.tweens.add({
-                                    targets: input,
-                                    alpha: {from: 0, to: 1},
-                                    ease: 'Linear',
-                                    onStart: function() {
-                                        input.setVisible(true);
-                                        input.addListener('click');
-                                    }
-                                });
-                            });*/
                         }
                     },
                     error: function(jqXhr, textStatus, errorMessage){
@@ -76,12 +46,13 @@ sc_onlineIP.create = function() {
                         //sc_onlineIP.fadeInTween.restart();
                         sc_onlineIP.fadeOutTween.stop();
                         sc_onlineIP.tweens.add({
-                            targets: input,
+                            targets: [input,inputButton],
                             alpha: {from: 0, to: 1},
                             ease: 'Linear',
                             onStart: function() {
                                 input.setVisible(true);
-                                input.addListener('click');
+                                inputButton.setVisible(true);
+                                inputButton.setInteractive();
                             }
                         });
                         //sc_onlineIP.fadeInTween.play();
@@ -89,25 +60,29 @@ sc_onlineIP.create = function() {
                 });
 
             }
-        }
+        //}
     });
     sc_onlineIP.fadeInTween = sc_onlineIP.tweens.add({
-        targets: input,
+        targets: [input,inputButton],
         alpha: {from: 0, to: 1},
         ease: 'Linear',
         onStart: function() {
             input.setVisible(true);
-            input.addListener('click');
+            inputButton.setVisible(true);
+            inputButton.setInteractive();
         }
     });
 
     sc_onlineIP.fadeOutTween = sc_onlineIP.tweens.add({
-        targets: input,
+        targets: [input,inputButton],
         alpha: {from: 1, to: 0},
         ease: 'Linear',
+        onStart: function() {
+            inputButton.removeInteractive(); 
+        },
         onComplete: function() {
             input.setVisible(false);
-            input.removeListener('click');
+            inputButton.setVisible(false);
         }
     });
     sc_onlineIP.fadeOutTween.stop();
@@ -119,146 +94,163 @@ sc_onlineIP.update = function() {
 
 function showLoginPrompt() {
     var login = sc_onlineIP.add.dom(400,300).createFromCache('login');
+    var loginButton = sc_onlineIP.add.sprite(300, 400, "botonIniciarSesion");
+    var registerButton = sc_onlineIP.add.sprite(500, 400, "botonRegistrarse");
     sc_onlineIP.textInfo.setText("\nIntroduzca su nombre de usuario y contraseña");
 
     var loginFadeIn = sc_onlineIP.tweens.add({
-        targets: login,
+        targets: [login,loginButton,registerButton],
         alpha: {from: 0, to: 1},
         ease: 'Linear',
         onStart: function() {
             login.setVisible(true);
-            login.addListener('click');
+            loginButton.setVisible(true);
+            registerButton.setVisible(true);
+            loginButton.setInteractive();
+            registerButton.setInteractive();
         }
     });
 
     var loginFadeOut = sc_onlineIP.tweens.add({
-        targets: login,
+        targets: [login,loginButton,registerButton],
         alpha: {from: 1, to: 0},
         ease: 'Linear',
+        onStart: function() {
+            loginButton.removeInteractive(); 
+            registerButton.removeInteractive(); 
+        },
         onComplete: function() {
             login.setVisible(false);
-            login.removeListener('click');
+            loginButton.setVisible(false);
+            registerButton.setVisible(false);
         }
     });
     loginFadeOut.stop();
 
-    login.on('click', function (event) {
-        if (event.target.name === 'loginButton') {
-            var inputText = this.getChildByName('nameField');
-            var inputPassword = this.getChildByName('passwordField');
-            if (inputText.value !== '' && inputPassword.value !== '') {
-                loginFadeOut.play();
-                sc_onlineIP.textInfo.setText("\nIniciando sesión...");
-                $.ajax({
-                    method: "POST",
-                    url: "http://" + cont.server_ip + "/login/",
-                    data: JSON.stringify({
-                        name: inputText.value,
-                        password: inputPassword.value,
-                        timeout: 10
-                    }),
-                    processData: false,
-                    headers: {
-                        "Content-type": "application/json"
-                    },
-                    success: function(item, textStatus, jqXHR) {
-                        switch(jqXHR.status) {
-                            case 200:
-                                sc_onlineIP.textInfo.setText("\nHas iniciado sesión con éxito");
-                                console.log(item);
-                                cont.id = item;
-                                cont.connected = true;
-                                contactServer();
-                                sc_onlineIP.scene.start("Lobby");
-                                break;
-                        }
-                    },
-                    error: function(jqXhr, textStatus, errorMessage){
-                        switch(jqXhr.status) {
-                            case 401:
-                                sc_onlineIP.textInfo.setText("La contraseña es incorrecta\nIntroduzca su nombre de usuario y contraseña");
-                                break;
-                            case 404:
-                                sc_onlineIP.textInfo.setText("El usuario no existe\nIntroduzca su nombre de usuario y contraseña");
-                                break;
-                            case 417:
-                                sc_onlineIP.textInfo.setText("No se permiten espacios ni en el nombre ni en la contraseña\nIntroduzca su nombre de usuario y contraseña");
-                                break;
-                            default:
-                                sc_onlineIP.textInfo.setText("No se ha logrado contactar con el servidor\nIntroduzca su nombre de usuario y contraseña");
-                                break;
-                        }
-                        loginFadeOut.stop();
-                        sc_onlineIP.tweens.add({
-                            targets: login,
-                            alpha: {from: 0, to: 1},
-                            ease: 'Linear',
-                            onStart: function() {
-                                login.setVisible(true);
-                                login.addListener('click');
-                            }
-                        });
+    loginButton.on('pointerdown', function (event) {
+        var inputText = login.getChildByName('nameField');
+        var inputPassword = login.getChildByName('passwordField');
+        if (inputText.value !== '' && inputPassword.value !== '') {
+            loginFadeOut.play();
+            sc_onlineIP.textInfo.setText("\nIniciando sesión...");
+            $.ajax({
+                method: "POST",
+                url: "http://" + cont.server_ip + "/login/",
+                data: JSON.stringify({
+                    name: inputText.value,
+                    password: inputPassword.value,
+                    timeout: 10
+                }),
+                processData: false,
+                headers: {
+                    "Content-type": "application/json"
+                },
+                success: function(item, textStatus, jqXHR) {
+                    switch(jqXHR.status) {
+                        case 200:
+                            sc_onlineIP.textInfo.setText("\nHas iniciado sesión con éxito");
+                            console.log(item);
+                            cont.id = item;
+                            cont.connected = true;
+                            contactServer();
+                            sc_onlineIP.scene.start("Lobby");
+                            break;
                     }
-                });
-
-            }
-        } else if (event.target.name === 'registerButton') {
-            var inputText = this.getChildByName('nameField');
-            var inputPassword = this.getChildByName('passwordField');
-            if (inputText.value !== '' && inputPassword.value !== '') {
-                loginFadeOut.play();
-                sc_onlineIP.textInfo.setText("\nRegistrando usuario...");
-                $.ajax({
-                    method: "POST",
-                    url: "http://" + cont.server_ip + "/register/",
-                    data: JSON.stringify({
-                        name: inputText.value,
-                        password: inputPassword.value,
-                        timeout: 10
-                    }),
-                    processData: false,
-                    headers: {
-                        "Content-type": "application/json"
-                    },
-                    success: function(item, textStatus, jqXHR) {
-                        switch(jqXHR.status) {
-                            case 201:
-                                sc_onlineIP.textInfo.setText("Se ha creado un nuevo usuario\nIniciando sesión...");
-                                console.log(item);
-                                cont.id = item;
-                                cont.connected = true;
-                                contactServer();
-                                sc_onlineIP.scene.start("Lobby");
-                                break;
-                        }
-                    },
-                    error: function(jqXhr, textStatus, errorMessage){
-                        switch(jqXhr.status) {
-                            case 409:
-                                sc_onlineIP.textInfo.setText("El usuario ya existe\nIntroduzca su nombre de usuario y contraseña");
-                                break;
-                            case 417:
-                                sc_onlineIP.textInfo.setText("No se permiten espacios ni en el nombre ni en la contraseña\nIntroduzca su nombre de usuario y contraseña");
-                                break;
-                            default:
-                                sc_onlineIP.textInfo.setText("No se ha logrado contactar con el servidor\nIntroduzca su nombre de usuario y contraseña");
-                                break;
-                        }
-                        console.log(jqXhr.status);
-                        loginFadeOut.stop();
-                        sc_onlineIP.tweens.add({
-                            targets: login,
-                            alpha: {from: 0, to: 1},
-                            ease: 'Linear',
-                            onStart: function() {
-                                login.setVisible(true);
-                                login.addListener('click');
-                            }
-                        });
+                },
+                error: function(jqXhr, textStatus, errorMessage){
+                    switch(jqXhr.status) {
+                        case 401:
+                            sc_onlineIP.textInfo.setText("La contraseña es incorrecta\nIntroduzca su nombre de usuario y contraseña");
+                            break;
+                        case 404:
+                            sc_onlineIP.textInfo.setText("El usuario no existe\nIntroduzca su nombre de usuario y contraseña");
+                            break;
+                        case 417:
+                            sc_onlineIP.textInfo.setText("No se permiten espacios ni en el nombre ni en la contraseña\nIntroduzca su nombre de usuario y contraseña");
+                            break;
+                        default:
+                            sc_onlineIP.textInfo.setText("No se ha logrado contactar con el servidor\nIntroduzca su nombre de usuario y contraseña");
+                            break;
                     }
-                });
+                    loginFadeOut.stop();
+                    sc_onlineIP.tweens.add({
+                        targets: [login,loginButton,registerButton],
+                        alpha: {from: 0, to: 1},
+                        ease: 'Linear',
+                        onStart: function() {
+                            login.setVisible(true);
+                            loginButton.setVisible(true);
+                            registerButton.setVisible(true);
+                            loginButton.setInteractive();
+                            registerButton.setInteractive();
+                        }
+                    });
+                }
+            });
 
-            }
+        }
+
+    });
+
+    registerButton.on('pointerdown', function (event) {
+        var inputText = login.getChildByName('nameField');
+        var inputPassword = login.getChildByName('passwordField');
+        if (inputText.value !== '' && inputPassword.value !== '') {
+            loginFadeOut.play();
+            sc_onlineIP.textInfo.setText("\nRegistrando usuario...");
+            $.ajax({
+                method: "POST",
+                url: "http://" + cont.server_ip + "/register/",
+                data: JSON.stringify({
+                    name: inputText.value,
+                    password: inputPassword.value,
+                    timeout: 10
+                }),
+                processData: false,
+                headers: {
+                    "Content-type": "application/json"
+                },
+                success: function(item, textStatus, jqXHR) {
+                    switch(jqXHR.status) {
+                        case 201:
+                            sc_onlineIP.textInfo.setText("Se ha creado un nuevo usuario\nIniciando sesión...");
+                            console.log(item);
+                            cont.id = item;
+                            cont.connected = true;
+                            contactServer();
+                            sc_onlineIP.scene.start("Lobby");
+                            break;
+                    }
+                },
+                error: function(jqXhr, textStatus, errorMessage){
+                    switch(jqXhr.status) {
+                        case 409:
+                            sc_onlineIP.textInfo.setText("El usuario ya existe\nIntroduzca su nombre de usuario y contraseña");
+                            break;
+                        case 417:
+                            sc_onlineIP.textInfo.setText("No se permiten espacios ni en el nombre ni en la contraseña\nIntroduzca su nombre de usuario y contraseña");
+                            break;
+                        default:
+                            sc_onlineIP.textInfo.setText("No se ha logrado contactar con el servidor\nIntroduzca su nombre de usuario y contraseña");
+                            break;
+                    }
+                    console.log(jqXhr.status);
+                    loginFadeOut.stop();
+                    sc_onlineIP.tweens.add({
+                        targets: [login,loginButton,registerButton],
+                        alpha: {from: 0, to: 1},
+                        ease: 'Linear',
+                        onStart: function() {
+                            login.setVisible(true);
+                            loginButton.setVisible(true);
+                            registerButton.setVisible(true);
+                            loginButton.setInteractive();
+                            registerButton.setInteractive();
+                        }
+                    });
+                }
+            });
+
         }
     });
 }
