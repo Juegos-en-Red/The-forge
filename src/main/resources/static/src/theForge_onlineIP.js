@@ -169,7 +169,7 @@ function showLoginPrompt() {
                                 cont.id = item;
                                 cont.connected = true;
                                 contactServer();
-                                sc_onlineIP.scene.start("MenuAjustes");
+                                sc_onlineIP.scene.start("Lobby");
                                 break;
                         }
                     },
@@ -228,7 +228,7 @@ function showLoginPrompt() {
                                 cont.id = item;
                                 cont.connected = true;
                                 contactServer();
-                                sc_onlineIP.scene.start("MenuAjustes");
+                                sc_onlineIP.scene.start("Lobby");
                                 break;
                         }
                     },
