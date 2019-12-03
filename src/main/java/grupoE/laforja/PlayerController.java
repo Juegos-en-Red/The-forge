@@ -3,7 +3,10 @@ package grupoE.laforja;
 
 import grupoE.laforja.Player;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,7 +36,24 @@ public class PlayerController {
 	
 	@PostConstruct
 	public void init() {
-		
+		try {
+			BufferedReader in = new BufferedReader(new FileReader ("users.txt"));
+			String line = in.readLine();
+			
+			while (line != null) {
+				String[] data = line.split(" ");
+				System.out.println(data[0]+","+data[1]+","+data[2]+","+data[3]);
+				//registeredPlayers.add(new Player(data[0],data[1],Integer.parseInt(data[2]),data[3]));
+				line = in.readLine();
+			}
+			
+			in.close();
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	
@@ -123,6 +143,10 @@ public class PlayerController {
 	@PostMapping("/register/")
 	public ResponseEntity<Integer> register(@RequestBody Player player) {
 		int firstEmptyId = getFirstFreeSlot();
+		
+		if (player.getName().split(" ").length != 1 || player.getPassword().split(" ").length != 1) {
+			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+		}
 		
 		//System.out.print(registeredPlayers.isEmpty());
 		for (Player p : registeredPlayers) {

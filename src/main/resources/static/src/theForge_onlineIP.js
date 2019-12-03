@@ -169,6 +169,7 @@ function showLoginPrompt() {
                                 cont.id = item;
                                 cont.connected = true;
                                 contactServer();
+                                escena.scene.start("MenuAjustes");
                                 break;
                         }
                     },
@@ -179,6 +180,9 @@ function showLoginPrompt() {
                                 break;
                             case 404:
                                 sc_onlineIP.textInfo.setText("El usuario no existe\nIntroduzca su nombre de usuario y contraseña");
+                                break;
+                            case 417:
+                                sc_onlineIP.textInfo.setText("No se permiten espacios ni en el nombre ni en la contraseña\nIntroduzca su nombre de usuario y contraseña");
                                 break;
                             default:
                                 sc_onlineIP.textInfo.setText("No se ha logrado contactar con el servidor\nIntroduzca su nombre de usuario y contraseña");
@@ -224,6 +228,7 @@ function showLoginPrompt() {
                                 cont.id = item;
                                 cont.connected = true;
                                 contactServer();
+                                escena.scene.start("MenuAjustes");
                                 break;
                         }
                     },
@@ -231,6 +236,9 @@ function showLoginPrompt() {
                         switch(jqXhr.status) {
                             case 409:
                                 sc_onlineIP.textInfo.setText("El usuario ya existe\nIntroduzca su nombre de usuario y contraseña");
+                                break;
+                            case 417:
+                                sc_onlineIP.textInfo.setText("No se permiten espacios ni en el nombre ni en la contraseña\nIntroduzca su nombre de usuario y contraseña");
                                 break;
                             default:
                                 sc_onlineIP.textInfo.setText("No se ha logrado contactar con el servidor\nIntroduzca su nombre de usuario y contraseña");
