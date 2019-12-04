@@ -5,6 +5,10 @@ Juego de la asignatura de Juegos en red desarrollado por:
 * Javier Sendarrubias Otero. Correo: ja.sendarrubias.2017@alumnos.urjc.es, Github: [Javierso1](https://github.com/Javierso1)
 * Jorge Sendarrubias Otero. Correo: j.sendarrubias.2017@alumnos.urjc.es, Github: [JorgeURJC](https://github.com/JorgeURJC)
 
+## CAMBIOS EN EL DOCUMENTO DE DISEÑO V1.2
+El concepto general del juego se mantiene sin cambios. Dentro del menú principal se han introducido dos nuevas opciones de selección: una sección de cambios que existirán en un futuro donde se recogen las sugerencias o mejoras que pretendemos introducir en fases futuras del desarrollo del juego y un botón de créditos donde se especifica el trabajo realizado por cada miembro del equipo. Se ha cambiado el diseño del escenario por uno en el que encajar mejor la distribución de los elementos del juego y se han modificado determinados sprites. Dentro del documento se ha actualizado la anterior sección de "DIAGRAMAS DE NAVEGACIÓN" por una denominada "DIAGRAMAS" en la que, junto a este, incluimos el diagrama de clases de la aplicación y el diagrama de clases de API REST. También se ha actualizado el apartado de "MUESTRAS DE DISEÑO" para que ahora incluya las explicaciones y pantallazos referentes a la navegación.
+Por último se incluye una nueva clase con las instrucciones pertinentes para ejecutar el programa. 
+
 ## CAMBIOS EN EL DOCUMENTO DE DISEÑO V1.1
 La orientación del juego se ha planteado para dos jugadores en vez de para cuatro. Además, de los cuatro reinos planeados, de momento solo existen dos disponibles para elegir y manejar. Todas las amoladoras se han cambiado por moldes, algo más coherente teniendo en cuenta el contexto general del juego y los objetos de una forja con los que podrían estar familiarizados los jugadores. 
 Se han eliminado trampas dentro de las planeadas y se le ha añadido una guía textual, accesible desde el menú. Dentro de la partida se contempla también la opción de deshacerse de los objetos creados por error. Además, al monstruo se le arma dándole directamente las piezas en vez de depositándolas en una mesa cercana. Al documento como tal se le han añadido las secciones Diagrama de navegación y de Muestras del diseño. 
@@ -94,10 +98,11 @@ El segundo jugador tendrá los siguientes controles:
 * O: Coger objetos
 * P: Lanzar objetos
 
-## DIAGRAMA DE NAVEGACIÓN
+
+## DIAGRAMAS
 ![Diagrama de navegación entre las distintas pantallas](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/Diagrama.png)
 
-## MUESTRAS DEL DISEÑO
+## MUESTRAS DEL DISEÑO Y LA NAVEGACIÓN
 ![CAPTURA DE PANTALLA DEL MENÚ](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/CapturaMenu.PNG)
 
 Menú principal de juego. Los botones permiten el acceso a las distintas pantallas disponibles. El botón de juego online permanecerá desactivado hasta la siguiente fase.
@@ -121,6 +126,8 @@ Captura de pantalla de una partida en proceso. Su funcionamiento queda detallado
 ![CAPTURA DE PANTALLA DEL FIN DE PARTIDA](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/CapturaVictoria.png)
 
 Se indica el jugador ganador junto con un letrero de victoria. Vuelve al menú principal.
+
+## INSTRUCCIONES DE EJECUCCIÓN
 
 ## TRELLO
 Para coordinar el desarrollo utilizamos el siguiente tablero de trello: https://trello.com/b/rXEmfYBZ/the-forge
