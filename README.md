@@ -108,9 +108,9 @@ En la imagen se dispone de una guía de las conexiones entre las diferentes esce
 
 El siguiente diagrama muestra la conexión entre las clases creadas para la implementación del juego. Aunque antes no estaba presente en el documento, los cambios con respecto a la fase anterior vienen a ser la existencia de nuevas clases con las que implementar los mencionados créditos, la sección de "próximamente" y toda la escena online, cuyo funcionamiento se explica a continuación con el diagrama UML de navegación por la aplicación API REST.
 
-![Diagrama de navegación uml de las clases de API REST](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/uml%20api.PNG)
+![Diagrama de navegación uml de las clases de API REST]()
 
-A la hora de desarrollar la aplicación de Spring para poner nuestro proyecto a funcionar con su correspondiente servidor se han creado cinco clases distintas. Como su nombre indica, PlayerController es la clase controlador encargada de ejecutar los métodos HTTP. Esta se nutre mediante relaciones de asociación y composición del resto de clases, usadas principalmente para administrar el estado de los jugadores y del chat disponible en el menú de juego online.
+A la hora de desarrollar la aplicación de Spring para poner nuestro proyecto a funcionar con su correspondiente servidor se han creado cuatro clases distintas. Como su nombre indica, PlayerController es la clase controlador encargada de ejecutar los métodos HTTP. Esta se nutre mediante relaciones de asociación y composición del resto de clases, usadas principalmente para administrar el estado de los jugadores y del chat disponible en el menú de juego online.
 Mencionar que la clase App, que aparentemente no depende de nada, es la encargada de lanzar la aplicación de Spring que compone el esqueleto del programa, y que será donde posteriormente maniobrará PlayerController.
 
 ## MUESTRAS DEL DISEÑO Y LA NAVEGACIÓN
@@ -139,6 +139,7 @@ Captura de pantalla de una partida en proceso. Su funcionamiento queda detallado
 Se indica el jugador ganador junto con un letrero de victoria. Vuelve al menú principal.
 
 ## INSTRUCCIONES DE EJECUCCIÓN
+
 
 ## TRELLO
 Para coordinar el desarrollo utilizamos el siguiente tablero de trello: https://trello.com/b/rXEmfYBZ/the-forge
