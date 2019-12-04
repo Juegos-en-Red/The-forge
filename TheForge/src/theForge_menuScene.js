@@ -78,6 +78,16 @@ function Menu(escena)
         // Cambiamos el origen de coordenadas al punto (0.5, 0)
         this.guia.setOrigin(0.5, 0);   
 
+        // Botón de créditos
+        this.creditos = escena.add.sprite((config.width / 2) + 250, 265, "creditos_btn").setPipeline('Light2D');
+        // Cambiamos el origen de coordenadas al punto 0.5, 0
+        this.creditos.setOrigin(0.5, 0);
+
+        // Botón de próximamente
+        this.next = escena.add.sprite((config.width / 2) - 250, 265, "next_btn").setPipeline('Light2D');
+        // Cambiamos el origen de coordenadas al punto (0.5, 0)
+        this.next.setOrigin(0.5, 0);
+
         /* IMAGENES PRESSED */
 
         // Botón de local
@@ -109,6 +119,20 @@ function Menu(escena)
         this.guia.setOrigin(0.5, 0.5); 
         // Lo ponemos invisible
         this.guiaPress.visible = false;
+
+        // Botón de créditos
+        this.creditosPress = escena.add.sprite((config.width / 2) + 250, 265, "creditos_btnPressed").setPipeline('Light2D');
+        // Cambiamos el origen de coordenadas al punto (0.5, 0)
+        this.creditosPress.setOrigin(0.5, 0.0); 
+        // Lo ponemos invisible
+        this.creditosPress.visible = false;
+
+        // Botón de créditos
+        this.nextPress = escena.add.sprite((config.width / 2) - 250, 265, "next_btnPressed").setPipeline('Light2D');
+        // Cambiamos el origen de coordenadas al punto (0.5, 0)
+        this.nextPress.setOrigin(0.5, 0.0); 
+        // Lo ponemos invisible
+        this.nextPress.visible = false;
     }
 
     this.update = function(time, delta)
@@ -130,6 +154,14 @@ function Menu(escena)
 
         mouseClick(this.guia, this.guiaPress, "guia");
 
+        // Botón de créditos
+
+        mouseClick(this.creditos, this.creditosPress, "creditos");
+
+        // Botón de próximamente
+
+        mouseClick(this.next, this.nextPress, "next");
+
         /* MOUSE OVER DE BOTONES */
 
         // Botón de local
@@ -140,9 +172,12 @@ function Menu(escena)
 
         // Botón de guía
         mouseBg(this.guiaPress, this.bg);
-        if (this.pressed == true)
-            console.log(this.pressed);
 
+        // Botón de créditos
+        mouseBg(this.creditosPress, this.bg);
+
+        // Botón de próximamente
+        mouseBg(this.nextPress, this.bg);
     }   
 
     /* FUNCIONES PRIVADAS */
@@ -173,6 +208,10 @@ function Menu(escena)
                 escena.scene.start("MenuAjustes");
             if (type == "guia" && pressed === true)
                 escena.scene.start("Guia");
+            if (type == "creditos" && pressed === true)
+                escena.scene.start("Creditos");
+            if (type == "next" && pressed === true)
+                escena.scene.start("Next");
             pressed = false;
         });
     }

@@ -76,9 +76,9 @@ sc_Guia.update = function(time, delta)
     }
         
     if (Phaser.Input.Keyboard.JustDown(escape))
-        {
-            sc_Guia.scene.switch("MenuPrincipal");
-        }
+    {
+        sc_Guia.scene.switch("MenuPrincipal");
+    }
 }
 
 function isColliding(button)

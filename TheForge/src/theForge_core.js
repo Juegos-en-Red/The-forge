@@ -11,7 +11,7 @@ var config = {
             debug: false
         }
     },
-    scene: [sc_Preloader, sc_menuPrincipal, sc_Guia, sc_menuAjustes, sc_SeleccionPersonaje, sc_juegoLocal] //Importante meter todas las escenas aquí
+    scene: [sc_Preloader, sc_menuPrincipal, sc_Creditos, sc_Guia, sc_Next,  sc_menuAjustes, sc_SeleccionPersonaje, sc_juegoLocal] //Importante meter todas las escenas aquí
 };
 
 
