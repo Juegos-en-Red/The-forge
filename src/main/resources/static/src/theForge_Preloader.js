@@ -333,6 +333,7 @@ sc_Preloader.preload = function()
     );
 
     //Menú ajustes
+    this.load.image('fondo menu ajustes', '../assets/game/fondo menu ajustes.png');
     this.load.image('botonTecla', '../assets/game/botonTecla.png');
     this.load.image('botonSalir', '../assets/game/botonSalir.png');
     this.load.image('botonRestablecer', '../assets/game/botonRestablecer.png');
@@ -402,6 +403,15 @@ sc_Preloader.preload = function()
     this.load.image("trampas", "../assets/guia/trampas.png");
 
     this.load.image("cruz2", "../assets/guia/cruz2.png");
+
+    //ONLINE
+    
+    this.load.image("fondo online-lobby", "../assets/online/fondo online-lobby.png");
+    this.load.image("botonConectar", "../assets/online/botonConectar.png");
+    this.load.image("botonDesconectar", "../assets/online/botonDesconectar.png");
+    this.load.image("botonIniciarSesion", "../assets/online/botonIniciarSesion.png");
+    this.load.image("botonRegistrarse", "../assets/online/botonRegistrarse.png");
+    this.load.image("botonEnviar", "../assets/online/botonEnviar.png");
 
 }
 

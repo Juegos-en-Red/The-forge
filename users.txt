@@ -1,0 +1,7 @@
+a a 0 0
+b b 0 0
+TrensonStar TRENSONSTAR 0 0
+s s 0 0
+Nacho TIO 0 0
+TransonStar TRANSONSTAR 0 0
+c c 0 0
