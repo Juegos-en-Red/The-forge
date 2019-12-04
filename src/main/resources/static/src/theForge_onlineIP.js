@@ -12,6 +12,17 @@ sc_onlineIP.preload = function() {
 sc_onlineIP.create = function() {
 
     this.bg = sc_onlineIP.add.image(400, 300, "fondo online-lobby");
+
+    var disconnectButton = sc_onlineIP.add.sprite(90, 556, "botonSalir");
+    disconnectButton.setInteractive();
+    disconnectButton.on('pointerdown', function (event) {
+            cont.server_ip = null;
+            cont.connected = false;
+            cont.id = -1;
+            cont.name = null;
+            sc_onlineIP.scene.start("MenuPrincipal");
+    });
+
     var inputButton = sc_onlineIP.add.sprite(400, 350, "botonConectar");
 
     sc_onlineIP.textInfo = sc_onlineIP.add.text(400, 200, "\nIntroduce la dirección del servidor", {fontSize: '30px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2, align: 'center'}).setOrigin(0.5, 0.5);
@@ -152,7 +163,9 @@ function showLoginPrompt() {
                             console.log(item);
                             cont.id = item;
                             cont.connected = true;
+                            cont.name = inputText.value;
                             contactServer();
+                            fetchChat();
                             sc_onlineIP.scene.start("Lobby");
                             break;
                     }
@@ -165,6 +178,9 @@ function showLoginPrompt() {
                         case 404:
                             sc_onlineIP.textInfo.setText("El usuario no existe\nIntroduzca su nombre de usuario y contraseña");
                             break;
+                        case 409:
+                                sc_onlineIP.textInfo.setText("El usuario ya está conectado\nIntroduzca su nombre de usuario y contraseña");
+                                break;
                         case 417:
                             sc_onlineIP.textInfo.setText("No se permiten espacios ni en el nombre ni en la contraseña\nIntroduzca su nombre de usuario y contraseña");
                             break;
@@ -217,7 +233,9 @@ function showLoginPrompt() {
                             console.log(item);
                             cont.id = item;
                             cont.connected = true;
+                            cont.name = inputText.value;
                             contactServer();
+                            fetchChat();
                             sc_onlineIP.scene.start("Lobby");
                             break;
                     }

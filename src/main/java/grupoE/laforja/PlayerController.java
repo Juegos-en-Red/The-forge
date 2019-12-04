@@ -10,6 +10,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.annotation.PostConstruct;
 
@@ -33,6 +36,7 @@ public class PlayerController {
 	private Player[] players = new Player[100];
 	private boolean[] ids = new boolean[100]; //Array que guarda si los ids de los jugadores están ocupados
 	private ArrayList<Player> registeredPlayers = new ArrayList<Player>();
+	private ArrayList<ChatMessage> fullChat = new ArrayList<ChatMessage>();
 	
 	@PostConstruct
 	public void init() {
@@ -53,6 +57,32 @@ public class PlayerController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		try {
+			BufferedReader in = new BufferedReader(new FileReader ("chat.txt"));
+			String line = in.readLine();
+			
+			while (line != null) {
+				int id = Integer.parseInt(line);
+				line = in.readLine();
+				String time = line;
+				line = in.readLine();
+				String sender = line;
+				line = in.readLine();
+				String message = line;
+				line = in.readLine();
+
+				fullChat.add(new ChatMessage(id, time, sender, message));
+			}
+			
+			in.close();
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	
@@ -102,22 +132,13 @@ public class PlayerController {
 	//Método login
 	@PostMapping("/login/")
 	public ResponseEntity<Integer> login(@RequestBody Player player) {
-		/*for (int i = 0; i < players.length; i++) {
+		for (int i = 0; i < players.length; i++) {
 			if (ids[i]) {
-				if (players[i].getName() == player.getName()) {
-					if (players[i].getPassword() == player.getPassword()) {
-						player.setId(i);
-						players[i] = player;
-						ids[i] = true;
-						//System.out.println("OK");
-						return new ResponseEntity<>(i,HttpStatus.OK);
-					} else {
-						//System.out.println("UNAUTHORIZED");
-						return new ResponseEntity<>(-1, HttpStatus.UNAUTHORIZED);
-					}
+				if (players[i].getName().equals(player.getName())) {
+					return new ResponseEntity<>(i,HttpStatus.CONFLICT);
 				}
 			}
-		}*/
+		}
 		
 		for (Player p : registeredPlayers) {
 			if (p.getName().equals(player.getName())) {
@@ -143,7 +164,7 @@ public class PlayerController {
 	public ResponseEntity<Integer> register(@RequestBody Player player) {
 		int firstEmptyId = getFirstFreeSlot();
 		
-		if (player.getName().split(" ").length != 1 || player.getPassword().split(" ").length != 1) {
+		if (player.getName().contains(" ") || player.getPassword().contains(" ")) {
 			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
 		}
 		
@@ -196,13 +217,25 @@ public class PlayerController {
 	}
 	
 	@DeleteMapping("/players/{id}")
-	public ResponseEntity<Player> deletePlayer(@PathVariable int id){
+	public ResponseEntity<Integer> deletePlayer(@PathVariable int id){
 		Player player = players[id];
+
+		if (player != null) {
+			if (player.getOpponentId() != -1 && player.getOpponentName() != null) {
+				if (ids[player.getOpponentId()]) {
+					if (players[player.getOpponentId()].getName().equals(player.getOpponentName()))
+					players[player.getOpponentId()].setOpponentId(-1);
+					players[player.getOpponentId()].setOpponentName(null);
+				}
+			}
+		}
+		
+		
 		players[id] = null;
 		ids[id] = false;
 		
 		if (player != null) {
-			return new ResponseEntity<>(player, HttpStatus.OK);
+			return new ResponseEntity<>(id, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -214,6 +247,13 @@ public class PlayerController {
 			if (players[i] != null) {
 				players[i].setTimeout(players[i].getTimeout()-1);
 				if (players[i].getTimeout() == 0) {
+					if (players[i].getOpponentId() != -1 && players[i].getOpponentName() != null) {
+						if (ids[players[i].getOpponentId()]) {
+							if (players[players[i].getOpponentId()].getName().equals(players[i].getOpponentName()))
+							players[players[i].getOpponentId()].setOpponentId(-1);
+							players[players[i].getOpponentId()].setOpponentName(null);
+						}
+					}
 					players[i] = null;
 					ids[i] = false;
 				}
@@ -222,5 +262,82 @@ public class PlayerController {
 	}
 	
 	
+	
+	//Chat por aquí
+	
+	@PostMapping("/chat/")
+	public ResponseEntity<Integer> postChatMessage(@RequestBody ChatMessage newMessage) {
+		
+		int nextMessageId;
+		
+		if (fullChat.size() == 0) {
+			nextMessageId = 0;
+		} else {
+			nextMessageId = fullChat.get(fullChat.size()-1).getId()+1;
+		}
+		newMessage.setId(nextMessageId);
+
+		Date date = new Date();
+		Calendar calendar = GregorianCalendar.getInstance();
+		calendar.setTime(date);
+		
+		newMessage.setTime(String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + String.format("%02d", calendar.get(Calendar.MINUTE)));
+		fullChat.add(newMessage);
+
+		try {
+			BufferedWriter out = new BufferedWriter(new FileWriter ("chat.txt", true));
+			out.append(String.valueOf(newMessage.getId()));
+			out.newLine();
+			out.append(newMessage.getTime());
+			out.newLine();
+			out.append(newMessage.getSender());
+			out.newLine();
+			out.append(newMessage.getMessage());
+			out.newLine();
+			out.close();
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+		return new ResponseEntity<>(nextMessageId,HttpStatus.CREATED);
+	}
+	
+	@GetMapping("/chat/{id}")
+	public ResponseEntity<ChatMessage[]> updateChat(@PathVariable int id) {
+		if (fullChat.get(fullChat.size()-1).getId() <= id) {
+
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} else {
+			ChatMessage[] newMessages = new ChatMessage[fullChat.get(fullChat.size()-1).getId() - id];
+			for (int i = 0; i < newMessages.length; i++) {
+				newMessages[i] = fullChat.get(i+id+1);
+			}
+			
+			return new ResponseEntity<>(newMessages, HttpStatus.OK);
+		}
+		
+	}
+	
+	@GetMapping("/users/")
+	public ResponseEntity<String[]> getPlayerNames() {
+		
+		int i = 100-freeSlots();
+		int j = 0;
+		int k = 0;
+		
+		String[] onlinePlayers = new String[i];
+		
+		while (i > 0 && j < 100) {
+			if (ids[j]) {
+				onlinePlayers[k] = players[j].getName();
+				k++;
+				i--;
+			}
+			j++;
+		}
+
+		return new ResponseEntity<>(onlinePlayers, HttpStatus.OK);
+
+	}
 	
 }

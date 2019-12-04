@@ -31,7 +31,9 @@ var cont = {
     server_ip: null,
     connected: false, 
     id: -1,
-    ch: 'SSHielo1'
+    ch: 'SSHielo1',
+    name: null,
+    lastChatMessage: -1
 }
 
 //funciones de música por aquí
@@ -61,10 +63,49 @@ function contactServer() {
             processData: false,
             headers: {
                 "Content-type": "application/json"
-            }
+            },
+            timeout: 3000
         }).done(function (item) {
-            console.log("Item updated: " + JSON.stringify(item));
+            console.log("Nuevo timeout: " + JSON.stringify(item));
+        }).error(function(e) {
+            cont.connected = false;
+            sc_lobby.scene.start("Disconnect");
         });
-        setTimeout(contactServer, 3000)
+        setTimeout(contactServer, 3000);
     }
+}
+
+var unreadChatMessages = [];
+var onlineUsers = [];
+function fetchChat() {
+    if (cont.connected) {
+        $.ajax({
+            method: "GET",
+            url: "http://" + cont.server_ip + "/chat/"+cont.lastChatMessage
+        }).success(function (item) {
+            //cont.lastChatMessage = item;
+            //console.log("Último mensaje del chat recibido: " + JSON.stringify(item));
+            if (item != undefined) {
+                console.log(item);
+                while (item.length != 0)
+                    unreadChatMessages.unshift(item.shift());
+                
+                cont.lastChatMessage = unreadChatMessages[0].id;
+            }
+            
+        });
+
+        $.ajax({
+            method: "GET",
+            url: "http://" + cont.server_ip + "/users/"
+        }).success(function (item) {
+            if (item != undefined) {
+                console.log(item);
+                onlineUsers = item;
+            }
+            
+        });
+
+        setTimeout(fetchChat, 500);
+    }  
 }
