@@ -6,7 +6,7 @@ Juego de la asignatura de Juegos en red desarrollado por:
 * Jorge Sendarrubias Otero. Correo: j.sendarrubias.2017@alumnos.urjc.es, Github: [JorgeURJC](https://github.com/JorgeURJC)
 
 ## CAMBIOS EN EL DOCUMENTO DE DISEÑO V1.2
-El concepto general del juego se mantiene sin cambios. Dentro del menú principal se han introducido dos nuevas opciones de selección: una sección de cambios que existirán en un futuro donde se recogen las sugerencias o mejoras que pretendemos introducir en fases futuras del desarrollo del juego y un botón de créditos donde se especifica el trabajo realizado por cada miembro del equipo. Dentro del documento se ha actualizado la anterior sección de "DIAGRAMAS DE NAVEGACIÓN" por una denominada "DIAGRAMAS" en la que, junto a este, incluimos el diagrama de clases de la aplicación y el diagrama de clases de API REST. También se ha actualizado el apartado de "MUESTRAS DE DISEÑO" para que ahora incluya las explicaciones y pantallazos referentes a la navegación.
+El concepto general del juego se mantiene sin cambios. Dentro del menú principal se han introducido dos nuevas opciones de selección: una sección de cambios que existirán en un futuro donde se recogen las sugerencias o mejoras que pretendemos introducir en fases futuras del desarrollo del juego y un botón de créditos donde se especifica el trabajo realizado por cada miembro del equipo. Dentro del documento se ha actualizado la anterior sección de "DIAGRAMAS DE NAVEGACIÓN" por una denominada "DIAGRAMAS" en la que, junto a este, incluimos el diagrama de clases de la aplicación y el diagrama de clases de API REST, ambos en formato UML. También se ha actualizado el apartado de "MUESTRAS DE DISEÑO" para que ahora incluya las explicaciones y pantallazos referentes a la navegación.
 Por último se incluye una nueva clase con las instrucciones pertinentes para ejecutar el programa. 
 
 ## CAMBIOS EN EL DOCUMENTO DE DISEÑO V1.1
@@ -108,7 +108,7 @@ En la imagen se dispone de una guía de las conexiones entre las diferentes esce
 
 El siguiente diagrama muestra la conexión entre las clases creadas para la implementación del juego. Aunque antes no estaba presente en el documento, los cambios con respecto a la fase anterior vienen a ser la existencia de nuevas clases con las que implementar los mencionados créditos, la sección de "próximamente" y toda la escena online, cuyo funcionamiento se explica a continuación con el diagrama UML de navegación por la aplicación API REST.
 
-![Diagrama de navegación uml de las clases de API REST]()
+![Diagrama de navegación uml de las clases de API REST](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/uml%20api2.PNG)
 
 A la hora de desarrollar la aplicación de Spring para poner nuestro proyecto a funcionar con su correspondiente servidor se han creado cuatro clases distintas. Como su nombre indica, PlayerController es la clase controlador encargada de ejecutar los métodos HTTP. Esta se nutre mediante relaciones de asociación y composición del resto de clases, usadas principalmente para administrar el estado de los jugadores y del chat disponible en el menú de juego online.
 Mencionar que la clase App, que aparentemente no depende de nada, es la encargada de lanzar la aplicación de Spring que compone el esqueleto del programa, y que será donde posteriormente maniobrará PlayerController.
@@ -138,15 +138,53 @@ Captura de pantalla de una partida en proceso. Su funcionamiento queda detallado
 
 Se indica el jugador ganador junto con un letrero de victoria. Vuelve al menú principal.
 
+![CAPTURA DE PANTALLA DEL NUEVO MENÚ]()
+
+El menú principal del juego se ha actualizado con sus correspondientes opciones. El cambio más relevante y el objetivo de la fase tres es el haber habilitado el modo online que antes aparecía semitransparente, indicando que ahora ya se puede acceder a él.
+
+![CAPTURA DE PANTALLA DEL MODO ONLINE IP]()
+
+Nada más pulsar el botón de online, lo primero que se nos aparece es un cuadro de texto en el que introducir la IP del servidor al que queremos conectarnos. Una vez tecleada, se pueden dar varios casos de error o bien proceder a la siguiente pantalla.
+
+![CAPTURA DE PANTALLA MODO ONLINE IP INCORRECTA]()
+
+Si la IP introducida por el usuario no es válida o el servidor no está en funcionamiento, esto se le hace saber al usuario vía un mensaje textual en pantalla, justo por encima del recuadro.
+
+![CAPTURA DE PANTALLA UC]()
+
+Tras concetarse a un servidor, el jugador deberá introducir su nombre de usuario y su contraseña si los tiene. En caso negativo siempre podrá registrarse con un nombre de usuario y una contraseña que permanezcan libres. Tanto "iniciar sesión" como "registrarse" llevan a la misma escena donde en un futuro el usuario podrá acceder a una partida online.
+
+![CAPTURA DE PANTALLA USUARIO INCORRECTO]()
+
+Si el nombre de usuario introducido no es correcto porque no existe al intentar iniciar sesión o porque ya está en uso al intentar registrarse, se le manda un aviso al jugador.
+
+![CAPTURA DE PANTALLA CONTRASEÑA INCORRECTA]()
+Si la contraseña introducida no es correcta porque no existe al intentar iniciar sesión o porque ya está en uso al intentar registrarse, se le manda un aviso al jugador.
+
+![CAPTURA DE PANTALLLA USUARIO REGISTRADO NO VÁLIDO]()
+
+Cuando el jugador intenta registrar un usuario que ya se ha registrado previamente, se avisa mediante un mensaje sobre los cuadros de texto.
+
+![CAPTURA DE PANTALLA DEL LOBBY]()
+
+Una vez el registro o el inicio de sesión ha concluido de forma exitosa, se dispone de una escena en la que distintos jugadores pueden interactuar entre ellos vía un chat en línea. También se conoce en todo momento cuantos usuarios están conectados. Si alguno se marcha empleando el botón de desconectar o bien por la caída del servidor, desaparece de la tabla sobre el chat. Además en este último caso, en un tiempo máximo de tres segundos, se le notifica al jugador lo ocurrido. 
+
+
 ## INSTRUCCIONES DE EJECUCCIÓN
+A la hora de compilar el proyecto existen dos maneras. En una de ellas es necesario disponer de un IDE de desarrollo, preferiblemente Spring, ya que es en el que se ha realizado la aplicación. Una vez se abra el proyecto en Spring, se ejecuta la aplicación con el comando "run as: java application". Hecho esto se inicia el servidor al que se conectará el navegador. En este mismo se accede a la IP del servidor que está activo. Con la aplicación compilando, para acceder a las funcionalidades online basta con escogerlas en el menú principal e introducir la IP del servidor al que te quieras conectar, que puede ser el mismo con el que se ha abierto el navegador o bien otro en el que también se esté ejecutando el proyecto.
 
 
 ## TRELLO
 Para coordinar el desarrollo utilizamos el siguiente tablero de trello: https://trello.com/b/rXEmfYBZ/the-forge
 
 ## ENLACE PRESENTACIÓN POWERPOINT
+Fase 1:
 https://1drv.ms/p/s!Ake2wFBOjmIhhdoBoWvQU7ZfREAtjg
 
+Fase 2:
+https://drive.google.com/open?id=1rvBCVqbPnGor9RUyLEz24A49ELa_eSHKa5emECI2Yok
+
+Fase 3:
 https://drive.google.com/open?id=1rvBCVqbPnGor9RUyLEz24A49ELa_eSHKa5emECI2Yok
 
 ## FUENTES
