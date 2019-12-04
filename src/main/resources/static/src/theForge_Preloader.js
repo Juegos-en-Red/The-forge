@@ -333,6 +333,7 @@ sc_Preloader.preload = function()
     );
 
     //Menú ajustes
+    this.load.image('fondo menu ajustes', '../assets/game/fondo menu ajustes.png');
     this.load.image('botonTecla', '../assets/game/botonTecla.png');
     this.load.image('botonSalir', '../assets/game/botonSalir.png');
     this.load.image('botonRestablecer', '../assets/game/botonRestablecer.png');

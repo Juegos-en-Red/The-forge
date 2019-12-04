@@ -206,10 +206,10 @@ public class PlayerController {
 	}
 	
 	@PutMapping("/reminder/{id}")
-	public ResponseEntity<Integer> resetTimeout(@PathVariable int id, @RequestBody Timeout timeout) {
+	public ResponseEntity<Integer> resetTimeout(@PathVariable int id) {
 		if (ids[id]) {
-			players[id].setTimeout(timeout.getTimeout());
-			return new ResponseEntity<>(timeout.getTimeout(),HttpStatus.OK);
+			players[id].setTimeout(4);
+			return new ResponseEntity<>(4,HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}

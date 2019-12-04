@@ -12,7 +12,7 @@ sc_lobby.create = function() {
     this.bg = sc_lobby.add.image(400, 300, "fondo online-lobby");
     var disconnectButton = sc_lobby.add.sprite(79, 556, "botonDesconectar");
     var chatInput = sc_lobby.add.dom(355,557).createFromCache('chatInput');
-    sc_lobby.chatBox = sc_lobby.add.dom(355,482).createFromCache('chatBox');
+    sc_lobby.chatBox = sc_lobby.add.dom(355,481).createFromCache('chatBox');
     sc_lobby.usersBox = sc_lobby.add.dom(355,241).createFromCache('usersBox');
     var sendButton = sc_lobby.add.sprite(591, 547, "botonEnviar");
 
@@ -29,9 +29,10 @@ sc_lobby.create = function() {
             cont.connected = false;
             cont.id = -1;
             cont.name = null;
+            cont.lastChatMessage = -1;
             sc_lobby.scene.start("MenuPrincipal");
         }).error(function(item){
-            console.log("Algo ha salido mal al desconectarte. Una pena que no vayas a saberlo porque esto es un console.log");
+            console.log("Algo ha salido mal al desconectarte, pero creo que ya te has dado cuenta de eso.");
         });
     });
 
@@ -54,16 +55,17 @@ sc_lobby.create = function() {
                     }
             });
         }
-    })
+    });
+
+
+
 }
 
 sc_lobby.update = function() {
     while (unreadChatMessages.length != 0) {
         var msg = unreadChatMessages.pop();
         sc_lobby.chatBox.getChildByName('chatBox').value += "["+msg.time+"] "+msg.sender+": "+msg.message+"\n";
-        if (document.activeElement !== sc_lobby.chatBox.getChildByName('chatBox')) {
-            sc_lobby.chatBox.getChildByName('chatBox').scrollTop = sc_lobby.chatBox.getChildByName('chatBox').scrollHeight;
-        }
+        sc_lobby.chatBox.getChildByName('chatBox').scrollTop = sc_lobby.chatBox.getChildByName('chatBox').scrollHeight;
     }
     sc_lobby.usersBox.getChildByName('usersBox').value = "USUARIOS CONECTADOS\n";
     for(var i = 0; i < onlineUsers.length; i++) {

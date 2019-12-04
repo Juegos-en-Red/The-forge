@@ -53,40 +53,29 @@ snd_yunque.src = "../assets/audio/snd_yunque.ogg";
 snd_yunque.loop = false;
 snd_yunque.volume = cont.snd_vol;
 
-function contactServer() {
-    if (cont.connected) {
-        console.log(cont.id);
-        $.ajax({
-            method: "PUT",
-            url: "http://" + cont.server_ip + "/reminder/"+cont.id,
-            data: JSON.stringify({timeout: 10}),
-            processData: false,
-            headers: {
-                "Content-type": "application/json"
-            },
-            timeout: 3000
-        }).done(function (item) {
-            console.log("Nuevo timeout: " + JSON.stringify(item));
-        }).error(function(e) {
-            cont.connected = false;
-            sc_lobby.scene.start("Disconnect");
-        });
-        setTimeout(contactServer, 3000);
-    }
-}
-
 var unreadChatMessages = [];
 var onlineUsers = [];
 function fetchChat() {
     if (cont.connected) {
+
+        $.ajax({
+            method: "PUT",
+            url: "http://" + cont.server_ip + "/reminder/"+cont.id,
+            timeout: 3000
+        }).done(function (item) {
+            //console.log("Nuevo timeout: " + JSON.stringify(item));
+        }).error(function(e) {
+            cont.connected = false;
+            sc_lobby.scene.start("Disconnect");
+        });
+
         $.ajax({
             method: "GET",
             url: "http://" + cont.server_ip + "/chat/"+cont.lastChatMessage
         }).success(function (item) {
-            //cont.lastChatMessage = item;
             //console.log("Último mensaje del chat recibido: " + JSON.stringify(item));
             if (item != undefined) {
-                console.log(item);
+                //console.log(item);
                 while (item.length != 0)
                     unreadChatMessages.unshift(item.shift());
                 
@@ -100,7 +89,7 @@ function fetchChat() {
             url: "http://" + cont.server_ip + "/users/"
         }).success(function (item) {
             if (item != undefined) {
-                console.log(item);
+                //console.log(item);
                 onlineUsers = item;
             }
             

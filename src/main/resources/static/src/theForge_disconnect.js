@@ -17,6 +17,7 @@ sc_disconnect.create = function() {
             cont.connected = false;
             cont.id = -1;
             cont.name = null;
+            cont.lastChatMessage = -1;
             sc_disconnect.scene.start("MenuPrincipal");
     });
 

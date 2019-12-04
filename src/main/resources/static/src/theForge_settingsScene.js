@@ -10,7 +10,7 @@ sc_menuAjustes.preload = function() {
 
 sc_menuAjustes.create = function() {
     //Añadimos el fondo
-    sc_menuAjustes.fondo = sc_menuAjustes.add.image(400, 300, 'sky');
+    sc_menuAjustes.fondo = sc_menuAjustes.add.image(400, 300, 'fondo menu ajustes');
 
     //Añadimos todas las teclas
     //jugador 1

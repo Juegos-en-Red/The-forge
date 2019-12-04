@@ -1,6 +1,7 @@
 "use strict";
 
 //https://labs.phaser.io/view.html?src=src%5Cgame%20objects%5Cdom%20element%5Cinput%20test.js
+//Este ejemplo nos ha ayudado mucho en esta fase.
 
 var sc_onlineIP = new Phaser.Scene('OnlineIP');
 
@@ -20,6 +21,7 @@ sc_onlineIP.create = function() {
             cont.connected = false;
             cont.id = -1;
             cont.name = null;
+            cont.lastChatMessage = -1;
             sc_onlineIP.scene.start("MenuPrincipal");
     });
 
@@ -29,49 +31,45 @@ sc_onlineIP.create = function() {
     var input = this.add.dom(400,300).createFromCache('input');
 
     inputButton.on('pointerdown', function (event) {
-        //if (event.target.name === 'playButton') {
-            var inputText = input.getChildByName('nameField');
-            if (inputText.value !== '') {
+        var inputText = input.getChildByName('nameField');
+        if (inputText.value !== '') {
 
-                sc_onlineIP.fadeOutTween.play();
+            sc_onlineIP.fadeOutTween.play();
 
-                sc_onlineIP.textInfo.setText("\nConectando a " + inputText.value + "...");
-                console.log("Connecting to " + inputText.value + "...");
+            sc_onlineIP.textInfo.setText("\nConectando a " + inputText.value + "...");
+            console.log("Connecting to " + inputText.value + "...");
 
-                cont.server_ip = inputText.value;
+            cont.server_ip = inputText.value;
 
-                $.ajax({
-                    url: 'http://' + cont.server_ip + '/freeSlots/',
-                    timeout: 5000,
-                    success: function(item, textStatus, jqXHR) {
-                        console.log("Slots available: " + JSON.stringify(item));
-                        console.log("Status: " + jqXHR.status + " " + textStatus);
-                        if (jqXHR.status === 200) {
-                            showLoginPrompt();
-                        }
-                    },
-                    error: function(jqXhr, textStatus, errorMessage){
-                        sc_onlineIP.textInfo.setText("Error en la conexión.\nVuelva a introducir la dirección del servidor.");
-                        console.log("Error: " + errorMessage);
-                        console.log("TEXT STATUS: " + textStatus);
-                        //sc_onlineIP.fadeInTween.restart();
-                        sc_onlineIP.fadeOutTween.stop();
-                        sc_onlineIP.tweens.add({
-                            targets: [input,inputButton],
-                            alpha: {from: 0, to: 1},
-                            ease: 'Linear',
-                            onStart: function() {
-                                input.setVisible(true);
-                                inputButton.setVisible(true);
-                                inputButton.setInteractive();
-                            }
-                        });
-                        //sc_onlineIP.fadeInTween.play();
+            $.ajax({
+                url: 'http://' + cont.server_ip + '/freeSlots/',
+                timeout: 5000,
+                success: function(item, textStatus, jqXHR) {
+                    console.log("Slots available: " + JSON.stringify(item));
+                    console.log("Status: " + jqXHR.status + " " + textStatus);
+                    if (jqXHR.status === 200) {
+                        showLoginPrompt();
                     }
-                });
+                },
+                error: function(jqXhr, textStatus, errorMessage){
+                    sc_onlineIP.textInfo.setText("Error en la conexión.\nVuelva a introducir la dirección del servidor.");
+                    console.log("Error: " + errorMessage);
+                    console.log("TEXT STATUS: " + textStatus);
+                    sc_onlineIP.fadeOutTween.stop();
+                    sc_onlineIP.tweens.add({
+                        targets: [input,inputButton],
+                        alpha: {from: 0, to: 1},
+                        ease: 'Linear',
+                        onStart: function() {
+                            input.setVisible(true);
+                            inputButton.setVisible(true);
+                            inputButton.setInteractive();
+                        }
+                    });
+                }
+            });
 
-            }
-        //}
+        }
     });
     sc_onlineIP.fadeInTween = sc_onlineIP.tweens.add({
         targets: [input,inputButton],
@@ -164,7 +162,6 @@ function showLoginPrompt() {
                             cont.id = item;
                             cont.connected = true;
                             cont.name = inputText.value;
-                            contactServer();
                             fetchChat();
                             sc_onlineIP.scene.start("Lobby");
                             break;
@@ -234,7 +231,6 @@ function showLoginPrompt() {
                             cont.id = item;
                             cont.connected = true;
                             cont.name = inputText.value;
-                            contactServer();
                             fetchChat();
                             sc_onlineIP.scene.start("Lobby");
                             break;
