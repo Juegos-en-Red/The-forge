@@ -47,12 +47,14 @@ sc_onlineIP.create = function() {
                 success: function(item, textStatus, jqXHR) {
                     console.log("Slots available: " + JSON.stringify(item));
                     console.log("Status: " + jqXHR.status + " " + textStatus);
-                    if (jqXHR.status === 200) {
+                    if (jqXHR.status === 200 && item > 0) {
                         showLoginPrompt();
+                    } else if (item == 0) {
+                        sc_onlineIP.textInfo.setText("El servidor está lleno\nVuelva a intentarlo más tarde");
                     }
                 },
                 error: function(jqXhr, textStatus, errorMessage){
-                    sc_onlineIP.textInfo.setText("Error en la conexión.\nVuelva a introducir la dirección del servidor.");
+                    sc_onlineIP.textInfo.setText("Error en la conexión\nVuelva a introducir la dirección del servidor");
                     console.log("Error: " + errorMessage);
                     console.log("TEXT STATUS: " + textStatus);
                     sc_onlineIP.fadeOutTween.stop();

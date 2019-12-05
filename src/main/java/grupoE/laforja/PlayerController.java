@@ -33,11 +33,16 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 @RestController
 public class PlayerController {
-	private Player[] players = new Player[100];
+	private Player[] players = new Player[100]; //Array que guarda los jugadores conectados
 	private boolean[] ids = new boolean[100]; //Array que guarda si los ids de los jugadores están ocupados
-	private ArrayList<Player> registeredPlayers = new ArrayList<Player>();
-	private ArrayList<ChatMessage> fullChat = new ArrayList<ChatMessage>();
+	private ArrayList<Player> registeredPlayers = new ArrayList<Player>(); //Lista que guarda los jugadores registrados
+	private ArrayList<ChatMessage> fullChat = new ArrayList<ChatMessage>(); //Lista que guarda todo el chat histórico
 	
+	/*
+	 * Método init()
+	 * Se ejecuta al iniciar el servidor
+	 * Lee los archivos "users.txt" y "chat.txt" y carga su información en el ArrayList correspondiente
+	 * */
 	@PostConstruct
 	public void init() {
 		try {
@@ -53,9 +58,9 @@ public class PlayerController {
 			in.close();
 			
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		
 		try {
@@ -78,21 +83,28 @@ public class PlayerController {
 			in.close();
 			
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		
 	}
 	
 	
-	//Método get de los jugadores
-	@GetMapping("/players/")
+	/*
+	 * GET "/players/"
+	 * Al hacer esta petición, se devuelve un array con los jugadores conectados.
+	 * Devuelve toda la información relativa a los jugadores, incluidas contraseñas, por lo que el método no se usa.
+	 * */
+	/*@GetMapping("/players/")
 	public Player[] players() {
 		return players;
-	}
+	}*/
 	
-	//Método para que los clientes sepan si hay huecos
+	/*
+	 * GET "/freeslots/"
+	 * Al hacer esta petición, se devuelve el número de huecos disponibles en el servidor
+	 * */
 	@GetMapping("/freeSlots/")
 	public int freeSlots() {
 		int i = ids.length;
@@ -104,6 +116,10 @@ public class PlayerController {
 		return i;
 	}
 	
+	/*
+	 * Método getFirstFreeSlot()
+	 * Recorre el array de ids hasta que encuentra el primero sin ocupar, y devuelve su posición
+	 * */
 	private int getFirstFreeSlot() {
 		for(int i = 0; i < ids.length; i++) {
 			if (!ids[i]) {
@@ -113,8 +129,11 @@ public class PlayerController {
 		return -1;
 	}
 	
-	//Conexión del cliente por primera vez. Devuelve su id. Igual ni se va a usar.
-	@PostMapping("/players/")
+	/*
+	 * POST "/players/"
+	 * Método post que se utilizaba para subir los datos del jugador al servidor. Ahora se utilizan login y register.
+	 * */
+	/*@PostMapping("/players/")
 	public ResponseEntity<Integer> newPlayer(@RequestBody Player player) {
 		for (int i = 0; i < ids.length; i++) {
 			if (!ids[i]) {
@@ -126,10 +145,13 @@ public class PlayerController {
 			}
 		}
 		return new ResponseEntity<>(HttpStatus.CONFLICT);
-	}
+	}*/
 	
 	
-	//Método login
+	/*
+	 * POST "/login/"
+	 * Al hacer esta petición, se comprueba si el jugador existe y si la contraseña es correcta, y se devuelve un código de estado apropiado para cada situación.
+	 * */
 	@PostMapping("/login/")
 	public ResponseEntity<Integer> login(@RequestBody Player player) {
 		for (int i = 0; i < players.length; i++) {
@@ -159,7 +181,10 @@ public class PlayerController {
 		return new ResponseEntity<>(-1, HttpStatus.NOT_FOUND);
 	}
 	
-	//Método registrarse
+	/*
+	 * POST "/register/"
+	 * Al hacer esta petición, se comprueba que el jugador todavía no exista. En caso afirmativo, se añade a la lista de jugadores.
+	 * */
 	@PostMapping("/register/")
 	public ResponseEntity<Integer> register(@RequestBody Player player) {
 		int firstEmptyId = getFirstFreeSlot();
@@ -168,7 +193,6 @@ public class PlayerController {
 			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
 		}
 		
-		//System.out.print(registeredPlayers.isEmpty());
 		for (Player p : registeredPlayers) {
 			if (p.getName().equals(player.getName())) {
 				return new ResponseEntity<>(HttpStatus.CONFLICT);
@@ -185,15 +209,18 @@ public class PlayerController {
 			out.close();
 		} catch (IOException e) {
 			
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		return new ResponseEntity<>(firstEmptyId,HttpStatus.CREATED);
 	}
 	
 	
 	
-	//Método que actualiza los datos del jugador
-	@PutMapping("/players/{id}")
+	/*
+	 * PUT "/players/id"
+	 * Al hacer esta petición, se actualiza toda la información del jugador con la que se suba. No se usa ya que sube demasiada información innecesaria.
+	 * */
+	/*@PutMapping("/players/{id}")
 	public ResponseEntity<Player> updatePlayer(@PathVariable int id, @RequestBody Player player) {
 		if (ids[id]) {
 			player.setId(id);
@@ -203,8 +230,12 @@ public class PlayerController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		
-	}
+	}*/
 	
+	/*
+	 * PUT "/reminder/id"
+	 * Al hacer esta petición, si hay un jugador en la id especificada, se actualiza su timeout a 4 segundos.
+	 * */
 	@PutMapping("/reminder/{id}")
 	public ResponseEntity<Integer> resetTimeout(@PathVariable int id) {
 		if (ids[id]) {
@@ -216,6 +247,10 @@ public class PlayerController {
 		
 	}
 	
+	/*
+	 * DELETE "/players/id"
+	 * Al hacer esta petición, si hay un jugador en la id especificada, se elimina del servidor en todos los lugares en los que pueda estar menos en la lista de usuarios registrados.
+	 * */
 	@DeleteMapping("/players/{id}")
 	public ResponseEntity<Integer> deletePlayer(@PathVariable int id){
 		Player player = players[id];
@@ -241,6 +276,12 @@ public class PlayerController {
 		}
 	}
 	
+	
+	/*
+	 * Método manageTimeout()
+	 * Este método se ejecuta cada segundo, y reduce el timeout de todos los jugadoes en 1.
+	 * Si en algún caso se llega a 0, se elimina al jugador del servidor.
+	 * */
 	@Scheduled(fixedDelay=1000)
 	public void manageTimeout() {
 		for (int i = 0; i < players.length; i++) {
@@ -263,8 +304,10 @@ public class PlayerController {
 	
 	
 	
-	//Chat por aquí
-	
+	/*
+	 * POST "/chat/"
+	 * Al hacer esta petición, se asigna una nueva id al mensaje subido, se escribe en el fichero "chat.txt" y se guarda en fullChat.
+	 * */
 	@PostMapping("/chat/")
 	public ResponseEntity<Integer> postChatMessage(@RequestBody ChatMessage newMessage) {
 		
@@ -297,13 +340,18 @@ public class PlayerController {
 			out.close();
 		} catch (IOException e) {
 			
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		return new ResponseEntity<>(nextMessageId,HttpStatus.CREATED);
 	}
 	
+	/* 
+	 * GET "/chat/id"
+	 * Al hacer esta petición, se devuelve un array con todos los mensajes posteriores al correspondiente a la id proporcionada
+	 * */
 	@GetMapping("/chat/{id}")
 	public ResponseEntity<ChatMessage[]> updateChat(@PathVariable int id) {
+		if (fullChat.size() == 0) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		if (fullChat.get(fullChat.size()-1).getId() <= id) {
 
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -318,6 +366,10 @@ public class PlayerController {
 		
 	}
 	
+	/*
+	 * GET "/users/"
+	 * Al hacer esta petición, se devuelve un array con los nombres de todos los usuarios conectados
+	 * */
 	@GetMapping("/users/")
 	public ResponseEntity<String[]> getPlayerNames() {
 		
