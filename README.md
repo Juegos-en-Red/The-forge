@@ -7,11 +7,14 @@ Juego de la asignatura de Juegos en red desarrollado por:
 
 ## CAMBIOS EN EL DOCUMENTO DE DISEÑO V1.2
 El concepto general del juego se mantiene sin cambios. Dentro del menú principal se han introducido dos nuevas opciones de selección: una sección de cambios que existirán en un futuro donde se recogen las sugerencias o mejoras que pretendemos introducir en fases futuras del desarrollo del juego y un botón de créditos donde se especifica el trabajo realizado por cada miembro del equipo. Dentro del documento se ha actualizado la anterior sección de "DIAGRAMAS DE NAVEGACIÓN" por una denominada "DIAGRAMAS" en la que, junto a este, incluimos el diagrama de clases de la aplicación y el diagrama de clases de API REST, ambos en formato UML. También se ha actualizado el apartado de "MUESTRAS DE DISEÑO" para que ahora incluya las explicaciones y pantallazos referentes a la navegación.
+
 Por último se incluye una nueva clase con las instrucciones pertinentes para ejecutar el programa. 
 
 ## CAMBIOS EN EL DOCUMENTO DE DISEÑO V1.1
 La orientación del juego se ha planteado para dos jugadores en vez de para cuatro. Además, de los cuatro reinos planeados, de momento solo existen dos disponibles para elegir y manejar. Todas las amoladoras se han cambiado por moldes, algo más coherente teniendo en cuenta el contexto general del juego y los objetos de una forja con los que podrían estar familiarizados los jugadores. 
+
 Se han eliminado trampas dentro de las planeadas y se le ha añadido una guía textual, accesible desde el menú. Dentro de la partida se contempla también la opción de deshacerse de los objetos creados por error. Además, al monstruo se le arma dándole directamente las piezas en vez de depositándolas en una mesa cercana. Al documento como tal se le han añadido las secciones Diagrama de navegación y de Muestras del diseño. 
+
 Se han añadido referencias a los sonidos empleados y a la fuente usada para los textos.
 
 ## TEMÁTICA
@@ -104,7 +107,7 @@ El segundo jugador tendrá los siguientes controles:
 
 En la imagen se dispone de una guía de las conexiones entre las diferentes escenas del juego.
 
-![Diagrama de navegación uml de las clases de Phaser]()
+![Diagrama de navegación uml de las clases de Phaser](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/uml_phaser.PNG)
 
 El siguiente diagrama muestra la conexión entre las clases creadas para la implementación del juego. Aunque antes no estaba presente en el documento, los cambios con respecto a la fase anterior vienen a ser la existencia de nuevas clases con las que implementar los mencionados créditos, la sección de "próximamente" y toda la escena online, cuyo funcionamiento se explica a continuación con el diagrama UML de navegación por la aplicación API REST.
 
