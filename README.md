@@ -142,47 +142,47 @@ Captura de pantalla de una partida en proceso. Su funcionamiento queda detallado
 
 Se indica el jugador ganador junto con un letrero de victoria. Vuelve al menú principal.
 
-![CAPTURA DE PANTALLA DEL NUEVO MENÚ]()
+![CAPTURA DE PANTALLA DEL NUEVO MENÚ](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/CapturaNuevoMenu.png)
 
 El menú principal del juego se ha actualizado con sus correspondientes opciones. El cambio más relevante y el objetivo de la fase tres es el haber habilitado el modo online que antes aparecía semitransparente, indicando que ahora ya se puede acceder a él.
 
-![CAPTURA DE PANTALLA DEL MODO ONLINE IP]()
+![CAPTURA DE PANTALLA DEL MODO ONLINE IP](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/CapturaOnlineIP.png)
 
 Nada más pulsar el botón de online, lo primero que se nos aparece es un cuadro de texto en el que introducir la IP del servidor al que queremos conectarnos. Una vez tecleada, se pueden dar varios casos de error o bien proceder a la siguiente pantalla.
 
-![CAPTURA DE PANTALLA MODO ONLINE IP INCORRECTA]()
+![CAPTURA DE PANTALLA MODO ONLINE IP INCORRECTA](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/CapturaOnlineIPIncorrecta.png)
 
 Si la IP introducida por el usuario no es válida o el servidor no está en funcionamiento, esto se le hace saber al usuario vía un mensaje textual en pantalla, justo por encima del recuadro.
 
-![CAPTURA DE PANTALLA UC]()
+![CAPTURA DE PANTALLA UC](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/CapturaOnlineUC.png)
 
 Tras concetarse a un servidor, el jugador deberá introducir su nombre de usuario y su contraseña si los tiene. En caso negativo siempre podrá registrarse con un nombre de usuario y una contraseña que permanezcan libres. Tanto "iniciar sesión" como "registrarse" llevan a la misma escena donde en un futuro el usuario podrá acceder a una partida online.
 
-![CAPTURA DE PANTALLA USUARIO INCORRECTO]()
+![CAPTURA DE PANTALLA USUARIO INCORRECTO](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/CapturaOnlineUsuarioIncorrecto.png)
 
 Si el nombre de usuario introducido no es correcto porque no existe al intentar iniciar sesión o porque ya está en uso al intentar registrarse, se le manda un aviso al jugador.
 
-![CAPTURA DE PANTALLA CONTRASEÑA INCORRECTA]()
+![CAPTURA DE PANTALLA CONTRASEÑA INCORRECTA](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/CapturaOnlineContrase%C3%B1aIncorrecta.png)
 
 Si la contraseña introducida no es correcta porque no existe al intentar iniciar sesión o porque ya está en uso al intentar registrarse, se le manda un aviso al jugador.
 
-![CAPTURA DE PANTALLLA USUARIO REGISTRADO NO VÁLIDO]()
+![CAPTURA DE PANTALLLA USUARIO REGISTRADO NO VÁLIDO](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/CapturaOnlineUsuarioYaExiste.png)
 
 Cuando el jugador intenta registrar un usuario que ya se ha registrado previamente, se avisa mediante un mensaje sobre los cuadros de texto.
 
-![CAPTURA DE PANTALLA DEL LOBBY]()
+![CAPTURA DE PANTALLA DEL LOBBY](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/CapturaOnlineLobby.png)
 
 Una vez el registro o el inicio de sesión ha concluido de forma exitosa, se dispone de una escena en la que distintos jugadores pueden interactuar entre ellos vía un chat en línea. También se conoce en todo momento cuantos usuarios están conectados. Si alguno se marcha empleando el botón de desconectar o bien por la caída del servidor, desaparece de la tabla sobre el chat. Además en este último caso, en un tiempo máximo de tres segundos, se le notifica al jugador lo ocurrido. 
 
-![CAPTURA DE PANTALLA DEL SERVIDOR CAIDO]()
+![CAPTURA DE PANTALLA DEL SERVIDOR CAIDO](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/CapturaServidorCaido.png)
 
 Si se interrumpe la conexión con el servidor, se le notifica al usuario y se le da la opción de volver al menú principal.
 
-![CAPTURA DE PANTALLA DE LOS CRÉDITOS]()
+![CAPTURA DE PANTALLA DE LOS CRÉDITOS](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/CapturaCreditos.png)
 
 Escena que muestra los créditos del juego.
 
-![CAPTURA DE PANTALLA DE FUTUROS CAMBIOS]()
+![CAPTURA DE PANTALLA DE FUTUROS CAMBIOS](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/CapturaProximamente.png)
 
 Desde el menú principal, pulsando en el botón de "Próximamente" se accede a una nueva pantalla en la que quedan reflejados los cambios o mejoras que se pretenden introducir en un futuro.
 
