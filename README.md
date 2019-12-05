@@ -163,6 +163,7 @@ Tras concetarse a un servidor, el jugador deberá introducir su nombre de usuari
 Si el nombre de usuario introducido no es correcto porque no existe al intentar iniciar sesión o porque ya está en uso al intentar registrarse, se le manda un aviso al jugador.
 
 ![CAPTURA DE PANTALLA CONTRASEÑA INCORRECTA]()
+
 Si la contraseña introducida no es correcta porque no existe al intentar iniciar sesión o porque ya está en uso al intentar registrarse, se le manda un aviso al jugador.
 
 ![CAPTURA DE PANTALLLA USUARIO REGISTRADO NO VÁLIDO]()
@@ -172,6 +173,10 @@ Cuando el jugador intenta registrar un usuario que ya se ha registrado previamen
 ![CAPTURA DE PANTALLA DEL LOBBY]()
 
 Una vez el registro o el inicio de sesión ha concluido de forma exitosa, se dispone de una escena en la que distintos jugadores pueden interactuar entre ellos vía un chat en línea. También se conoce en todo momento cuantos usuarios están conectados. Si alguno se marcha empleando el botón de desconectar o bien por la caída del servidor, desaparece de la tabla sobre el chat. Además en este último caso, en un tiempo máximo de tres segundos, se le notifica al jugador lo ocurrido. 
+
+![CAPTURA DE PANTALLA DEL SERVIDOR CAIDO]()
+
+Si se interrumpe la conexión con el servidor, se le notifica al usuario y se le da la opción de volver al menú principal.
 
 ![CAPTURA DE PANTALLA DE LOS CRÉDITOS]()
 
