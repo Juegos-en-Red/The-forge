@@ -76,6 +76,13 @@ sc_Preloader.preload = function()
     // Botón de guía
     this.load.image("guia_btn", ["../assets/menu/guia.png", "../assets/menu/guia-normal.png"]);
 
+    // Botón de créditos
+    this.load.image("creditos_btn", ["../assets/menu/creditos.png", "../assets/menu/creditos-normal.png"]);
+
+    // Botón de próximamente
+    this.load.image("next_btn", ["../assets/menu/next.png", "../assets/menu/next-normal.png"]);
+
+
     /* IMAGENES PRESSED */
 
     // Botón de local
@@ -89,6 +96,12 @@ sc_Preloader.preload = function()
 
     // Botón de guía
     this.load.image("guia_btnPressed", ["../assets/menu/guiaPress.png", "../assets/menu/guiaPress-normal.png"]);
+
+    // Botón de créditos
+    this.load.image("creditos_btnPressed", ["../assets/menu/creditosPress.png", "../assets/menu/creditosPress-normal.png"]);
+
+    // Botón de próximamente
+    this.load.image("next_btnPressed", ["../assets/menu/nextPress.png", "../assets/menu/nextPress-normal.png"]);
 
     /**** SELECCIÓN DE PERSONAJE ****/
 
@@ -403,6 +416,14 @@ sc_Preloader.preload = function()
     this.load.image("trampas", "../assets/guia/trampas.png");
 
     this.load.image("cruz2", "../assets/guia/cruz2.png");
+
+   /**** ESCENA DE LOS CRÉDITOS ****/
+
+   this.load.image("creditos", "../assets/creditos/creditos.png");
+
+   /**** ESCENA DE PRÓXIMAMENTE ****/
+
+   this.load.image("next", "../assets/next/next.png");
 
     //ONLINE
     

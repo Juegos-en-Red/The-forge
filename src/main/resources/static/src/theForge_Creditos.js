@@ -21,6 +21,7 @@ sc_Creditos.create = function()
 sc_Creditos.update = function(time, delta)
 {
     imagen.y--;
+    if (imagen.y < -800) imagen.y = 800;
     if (Phaser.Input.Keyboard.JustDown(salir))
     {
         sc_Creditos.scene.restart();

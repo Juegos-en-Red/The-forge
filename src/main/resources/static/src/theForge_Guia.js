@@ -2,9 +2,9 @@
 
 var sc_Guia = new Phaser.Scene('Guia');
 
-var array = new Array();
+var array;// = new Array();
 
-var pos = 0;
+var pos;// = 0;
 
 var left, right, escape;
 
@@ -13,6 +13,8 @@ var btnRight, btnLeft, cross;
 
 sc_Guia.create = function(escena)
 {
+    array = new Array();
+    pos = 0;
     array.push(this.add.image(0, 0, "historia").setOrigin(0, 0));
     array.push(this.add.image(0, 0, "controles").setOrigin(0, 0));
     array.push(this.add.image(0, 0, "cajones").setOrigin(0, 0));
@@ -32,6 +34,29 @@ sc_Guia.create = function(escena)
     {
         sc_Guia.scene.start("MenuPrincipal");
     })
+
+    
+    btnRight.setInteractive().on("pointerdown", function(pointer)
+    {
+        if (pos + 1 < array.length)
+        {
+            array[pos].visible = false;
+            pos++;
+        }
+    })
+
+    
+    btnLeft.setInteractive().on("pointerdown", function(pointer)
+    {
+        if (pos - 1 >= 0)
+        {
+            array[pos].visible = false;
+            pos--;
+            btnLeft.visible = true;
+        }
+    })
+
+
     cross.inputEnabled = true;
 
     for (var i = 1; i < array.length; i++)

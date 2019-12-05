@@ -21,6 +21,6 @@ sc_Next.update = function(time, delta)
 {
     if (Phaser.Input.Keyboard.JustDown(salir))
     {
-        sc_Next.scene.switch("MenuPrincipal");
+        sc_Next.scene.start("MenuPrincipal");
     }
 }
