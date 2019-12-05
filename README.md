@@ -172,7 +172,7 @@ Cuando el jugador intenta registrar un usuario que ya se ha registrado previamen
 
 ![CAPTURA DE PANTALLA DEL LOBBY](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/CapturaOnlineLobby.png)
 
-Una vez el registro o el inicio de sesión ha concluido de forma exitosa, se dispone de una escena en la que distintos jugadores pueden interactuar entre ellos vía un chat en línea. También se conoce en todo momento cuantos usuarios están conectados. Si alguno se marcha empleando el botón de desconectar o bien por la caída del servidor, desaparece de la tabla sobre el chat. Además en este último caso, en un tiempo máximo de tres segundos, se le notifica al jugador lo ocurrido. 
+Una vez el registro o el inicio de sesión ha concluido de forma exitosa, se dispone de una escena en la que distintos jugadores pueden interactuar entre ellos vía un chat en línea. También se conoce en todo momento cuantos usuarios están conectados. Si alguno se marcha empleando el botón de desconectar desaparece de la tabla sobre el chat. Además en este último caso, en un tiempo máximo de tres segundos, se le notifica al jugador lo ocurrido. 
 
 ![CAPTURA DE PANTALLA DEL SERVIDOR CAIDO](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/CapturaServidorCaido.png)
 
