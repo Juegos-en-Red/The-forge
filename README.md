@@ -105,12 +105,12 @@ El segundo jugador tendrá los siguientes controles:
 ## DIAGRAMAS
 ![Diagrama de navegación entre las distintas pantallas](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/DiagramaActualizado.png)
 
-En la imagen se dispone de una guía de las conexiones entre las diferentes escenas del juego.
+Al no utilizar clases en la implementación de nuestro juego, preguntamos qué hacer con este apartado y se nos indicó que tomáramos las escenas como clases. En este diagrama todos los cuadros son escenas, excepto "Core"y "Global". Los colores de las flechas son solo para diferenciar mejor (hemos considerado todas las relaciones como asociación).
 
 ![Diagrama de navegación uml de las clases de Phaser](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/uml_phaser.PNG)
 
-El anterior diagrama muestra la conexión entre las clases creadas para la implementación del juego. Aunque antes no estaba presente en el documento, los cambios con respecto a la fase anterior vienen a ser la existencia de nuevas escenas con las que implementar los mencionados créditos, la sección de "próximamente" y toda la escena online, cuyo funcionamiento se explica a continuación con el diagrama UML de navegación por la aplicación API REST.
-La escena core contiene a todas las demás del proyecto.
+El fichero Core contiene a todas escenas del proyecto. Y el archivo "Global" contiene variables globales que las escenas señaladas en el diagrama emplean. Hemos considerado que si de una escena se podía pasar a otra y viceversa, podría considerarse como asociación en base a tomar las escenas como clases. 
+Aunque antes no estaba presente en el documento, los cambios con respecto a la fase anterior vienen a ser la existencia de nuevas escenas con las que implementar los mencionados créditos, la sección de "próximamente" y toda la escena online, cuyo funcionamiento se explica a continuación con el diagrama UML de navegación por la aplicación API REST.
 
 ![Diagrama de navegación uml de las clases de API REST](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/uml%20api2.PNG)
 
