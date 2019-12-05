@@ -110,7 +110,7 @@ En la imagen se dispone de una guía de las conexiones entre las diferentes esce
 ![Diagrama de navegación uml de las clases de Phaser](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/uml_phaser.PNG)
 
 El anterior diagrama muestra la conexión entre las clases creadas para la implementación del juego. Aunque antes no estaba presente en el documento, los cambios con respecto a la fase anterior vienen a ser la existencia de nuevas escenas con las que implementar los mencionados créditos, la sección de "próximamente" y toda la escena online, cuyo funcionamiento se explica a continuación con el diagrama UML de navegación por la aplicación API REST.
-La escena core contiene a todas las demás del proyecto.
+El fichero core contiene a todas escenas del proyecto. Y el archivo "Global" contiene variables globales que las escenas señaladas en el diagrama emplean.
 
 ![Diagrama de navegación uml de las clases de API REST](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/uml%20api2.PNG)
 
@@ -175,23 +175,7 @@ Una vez el registro o el inicio de sesión ha concluido de forma exitosa, se dis
 
 
 ## INSTRUCCIONES DE EJECUCCIÓN
-A la hora de ejecutar el proyecto existen dos maneras. 
-
-En una de ellas es necesario disponer de un IDE de desarrollo, preferiblemente Spring Tool Suite, ya que es en el que se ha realizado la aplicación. 
-
-Una vez se abra el proyecto en Spring, se ejecuta la aplicación con el comando "run as: java application". 
-
-Hecho esto se inicia el servidor al que se conectará el navegador. 
-
-
-La otra forma de ejecutarlo es utilizando un archivo .jar, ya sea el que viene incluido u otro que se compile a partir del código fuente. Para compilar un archivo .jar, es necesario tener instalado el JDK. Desde Spring, se debe utilizar el comando "run as: Maven Build.." y en Goals se debe introducir "package". 
-
-Al pulsar el botón "Run", se empezará a compilar el servidor en un archivo .jar. Una vez esté compilado, se puede o abrir directamente o, desde la línea de comandos y en la carpeta en la que se encuentre el .jar, ejecutar "java -jar laforja-0.0.1-SNAPSHOT.jar".
-
-
-Una vez el servidor se esté ejecutando, desde el navegador se accede a la IP del servidor que está activo, que será la del equipo con el puerto 8080. Desde el equipo en el que se esté ejecutando, basta con entrar en localhost:8080.
-
-Para acceder a las funcionalidades online basta con escogerlas en el menú principal e introducir la IP del servidor al que te quieras conectar, que puede ser el mismo con el que se ha abierto el navegador o bien otro en el que también se esté ejecutando el proyecto.
+A la hora de compilar el proyecto existen dos maneras. En una de ellas es necesario disponer de un IDE de desarrollo, preferiblemente Spring, ya que es en el que se ha realizado la aplicación. Una vez se abra el proyecto en Spring, se ejecuta la aplicación con el comando "run as: java application". Hecho esto se inicia el servidor al que se conectará el navegador. En este mismo se accede a la IP del servidor que está activo. Con la aplicación compilando, para acceder a las funcionalidades online basta con escogerlas en el menú principal e introducir la IP del servidor al que te quieras conectar, que puede ser el mismo con el que se ha abierto el navegador o bien otro en el que también se esté ejecutando el proyecto.
 
 
 ## TRELLO
