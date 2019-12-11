@@ -3,6 +3,8 @@
 //Inicialización de la escena del juego en local
 var sc_juegoLocal = new Phaser.Scene('JuegoLocal');
 
+const INF = 0X3F3F3F3F;
+
 //Función preload: Aquí se cargan todos los sprites necesarios para el juego.
 sc_juegoLocal.preload = function() {
     
@@ -11,7 +13,8 @@ sc_juegoLocal.preload = function() {
 //Función create: Aquí se inicializan todos los objetos del juego.
 sc_juegoLocal.create = function() {
 
-    sc_juegoLocal.graphics = sc_juegoLocal.add.graphics();
+    initDistances();
+    initGrafo();
 
     //Música. Si se añade más música es importante parar aquí toda la que haya
     mus_menu.pause();
@@ -22,6 +25,7 @@ sc_juegoLocal.create = function() {
     //Aquí se carga el fondo del juego
     this.add.image(400, 300, 'sky');
 
+    sc_juegoLocal.graphics = sc_juegoLocal.add.graphics();
     //Inicialización de animaciones
     initAnimations(this);
 
@@ -29,32 +33,40 @@ sc_juegoLocal.create = function() {
     //Primero se crea un grupo de cajones para poder iterar y después se crean los cajones de ambos jugadores
     //La propiedad heldObject (que se repetirá mucho en el resto de objetos) guarda en forma de string el objeto que guarda el cajón
     sc_juegoLocal.cajonesMetal = this.physics.add.staticGroup();
-    sc_juegoLocal.cajonesMetal.create(90, 120, 'cajon1').heldObject = "metal1";
-    sc_juegoLocal.cajonesMetal.create(150, 120, 'cajon2').heldObject = "metal2";
-    sc_juegoLocal.cajonesMetal.create(210, 120, 'cajon3').heldObject = "metal3";
-    sc_juegoLocal.cajonesMetal.create(270, 120, 'cajon4').heldObject = "metal4";
-    sc_juegoLocal.cajonesMetal.create(330, 120, 'cajon5').heldObject = "metal5";
+    sc_juegoLocal.cajonesMetal.create(140, 46, 'cajon1').heldObject = "metal1";
+    sc_juegoLocal.cajonesMetal.create(180, 46, 'cajon2').heldObject = "metal2";
+    sc_juegoLocal.cajonesMetal.create(220, 46, 'cajon3').heldObject = "metal3";
+    sc_juegoLocal.cajonesMetal.create(260, 46, 'cajon4').heldObject = "metal4";
+    sc_juegoLocal.cajonesMetal.create(300, 46, 'cajon5').heldObject = "metal5";
     sc_juegoLocal.cajonesMetal.create(710, 120, 'cajon1').heldObject = "metal1";
     sc_juegoLocal.cajonesMetal.create(650, 120, 'cajon2').heldObject = "metal2";
     sc_juegoLocal.cajonesMetal.create(590, 120, 'cajon3').heldObject = "metal3";
     sc_juegoLocal.cajonesMetal.create(530, 120, 'cajon4').heldObject = "metal4";
     sc_juegoLocal.cajonesMetal.create(470, 120, 'cajon5').heldObject = "metal5";
     
+    sc_juegoLocal.cajonesMetal.children.iterate(function(child) {
+        disconnectNeighbours(getCell(child.x,child.y).y,getCell(child.x,child.y).x, true, false, true, true);
+    });
 
     //Inicialización de basuras
     //La inicialización de las basuras no necesita la propiedad heldObject, ya que sólo sirven para que el jugador se deshaga de objetos no deseados.
     sc_juegoLocal.basuras = this.physics.add.staticGroup();
-    sc_juegoLocal.basuras.create(380, 410, 'basura');
+    sc_juegoLocal.basuras.create(340, 320, 'basura');
     sc_juegoLocal.basuras.create(420, 410, 'basura').setFlipX(true);
+
+    sc_juegoLocal.basuras.children.iterate(function(child) {
+        disconnectNeighbours(getCell(child.x,child.y).y,getCell(child.x,child.y).x, true, false, false, false);
+    });
 
     //Inicialización de hornos de 1 material
     //En las estaciones de trabajo se añaden varias propiedades además de heldObject. 
     //En este caso se añaden timer, que guarda el progreso del metal en su interior, y status, el sprite que mostrará el estado de la estación.
     sc_juegoLocal.hornos = this.physics.add.staticGroup();
-    sc_juegoLocal.hornos.create( 45, 230, 'horno');
+    sc_juegoLocal.hornos.create( 60, 140, 'horno');
     sc_juegoLocal.hornos.create(755, 230, 'horno').setFlipX(true);
 
     sc_juegoLocal.hornos.children.iterate(function(child){
+        disconnectNeighbours(getCell(child.x,child.y).y,getCell(child.x,child.y).x, true, true, false, false);
         child.heldObject = "none";
         child.timer = -1;
         child.status = sc_juegoLocal.add.image(child.x-6, child.y-25, 'empty');
@@ -65,10 +77,11 @@ sc_juegoLocal.create = function() {
     //Inicialización de yunques de 1 material
     //Es idéntica a la de los hornos, pero también se añade la propiedad cooldown, que impide al jugador interactuar con más frecuencia de la deseada.
     sc_juegoLocal.yunques = this.physics.add.staticGroup();
-    sc_juegoLocal.yunques.create(45,  510, 'yunque');
+    sc_juegoLocal.yunques.create(340, 260, 'yunque');
     sc_juegoLocal.yunques.create(755, 510, 'yunque');
 
     sc_juegoLocal.yunques.children.iterate(function(child){
+        disconnectNeighbours(getCell(child.x,child.y).y,getCell(child.x,child.y).x, true, true, false, false);
         child.heldObject = "none";
         child.timer = -1;
         child.cooldown = 0;
@@ -78,10 +91,11 @@ sc_juegoLocal.create = function() {
 
     //Inicialización de barriles de templado
     sc_juegoLocal.barriles = this.physics.add.staticGroup();
-    sc_juegoLocal.barriles.create(380, 270, 'barril de templado');
+    sc_juegoLocal.barriles.create(340, 179, 'barril de templado');
     sc_juegoLocal.barriles.create(420, 270, 'barril de templado');
 
     sc_juegoLocal.barriles.children.iterate(function(child){
+        disconnectNeighbours(getCell(child.x,child.y).y,getCell(child.x,child.y).x, false, true, false, false);
         child.heldObject = "none";
         child.timer = -1;
         child.status = sc_juegoLocal.add.image(child.x-6, child.y-25, 'empty');
@@ -90,10 +104,11 @@ sc_juegoLocal.create = function() {
     
     //Inicialización de moldes
     sc_juegoLocal.moldes = this.physics.add.staticGroup();
-    sc_juegoLocal.moldes.create(380, 210, 'molde');
+    sc_juegoLocal.moldes.create(340, 220, 'molde');
     sc_juegoLocal.moldes.create(420, 210, 'molde');
 
     sc_juegoLocal.moldes.children.iterate(function(child){
+        disconnectNeighbours(getCell(child.x,child.y).y,getCell(child.x,child.y).x, true, true, false, false);
         child.heldObject = "none";
         child.timer = -1;
         child.status = sc_juegoLocal.add.image(child.x-6, child.y-25, 'empty');
@@ -103,10 +118,11 @@ sc_juegoLocal.create = function() {
     //Inicialización de  hornos de 2 materiales
     //En este caso hay dos heldObjects, ya que se trata de un horno doble. Lo mismo ocurrirá en los yunques dobles.
     sc_juegoLocal.hornosd = this.physics.add.staticGroup();
-    sc_juegoLocal.hornosd.create( 45, 350, 'horno doble');
+    sc_juegoLocal.hornosd.create( 60, 260, 'horno doble');
     sc_juegoLocal.hornosd.create(755, 350, 'horno doble').setFlipX(true);
 
     sc_juegoLocal.hornosd.children.iterate(function(child){
+        disconnectNeighbours(getCell(child.x,child.y).y,getCell(child.x,child.y).x, true, true, false, false);
         child.heldObject1 = "none";
         child.heldObject2 = "none";
         child.timer = -1;
@@ -118,10 +134,11 @@ sc_juegoLocal.create = function() {
 
     //Inicialización de yunques de 2 materiales
     sc_juegoLocal.yunquesd = this.physics.add.staticGroup();
-    sc_juegoLocal.yunquesd.create(380, 330, 'yunque doble');
+    sc_juegoLocal.yunquesd.create( 53, 340, 'yunque doble');
     sc_juegoLocal.yunquesd.create(420, 330, 'yunque doble');
 
     sc_juegoLocal.yunquesd.children.iterate(function(child){
+        disconnectNeighbours(getCell(child.x,child.y).y,getCell(child.x,child.y).x, true, true, false, false);
         child.heldObject1 = "none";
         child.heldObject2 = "none";
         child.timer = -1;
@@ -130,12 +147,12 @@ sc_juegoLocal.create = function() {
     });
 
     //Inicialización de trampas
-    sc_juegoLocal.altarTrampas = this.physics.add.staticSprite(400,  510, 'altar1');
+    sc_juegoLocal.altarTrampas = this.physics.add.staticSprite(400,  400, 'altar1');
     sc_juegoLocal.altarTrampas.trampa = "none";
     sc_juegoLocal.altarTrampas.timer = 0;
     sc_juegoLocal.altarTrampas.trampaSprite = sc_juegoLocal.add.image(sc_juegoLocal.altarTrampas.x, sc_juegoLocal.altarTrampas.y, 'empty');
     sc_juegoLocal.trampasb = this.physics.add.staticGroup();
-    sc_juegoLocal.trampasb.create(340, 530, 'btnAltar');
+    sc_juegoLocal.trampasb.create(340, 420, 'btnAltar');
     sc_juegoLocal.trampasb.create(460, 530, 'btnAltar');
 
     sc_juegoLocal.muros = this.physics.add.staticGroup();
@@ -197,10 +214,14 @@ sc_juegoLocal.create = function() {
     
     //Inicialización de mesas
     sc_juegoLocal.mesas = this.physics.add.staticGroup();
-    sc_juegoLocal.mesas.create(45,  420, 'mesa');
+    sc_juegoLocal.mesas.create(180, 455, 'mesa');
+    sc_juegoLocal.mesas.create(220, 455, 'mesa');
+    sc_juegoLocal.mesas.create(260, 455, 'mesa');
+
     sc_juegoLocal.mesas.create(755, 420, 'mesa');
 
     sc_juegoLocal.mesas.children.iterate(function (child) {
+        disconnectNeighbours(getCell(child.x,child.y).y,getCell(child.x,child.y).x, false, true, true, true);
         child.heldObject = "none";
         child.heldObjectSprite = sc_juegoLocal.add.image(child.x, child.y, 'empty');
     });
@@ -213,7 +234,7 @@ sc_juegoLocal.create = function() {
     } else {
         temp = "Elfo";
     }
-    sc_juegoLocal.monstruo1 = sc_juegoLocal.monstruos.create(210,  520, 'M'+temp+'D');
+    sc_juegoLocal.monstruo1 = sc_juegoLocal.monstruos.create(72, 433, 'M'+temp+'D');
     sc_juegoLocal.monstruo1.faction = temp;
     if (cont.p2.ch.slice(2,3) == 'H') {
         temp = "Hielo";
@@ -224,6 +245,7 @@ sc_juegoLocal.create = function() {
     sc_juegoLocal.monstruo2.faction = temp;
 
     sc_juegoLocal.monstruos.children.iterate(function (child) {
+        disconnectNeighbours(getCell(child.x,child.y).y,getCell(child.x,child.y).x);
         child.heldCasco = "none";
         child.heldPechera = "none";
         child.heldPiernas = "none";
@@ -454,16 +476,16 @@ sc_juegoLocal.create = function() {
     //console.log(sc_juegoLocal.recetas1[0]+", "+sc_juegoLocal.recetas1[1]+", "+sc_juegoLocal.recetas1[2]+", "+sc_juegoLocal.recetas1[3]);
     //console.log(sc_juegoLocal.recetas2[0]+", "+sc_juegoLocal.recetas2[1]+", "+sc_juegoLocal.recetas2[2]+", "+sc_juegoLocal.recetas2[3]);
 
-    sc_juegoLocal.recuadro1 = sc_juegoLocal.add.image(208, 43, 'recuadro');
-    sc_juegoLocal.Rmetal21 = sc_juegoLocal.add.image(65, 58, 'Rmetal');
-    sc_juegoLocal.Rmetal11 = sc_juegoLocal.add.image(65, 28, 'Rmetal');
-    sc_juegoLocal.Rmetal1 = sc_juegoLocal.add.image(65, 43, 'Rmetal');
-    sc_juegoLocal.Rhd1 = sc_juegoLocal.add.image(110, 43, 'Rhorno doble');
-    sc_juegoLocal.Rym1 = sc_juegoLocal.add.image(155, 43, 'Ryunque');
-    sc_juegoLocal.Rhorno1 = sc_juegoLocal.add.image(200, 43, 'Rhorno');
-    sc_juegoLocal.Rbarril1 = sc_juegoLocal.add.image(245, 43, 'Rbarril');
-    sc_juegoLocal.Rpieza1 = sc_juegoLocal.add.image(290, 43, 'Rcasco');
-    sc_juegoLocal.Rmonstruo1 = sc_juegoLocal.add.image(335, 43, 'RMonstruo' + cont.p1.ch.slice(2,3));
+    sc_juegoLocal.recuadro1 = sc_juegoLocal.add.image(208, 580-43, 'recuadro');
+    sc_juegoLocal.Rmetal21 = sc_juegoLocal.add.image(65, 580-58, 'Rmetal');
+    sc_juegoLocal.Rmetal11 = sc_juegoLocal.add.image(65, 580-28, 'Rmetal');
+    sc_juegoLocal.Rmetal1 = sc_juegoLocal.add.image(65, 580-43, 'Rmetal');
+    sc_juegoLocal.Rhd1 = sc_juegoLocal.add.image(110, 580-43, 'Rhorno doble');
+    sc_juegoLocal.Rym1 = sc_juegoLocal.add.image(155, 580-43, 'Ryunque');
+    sc_juegoLocal.Rhorno1 = sc_juegoLocal.add.image(200, 580-43, 'Rhorno');
+    sc_juegoLocal.Rbarril1 = sc_juegoLocal.add.image(245, 580-43, 'Rbarril');
+    sc_juegoLocal.Rpieza1 = sc_juegoLocal.add.image(290, 580-43, 'Rcasco');
+    sc_juegoLocal.Rmonstruo1 = sc_juegoLocal.add.image(335, 580-43, 'RMonstruo' + cont.p1.ch.slice(2,3));
 
     sc_juegoLocal.recuadro2 = sc_juegoLocal.add.image(592, 43, 'recuadro');
     sc_juegoLocal.Rmetal22 = sc_juegoLocal.add.image(455, 58, 'Rmetal');
@@ -481,7 +503,7 @@ sc_juegoLocal.create = function() {
     //Por un lado tenemos el overlay, que oscurecerá toda la pantalla cuando el juego esté pausado
     //Por otro lado tenemos el botón de pausa, el cual se podrá pulsar para activar o desactivar el pausado del juego.
     sc_juegoLocal.pausedOverlay = sc_juegoLocal.add.image(400, 300, 'empty');
-    sc_juegoLocal.botonPausa = this.physics.add.sprite(400,45, 'botonPausa');
+    sc_juegoLocal.botonPausa = this.physics.add.sprite(400,600-45, 'botonPausa');
     sc_juegoLocal.botonPausa.paused = false;
     sc_juegoLocal.botonPausa.setInteractive();
     sc_juegoLocal.botonPausa.on('pointerup', function() {
@@ -498,10 +520,15 @@ sc_juegoLocal.create = function() {
 sc_juegoLocal.update = function() {
 
 
+
     //Si el juego está pausado, la función no se ejecuta.
     if (sc_juegoLocal.botonPausa.paused) {
         return;
     }
+
+    dijkstra(getCell(sc_juegoLocal.player.x,sc_juegoLocal.player.y),getCell(220,455),getCell(0,0),getCell(800,20));
+
+    comprobarInteraccion(sc_juegoLocal.player, sc_juegoLocal.player2);
 
     //Llamar a actualizarRecetas();
     actualizarRecetas();
@@ -1442,7 +1469,8 @@ function interactuar(p) {
 function interactuarCajones(p) {
     var result = false;
     sc_juegoLocal.cajonesMetal.children.iterate(function (child) {
-        if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.55*Math.max(child.body.width, child.body.height)+0.55*Math.max(p.body.width, p.body.height)) {
+        //if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.55*Math.max(child.body.width, child.body.height)+0.55*Math.max(p.body.width, p.body.height)) {
+        if (isAdyacent(p.x,p.y,child.x,child.y)) {
             if (p.heldObject == "none") {
                 p.heldObject = child.heldObject;
             }
@@ -1459,7 +1487,7 @@ function interactuarCajones(p) {
 function interactuarMesas(p) {
     var result = false;
     sc_juegoLocal.mesas.children.iterate(function (child) {
-        if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.55*Math.max(child.body.width, child.body.height)+0.55*Math.max(p.body.width, p.body.height)) {
+        if (isAdyacent(p.x,p.y,child.x,child.y)) {
             var temp = child.heldObject;
             child.heldObject = p.heldObject;
             p.heldObject = temp;
@@ -1473,7 +1501,7 @@ function interactuarMesas(p) {
 function interactuarBasuras(p) {
     var result = false;
     sc_juegoLocal.basuras.children.iterate(function (child) {
-        if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.55*Math.max(child.body.width, child.body.height)+0.55*Math.max(p.body.width, p.body.height)) {
+        if (isAdyacent(p.x,p.y,child.x,child.y)) {
             p.heldObject = "none";
             result = true;
         }
@@ -1537,7 +1565,7 @@ function interactuarHornos(p) {
     if (p.interacted != true) {
         sc_juegoLocal.hornos.children.iterate(function (child) {
             if ((child.timer == -1 || (child.timer > 100 && child.timer < 150))) {
-                if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.55*Math.max(child.body.width, child.body.height)+0.55*Math.max(p.body.width, p.body.height)) {
+                if (isAdyacent(p.x,p.y,child.x,child.y)) {
                     if (child.heldObject == "none" && child.timer == -1 && (tablaIO[p.heldObject] != undefined)) {
                         child.heldObject = p.heldObject;
                         p.heldObject = "none";
@@ -1591,7 +1619,7 @@ function interactuarYunques(p) {
 
     sc_juegoLocal.yunques.children.iterate(function (child) {
         if (child.cooldown == 0 && p.interacted != true){
-            if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.55*Math.max(child.body.width, child.body.height)+0.55*Math.max(p.body.width, p.body.height)) {
+            if (isAdyacent(p.x,p.y,child.x,child.y)) {
                 if (child.timer == -1 && child.heldObject == "none" && (tablaIO[p.heldObject] != undefined)) {
                     child.heldObject = p.heldObject;
                     p.heldObject = "none";
@@ -1667,7 +1695,7 @@ function interactuarBarriles(p) {
     if (p.interacted != true) {
         sc_juegoLocal.barriles.children.iterate(function (child) {
             if ((child.timer == -1 || (child.timer >= 100))) {
-                if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.55*Math.max(child.body.width, child.body.height)+0.55*Math.max(p.body.width, p.body.height)) {
+                if (isAdyacent(p.x,p.y,child.x,child.y)) {
                     if (child.heldObject == "none" && child.timer == -1 && (tablaIO[p.heldObject] != undefined)) {
                         child.heldObject = p.heldObject;
                         p.heldObject = "none";
@@ -1707,7 +1735,7 @@ function interactuarMoldes(p) {
     if (p.interacted != true) {
         sc_juegoLocal.moldes.children.iterate(function (child) {
             if ((child.timer == -1 || (child.timer >= 100))) {
-                if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.55*Math.max(child.body.width, child.body.height)+0.55*Math.max(p.body.width, p.body.height)) {
+                if (isAdyacent(p.x,p.y,child.x,child.y)) {
                     if (child.heldObject == "none" && child.timer == -1 && (tablaIO[p.heldObject] != undefined)) {
                         child.heldObject = p.heldObject;
                         p.heldObject = "none";
@@ -1779,7 +1807,7 @@ function interactuarHornosd(p) {
     if (p.interacted != true) {
         sc_juegoLocal.hornosd.children.iterate(function (child) {
             if ((child.timer == -1 || (child.timer > 100 && child.timer < 150))) {
-                if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.55*Math.max(child.body.width, child.body.height)+0.55*Math.max(p.body.width, p.body.height)) {
+                if (isAdyacent(p.x,p.y,child.x,child.y)) {
                     if (child.heldObject1 == "none" && child.heldObject2 == "none" && child.timer == -1 && (tablaInputsValidos[p.heldObject])) {
                         child.heldObject1 = p.heldObject;
                         p.heldObject = "none";
@@ -1854,7 +1882,7 @@ function interactuarYunquesd(p) {
     tablaIO["metal5rojo"]["metal4rojo"] = "metal45espada"; //hay un total de 10 espadas distintas
     sc_juegoLocal.yunquesd.children.iterate(function (child) {
         if (child.cooldown == 0 && p.interacted != true){
-            if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.55*Math.max(child.body.width, child.body.height)+0.55*Math.max(p.body.width, p.body.height)) {
+            if (isAdyacent(p.x,p.y,child.x,child.y)) {
                 if (child.timer == -1 && child.heldObject1 == "none" && child.heldObject2 == "none" && (tablaInputsValidos[p.heldObject])) {
                     child.heldObject1 = p.heldObject;
                     p.heldObject = "none";
@@ -2267,7 +2295,7 @@ function interactuarMonstruos(p) {
 
     //console.log(sc_juegoLocal.recetas1[0] + ", " + p.heldObject);
     if (sc_juegoLocal.recetas1[0] == p.heldObject) {
-        if (Phaser.Math.Distance.Between(p.x, p.y, sc_juegoLocal.monstruo1.x, sc_juegoLocal.monstruo1.y) < 0.55*Math.max(sc_juegoLocal.monstruo1.body.width, sc_juegoLocal.monstruo1.body.height)+0.55*Math.max(p.body.width, p.body.height)) {
+        if (Phaser.Math.Distance.Between(p.x, p.y, sc_juegoLocal.monstruo1.x, sc_juegoLocal.monstruo1.y) < 0.6*Math.max(sc_juegoLocal.monstruo1.body.width, sc_juegoLocal.monstruo1.body.height)+0.55*Math.max(p.body.width, p.body.height)) {
             armarMonstruo(sc_juegoLocal.monstruo1, p.heldObject)
             p.heldObject = "none";
             getAnim(p, true);
@@ -2292,7 +2320,7 @@ function interactuarMonstruos(p) {
         }
     }
     if (sc_juegoLocal.recetas2[0] == p.heldObject) {
-        if (Phaser.Math.Distance.Between(p.x, p.y, sc_juegoLocal.monstruo2.x, sc_juegoLocal.monstruo2.y) < 0.55*Math.max(sc_juegoLocal.monstruo2.body.width, sc_juegoLocal.monstruo2.body.height)+0.55*Math.max(p.body.width, p.body.height)) {
+        if (Phaser.Math.Distance.Between(p.x, p.y, sc_juegoLocal.monstruo2.x, sc_juegoLocal.monstruo2.y) < 0.6*Math.max(sc_juegoLocal.monstruo2.body.width, sc_juegoLocal.monstruo2.body.height)+0.55*Math.max(p.body.width, p.body.height)) {
             armarMonstruo(sc_juegoLocal.monstruo2, p.heldObject)
             p.heldObject = "none";
             getAnim(p, true);
@@ -2394,4 +2422,278 @@ function cogerTrampa(p, t) {
     sc_juegoLocal.altarTrampas.timer = 0;
     sc_juegoLocal.altarTrampas.trampaSprite.setTexture("empty");
     sc_juegoLocal.altarTrampas.setTexture("altar1");
+}
+
+function operatorXor(a, b) {
+    return ((a || b) && !(a && b));
+}
+
+function getCell(x,y) {
+    var cellX, cellY;
+    cellX = Math.floor(x/40);
+    cellY = Math.floor(y/40);
+    return ({x: cellX, y: cellY});
+}
+
+function isAdyacent(px,py,cx,cy) {
+    var pCell = getCell(px,py);
+    var cCell = getCell(cx,cy);
+    if ( operatorXor( ((Math.abs(pCell.x - cCell.x) == 1) && (Math.abs(pCell.y - cCell.y) == 0 )) , ((Math.abs(pCell.x - cCell.x) == 0) && (Math.abs(pCell.y - cCell.y) == 1 )) ) ) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function comprobarInteraccion(p1,p2) {
+
+    sc_juegoLocal.cajonesMetal.children.iterate(function (child) {
+        if (isAdyacent(p1.x,p1.y,child.x,child.y) || isAdyacent(p2.x,p2.y,child.x,child.y)) {
+            child.setTint(0xFFFF00);
+        } else {
+            child.setTint(0xFFFFFF);
+        }
+    });
+
+    sc_juegoLocal.mesas.children.iterate(function (child) {
+        if (isAdyacent(p1.x,p1.y,child.x,child.y) || isAdyacent(p2.x,p2.y,child.x,child.y)) {
+            child.setTint(0xFFFF00);
+        } else {
+            child.setTint(0xFFFFFF);
+        }
+    });
+
+    sc_juegoLocal.hornos.children.iterate(function (child) {
+        if (isAdyacent(p1.x,p1.y,child.x,child.y) || isAdyacent(p2.x,p2.y,child.x,child.y)) {
+            child.setTint(0xFFFF00);
+        } else {
+            child.setTint(0xFFFFFF);
+        }
+    });
+
+    sc_juegoLocal.yunques.children.iterate(function (child) {
+        if (isAdyacent(p1.x,p1.y,child.x,child.y) || isAdyacent(p2.x,p2.y,child.x,child.y)) {
+            child.setTint(0xFFFF00);
+        } else {
+            child.setTint(0xFFFFFF);
+        }
+    });
+
+    sc_juegoLocal.barriles.children.iterate(function (child) {
+        if (isAdyacent(p1.x,p1.y,child.x,child.y) || isAdyacent(p2.x,p2.y,child.x,child.y)) {
+            child.setTint(0xFFFF00);
+        } else {
+            child.setTint(0xFFFFFF);
+        }
+    });
+
+    sc_juegoLocal.moldes.children.iterate(function (child) {
+        if (isAdyacent(p1.x,p1.y,child.x,child.y) || isAdyacent(p2.x,p2.y,child.x,child.y)) {
+            child.setTint(0xFFFF00);
+        } else {
+            child.setTint(0xFFFFFF);
+        }
+    });
+
+    sc_juegoLocal.hornosd.children.iterate(function (child) {
+        if (isAdyacent(p1.x,p1.y,child.x,child.y) || isAdyacent(p2.x,p2.y,child.x,child.y)) {
+            child.setTint(0xFFFF00);
+        } else {
+            child.setTint(0xFFFFFF);
+        }
+    });
+
+    sc_juegoLocal.yunquesd.children.iterate(function (child) {
+        if (isAdyacent(p1.x,p1.y,child.x,child.y) || isAdyacent(p2.x,p2.y,child.x,child.y)) {
+            child.setTint(0xFFFF00);
+        } else {
+            child.setTint(0xFFFFFF);
+        }
+    });
+
+    sc_juegoLocal.basuras.children.iterate(function (child) {
+        if (isAdyacent(p1.x,p1.y,child.x,child.y) || isAdyacent(p2.x,p2.y,child.x,child.y)) {
+            child.setTint(0xFFFF00);
+        } else {
+            child.setTint(0xFFFFFF);
+        }
+    });
+}
+
+
+// Algoritmo de Dijkstra
+function dijkstra(start1, end1, start2, end2)
+{
+    /* JUGADOR 1 */
+
+    initDistances();
+    sc_juegoLocal.graphics.clear();
+    sc_juegoLocal.graphics.fillStyle(0x00ff07, 0.3);
+    var compare = function(a, b) {return a.distance < b.distance};
+    sc_juegoLocal.distances[start1.y][start1.x] = 0;
+    var prio_queue = new PriorityQueue({comparator: compare});
+    var prev = new Array();
+    for (var i = 0; i < config.height / 40; i++)
+    {
+        prev.push(new Array());
+        for (var j = 0; j < config.width / 40; j++)
+        {
+            prev[i].push(new Array());
+            prev[i][j] = undefined;
+        }
+    }
+    prio_queue.queue({startF: start1.y, startC: start1.x, distance: 0});
+    while (prio_queue.length > 0)
+    {
+        var node = prio_queue.dequeue();            
+        if (sc_juegoLocal.distances[node.startF][node.startC] >= node.distance)
+        {
+            for (var k = 0; k < config.height / 40; k++)
+            {
+                for (var l = 0; l < config.width / 40; l++)
+                {
+                    var peso = node.distance + sc_juegoLocal.adjacencyMatrix[node.startF][node.startC][k][l];
+                    if (peso < sc_juegoLocal.distances[k][l])
+                    {
+                        prio_queue.queue({startF: k, startC: l, distance: peso});
+                        sc_juegoLocal.distances[k][l] = peso;
+                        prev[k][l] = {fila: node.startF, columna: node.startC};
+                    }
+                }
+            }
+        }
+    }   
+
+    var curva = new Array();
+    var inicio = prev[end1.y][end1.x];
+    var final = {fila: start1.y, columna: start1.x};
+
+    curva.push(20+(end1.x*40));
+    curva.push(20+(end1.y*40));
+    while (inicio != undefined && final != undefined) {
+        curva.push(20+(inicio.columna*40));
+        curva.push(20+(inicio.fila*40));
+        inicio = prev[inicio.fila][inicio.columna];
+    }
+    sc_juegoLocal.graphics.lineStyle(4,0x000000,1);
+    if (curva.length == 2) {
+        curva.push(20+(start1.x*40));
+        curva.push(20+(start1.y*40));
+    }
+    var curve = new Phaser.Curves.Spline(curva);
+    if (curva.length >= 4)
+        curve.draw(sc_juegoLocal.graphics, 64);
+
+    /* JUGADOR 2 */
+    //Queda pendiente adaptarlo todo al jugador 2.
+/*
+    initDistances();
+    sc_juegoLocal.graphics.fillStyle(0x0000f7, 0.3);
+    sc_juegoLocal.distances[start2.y][start2.x] = 0;
+    prio_queue = new PriorityQueue({comparator: compare});
+    prev = new Array();
+    for (var i = 0; i < config.height / 40; i++)
+    {
+        prev.push(new Array());
+        for (var j = 0; j < config.width / 40; j++)
+        {
+            prev[i].push(new Array());
+            prev[i][j] = undefined;
+        }
+    }
+    prio_queue.queue({startF: start2.y, startC: start2.x, distance: 0});
+    while (prio_queue.length > 0)
+    {
+        var node = prio_queue.dequeue();            
+        if (sc_juegoLocal.distances[node.startF][node.startC] >= node.distance)
+        {
+            for (var k = 0; k < config.height / 40; k++)
+            {
+                for (var l = 0; l < config.width / 40; l++)
+                {
+                    var peso = node.distance + sc_juegoLocal.adjacencyMatrix[node.startF][node.startC][k][l];
+                    if (peso < sc_juegoLocal.distances[k][l])
+                    {
+                        prio_queue.queue({startF: k, startC: l, distance: peso});
+                        sc_juegoLocal.distances[k][l] = peso;
+                        prev[k][l] = {fila: node.startF, columna: node.startC};
+                    }
+                }
+            }
+        }
+    }
+    if (end2.x != 0 && end2.y != 0)
+        sc_juegoLocal.graphics.fillRect(end2.x * 40, end2.y * 40, 40, 40);
+    drawPath(prev, prev[end2.y][end2.x], {fila: start2.y, columna: start2.x});  */   
+}   
+
+function initDistances()
+{
+    sc_juegoLocal.distances = new Array();
+    for (var i = 0; i < config.height / 40; i++)
+    {
+        sc_juegoLocal.distances.push(new Array());
+        for (var j = 0; j < config.width / 40; j++)
+        {
+            sc_juegoLocal.distances[i].push(new Array());
+            sc_juegoLocal.distances[i][j] = INF;
+        }
+    }
+}
+
+// Función para crear nuestro grafo predeterminado
+function initGrafo()
+{
+    /* ARRAY 4-DIMENSIONAL de i = 15, j = 20, k = 15, l = 20 */
+    sc_juegoLocal.adjacencyMatrix = new Array();
+
+    for (var i = 0; i < config.height / 40; i++)
+    {
+        sc_juegoLocal.adjacencyMatrix.push(new Array());
+        for (var j = 0; j < config.width / 40; j++)
+        {
+            sc_juegoLocal.adjacencyMatrix[i].push(new Array());
+            for (var k = 0; k < config.height / 40; k++)
+            {
+                sc_juegoLocal.adjacencyMatrix[i][j].push(new Array());
+                for (var l = 0; l < config.width / 40; l++)
+                {
+                    sc_juegoLocal.adjacencyMatrix[i][j][k].push(new Array());
+                    sc_juegoLocal.adjacencyMatrix[i][j][k][l] = INF;
+                    // Unión izda-derecha derecha-izda
+                    if ((i == k && l == j + 1) || (i == k && l == j - 1))
+                    {
+                        sc_juegoLocal.adjacencyMatrix[i][j][k][l] = 1;
+                    }                        
+                    // Unión arriba-abajo abajo-arriba
+                    if ((j == l && k == i + 1) || (j == l && k == i - 1))
+                    {
+                        sc_juegoLocal.adjacencyMatrix[i][j][k][l] = 1;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Desconectar los vecionos de un nodo del grafo
+function disconnectNeighbours(fila, columna, up, down, left, right)
+{
+    var maxF = config.height / 40, maxC = config.width / 40;
+    if (fila + 1 < maxF && down)
+        sc_juegoLocal.adjacencyMatrix[fila + 1][columna][fila][columna] = INF;
+    if (fila + 1 < maxF && columna + 1 < maxC)
+        sc_juegoLocal.adjacencyMatrix[fila + 1][columna + 1][fila][columna] = INF;
+    if (fila + 1 < maxF && columna - 1 >= 0)
+        sc_juegoLocal.adjacencyMatrix[fila + 1][columna - 1][fila][columna] = INF;
+    if (columna + 1 < maxC && right)
+        sc_juegoLocal.adjacencyMatrix[fila][columna + 1][fila][columna] = INF;
+    if (columna - 1 >= 0 && left)
+        sc_juegoLocal.adjacencyMatrix[fila][columna - 1][fila][columna] = INF;
+    if (fila - 1 >= 0 && columna + 1 < maxC)
+        sc_juegoLocal.adjacencyMatrix[fila - 1][columna + 1][fila][columna] = INF;
+    if (fila - 1 >= 0 == up)
+        sc_juegoLocal.adjacencyMatrix[fila - 1][columna][fila][columna] = INF;
+    if (fila - 1 >= 0 && columna - 1 >= 0) 
+        sc_juegoLocal.adjacencyMatrix[fila - 1][columna - 1][fila][columna] = INF;
 }
