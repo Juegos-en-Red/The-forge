@@ -21,74 +21,74 @@ sc_menuAjustes.create = function() {
     sc_menuAjustes.bp1i2 = this.physics.add.sprite(100, 100, 'botonTecla');
     sc_menuAjustes.bp1i2.setInteractive();
     sc_menuAjustes.bp1i2.text = sc_menuAjustes.add.text(100, 100, getTecla(cont.p1.i2), {fontSize: '50px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2}).setOrigin(0.5, 0.5);
-    sc_menuAjustes.bp1i2.on('pointerup', function() {clickTecla(sc_menuAjustes.bp1i2.text, 0);});
+    sc_menuAjustes.bp1i2.on('pointerup', function() {clickTecla(sc_menuAjustes.bp1i2, 0);});
     sc_menuAjustes.add.text(100, 75, "TRAMPAS", {fontSize: '12px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2}).setOrigin(0.5, 0.5);
 
     sc_menuAjustes.bp1w = this.physics.add.sprite(200, 100, 'botonTecla');
     sc_menuAjustes.bp1w.setInteractive();
     sc_menuAjustes.bp1w.text = sc_menuAjustes.add.text(200, 100, getTecla(cont.p1.w), {fontSize: '50px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2}).setOrigin(0.5, 0.5);
-    sc_menuAjustes.bp1w.on('pointerup', function() {clickTecla(sc_menuAjustes.bp1w.text, 1);});
+    sc_menuAjustes.bp1w.on('pointerup', function() {clickTecla(sc_menuAjustes.bp1w, 1);});
     sc_menuAjustes.add.text(200, 75, "ARRIBA", {fontSize: '12px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2}).setOrigin(0.5, 0.5);
 
     sc_menuAjustes.bp1i1 = this.physics.add.sprite(300, 100, 'botonTecla');
     sc_menuAjustes.bp1i1.setInteractive();
     sc_menuAjustes.bp1i1.text = sc_menuAjustes.add.text(300, 100, getTecla(cont.p1.i1), {fontSize: '50px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2}).setOrigin(0.5, 0.5);
-    sc_menuAjustes.bp1i1.on('pointerup', function() {clickTecla(sc_menuAjustes.bp1i1.text, 2);});
+    sc_menuAjustes.bp1i1.on('pointerup', function() {clickTecla(sc_menuAjustes.bp1i1, 2);});
     sc_menuAjustes.add.text(300, 75, "ACCIÓN", {fontSize: '12px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2}).setOrigin(0.5, 0.5);
 
     sc_menuAjustes.bp1a = this.physics.add.sprite(100, 200, 'botonTecla');
     sc_menuAjustes.bp1a.setInteractive();
     sc_menuAjustes.bp1a.text = sc_menuAjustes.add.text(100, 200, getTecla(cont.p1.a), {fontSize: '50px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2}).setOrigin(0.5, 0.5);
-    sc_menuAjustes.bp1a.on('pointerup', function() {clickTecla(sc_menuAjustes.bp1a.text, 3);});
+    sc_menuAjustes.bp1a.on('pointerup', function() {clickTecla(sc_menuAjustes.bp1a, 3);});
     sc_menuAjustes.add.text(100, 175, "IZQUIERDA", {fontSize: '12px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2}).setOrigin(0.5, 0.5);
 
     sc_menuAjustes.bp1s = this.physics.add.sprite(200, 200, 'botonTecla');
     sc_menuAjustes.bp1s.setInteractive();
     sc_menuAjustes.bp1s.text = sc_menuAjustes.add.text(200, 200, getTecla(cont.p1.s), {fontSize: '50px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2}).setOrigin(0.5, 0.5);
-    sc_menuAjustes.bp1s.on('pointerup', function() {clickTecla(sc_menuAjustes.bp1s.text, 4);});
+    sc_menuAjustes.bp1s.on('pointerup', function() {clickTecla(sc_menuAjustes.bp1s, 4);});
     sc_menuAjustes.add.text(200, 175, "ABAJO", {fontSize: '12px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2}).setOrigin(0.5, 0.5);
 
     sc_menuAjustes.bp1d = this.physics.add.sprite(300, 200, 'botonTecla');
     sc_menuAjustes.bp1d.setInteractive();
     sc_menuAjustes.bp1d.text = sc_menuAjustes.add.text(300, 200, getTecla(cont.p1.d), {fontSize: '50px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2}).setOrigin(0.5, 0.5);
-    sc_menuAjustes.bp1d.on('pointerup', function() {clickTecla(sc_menuAjustes.bp1d.text, 5);});
+    sc_menuAjustes.bp1d.on('pointerup', function() {clickTecla(sc_menuAjustes.bp1d, 5);});
     sc_menuAjustes.add.text(300, 175, "DERECHA", {fontSize: '12px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2}).setOrigin(0.5, 0.5);
 
     //jugador 2
     sc_menuAjustes.bp2i1 = this.physics.add.sprite(700, 100, 'botonTecla');
     sc_menuAjustes.bp2i1.setInteractive();
     sc_menuAjustes.bp2i1.text = sc_menuAjustes.add.text(700, 100, getTecla(cont.p2.i1), {fontSize: '50px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2}).setOrigin(0.5, 0.5);
-    sc_menuAjustes.bp2i1.on('pointerup', function() {clickTecla(sc_menuAjustes.bp2i1.text, 6);});
+    sc_menuAjustes.bp2i1.on('pointerup', function() {clickTecla(sc_menuAjustes.bp2i1, 6);});
     sc_menuAjustes.add.text(700, 75, "ACCIÓN", {fontSize: '12px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2}).setOrigin(0.5, 0.5);
 
     sc_menuAjustes.bp2w = this.physics.add.sprite(600, 100, 'botonTecla');
     sc_menuAjustes.bp2w.setInteractive();
     sc_menuAjustes.bp2w.text = sc_menuAjustes.add.text(600, 100, getTecla(cont.p2.w), {fontSize: '50px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2}).setOrigin(0.5, 0.5);
-    sc_menuAjustes.bp2w.on('pointerup', function() {clickTecla(sc_menuAjustes.bp2w.text, 7);});
+    sc_menuAjustes.bp2w.on('pointerup', function() {clickTecla(sc_menuAjustes.bp2w, 7);});
     sc_menuAjustes.add.text(600, 75, "ARRIBA", {fontSize: '12px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2}).setOrigin(0.5, 0.5);
 
     sc_menuAjustes.bp2i2 = this.physics.add.sprite(500, 100, 'botonTecla');
     sc_menuAjustes.bp2i2.setInteractive();
     sc_menuAjustes.bp2i2.text = sc_menuAjustes.add.text(500, 100, getTecla(cont.p2.i2), {fontSize: '50px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2}).setOrigin(0.5, 0.5);
-    sc_menuAjustes.bp2i2.on('pointerup', function() {clickTecla(sc_menuAjustes.bp2i2.text, 8);});
+    sc_menuAjustes.bp2i2.on('pointerup', function() {clickTecla(sc_menuAjustes.bp2i2, 8);});
     sc_menuAjustes.add.text(500, 75, "TRAMPAS", {fontSize: '12px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2}).setOrigin(0.5, 0.5);
 
     sc_menuAjustes.bp2d = this.physics.add.sprite(700, 200, 'botonTecla');
     sc_menuAjustes.bp2d.setInteractive();
     sc_menuAjustes.bp2d.text = sc_menuAjustes.add.text(700, 200, getTecla(cont.p2.d), {fontSize: '50px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2}).setOrigin(0.5, 0.5);
-    sc_menuAjustes.bp2d.on('pointerup', function() {clickTecla(sc_menuAjustes.bp2d.text, 9);});
+    sc_menuAjustes.bp2d.on('pointerup', function() {clickTecla(sc_menuAjustes.bp2d, 9);});
     sc_menuAjustes.add.text(700, 175, "DERECHA", {fontSize: '12px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2}).setOrigin(0.5, 0.5);
 
     sc_menuAjustes.bp2s = this.physics.add.sprite(600, 200, 'botonTecla');
     sc_menuAjustes.bp2s.setInteractive();
     sc_menuAjustes.bp2s.text = sc_menuAjustes.add.text(600, 200, getTecla(cont.p2.s), {fontSize: '50px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2}).setOrigin(0.5, 0.5);
-    sc_menuAjustes.bp2s.on('pointerup', function() {clickTecla(sc_menuAjustes.bp2s.text, 10);});
+    sc_menuAjustes.bp2s.on('pointerup', function() {clickTecla(sc_menuAjustes.bp2s, 10);});
     sc_menuAjustes.add.text(600, 175, "ABAJO", {fontSize: '12px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2}).setOrigin(0.5, 0.5);
 
     sc_menuAjustes.bp2a = this.physics.add.sprite(500, 200, 'botonTecla');
     sc_menuAjustes.bp2a.setInteractive();
     sc_menuAjustes.bp2a.text = sc_menuAjustes.add.text(500, 200, getTecla(cont.p2.a), {fontSize: '50px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2}).setOrigin(0.5, 0.5);
-    sc_menuAjustes.bp2a.on('pointerup', function() {clickTecla(sc_menuAjustes.bp2a.text, 11);});
+    sc_menuAjustes.bp2a.on('pointerup', function() {clickTecla(sc_menuAjustes.bp2a, 11);});
     sc_menuAjustes.add.text(500, 175, "IZQUIERDA", {fontSize: '12px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2}).setOrigin(0.5, 0.5);
 
     //Botón salir
@@ -157,15 +157,18 @@ sc_menuAjustes.update = function() {
         if (sc_menuAjustes.puedeCambiar && ((event.keyCode >= 65 && event.keyCode <= 90) || (event.keyCode >= 37 && event.keyCode <= 40))) {
             sc_menuAjustes.teclas[sc_menuAjustes.teclaACambiar] = event.keyCode;
             sc_menuAjustes.textoACambiar.setText(getTecla(event.keyCode));
+            sc_menuAjustes.botonACambiar.setTint(0xFFFFFF);
             sc_menuAjustes.puedeCambiar = false;
         }
     });
 }
 
-function clickTecla(text, id) {
+function clickTecla(button, id) {
     if (!sc_menuAjustes.puedeCambiar) {
+        var text = button.text;
         //Dejar de dibujar la letra
         text.setText("");
+        button.setTint(0xFFFF00);
 
         //Activar variable de aceptar inputs de letra
         sc_menuAjustes.puedeCambiar = true;
@@ -173,6 +176,7 @@ function clickTecla(text, id) {
         //Asignar variables que indican la letra que cambiará
         sc_menuAjustes.teclaACambiar = id;
         sc_menuAjustes.textoACambiar = text;
+        sc_menuAjustes.botonACambiar = button;
     }
 }
 
