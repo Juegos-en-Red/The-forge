@@ -281,19 +281,8 @@ sc_juegoLocal.create = function() {
     //Colisiones
     //Una vez están creados todos los objetos, se añade la colisión de cada jugador con cada grupo de objetos.
     sc_juegoLocal.players.children.iterate(function(child) {
-
-        /*that.physics.add.collider(child, sc_juegoLocal.mesas);
-        that.physics.add.collider(child, sc_juegoLocal.basuras);
-        that.physics.add.collider(child, sc_juegoLocal.cajonesMetal);
-        that.physics.add.collider(child, sc_juegoLocal.hornos);
-        that.physics.add.collider(child, sc_juegoLocal.yunques);
-        that.physics.add.collider(child, sc_juegoLocal.barriles);
-        that.physics.add.collider(child, sc_juegoLocal.moldes);
-        that.physics.add.collider(child, sc_juegoLocal.hornosd);
-        that.physics.add.collider(child, sc_juegoLocal.yunquesd);
-        that.physics.add.collider(child, sc_juegoLocal.altarTrampas);
-        that.physics.add.collider(child, sc_juegoLocal.muros);*/
         that.physics.add.collider(child, sc_juegoLocal.colisiones);
+        that.physics.add.collider(child, sc_juegoLocal.muros);
         that.physics.add.collider(child, sc_juegoLocal.monstruos);
         that.physics.add.overlap(child, sc_juegoLocal.trampasb, cogerTrampa, null, that);
     });
