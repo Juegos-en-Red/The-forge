@@ -29,21 +29,39 @@ sc_juegoLocal.create = function() {
     //Inicialización de animaciones
     initAnimations(this);
 
+    //Inicialización de colisiones
+    sc_juegoLocal.colisiones = this.physics.add.staticGroup();
+    sc_juegoLocal.colisiones.create(40, 300, 'molde').setSize(80,600).setDisplaySize(80,600).setAlpha(0);
+    sc_juegoLocal.colisiones.create(400, 40, 'molde').setSize(800,80).setDisplaySize(800,80).setAlpha(0);
+    sc_juegoLocal.colisiones.create(720+40, 300, 'molde').setSize(80,600).setDisplaySize(80,600).setAlpha(0);
+    sc_juegoLocal.colisiones.create(320+80, 180, 'molde').setSize(160,360).setDisplaySize(160,360).setAlpha(0);
+    sc_juegoLocal.colisiones.create(360+40, 360+40, 'molde').setSize(80,80).setDisplaySize(80,80).setAlpha(0);
+    sc_juegoLocal.colisiones.create(400, 440+80, 'molde').setSize(800,160).setDisplaySize(800,160).setAlpha(0);
+
     //Inicialización de cajones
     //Primero se crea un grupo de cajones para poder iterar y después se crean los cajones de ambos jugadores
     //La propiedad heldObject (que se repetirá mucho en el resto de objetos) guarda en forma de string el objeto que guarda el cajón
     sc_juegoLocal.cajonesMetal = this.physics.add.staticGroup();
-    sc_juegoLocal.cajonesMetal.create(140, 46, 'cajon1').heldObject = "metal1";
-    sc_juegoLocal.cajonesMetal.create(180, 46, 'cajon2').heldObject = "metal2";
-    sc_juegoLocal.cajonesMetal.create(220, 46, 'cajon3').heldObject = "metal3";
-    sc_juegoLocal.cajonesMetal.create(260, 46, 'cajon4').heldObject = "metal4";
-    sc_juegoLocal.cajonesMetal.create(300, 46, 'cajon5').heldObject = "metal5";
-    sc_juegoLocal.cajonesMetal.create(710, 120, 'cajon1').heldObject = "metal1";
-    sc_juegoLocal.cajonesMetal.create(650, 120, 'cajon2').heldObject = "metal2";
-    sc_juegoLocal.cajonesMetal.create(590, 120, 'cajon3').heldObject = "metal3";
-    sc_juegoLocal.cajonesMetal.create(530, 120, 'cajon4').heldObject = "metal4";
-    sc_juegoLocal.cajonesMetal.create(470, 120, 'cajon5').heldObject = "metal5";
+    sc_juegoLocal.cajonesMetal.create(140, 46, 'cajon1').heldObject = "metal1"
+    sc_juegoLocal.cajonesMetal.create(180, 46, 'cajon2').heldObject = "metal2"
+    sc_juegoLocal.cajonesMetal.create(220, 46, 'cajon3').heldObject = "metal3"
+    sc_juegoLocal.cajonesMetal.create(260, 46, 'cajon4').heldObject = "metal4"
+    sc_juegoLocal.cajonesMetal.create(300, 46, 'cajon5').heldObject = "metal5"
+
+    sc_juegoLocal.cajonesMetal.children.iterate(function(child) {
+        child.player = 1;
+    });
+
+    sc_juegoLocal.cajonesMetal.create(500, 46, 'cajon1').heldObject = "metal1"
+    sc_juegoLocal.cajonesMetal.create(540, 46, 'cajon2').heldObject = "metal2"
+    sc_juegoLocal.cajonesMetal.create(580, 46, 'cajon3').heldObject = "metal3"
+    sc_juegoLocal.cajonesMetal.create(620, 46, 'cajon4').heldObject = "metal4"
+    sc_juegoLocal.cajonesMetal.create(660, 46, 'cajon5').heldObject = "metal5"
     
+    sc_juegoLocal.cajonesMetal.children.iterate(function(child) {
+        if (child.player != 1) child.player = 2;
+    });
+
     sc_juegoLocal.cajonesMetal.children.iterate(function(child) {
         disconnectNeighbours(getCell(child.x,child.y).y,getCell(child.x,child.y).x, true, false, true, true);
     });
@@ -51,8 +69,8 @@ sc_juegoLocal.create = function() {
     //Inicialización de basuras
     //La inicialización de las basuras no necesita la propiedad heldObject, ya que sólo sirven para que el jugador se deshaga de objetos no deseados.
     sc_juegoLocal.basuras = this.physics.add.staticGroup();
-    sc_juegoLocal.basuras.create(340, 320, 'basura');
-    sc_juegoLocal.basuras.create(420, 410, 'basura').setFlipX(true);
+    sc_juegoLocal.basuras.create(340, 320, 'basura').player = 1;
+    sc_juegoLocal.basuras.create(460, 320, 'basura').setFlipX(true).player = 2;
 
     sc_juegoLocal.basuras.children.iterate(function(child) {
         disconnectNeighbours(getCell(child.x,child.y).y,getCell(child.x,child.y).x, true, false, false, false);
@@ -62,8 +80,8 @@ sc_juegoLocal.create = function() {
     //En las estaciones de trabajo se añaden varias propiedades además de heldObject. 
     //En este caso se añaden timer, que guarda el progreso del metal en su interior, y status, el sprite que mostrará el estado de la estación.
     sc_juegoLocal.hornos = this.physics.add.staticGroup();
-    sc_juegoLocal.hornos.create( 60, 140, 'horno');
-    sc_juegoLocal.hornos.create(755, 230, 'horno').setFlipX(true);
+    sc_juegoLocal.hornos.create( 60, 140, 'horno').player = 1;
+    sc_juegoLocal.hornos.create(740, 140, 'horno').setFlipX(true).player = 2;
 
     sc_juegoLocal.hornos.children.iterate(function(child){
         disconnectNeighbours(getCell(child.x,child.y).y,getCell(child.x,child.y).x, true, true, false, false);
@@ -73,26 +91,10 @@ sc_juegoLocal.create = function() {
         child.anims.play('hornoA', true);
     });
 
-
-    //Inicialización de yunques de 1 material
-    //Es idéntica a la de los hornos, pero también se añade la propiedad cooldown, que impide al jugador interactuar con más frecuencia de la deseada.
-    sc_juegoLocal.yunques = this.physics.add.staticGroup();
-    sc_juegoLocal.yunques.create(340, 260, 'yunque');
-    sc_juegoLocal.yunques.create(755, 510, 'yunque');
-
-    sc_juegoLocal.yunques.children.iterate(function(child){
-        disconnectNeighbours(getCell(child.x,child.y).y,getCell(child.x,child.y).x, true, true, false, false);
-        child.heldObject = "none";
-        child.timer = -1;
-        child.cooldown = 0;
-        child.status = sc_juegoLocal.add.image(child.x-6, child.y-25, 'empty');
-    });
-
-
     //Inicialización de barriles de templado
     sc_juegoLocal.barriles = this.physics.add.staticGroup();
-    sc_juegoLocal.barriles.create(340, 179, 'barril de templado');
-    sc_juegoLocal.barriles.create(420, 270, 'barril de templado');
+    sc_juegoLocal.barriles.create(340, 179, 'barril de templado').player = 1;
+    sc_juegoLocal.barriles.create(460, 179, 'barril de templado').player = 2;
 
     sc_juegoLocal.barriles.children.iterate(function(child){
         disconnectNeighbours(getCell(child.x,child.y).y,getCell(child.x,child.y).x, false, true, false, false);
@@ -104,8 +106,8 @@ sc_juegoLocal.create = function() {
     
     //Inicialización de moldes
     sc_juegoLocal.moldes = this.physics.add.staticGroup();
-    sc_juegoLocal.moldes.create(340, 220, 'molde');
-    sc_juegoLocal.moldes.create(420, 210, 'molde');
+    sc_juegoLocal.moldes.create(340, 220, 'molde').player = 1;
+    sc_juegoLocal.moldes.create(460, 220, 'molde').player = 2;
 
     sc_juegoLocal.moldes.children.iterate(function(child){
         disconnectNeighbours(getCell(child.x,child.y).y,getCell(child.x,child.y).x, true, true, false, false);
@@ -114,12 +116,25 @@ sc_juegoLocal.create = function() {
         child.status = sc_juegoLocal.add.image(child.x-6, child.y-25, 'empty');
     });
 
+    //Inicialización de yunques de 1 material
+    //Es idéntica a la de los hornos, pero también se añade la propiedad cooldown, que impide al jugador interactuar con más frecuencia de la deseada.
+    sc_juegoLocal.yunques = this.physics.add.staticGroup();
+    sc_juegoLocal.yunques.create(340, 260, 'yunque').player = 1;
+    sc_juegoLocal.yunques.create(460, 260, 'yunque').player = 2;
+
+    sc_juegoLocal.yunques.children.iterate(function(child){
+        disconnectNeighbours(getCell(child.x,child.y).y,getCell(child.x,child.y).x, true, true, false, false);
+        child.heldObject = "none";
+        child.timer = -1;
+        child.cooldown = 0;
+        child.status = sc_juegoLocal.add.image(child.x-6, child.y-25, 'empty');
+    });
     
     //Inicialización de  hornos de 2 materiales
     //En este caso hay dos heldObjects, ya que se trata de un horno doble. Lo mismo ocurrirá en los yunques dobles.
     sc_juegoLocal.hornosd = this.physics.add.staticGroup();
-    sc_juegoLocal.hornosd.create( 60, 260, 'horno doble');
-    sc_juegoLocal.hornosd.create(755, 350, 'horno doble').setFlipX(true);
+    sc_juegoLocal.hornosd.create( 60, 260, 'horno doble').player = 1;
+    sc_juegoLocal.hornosd.create(740, 260, 'horno doble').setFlipX(true).player = 2;
 
     sc_juegoLocal.hornosd.children.iterate(function(child){
         disconnectNeighbours(getCell(child.x,child.y).y,getCell(child.x,child.y).x, true, true, false, false);
@@ -134,8 +149,8 @@ sc_juegoLocal.create = function() {
 
     //Inicialización de yunques de 2 materiales
     sc_juegoLocal.yunquesd = this.physics.add.staticGroup();
-    sc_juegoLocal.yunquesd.create( 53, 340, 'yunque doble');
-    sc_juegoLocal.yunquesd.create(420, 330, 'yunque doble');
+    sc_juegoLocal.yunquesd.create( 53, 340, 'yunque doble').player = 1;
+    sc_juegoLocal.yunquesd.create(747, 340, 'yunque doble').player = 2;
 
     sc_juegoLocal.yunquesd.children.iterate(function(child){
         disconnectNeighbours(getCell(child.x,child.y).y,getCell(child.x,child.y).x, true, true, false, false);
@@ -153,7 +168,7 @@ sc_juegoLocal.create = function() {
     sc_juegoLocal.altarTrampas.trampaSprite = sc_juegoLocal.add.image(sc_juegoLocal.altarTrampas.x, sc_juegoLocal.altarTrampas.y, 'empty');
     sc_juegoLocal.trampasb = this.physics.add.staticGroup();
     sc_juegoLocal.trampasb.create(340, 420, 'btnAltar');
-    sc_juegoLocal.trampasb.create(460, 530, 'btnAltar');
+    sc_juegoLocal.trampasb.create(460, 420, 'btnAltar');
 
     sc_juegoLocal.muros = this.physics.add.staticGroup();
 
@@ -214,11 +229,13 @@ sc_juegoLocal.create = function() {
     
     //Inicialización de mesas
     sc_juegoLocal.mesas = this.physics.add.staticGroup();
-    sc_juegoLocal.mesas.create(180, 455, 'mesa');
-    sc_juegoLocal.mesas.create(220, 455, 'mesa');
-    sc_juegoLocal.mesas.create(260, 455, 'mesa');
+    sc_juegoLocal.mesas.create(180, 455, 'mesa').player = 1;
+    sc_juegoLocal.mesas.create(220, 455, 'mesa').player = 1;
+    sc_juegoLocal.mesas.create(260, 455, 'mesa').player = 1;
 
-    sc_juegoLocal.mesas.create(755, 420, 'mesa');
+    sc_juegoLocal.mesas.create(620, 455, 'mesa').player = 2;
+    sc_juegoLocal.mesas.create(580, 455, 'mesa').player = 2;
+    sc_juegoLocal.mesas.create(540, 455, 'mesa').player = 2;
 
     sc_juegoLocal.mesas.children.iterate(function (child) {
         disconnectNeighbours(getCell(child.x,child.y).y,getCell(child.x,child.y).x, false, true, true, true);
@@ -241,9 +258,10 @@ sc_juegoLocal.create = function() {
     } else {
         temp = "Elfo";
     }
-    sc_juegoLocal.monstruo2 = sc_juegoLocal.monstruos.create(590, 520, 'M'+temp+'D').setFlipX(true);
+    sc_juegoLocal.monstruo2 = sc_juegoLocal.monstruos.create(728, 433, 'M'+temp+'D').setFlipX(true);
     sc_juegoLocal.monstruo2.faction = temp;
 
+    //mejorar el disconnect para los monstruos no estaría de más
     sc_juegoLocal.monstruos.children.iterate(function (child) {
         disconnectNeighbours(getCell(child.x,child.y).y,getCell(child.x,child.y).x);
         child.heldCasco = "none";
@@ -264,7 +282,7 @@ sc_juegoLocal.create = function() {
     //Una vez están creados todos los objetos, se añade la colisión de cada jugador con cada grupo de objetos.
     sc_juegoLocal.players.children.iterate(function(child) {
 
-        that.physics.add.collider(child, sc_juegoLocal.mesas);
+        /*that.physics.add.collider(child, sc_juegoLocal.mesas);
         that.physics.add.collider(child, sc_juegoLocal.basuras);
         that.physics.add.collider(child, sc_juegoLocal.cajonesMetal);
         that.physics.add.collider(child, sc_juegoLocal.hornos);
@@ -273,9 +291,10 @@ sc_juegoLocal.create = function() {
         that.physics.add.collider(child, sc_juegoLocal.moldes);
         that.physics.add.collider(child, sc_juegoLocal.hornosd);
         that.physics.add.collider(child, sc_juegoLocal.yunquesd);
-        that.physics.add.collider(child, sc_juegoLocal.monstruos);
         that.physics.add.collider(child, sc_juegoLocal.altarTrampas);
-        that.physics.add.collider(child, sc_juegoLocal.muros);
+        that.physics.add.collider(child, sc_juegoLocal.muros);*/
+        that.physics.add.collider(child, sc_juegoLocal.colisiones);
+        that.physics.add.collider(child, sc_juegoLocal.monstruos);
         that.physics.add.overlap(child, sc_juegoLocal.trampasb, cogerTrampa, null, that);
     });
 
@@ -476,34 +495,34 @@ sc_juegoLocal.create = function() {
     //console.log(sc_juegoLocal.recetas1[0]+", "+sc_juegoLocal.recetas1[1]+", "+sc_juegoLocal.recetas1[2]+", "+sc_juegoLocal.recetas1[3]);
     //console.log(sc_juegoLocal.recetas2[0]+", "+sc_juegoLocal.recetas2[1]+", "+sc_juegoLocal.recetas2[2]+", "+sc_juegoLocal.recetas2[3]);
 
-    sc_juegoLocal.recuadro1 = sc_juegoLocal.add.image(208, 580-43, 'recuadro');
-    sc_juegoLocal.Rmetal21 = sc_juegoLocal.add.image(65, 580-58, 'Rmetal');
-    sc_juegoLocal.Rmetal11 = sc_juegoLocal.add.image(65, 580-28, 'Rmetal');
-    sc_juegoLocal.Rmetal1 = sc_juegoLocal.add.image(65, 580-43, 'Rmetal');
-    sc_juegoLocal.Rhd1 = sc_juegoLocal.add.image(110, 580-43, 'Rhorno doble');
-    sc_juegoLocal.Rym1 = sc_juegoLocal.add.image(155, 580-43, 'Ryunque');
-    sc_juegoLocal.Rhorno1 = sc_juegoLocal.add.image(200, 580-43, 'Rhorno');
-    sc_juegoLocal.Rbarril1 = sc_juegoLocal.add.image(245, 580-43, 'Rbarril');
-    sc_juegoLocal.Rpieza1 = sc_juegoLocal.add.image(290, 580-43, 'Rcasco');
-    sc_juegoLocal.Rmonstruo1 = sc_juegoLocal.add.image(335, 580-43, 'RMonstruo' + cont.p1.ch.slice(2,3));
+    sc_juegoLocal.recuadro1 = sc_juegoLocal.add.image(208, 537, 'recuadro');
+    sc_juegoLocal.Rmetal21 = sc_juegoLocal.add.image(65, 522, 'Rmetal');
+    sc_juegoLocal.Rmetal11 = sc_juegoLocal.add.image(65, 552, 'Rmetal');
+    sc_juegoLocal.Rmetal1 = sc_juegoLocal.add.image(65, 537, 'Rmetal');
+    sc_juegoLocal.Rhd1 = sc_juegoLocal.add.image(110, 537, 'Rhorno doble');
+    sc_juegoLocal.Rym1 = sc_juegoLocal.add.image(155, 537, 'Ryunque');
+    sc_juegoLocal.Rhorno1 = sc_juegoLocal.add.image(200, 537, 'Rhorno');
+    sc_juegoLocal.Rbarril1 = sc_juegoLocal.add.image(245, 537, 'Rbarril');
+    sc_juegoLocal.Rpieza1 = sc_juegoLocal.add.image(290, 537, 'Rcasco');
+    sc_juegoLocal.Rmonstruo1 = sc_juegoLocal.add.image(335, 537, 'RMonstruo' + cont.p1.ch.slice(2,3));
 
-    sc_juegoLocal.recuadro2 = sc_juegoLocal.add.image(592, 43, 'recuadro');
-    sc_juegoLocal.Rmetal22 = sc_juegoLocal.add.image(455, 58, 'Rmetal');
-    sc_juegoLocal.Rmetal12 = sc_juegoLocal.add.image(455, 28, 'Rmetal');
-    sc_juegoLocal.Rmetal2 = sc_juegoLocal.add.image(455, 43, 'Rmetal');
-    sc_juegoLocal.Rhd2 = sc_juegoLocal.add.image(500, 43, 'Rhorno doble');
-    sc_juegoLocal.Rym2 = sc_juegoLocal.add.image(545, 43, 'Ryunque');
+    sc_juegoLocal.recuadro2 = sc_juegoLocal.add.image(592, 537, 'recuadro');
+    sc_juegoLocal.Rmetal22 = sc_juegoLocal.add.image(455, 522, 'Rmetal');
+    sc_juegoLocal.Rmetal12 = sc_juegoLocal.add.image(455, 552, 'Rmetal');
+    sc_juegoLocal.Rmetal2 = sc_juegoLocal.add.image(455, 537, 'Rmetal');
+    sc_juegoLocal.Rhd2 = sc_juegoLocal.add.image(500, 537, 'Rhorno doble');
+    sc_juegoLocal.Rym2 = sc_juegoLocal.add.image(545, 537, 'Ryunque');
 
-    sc_juegoLocal.Rhorno2 = sc_juegoLocal.add.image(590, 43, 'Rhorno');
-    sc_juegoLocal.Rbarril2 = sc_juegoLocal.add.image(635, 43, 'Rbarril');
-    sc_juegoLocal.Rpieza2 = sc_juegoLocal.add.image(680, 43, 'Rcasco');
-    sc_juegoLocal.Rmonstruo2 = sc_juegoLocal.add.image(725, 43, 'RMonstruo' + cont.p2.ch.slice(2,3));
+    sc_juegoLocal.Rhorno2 = sc_juegoLocal.add.image(590, 537, 'Rhorno');
+    sc_juegoLocal.Rbarril2 = sc_juegoLocal.add.image(635, 537, 'Rbarril');
+    sc_juegoLocal.Rpieza2 = sc_juegoLocal.add.image(680, 537, 'Rcasco');
+    sc_juegoLocal.Rmonstruo2 = sc_juegoLocal.add.image(725, 537, 'RMonstruo' + cont.p2.ch.slice(2,3));
 
     //Inicialización de elementos relativos al pausado del juego
     //Por un lado tenemos el overlay, que oscurecerá toda la pantalla cuando el juego esté pausado
     //Por otro lado tenemos el botón de pausa, el cual se podrá pulsar para activar o desactivar el pausado del juego.
     sc_juegoLocal.pausedOverlay = sc_juegoLocal.add.image(400, 300, 'empty');
-    sc_juegoLocal.botonPausa = this.physics.add.sprite(400,600-45, 'botonPausa');
+    sc_juegoLocal.botonPausa = this.physics.add.sprite(400,555, 'botonPausa');
     sc_juegoLocal.botonPausa.paused = false;
     sc_juegoLocal.botonPausa.setInteractive();
     sc_juegoLocal.botonPausa.on('pointerup', function() {
