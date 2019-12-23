@@ -49,10 +49,11 @@ sc_Preloader.preload = function()
     });
      
     this.load.on('complete', function () {
-        progressBar.destroy();
+        /*progressBar.destroy();
         progressBox.destroy();	
         loadingText.destroy();
-        percentText.destroy();
+        percentText.destroy();*/
+        loadingText.setText("Carga completada. Haz click para continuar.")
     });
     /**** MENÚ PRINCIPAL ****/
 
@@ -447,8 +448,9 @@ sc_Preloader.preload = function()
 
 sc_Preloader.create = function()
 {      
-    
-    this.scene.start("MenuPrincipal");
+    sc_Preloader.input.on('pointerdown', function(pointer){
+        sc_Preloader.scene.start("MenuPrincipal");
+     });
 }
 
 sc_Preloader.update = function()
