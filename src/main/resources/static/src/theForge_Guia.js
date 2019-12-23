@@ -30,13 +30,13 @@ sc_Guia.create = function(escena)
     btnRight = this.add.image(700, 520, "botonDer").setOrigin(0, 0).setScale(0.5, 0.5);
     btnLeft = this.add.image(50, 520, "botonIzda").setOrigin(0, 0).setScale(0.5, 0.5);
     cross = this.add.image(650, 20, "cruz2").setOrigin(0, 0);
-    cross.setInteractive().on("pointerdown", function(pointer)
+    cross.setInteractive({cursor: "pointer"}).on("pointerdown", function(pointer)
     {
         sc_Guia.scene.start("MenuPrincipal");
     })
 
     
-    btnRight.setInteractive().on("pointerdown", function(pointer)
+    btnRight.setInteractive({cursor: "pointer"}).on("pointerdown", function(pointer)
     {
         if (pos + 1 < array.length)
         {
@@ -46,7 +46,7 @@ sc_Guia.create = function(escena)
     })
 
     
-    btnLeft.setInteractive().on("pointerdown", function(pointer)
+    btnLeft.setInteractive({cursor: "pointer"}).on("pointerdown", function(pointer)
     {
         if (pos - 1 >= 0)
         {

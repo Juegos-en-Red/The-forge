@@ -9,9 +9,9 @@ sc_Next.create = function()
     imagen = this.add.image(0, 0, "next").setOrigin(0, 0);
 
     cruz = this.add.image(700, 10, "cruz2").setOrigin(0, 0);
-    cruz.setInteractive().on("pointerdown", function(pointer)
+    cruz.setInteractive({cursor: "pointer"}).on("pointerdown", function(pointer)
     {
-        sc_Next.scene.switch("MenuPrincipal");
+        sc_Next.scene.start("MenuPrincipal");
     });
 
     salir = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);

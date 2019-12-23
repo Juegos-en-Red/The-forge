@@ -95,7 +95,7 @@ function MenuSeleccion(escena)
         //Sprite de texto de elegir personaje
         this.texto = escena.add.image(400, 50, this.nombreTexto);
 
-        this.btnHielo.setInteractive().on("pointerdown", function(pointer)
+        this.btnHielo.setInteractive({cursor: "pointer"}).on("pointerdown", function(pointer)
             {
                 /*player1 = "hielo";
                 player2 = "elfo";*/
@@ -104,7 +104,7 @@ function MenuSeleccion(escena)
                 escena.scene.start("JuegoLocal");
             });
 
-            this.btnElfa.setInteractive().on("pointerdown", function(pointer)
+            this.btnElfa.setInteractive({cursor: "pointer"}).on("pointerdown", function(pointer)
             {
                 /*player1 = "elfo";
                 player2 = "hielo";*/

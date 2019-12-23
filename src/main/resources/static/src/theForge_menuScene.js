@@ -59,34 +59,46 @@ function Menu(escena)
         this.local = escena.add.sprite(config.width / 2, 200, "local_btn").setPipeline('Light2D');
         // Cambiamos el origen de coordenadas al punto (0.5, 0)
         this.local.setOrigin(0.5, 0);
+        // Hacemos que el puntero cambie al situarlo sobre el botón
+        this.local.setInteractive({cursor: "pointer"});
         
         
         // Botón de online
         this.online = escena.add.sprite(config.width / 2, 300, "online_btn").setPipeline('Light2D');
         // Cambiamos el origen de coordenadas al punto (0.5, 0)
         this.online.setOrigin(0.5, 0);
-        // Cambiamos el alpha de este botón para indicar que no está disponible
+        // Cambiamos el alpha de este botón para indicar que no está disponible en el caso de que no lo esté
         this.online.alpha = cont.online?1:0.2;
+        // Hacemos que el puntero cambie al situarlo sobre el botón
+        this.online.setInteractive({cursor: "pointer"});
 
         // Botón de ajustes
         this.ajustes = escena.add.sprite(config.width / 2, 400, "ajustes_btn").setPipeline('Light2D');
         // Cambiamos el origen de coordenadas al punto (0.5, 0)
         this.ajustes.setOrigin(0.5, 0);
+        // Hacemos que el puntero cambie al situarlo sobre el botón
+        this.ajustes.setInteractive({cursor: "pointer"});
 
         // Botón de guía
         this.guia = escena.add.sprite(config.width / 2, 500, "guia_btn").setPipeline('Light2D');
         // Cambiamos el origen de coordenadas al punto (0.5, 0)
         this.guia.setOrigin(0.5, 0);   
+        // Hacemos que el puntero cambie al situarlo sobre el botón
+        this.guia.setInteractive({cursor: "pointer"});
 
         // Botón de créditos
         this.creditos = escena.add.sprite((config.width / 2) + 250, 265, "creditos_btn").setPipeline('Light2D');
         // Cambiamos el origen de coordenadas al punto 0.5, 0
         this.creditos.setOrigin(0.5, 0);
+        // Hacemos que el puntero cambie al situarlo sobre el botón
+        this.creditos.setInteractive({cursor: "pointer"});
 
         // Botón de próximamente
         this.next = escena.add.sprite((config.width / 2) - 250, 265, "next_btn").setPipeline('Light2D');
         // Cambiamos el origen de coordenadas al punto (0.5, 0)
         this.next.setOrigin(0.5, 0);
+        // Hacemos que el puntero cambie al situarlo sobre el botón
+        this.next.setInteractive({cursor: "pointer"});
         
         /* IMAGENES PRESSED */
 
