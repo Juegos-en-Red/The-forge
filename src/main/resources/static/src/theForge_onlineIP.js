@@ -6,8 +6,6 @@
 var sc_onlineIP = new Phaser.Scene('OnlineIP');
 
 sc_onlineIP.preload = function() {
-    this.load.html('input', '../src/input.html');
-    this.load.html('login', '../src/login.html');
 }
 
 sc_onlineIP.create = function() {

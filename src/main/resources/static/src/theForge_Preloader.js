@@ -434,6 +434,15 @@ sc_Preloader.preload = function()
     this.load.image("botonRegistrarse", "../assets/online/botonRegistrarse.png");
     this.load.image("botonEnviar", "../assets/online/botonEnviar.png");
 
+    //Elementos HTML
+    
+    this.load.html('input', '../src/input.html');
+    this.load.html('login', '../src/login.html');
+    
+    this.load.html('chatBox', '../src/chatBox.html');
+    this.load.html('chatInput', '../src/chatInput.html');
+    this.load.html('usersBox', '../src/usersBox.html');
+
 }
 
 sc_Preloader.create = function()

@@ -3,9 +3,6 @@
 var sc_lobby = new Phaser.Scene("Lobby");
 
 sc_lobby.preload = function() {
-    this.load.html('chatBox', '../src/chatBox.html');
-    this.load.html('chatInput', '../src/chatInput.html');
-    this.load.html('usersBox', '../src/usersBox.html');
 }
 
 sc_lobby.create = function() {
