@@ -1473,6 +1473,148 @@ function interactuar(p) {
     }
 }
 
+//Esta es la base de la unificación de todas las funciones de interacción. Se mejorará en un futuro.
+function superInteract(p, group, metal, swap, destroy, tablaIO, checkInteracted, horno, yunque, checkCooldown, barril, molde, hornod, yunqued, tablaInputsValidos) {
+    var result = false;
+    var proceed = true;
+    if (checkInteracted) {
+        proceed = !p.interacted;
+    }
+
+    if (proceed) {
+        group.children.iterate(function (child) {
+            if (checkCooldown) { if (child.cooldown != 0) {proceed = false;} }
+            if (proceed) {
+                if (isAdyacent(p.x,p.y,child.x,child.y)) {
+                    if (metal) {
+                        if (p.heldObject == "none") {
+                            p.heldObject = child.heldObject;
+                        }
+                        else if (p.heldObject == child.heldObject) {
+                            p.heldObject = "none";
+                        }
+                        result = true;
+                    } else if (swap) {
+                        var temp = child.heldObject;
+                        child.heldObject = p.heldObject;
+                        p.heldObject = temp;
+                        result = true;
+                    } else if (destroy) {
+                        p.heldObject = "none";
+                        result = true;
+                    } else if (horno) {
+                        if ((child.timer == -1 || (child.timer > 100 && child.timer < 150))) {
+                            if (child.heldObject == "none" && child.timer == -1 && (tablaIO[p.heldObject] != undefined)) {
+                                child.heldObject = p.heldObject;
+                                p.heldObject = "none";
+                                child.timer = 0;
+                                result = true;
+                            } else {
+                                if (p.heldObject == "none" && child.timer > 100 && child.heldObject != "none") {
+                                    if (tablaIO[child.heldObject] != undefined) {
+                                        p.heldObject = tablaIO[child.heldObject];
+                                    }
+                                    child.heldObject = "none";
+                                    child.timer = -1;
+                                    result = true;
+                                }
+                            }
+                        }
+                    } else if (yunque) {
+                        if (child.timer == -1 && child.heldObject == "none" && (tablaIO[p.heldObject] != undefined)) {
+                            child.heldObject = p.heldObject;
+                            p.heldObject = "none";
+                            child.timer = 0;
+                            child.cooldown = 5;
+                        } else if (child.timer >= 0 && child.timer < 100) {
+                            child.timer += 5;
+                            child.cooldown = 15;
+                            snd_yunque.pause();
+                            snd_yunque.currentTime = 0;
+                            snd_yunque.play();
+                        } else if (child.timer >= 100 && p.heldObject == "none") {
+                            if (tablaIO[child.heldObject] != undefined) {
+                                p.heldObject = tablaIO[child.heldObject];
+                            }
+                            child.heldObject = "none";
+                            child.timer = -1;
+                            child.status.setTexture("empty");
+                        }
+                    } else if (barril || molde) { 
+                        if ((child.timer == -1 || (child.timer >= 100))) {
+                            if (child.heldObject == "none" && child.timer == -1 && (tablaIO[p.heldObject] != undefined)) {
+                                child.heldObject = p.heldObject;
+                                p.heldObject = "none";
+                                child.timer = 0;
+                                result = true;
+                            } else {
+                                if (p.heldObject == "none" && child.timer >= 100 && child.heldObject != "none") {
+                                    if (tablaIO[child.heldObject] != undefined) {
+                                        p.heldObject = tablaIO[child.heldObject];
+                                    }
+                                    child.heldObject = "none";
+                                    child.timer = -1;
+                                    result = true;
+                                }
+                            }
+                        }
+                    } else if (hornod) {
+                        if ((child.timer == -1 || (child.timer > 100 && child.timer < 150))) {
+                            if (child.heldObject1 == "none" && child.heldObject2 == "none" && child.timer == -1 && (tablaInputsValidos[p.heldObject])) {
+                                child.heldObject1 = p.heldObject;
+                                p.heldObject = "none";
+                                result = true;
+                            } else if (child.heldObject1 != "none" && child.heldObject2 == "none" && child.timer == -1 && (tablaInputsValidos[p.heldObject]) && (p.heldObject != child.heldObject1)) {
+                                child.heldObject2 = p.heldObject;
+                                p.heldObject = "none";
+                                child.timer = 0;
+                                result = true;
+                            } else if (p.heldObject == "none" && child.timer > 100 && child.heldObject1 != "none" && child.heldObject2 != "none") {
+                                if (tablaIO[child.heldObject1][child.heldObject2] != undefined) {
+                                    p.heldObject = tablaIO[child.heldObject1][child.heldObject2];
+                                }
+                                
+                                child.heldObject1 = "none";
+                                child.heldObject2 = "none";
+                                child.timer = -1;
+                                result = true;
+                            }
+                        }
+                    } else if (yunqued) {
+                        if (child.timer == -1 && child.heldObject1 == "none" && child.heldObject2 == "none" && (tablaInputsValidos[p.heldObject])) {
+                            child.heldObject1 = p.heldObject;
+                            p.heldObject = "none";
+                            child.status.setTexture("1de2");
+                        } else if (child.timer == -1 && child.heldObject1 != "none" && child.heldObject2 == "none" && (tablaInputsValidos[p.heldObject]) && p.heldObject != child.heldObject1) {
+                            child.heldObject2 = p.heldObject;
+                            p.heldObject = "none";
+                            child.timer = 0;
+                            child.cooldown = 5;
+                        } else if (child.timer >= 0 && child.timer < 100) {
+                            child.timer += 5;
+                            child.cooldown = 15;
+                            snd_yunque.pause();
+                            snd_yunque.currentTime = 0;
+                            snd_yunque.play();
+                        } else if (child.timer >= 100 && p.heldObject == "none") {
+                            if (tablaIO[child.heldObject1][child.heldObject2] != undefined) {
+                                p.heldObject = tablaIO[child.heldObject1][child.heldObject2];
+                            }
+                            child.heldObject1 = "none";
+                            child.heldObject2 = "none";
+                            child.timer = -1;
+                            child.status.setTexture("empty");
+                        }
+                    }
+
+                }
+            }
+        });
+    }
+
+    return result;
+}
+
 //Función interactuarCajones: Si el jugador está suficientemente cerca y no lleva objetos, pasa a tener el metal correspondiente al cajón
 function interactuarCajones(p) {
     var result = false;
