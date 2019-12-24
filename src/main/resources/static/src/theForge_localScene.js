@@ -534,7 +534,7 @@ sc_juegoLocal.update = function() {
         return;
     }
 
-    dijkstra(getCell(sc_juegoLocal.player.x,sc_juegoLocal.player.y),getCell(220,455),getCell(0,0),getCell(800,20));
+    dijkstra(getCell(sc_juegoLocal.player.x,sc_juegoLocal.player.y),getTargetCell(1),getCell(sc_juegoLocal.player2.x,sc_juegoLocal.player2.y),getTargetCell(2));
 
     comprobarInteraccion(sc_juegoLocal.player, sc_juegoLocal.player2);
 
@@ -2583,6 +2583,281 @@ function getCell(x,y) {
     cellX = Math.floor(x/40);
     cellY = Math.floor(y/40);
     return ({x: cellX, y: cellY});
+}
+
+function getTargetCell(player) {
+    var cellX, cellY, x, y;
+    var found = false, finished = false, split = false, nextSplit = false, double = "", target = "monstruo";
+    var recetas, p;
+    if (player == 1) {
+        recetas = sc_juegoLocal.recetas1;
+        p = sc_juegoLocal.player;
+    } else {
+        recetas = sc_juegoLocal.recetas2;
+        p = sc_juegoLocal.player2;
+    }
+    var curItem = recetas[0], lastItem = "";
+
+    while (!found && !finished) {
+        if (curItem == lastItem) {
+            if (nextSplit) {
+                split = true;
+            } else {
+                split = false;
+            }
+            //Probar con el anterior objeto
+            if (curItem.slice(-8) == "templado") {
+                if (curItem.slice(-11,-8) == "pre") {
+                    curItem = curItem.slice(0,-11);
+                    target = "horno";
+                } else {
+                    curItem = curItem.slice(0,-8) + "pretemplado";
+                    target = "barril";
+                }
+            } else if (curItem.slice(-6) == "yunque") {
+                curItem = curItem.slice(0,-6) + "rojo";
+                nextSplit = true;
+                double = "yunque";
+                target = "yunque";
+            } else if (curItem.slice(-6) == "espada") {
+                curItem = curItem.slice(0,-6) + "rojo";
+                split = true;
+                nextSplit = true;
+                double = "espada";
+                target = "yunqued";
+            } else if (curItem.slice(-5) == "molde") {
+                curItem = curItem.slice(0,-5) + "rojo";
+                target = "molde";
+            } else if (curItem.slice(-4) == "rojo") {
+                curItem = curItem.slice(0,-4);
+                target = "horno";
+                finished = true;
+            }
+        }
+
+        /*if (curItem == p.heldObject) {
+            //Si si, ver a donde lo tiene que llevar
+            found = true;
+            x = 0;
+            y = 0;
+        } else {*/
+            //Si no, iterar por todos los contenedores cuyo player sea el mismo que se le ha pasado a la función
+            var foundConstruct = lookFor(curItem, player, p, split, double, target);
+            found = foundConstruct.found;
+            if (found) {
+                x = foundConstruct.x;
+                y = foundConstruct.y;
+            }
+        //}
+        lastItem = curItem;
+    }
+
+    if (!found) {
+        x = p.x;
+        y = p.y;
+    }
+
+    cellX = Math.floor(x/40);
+    cellY = Math.floor(y/40);
+    return ({x: cellX, y: cellY});
+}
+
+function lookFor(item, player, p, split, dStation, target) {
+    var found = false, double = false, held = false, x = 0, y = 0;
+    var item1 = "", item2 = "", foundItem1 = false;
+    
+    if (split && !(isNaN(item.slice(6,7)) || (item.slice(6,7) == ""))) { 
+        double = true;
+        if (item.slice(-4) == "rojo") {
+            item1 = item.slice(0,-5)+"rojo";
+            item2 = "metal"+item.slice(-5)
+        } else {
+            item1 = item.slice(0,-1);
+            item2 = "metal"+item.slice(-1)
+        }
+    }
+
+    //
+    if (double) {
+        if (dStation == "yunque") {
+            if (target == "horno") target = "hornod";
+            sc_juegoLocal.hornosd.children.iterate(function (child) {
+                if (child.heldObject2 == "none") {
+                    if (child.heldObject1 == item1) {
+                        foundItem1 = true;
+                    }
+                } else {
+                    if ((child.heldObject1 == item1 && child.heldObject2 == item2) || (child.heldObject2 == item1 && child.heldObject1 == item2)) {
+                        found = true;
+                        x = child.x;
+                        y = child.y;
+                    }
+                }
+            });
+        } else if (dStation == "espada") {
+            sc_juegoLocal.yunquesd.children.iterate(function (child) {
+                if (child.heldObject2 == "none") {
+                    if (child.heldObject1 == item1) {
+                        foundItem1 = true;
+                    }
+                } else {
+                    if ((child.heldObject1 == item1 && child.heldObject2 == item2) || (child.heldObject2 == item1 && child.heldObject1 == item2)) {
+                        found = true;
+                        x = child.x;
+                        y = child.y;
+                    }
+                }
+            });
+
+            sc_juegoLocal.hornos.children.iterate(function (child) {
+
+                if (!foundItem1) {
+                    if (item1.slice(-4) == "rojo") {
+                        if (child.heldObject == item1.slice(0,-4)) {
+                            found = true;
+                            x = child.x;
+                            y = child.y;
+                        }
+                    } else {
+                        if (child.heldObject == item1) {
+                            found = true;
+                            x = child.x;
+                            y = child.y;
+                        }
+                    }
+                } else {
+                    if (item2.slice(-4) == "rojo") {
+                        if (child.heldObject == item2.slice(0,-4)) {
+                            found = true;
+                            x = child.x;
+                            y = child.y;
+                        } else if (item2 != p.heldObject) {
+                            item2 = item2.slice(0,-4);
+                        }
+                    } else {
+                        if (child.heldObject == item2) {
+                            found = true;
+                            x = child.x;
+                            y = child.y;
+                        } else {
+                            target = "horno";
+                        }
+                    }
+                }
+            });
+
+
+        }
+    
+
+        if (foundItem1) {
+            item = item2;
+        } else {
+            item = item1;
+        }
+
+    }
+    
+    if (item == p.heldObject) {
+        found = true;
+        held = true;
+
+        var iterator = undefined;
+        switch (target) {
+            case "horno":
+                iterator = sc_juegoLocal.hornos;
+            break;
+            case "yunque":
+                iterator = sc_juegoLocal.yunques;
+            break;
+            case "molde":
+                iterator = sc_juegoLocal.moldes;
+            break;
+            case "hornod":
+                iterator = sc_juegoLocal.hornosd;
+            break;
+            case "yunqued":
+                iterator = sc_juegoLocal.yunquesd;
+            break;
+            case "barril":
+                iterator = sc_juegoLocal.barriles;
+            break;
+            case "monstruo":
+                if (player == 1) {
+                    iterator = sc_juegoLocal.monstruo1;
+                } else {
+                    iterator = sc_juegoLocal.monstruo2;
+                }
+                x = iterator.x;
+                y = iterator.y;
+                iterator = undefined;
+            break;
+        }
+        if (iterator != undefined) {
+            iterator.children.iterate(function(child){
+                if (child.player == player) {
+                    x = child.x;
+                    y = child.y;
+                }
+            });
+        }
+    }
+
+
+
+
+    if (!double && !held) {
+        sc_juegoLocal.hornos.children.iterate(function (child) {
+            if (child.player == player && child.heldObject == item && !found) {
+                found = true;
+                x = child.x;
+                y = child.y;
+            }
+        });
+
+        sc_juegoLocal.yunques.children.iterate(function (child) {
+            if (child.player == player && child.heldObject == item && !found) {
+                found = true;
+                x = child.x;
+                y = child.y;
+            }
+        });
+
+        sc_juegoLocal.barriles.children.iterate(function (child) {
+            if (child.player == player && child.heldObject == item && !found) {
+                found = true;
+                x = child.x;
+                y = child.y;
+            }
+        });
+
+        sc_juegoLocal.moldes.children.iterate(function (child) {
+            if (child.player == player && child.heldObject == item && !found) {
+                found = true;
+                x = child.x;
+                y = child.y;
+            }
+        });
+    }
+
+    sc_juegoLocal.mesas.children.iterate(function (child) {
+        if (child.player == player && child.heldObject == item && !found) {
+            found = true;
+            x = child.x;
+            y = child.y;
+        }
+    });
+
+    sc_juegoLocal.cajonesMetal.children.iterate(function (child) {
+        if (child.player == player && child.heldObject == item && !found) {
+            found = true;
+            x = child.x;
+            y = child.y;
+        }
+    });
+    //
+
+    return {found: found, x: x, y: y};
 }
 
 function isAdyacent(px,py,cx,cy) {
