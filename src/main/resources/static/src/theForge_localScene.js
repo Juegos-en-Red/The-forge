@@ -2445,7 +2445,7 @@ function interactuarMonstruos(p) {
 
     //console.log(sc_juegoLocal.recetas1[0] + ", " + p.heldObject);
     if (sc_juegoLocal.recetas1[0] == p.heldObject) {
-        if (Phaser.Math.Distance.Between(p.x, p.y, sc_juegoLocal.monstruo1.x, sc_juegoLocal.monstruo1.y) < 0.6*Math.max(sc_juegoLocal.monstruo1.body.width, sc_juegoLocal.monstruo1.body.height)+0.55*Math.max(p.body.width, p.body.height)) {
+        if (Phaser.Math.Distance.Between(p.x, p.y, sc_juegoLocal.monstruo1.x, sc_juegoLocal.monstruo1.y) < 0.75*Math.max(sc_juegoLocal.monstruo1.body.width, sc_juegoLocal.monstruo1.body.height)+0.75*Math.max(p.body.width, p.body.height)) {
             armarMonstruo(sc_juegoLocal.monstruo1, p.heldObject)
             p.heldObject = "none";
             getAnim(p, true);
@@ -2470,7 +2470,7 @@ function interactuarMonstruos(p) {
         }
     }
     if (sc_juegoLocal.recetas2[0] == p.heldObject) {
-        if (Phaser.Math.Distance.Between(p.x, p.y, sc_juegoLocal.monstruo2.x, sc_juegoLocal.monstruo2.y) < 0.6*Math.max(sc_juegoLocal.monstruo2.body.width, sc_juegoLocal.monstruo2.body.height)+0.55*Math.max(p.body.width, p.body.height)) {
+        if (Phaser.Math.Distance.Between(p.x, p.y, sc_juegoLocal.monstruo2.x, sc_juegoLocal.monstruo2.y) < 0.75*Math.max(sc_juegoLocal.monstruo2.body.width, sc_juegoLocal.monstruo2.body.height)+0.75*Math.max(p.body.width, p.body.height)) {
             armarMonstruo(sc_juegoLocal.monstruo2, p.heldObject)
             p.heldObject = "none";
             getAnim(p, true);
