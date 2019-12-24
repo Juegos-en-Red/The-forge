@@ -73,7 +73,7 @@ sc_juegoLocal.create = function() {
     sc_juegoLocal.basuras.create(460, 320, 'basura').setFlipX(true).player = 2;
 
     sc_juegoLocal.basuras.children.iterate(function(child) {
-        disconnectNeighbours(getCell(child.x,child.y).y,getCell(child.x,child.y).x, true, false, false, false);
+        disconnectNeighbours(getCell(child.x,child.y).y,getCell(child.x,child.y).x, true, true, false, false);
     });
 
     //Inicialización de hornos de 1 material
