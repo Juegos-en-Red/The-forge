@@ -169,6 +169,21 @@ sc_juegoLocal.create = function() {
     sc_juegoLocal.trampasb = this.physics.add.staticGroup();
     sc_juegoLocal.trampasb.create(340, 420, 'btnAltar');
     sc_juegoLocal.trampasb.create(460, 420, 'btnAltar');
+    /*for (var i = 1; i < 10; i++) {
+        for (var j = 9; i < 10; j++) {
+            disconnectNeighbours(i,j, true, true, true, true);
+        }
+    }*/
+    disconnectNeighbours(6,9, true, true, true, true);
+    disconnectNeighbours(6,10, true, true, true, true);
+    disconnectNeighbours(7,9, true, true, true, true);
+    disconnectNeighbours(7,10, true, true, true, true);
+    disconnectNeighbours(8,9, true, true, true, true);
+    disconnectNeighbours(8,10, true, true, true, true);
+    disconnectNeighbours(9,9, true, true, true, true);
+    disconnectNeighbours(9,10, true, true, true, true);
+    disconnectNeighbours(10,9, true, true, true, true);
+    disconnectNeighbours(10,10, true, true, true, true);
 
     sc_juegoLocal.muros = this.physics.add.staticGroup();
 
@@ -376,7 +391,10 @@ sc_juegoLocal.create = function() {
                         sc_juegoLocal.player.trampa = "none";
                         break;
                     case "trampaMuro":
-                        sc_juegoLocal.muros.create(590, 320, 'tripleMuro').timer = 1000;
+                        sc_juegoLocal.muros.create(540, 300, 'tripleMuro').timer = 1000;
+                        disconnectNeighbours(getCell(540,300).y,getCell(540,300).x, true, true, true, true);
+                        disconnectNeighbours(getCell(540,300).y,getCell(540,300).x+1, true, true, true, true);
+                        disconnectNeighbours(getCell(540,300).y,getCell(540,300).x-1, true, true, true, true);
                         sc_juegoLocal.player.trampa = "none";
                         break;
                 }
@@ -406,7 +424,10 @@ sc_juegoLocal.create = function() {
                         sc_juegoLocal.player2.trampa = "none";
                         break;
                     case "trampaMuro":
-                        sc_juegoLocal.muros.create(210, 320, 'tripleMuro').timer = 1000;
+                        sc_juegoLocal.muros.create(260, 300, 'tripleMuro').timer = 1000;
+                        disconnectNeighbours(getCell(260,300).y,getCell(260,300).x, true, true, true, true);
+                        disconnectNeighbours(getCell(260,300).y,getCell(260,300).x+1, true, true, true, true);
+                        disconnectNeighbours(getCell(260,300).y,getCell(260,300).x-1, true, true, true, true);
                         sc_juegoLocal.player2.trampa = "none";
                         break;
                 }
@@ -565,8 +586,15 @@ sc_juegoLocal.update = function() {
     }
 
     sc_juegoLocal.muros.children.iterate(function(child){
-        if (child.timer > 0) child.timer--;
-        if (child.timer == 0) child.destroy();
+        if (child != undefined) {
+            if (child.timer > 0) child.timer--;
+            if (child.timer == 0) {
+                disconnectNeighbours(getCell(child.x, child.y).y,getCell(child.x, child.y).x, false, false, false, false);
+                disconnectNeighbours(getCell(child.x, child.y).y,getCell(child.x, child.y).x+1, false, false, false, false);
+                disconnectNeighbours(getCell(child.x, child.y).y,getCell(child.x, child.y).x-1, false, false, false, false);
+                child.destroy();  
+            }
+        }
     });
 
     //Esta función afecta a todos los jugadores
@@ -3008,12 +3036,10 @@ function dijkstra(start1, end1, start2, end2)
     var curve = new Phaser.Curves.Spline(curva);
     if (curva.length >= 4)
         curve.draw(sc_juegoLocal.graphics, 64);
-
+    
     /* JUGADOR 2 */
-    //Queda pendiente adaptarlo todo al jugador 2.
-/*
+
     initDistances();
-    sc_juegoLocal.graphics.fillStyle(0x0000f7, 0.3);
     sc_juegoLocal.distances[start2.y][start2.x] = 0;
     prio_queue = new PriorityQueue({comparator: compare});
     prev = new Array();
@@ -3046,10 +3072,28 @@ function dijkstra(start1, end1, start2, end2)
                 }
             }
         }
+    }   
+
+    curva = new Array();
+    inicio = prev[end2.y][end2.x];
+    final = {fila: start2.y, columna: start2.x};
+
+    curva.push(20+(end2.x*40));
+    curva.push(20+(end2.y*40));
+    while (inicio != undefined && final != undefined) {
+        curva.push(20+(inicio.columna*40));
+        curva.push(20+(inicio.fila*40));
+        inicio = prev[inicio.fila][inicio.columna];
     }
-    if (end2.x != 0 && end2.y != 0)
-        sc_juegoLocal.graphics.fillRect(end2.x * 40, end2.y * 40, 40, 40);
-    drawPath(prev, prev[end2.y][end2.x], {fila: start2.y, columna: start2.x});  */   
+    sc_juegoLocal.graphics.lineStyle(4,0x000000,1);
+    if (curva.length == 2) {
+        curva.push(20+(start2.x*40));
+        curva.push(20+(start2.y*40));
+    }
+    curve = new Phaser.Curves.Spline(curva);
+    if (curva.length >= 4)
+        curve.draw(sc_juegoLocal.graphics, 64);
+
 }   
 
 function initDistances()
@@ -3105,20 +3149,47 @@ function initGrafo()
 function disconnectNeighbours(fila, columna, up, down, left, right)
 {
     var maxF = config.height / 40, maxC = config.width / 40;
-    if (fila + 1 < maxF && down)
-        sc_juegoLocal.adjacencyMatrix[fila + 1][columna][fila][columna] = INF;
+    if (fila + 1 < maxF) {
+        if (down) {
+            sc_juegoLocal.adjacencyMatrix[fila + 1][columna][fila][columna] = INF;
+        } else {
+            sc_juegoLocal.adjacencyMatrix[fila + 1][columna][fila][columna] = 1;
+        }
+    }
+        
     if (fila + 1 < maxF && columna + 1 < maxC)
         sc_juegoLocal.adjacencyMatrix[fila + 1][columna + 1][fila][columna] = INF;
+
     if (fila + 1 < maxF && columna - 1 >= 0)
         sc_juegoLocal.adjacencyMatrix[fila + 1][columna - 1][fila][columna] = INF;
-    if (columna + 1 < maxC && right)
-        sc_juegoLocal.adjacencyMatrix[fila][columna + 1][fila][columna] = INF;
-    if (columna - 1 >= 0 && left)
-        sc_juegoLocal.adjacencyMatrix[fila][columna - 1][fila][columna] = INF;
+
+    if (columna + 1 < maxC) {
+        if (right) {
+            sc_juegoLocal.adjacencyMatrix[fila][columna + 1][fila][columna] = INF;
+        } else {
+            sc_juegoLocal.adjacencyMatrix[fila][columna + 1][fila][columna] = 1;
+        }
+    }
+        
+    if (columna - 1 >= 0) {
+        if (left) {
+            sc_juegoLocal.adjacencyMatrix[fila][columna - 1][fila][columna] = INF;
+        } else {
+            sc_juegoLocal.adjacencyMatrix[fila][columna - 1][fila][columna] = 1;
+        }
+    }
+        
     if (fila - 1 >= 0 && columna + 1 < maxC)
         sc_juegoLocal.adjacencyMatrix[fila - 1][columna + 1][fila][columna] = INF;
-    if (fila - 1 >= 0 == up)
-        sc_juegoLocal.adjacencyMatrix[fila - 1][columna][fila][columna] = INF;
-    if (fila - 1 >= 0 && columna - 1 >= 0) 
+
+    if (fila - 1 >= 0) {
+        if (up) {
+            sc_juegoLocal.adjacencyMatrix[fila - 1][columna][fila][columna] = INF;
+        } else {
+            sc_juegoLocal.adjacencyMatrix[fila - 1][columna][fila][columna] = 1;
+        }
+    }
+        
+    if (fila - 1 >= 0 && columna - 1 >= 0)
         sc_juegoLocal.adjacencyMatrix[fila - 1][columna - 1][fila][columna] = INF;
 }
