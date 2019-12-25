@@ -33,7 +33,8 @@ var cont = {
     id: -1,
     ch: 'SSHielo1',
     name: null,
-    lastChatMessage: -1
+    lastChatMessage: -1,
+    lGuia: true
 }
 
 //funciones de música por aquí

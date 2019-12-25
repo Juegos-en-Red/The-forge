@@ -112,31 +112,38 @@ sc_menuAjustes.create = function() {
 
     //Botones +- (música)
     //Al pulsarlos, se cambia tanto mus_vol como los volumenes de todas las músicas
-    sc_menuAjustes.add.text(200, 300, "MÚSICA", {fontSize: '24px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2}).setOrigin(0.5, 0.5);
+    sc_menuAjustes.add.text(200, 270, "MÚSICA", {fontSize: '24px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2}).setOrigin(0.5, 0.5);
 
-    sc_menuAjustes.botonMusMenos = this.physics.add.sprite(100, 350, 'icono menos');
+    sc_menuAjustes.botonMusMenos = this.physics.add.sprite(100, 320, 'icono menos');
     sc_menuAjustes.botonMusMenos.setInteractive({cursor: "pointer"});
     sc_menuAjustes.botonMusMenos.on('pointerup', function() { musVol(-0.1);});
 
-    sc_menuAjustes.volMusText = sc_menuAjustes.add.text(200, 350, (cont.mus_vol*100)+"%", {fontSize: '50px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2}).setOrigin(0.5, 0.5);
+    sc_menuAjustes.volMusText = sc_menuAjustes.add.text(200, 320, (cont.mus_vol*100)+"%", {fontSize: '50px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2}).setOrigin(0.5, 0.5);
 
-    sc_menuAjustes.botonMusMas = this.physics.add.sprite(300, 350, 'icono mas');
+    sc_menuAjustes.botonMusMas = this.physics.add.sprite(300, 320, 'icono mas');
     sc_menuAjustes.botonMusMas.setInteractive({cursor: "pointer"});
     sc_menuAjustes.botonMusMas.on('pointerup', function() { musVol(0.1);});
 
     //Botones +- (efectos de sonido)
     //Lo mismo pero para los sonidos
-    sc_menuAjustes.add.text(600, 300, "EFECTOS DE SONIDO", {fontSize: '24px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2}).setOrigin(0.5, 0.5);
+    sc_menuAjustes.add.text(200, 380, "EFECTOS DE SONIDO", {fontSize: '24px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2}).setOrigin(0.5, 0.5);
 
-    sc_menuAjustes.botonSndMenos = this.physics.add.sprite(500, 350, 'icono menos');
+    sc_menuAjustes.botonSndMenos = this.physics.add.sprite(100, 430, 'icono menos');
     sc_menuAjustes.botonSndMenos.setInteractive({cursor: "pointer"});
     sc_menuAjustes.botonSndMenos.on('pointerup', function() { sndVol(-0.1);});
 
-    sc_menuAjustes.volSndText = sc_menuAjustes.add.text(600, 350, (cont.snd_vol*100)+"%", {fontSize: '50px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2}).setOrigin(0.5, 0.5);
+    sc_menuAjustes.volSndText = sc_menuAjustes.add.text(200, 430, (cont.snd_vol*100)+"%", {fontSize: '50px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2}).setOrigin(0.5, 0.5);
 
-    sc_menuAjustes.botonSndMas = this.physics.add.sprite(700, 350, 'icono mas');
+    sc_menuAjustes.botonSndMas = this.physics.add.sprite(300, 430, 'icono mas');
     sc_menuAjustes.botonSndMas.setInteractive({cursor: "pointer"});
     sc_menuAjustes.botonSndMas.on('pointerup', function() { sndVol(0.1);});
+
+    //Botón linea guia
+    //Al pulsarlo, se habilita o deshabilita la línea guía
+    sc_menuAjustes.botonLGuia = this.physics.add.sprite(600, 350, 'botonLGuiaE');
+    sc_menuAjustes.botonLGuia.setInteractive({cursor: "pointer"});
+    sc_menuAjustes.botonLGuia.on('pointerup', function() { swapLineGuide();});
+    sc_menuAjustes.botonLGuia.setTexture((cont.lGuia)?'botonLGuiaE':'botonLGuiaD');
 
     //Guardar todas las teclas en un array (funcion guardarTeclas)
     sc_menuAjustes.teclas = [];
@@ -352,4 +359,9 @@ function restablecerTeclas() {
     sc_menuAjustes.bp2a.text.setText(getTecla(cont.p2.a));
 
     sc_menuAjustes.puedeCambiar = false;
+}
+
+function swapLineGuide() {
+    cont.lGuia = !cont.lGuia;
+    sc_menuAjustes.botonLGuia.setTexture((cont.lGuia)?'botonLGuiaE':'botonLGuiaD');
 }

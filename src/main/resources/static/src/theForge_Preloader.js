@@ -354,6 +354,8 @@ sc_Preloader.preload = function()
     this.load.image('botonAplicar', '../assets/game/botonAplicar.png');
     this.load.image('icono menos', '../assets/game/icono menos.png');
     this.load.image('icono mas', '../assets/game/icono mas.png');
+    this.load.image('botonLGuiaE', '../assets/game/botonLGuiaE.png');
+    this.load.image('botonLGuiaD', '../assets/game/botonLGuiaD.png');
 
     //RECETAS
     this.load.image('recuadro', '../assets/game/recuadro.png');

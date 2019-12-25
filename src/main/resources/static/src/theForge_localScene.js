@@ -555,7 +555,7 @@ sc_juegoLocal.update = function() {
         return;
     }
 
-    dijkstra(getCell(sc_juegoLocal.player.x,sc_juegoLocal.player.y),getTargetCell(1),getCell(sc_juegoLocal.player2.x,sc_juegoLocal.player2.y),getTargetCell(2));
+    if (cont.lGuia) dijkstra(getCell(sc_juegoLocal.player.x,sc_juegoLocal.player.y),getTargetCell(1),getCell(sc_juegoLocal.player2.x,sc_juegoLocal.player2.y),getTargetCell(2));
 
     comprobarInteraccion(sc_juegoLocal.player, sc_juegoLocal.player2);
 
