@@ -227,6 +227,7 @@ sc_Preloader.preload = function()
     this.load.image('martillo29', '../assets/game/martillo29.png');
     this.load.image('martillo210', '../assets/game/martillo210.png');
     this.load.image('relojinterfaz', '../assets/game/relojinterfaz.png');
+    this.load.image('reloj0', '../assets/game/relojinterfaz.png');
     this.load.image('reloj1', '../assets/game/reloj1.png');
     this.load.image('reloj2', '../assets/game/reloj2.png');
     this.load.image('reloj3', '../assets/game/reloj3.png');

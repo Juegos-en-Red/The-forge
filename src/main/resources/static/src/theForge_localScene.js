@@ -243,6 +243,8 @@ sc_juegoLocal.create = function() {
         child.interacted = false;
         child.trampa = "none";
         child.tiempoInmovil = 0;
+
+        child.status = sc_juegoLocal.add.image(child.x-6, child.y-25, 'empty');
     });
     
     //Inicialización de mesas
@@ -394,7 +396,9 @@ sc_juegoLocal.create = function() {
                         sc_juegoLocal.player.trampa = "none";
                         break;
                     case "trampaMuro":
-                        sc_juegoLocal.muros.create(540, 300, 'tripleMuro').timer = 1000;
+                        var muro = sc_juegoLocal.muros.create(540, 300, 'tripleMuro');
+                        muro.timer = 1000;
+                        muro.status = sc_juegoLocal.add.image(muro.x-6, muro.y-25, 'empty');
                         disconnectNeighbours(getCell(540,300).y,getCell(540,300).x, true, true, true, true);
                         disconnectNeighbours(getCell(540,300).y,getCell(540,300).x+1, true, true, true, true);
                         disconnectNeighbours(getCell(540,300).y,getCell(540,300).x-1, true, true, true, true);
@@ -427,7 +431,9 @@ sc_juegoLocal.create = function() {
                         sc_juegoLocal.player2.trampa = "none";
                         break;
                     case "trampaMuro":
-                        sc_juegoLocal.muros.create(260, 300, 'tripleMuro').timer = 1000;
+                        var muro = sc_juegoLocal.muros.create(260, 300, 'tripleMuro');
+                        muro.timer = 1000;
+                        muro.status = sc_juegoLocal.add.image(muro.x-6, muro.y-25, 'empty');
                         disconnectNeighbours(getCell(260,300).y,getCell(260,300).x, true, true, true, true);
                         disconnectNeighbours(getCell(260,300).y,getCell(260,300).x+1, true, true, true, true);
                         disconnectNeighbours(getCell(260,300).y,getCell(260,300).x-1, true, true, true, true);
@@ -614,7 +620,9 @@ sc_juegoLocal.update = function() {
     sc_juegoLocal.muros.children.iterate(function(child){
         if (child != undefined) {
             if (child.timer > 0) child.timer--;
+            child.status.setTexture("reloj" + (Phaser.Math.CeilTo(child.timer/1000*9)-1));
             if (child.timer == 0) {
+                child.status.setTexture("empty");
                 disconnectNeighbours(getCell(child.x, child.y).y,getCell(child.x, child.y).x, false, false, false, false);
                 disconnectNeighbours(getCell(child.x, child.y).y,getCell(child.x, child.y).x+1, false, false, false, false);
                 disconnectNeighbours(getCell(child.x, child.y).y,getCell(child.x, child.y).x-1, false, false, false, false);
@@ -630,6 +638,11 @@ sc_juegoLocal.update = function() {
             child.spdY = 0;
             child.tiempoInmovil--;
             //console.log(child.tiempoInmovil);
+            child.status.x = child.x-6;
+            child.status.y = child.y-25;
+            child.status.setTexture("reloj" + (Phaser.Math.CeilTo(child.tiempoInmovil/250*8)));
+        } else {
+            child.status.setTexture("empty");
         }
         //Si el personaje no se está moviendo, sus animaciones paran
         if (child.spdX == 0 && child.spdY == 0) {
