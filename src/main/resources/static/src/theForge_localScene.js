@@ -557,7 +557,7 @@ sc_juegoLocal.create = function() {
     sc_juegoLocal.botonPausa = this.physics.add.sprite(400,555, 'botonPausa');
     sc_juegoLocal.pausedOverlay = sc_juegoLocal.add.image(400, 300, 'empty');
     sc_juegoLocal.botonPausa.paused = false;
-    sc_juegoLocal.botonPausa.setInteractive();
+    sc_juegoLocal.botonPausa.setInteractive({cursor: "pointer"});
     sc_juegoLocal.botonPausa.on('pointerup', function() {
         if (!sc_juegoLocal.botonPausa.paused) {
             sc_juegoLocal.pausedOverlay.setTexture('pausedOverlay');
@@ -2536,7 +2536,7 @@ function interactuarMonstruos(p) {
                 sc_juegoLocal.winner = sc_juegoLocal.add.image(400, 375, 'elfa');
                 }
                 sc_juegoLocal.botonSalir = sc_juegoLocal.add.image(400, 550, 'botonSalir');
-                sc_juegoLocal.botonSalir.setInteractive();
+                sc_juegoLocal.botonSalir.setInteractive({cursor: "pointer"});
                 sc_juegoLocal.botonSalir.on('pointerup', function() {
                     sc_juegoLocal.scene.start("MenuPrincipal");
                 });
@@ -2563,7 +2563,7 @@ function interactuarMonstruos(p) {
                 sc_juegoLocal.winner = sc_juegoLocal.add.image(400, 375, 'elfa');
                 }
                 sc_juegoLocal.botonSalir = sc_juegoLocal.add.image(400, 550, 'botonSalir');
-                sc_juegoLocal.botonSalir.setInteractive();
+                sc_juegoLocal.botonSalir.setInteractive({cursor: "pointer"});
                 sc_juegoLocal.botonSalir.on('pointerup', function() {
                     sc_juegoLocal.scene.start("MenuPrincipal");
                 });
