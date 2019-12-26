@@ -537,6 +537,13 @@ sc_juegoLocal.create = function() {
    sc_juegoLocal.progreso2 = sc_juegoLocal.add.image(445, 55, 'progreso0');
    sc_juegoLocal.progreso2.n = 0;
 
+   //Interfaz de las trampas
+   sc_juegoLocal.recuadroTrampa1 = sc_juegoLocal.add.image(50, 50, 'cuadroTrampa');
+   sc_juegoLocal.iconoTrampa1 = sc_juegoLocal.add.image(50, 50, 'empty');
+
+   sc_juegoLocal.recuadroTrampa2 = sc_juegoLocal.add.image(750, 50, 'cuadroTrampa');
+   sc_juegoLocal.iconoTrampa2 = sc_juegoLocal.add.image(750, 50, 'empty');
+
 
     //Inicialización de elementos relativos al pausado del juego
     //Por un lado tenemos el overlay, que oscurecerá toda la pantalla cuando el juego esté pausado
@@ -568,6 +575,9 @@ sc_juegoLocal.update = function() {
 
     sc_juegoLocal.progreso1.setTexture('progreso' + (4-sc_juegoLocal.recetas1.length));
     sc_juegoLocal.progreso2.setTexture('progreso' + (4-sc_juegoLocal.recetas2.length));
+
+    sc_juegoLocal.iconoTrampa1.setTexture((sc_juegoLocal.player.trampa=='none')?'empty':sc_juegoLocal.player.trampa);
+    sc_juegoLocal.iconoTrampa2.setTexture((sc_juegoLocal.player2.trampa=='none')?'empty':sc_juegoLocal.player2.trampa);
 
 
     //var start = new Date().getTime();

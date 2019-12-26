@@ -388,6 +388,9 @@ sc_Preloader.preload = function()
     // Trampa del muro
     this.load.image("trampaMuro", "../assets/game/muro.png");
 
+    // Interfaz de las trampas
+    this.load.image("cuadroTrampa", "../assets/game/cuadroTrampa.png");
+
     // Triple cartel de prohibido
     this.load.image("tripleMuro", "../assets/game/prohibido3.png");
 
