@@ -554,8 +554,8 @@ sc_juegoLocal.create = function() {
     //Inicialización de elementos relativos al pausado del juego
     //Por un lado tenemos el overlay, que oscurecerá toda la pantalla cuando el juego esté pausado
     //Por otro lado tenemos el botón de pausa, el cual se podrá pulsar para activar o desactivar el pausado del juego.
-    sc_juegoLocal.pausedOverlay = sc_juegoLocal.add.image(400, 300, 'empty');
     sc_juegoLocal.botonPausa = this.physics.add.sprite(400,555, 'botonPausa');
+    sc_juegoLocal.pausedOverlay = sc_juegoLocal.add.image(400, 300, 'empty');
     sc_juegoLocal.botonPausa.paused = false;
     sc_juegoLocal.botonPausa.setInteractive();
     sc_juegoLocal.botonPausa.on('pointerup', function() {
@@ -566,6 +566,8 @@ sc_juegoLocal.create = function() {
             sc_juegoLocal.pausedOverlay.setTexture('empty');
             sc_juegoLocal.botonPausa.paused = false;}
     });
+
+    sc_juegoLocal.victory = undefined; //Importante
 }
 
 //Función update: Aquí se maneja todo lo que ocurre durante la partida.
@@ -2526,17 +2528,18 @@ function interactuarMonstruos(p) {
                 sc_juegoLocal.botonPausa.paused = true;
                 sc_juegoLocal.pausedOverlay.setTexture('pausedOverlay');
                 sc_juegoLocal.botonPausa.removeInteractive();
-                sc_juegoLocal.pausedOverlay.setInteractive();
                 sc_juegoLocal.that = this;
-                sc_juegoLocal.pausedOverlay.on('pointerup', function() {
+                sc_juegoLocal.victory = sc_juegoLocal.add.image(400, 100, 'victoria');
+                if (cont.p1.ch == "SSHielo1") {
+                    sc_juegoLocal.winner = sc_juegoLocal.add.image(400, 375, 'hielo');
+                } else {
+                sc_juegoLocal.winner = sc_juegoLocal.add.image(400, 375, 'elfa');
+                }
+                sc_juegoLocal.botonSalir = sc_juegoLocal.add.image(400, 550, 'botonSalir');
+                sc_juegoLocal.botonSalir.setInteractive();
+                sc_juegoLocal.botonSalir.on('pointerup', function() {
                     sc_juegoLocal.scene.start("MenuPrincipal");
                 });
-                sc_juegoLocal.victory = sc_juegoLocal.add.image(400, 200, 'victoria');
-                if (cont.p1.ch == "SSHielo1") {
-                    sc_juegoLocal.winner = sc_juegoLocal.add.image(400, 400, 'hielo');
-                } else {
-                sc_juegoLocal.winner = sc_juegoLocal.add.image(400, 400, 'elfa');
-                }
             }
         }
     }
@@ -2552,17 +2555,18 @@ function interactuarMonstruos(p) {
                 sc_juegoLocal.botonPausa.paused = true;
                 sc_juegoLocal.pausedOverlay.setTexture('pausedOverlay');
                 sc_juegoLocal.botonPausa.removeInteractive();
-                sc_juegoLocal.pausedOverlay.setInteractive();
                 sc_juegoLocal.that = this;
-                sc_juegoLocal.pausedOverlay.on('pointerup', function() {
+                sc_juegoLocal.victory = sc_juegoLocal.add.image(400, 100, 'victoria');
+                if (cont.p2.ch == "SSHielo1") {
+                    sc_juegoLocal.winner = sc_juegoLocal.add.image(400, 375, 'hielo');
+                } else {
+                sc_juegoLocal.winner = sc_juegoLocal.add.image(400, 375, 'elfa');
+                }
+                sc_juegoLocal.botonSalir = sc_juegoLocal.add.image(400, 550, 'botonSalir');
+                sc_juegoLocal.botonSalir.setInteractive();
+                sc_juegoLocal.botonSalir.on('pointerup', function() {
                     sc_juegoLocal.scene.start("MenuPrincipal");
                 });
-                sc_juegoLocal.victory = sc_juegoLocal.add.image(400, 200, 'victoria');
-                if (cont.p2.ch == "SSHielo1") {
-                    sc_juegoLocal.winner = sc_juegoLocal.add.image(400, 400, 'hielo');
-                } else {
-                sc_juegoLocal.winner = sc_juegoLocal.add.image(400, 400, 'elfa');
-                }
             }
         }
     }
