@@ -18,7 +18,7 @@ sc_Preloader.preload = function()
     var loadingText = this.make.text({
         x: 400,
         y: 250,
-        text: 'Cargando...',
+        text: 'Loading...',
         style: {
             font: '20px monospace',
             fill: '#ffffff'
@@ -45,7 +45,7 @@ sc_Preloader.preload = function()
     });
                 
     this.load.on('fileprogress', function (file) {
-        loadingText.setText('Cargando ' + file.key);
+        loadingText.setText('Loading ' + file.key);
     });
      
     this.load.on('complete', function () {
@@ -53,7 +53,7 @@ sc_Preloader.preload = function()
         progressBox.destroy();	
         loadingText.destroy();
         percentText.destroy();*/
-        loadingText.setText("Carga completada. Haz click para continuar.")
+        loadingText.setText("Loading complete. Please click to continue.")
     });
     /**** MENÚ PRINCIPAL ****/
 
