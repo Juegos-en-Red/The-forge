@@ -211,6 +211,7 @@ sc_Preloader.preload = function()
     this.load.image('MHieloI', '../assets/game/MHieloI.png');
     //Interfaz
     this.load.image('victoria', '../assets/game/victoria.png');
+    this.load.image('derrota', '../assets/game/derrota.png');
     this.load.image('martillo', '../assets/game/martillo.png');
     this.load.image('martillo0', '../assets/game/martillo.png');
     this.load.image('martillo20', '../assets/game/martillo.png');

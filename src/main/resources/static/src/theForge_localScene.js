@@ -21,7 +21,6 @@ sc_juegoLocal.create = function() {
     //Música. Si se añade más música es importante parar aquí toda la que haya
     mus_menu.pause();
     mus_menu.currentTime = 0;
-    mus_game.play();
 
 
     //Aquí se carga el fondo del juego
@@ -643,6 +642,7 @@ sc_juegoLocal.create = function() {
                                                 onComplete: function() {
                                                     sc_juegoLocal.countdown.setTexture('empty');
                                                     sc_juegoLocal.gameStarted = true;
+                                                    mus_game.play();
                                                 }
                                             });
                                         }
