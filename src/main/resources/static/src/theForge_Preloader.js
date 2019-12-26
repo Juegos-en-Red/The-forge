@@ -241,6 +241,8 @@ sc_Preloader.preload = function()
     this.load.image('1de2', '../assets/game/1de2.png');
     this.load.image('botonPausa', '../assets/game/botonPausa.png');
     this.load.image('pausedOverlay', '../assets/game/pausedOverlay.png');
+
+    this.load.image('guideMarker', '../assets/game/guideMarker.png');
     //De aquí para abajo los spritesheet
     this.load.spritesheet('SSElfa1', 
         '../assets/game/SSElfa1.png',

@@ -514,28 +514,32 @@ sc_juegoLocal.create = function() {
     //console.log(sc_juegoLocal.recetas1[0]+", "+sc_juegoLocal.recetas1[1]+", "+sc_juegoLocal.recetas1[2]+", "+sc_juegoLocal.recetas1[3]);
     //console.log(sc_juegoLocal.recetas2[0]+", "+sc_juegoLocal.recetas2[1]+", "+sc_juegoLocal.recetas2[2]+", "+sc_juegoLocal.recetas2[3]);
 
+
+    //Guia visual al situar el ratón sobre un elemento de las recetas
+    sc_juegoLocal.circuloGuia = sc_juegoLocal.add.image(0,0,'empty');
+
     sc_juegoLocal.recuadro1 = sc_juegoLocal.add.image(208, 537, 'recuadro');
-    sc_juegoLocal.Rmetal21 = sc_juegoLocal.add.image(65, 522, 'Rmetal');
-    sc_juegoLocal.Rmetal11 = sc_juegoLocal.add.image(65, 552, 'Rmetal');
-    sc_juegoLocal.Rmetal1 = sc_juegoLocal.add.image(65, 537, 'Rmetal');
-    sc_juegoLocal.Rhd1 = sc_juegoLocal.add.image(110, 537, 'Rhorno doble');
-    sc_juegoLocal.Rym1 = sc_juegoLocal.add.image(155, 537, 'Ryunque');
-    sc_juegoLocal.Rhorno1 = sc_juegoLocal.add.image(200, 537, 'Rhorno');
-    sc_juegoLocal.Rbarril1 = sc_juegoLocal.add.image(245, 537, 'Rbarril');
+    sc_juegoLocal.Rmetal21 = sc_juegoLocal.add.image(65, 522, 'Rmetal').setInteractive({cursor: "help"}).on("pointerover", function(pointer){guiaApuntar("metal21")}).on("pointerout", function(pointer){guiaApuntar("none")});
+    sc_juegoLocal.Rmetal11 = sc_juegoLocal.add.image(65, 552, 'Rmetal').setInteractive({cursor: "help"}).on("pointerover", function(pointer){guiaApuntar("metal11")}).on("pointerout", function(pointer){guiaApuntar("none")});
+    sc_juegoLocal.Rmetal1 = sc_juegoLocal.add.image(65, 537, 'Rmetal').setInteractive({cursor: "help"}).on("pointerover", function(pointer){guiaApuntar("metal1")}).on("pointerout", function(pointer){guiaApuntar("none")});
+    sc_juegoLocal.Rhd1 = sc_juegoLocal.add.image(110, 537, 'Rhorno doble').setInteractive({cursor: "help"}).on("pointerover", function(pointer){guiaApuntar("hornod1")}).on("pointerout", function(pointer){guiaApuntar("none")});
+    sc_juegoLocal.Rym1 = sc_juegoLocal.add.image(155, 537, 'Ryunque').setInteractive({cursor: "help"}).on("pointerover", function(pointer){guiaApuntar("yunque1")}).on("pointerout", function(pointer){guiaApuntar("none")});
+    sc_juegoLocal.Rhorno1 = sc_juegoLocal.add.image(200, 537, 'Rhorno').setInteractive({cursor: "help"}).on("pointerover", function(pointer){guiaApuntar("horno1")}).on("pointerout", function(pointer){guiaApuntar("none")});
+    sc_juegoLocal.Rbarril1 = sc_juegoLocal.add.image(245, 537, 'Rbarril').setInteractive({cursor: "help"}).on("pointerover", function(pointer){guiaApuntar("barril1")}).on("pointerout", function(pointer){guiaApuntar("none")});
     sc_juegoLocal.Rpieza1 = sc_juegoLocal.add.image(290, 537, 'Rcasco');
-    sc_juegoLocal.Rmonstruo1 = sc_juegoLocal.add.image(335, 537, 'RMonstruo' + cont.p1.ch.slice(2,3));
+    sc_juegoLocal.Rmonstruo1 = sc_juegoLocal.add.image(335, 537, 'RMonstruo' + cont.p1.ch.slice(2,3)).setInteractive({cursor: "help"}).on("pointerover", function(pointer){guiaApuntar("monstruo1")}).on("pointerout", function(pointer){guiaApuntar("none")});
 
     sc_juegoLocal.recuadro2 = sc_juegoLocal.add.image(592, 537, 'recuadro');
-    sc_juegoLocal.Rmetal22 = sc_juegoLocal.add.image(455, 522, 'Rmetal');
-    sc_juegoLocal.Rmetal12 = sc_juegoLocal.add.image(455, 552, 'Rmetal');
-    sc_juegoLocal.Rmetal2 = sc_juegoLocal.add.image(455, 537, 'Rmetal');
-    sc_juegoLocal.Rhd2 = sc_juegoLocal.add.image(500, 537, 'Rhorno doble');
-    sc_juegoLocal.Rym2 = sc_juegoLocal.add.image(545, 537, 'Ryunque');
+    sc_juegoLocal.Rmetal22 = sc_juegoLocal.add.image(455, 522, 'Rmetal').setInteractive({cursor: "help"}).on("pointerover", function(pointer){guiaApuntar("metal22")}).on("pointerout", function(pointer){guiaApuntar("none")});
+    sc_juegoLocal.Rmetal12 = sc_juegoLocal.add.image(455, 552, 'Rmetal').setInteractive({cursor: "help"}).on("pointerover", function(pointer){guiaApuntar("metal12")}).on("pointerout", function(pointer){guiaApuntar("none")});
+    sc_juegoLocal.Rmetal2 = sc_juegoLocal.add.image(455, 537, 'Rmetal').setInteractive({cursor: "help"}).on("pointerover", function(pointer){guiaApuntar("metal2")}).on("pointerout", function(pointer){guiaApuntar("none")});
+    sc_juegoLocal.Rhd2 = sc_juegoLocal.add.image(500, 537, 'Rhorno doble').setInteractive({cursor: "help"}).on("pointerover", function(pointer){guiaApuntar("hornod2")}).on("pointerout", function(pointer){guiaApuntar("none")});
+    sc_juegoLocal.Rym2 = sc_juegoLocal.add.image(545, 537, 'Ryunque').setInteractive({cursor: "help"}).on("pointerover", function(pointer){guiaApuntar("yunque2")}).on("pointerout", function(pointer){guiaApuntar("none")});
 
-    sc_juegoLocal.Rhorno2 = sc_juegoLocal.add.image(590, 537, 'Rhorno');
-    sc_juegoLocal.Rbarril2 = sc_juegoLocal.add.image(635, 537, 'Rbarril');
+    sc_juegoLocal.Rhorno2 = sc_juegoLocal.add.image(590, 537, 'Rhorno').setInteractive({cursor: "help"}).on("pointerover", function(pointer){guiaApuntar("horno2")}).on("pointerout", function(pointer){guiaApuntar("none")});
+    sc_juegoLocal.Rbarril2 = sc_juegoLocal.add.image(635, 537, 'Rbarril').setInteractive({cursor: "help"}).on("pointerover", function(pointer){guiaApuntar("barril2")}).on("pointerout", function(pointer){guiaApuntar("none")});
     sc_juegoLocal.Rpieza2 = sc_juegoLocal.add.image(680, 537, 'Rcasco');
-    sc_juegoLocal.Rmonstruo2 = sc_juegoLocal.add.image(725, 537, 'RMonstruo' + cont.p2.ch.slice(2,3));
+    sc_juegoLocal.Rmonstruo2 = sc_juegoLocal.add.image(725, 537, 'RMonstruo' + cont.p2.ch.slice(2,3)).setInteractive({cursor: "help"}).on("pointerover", function(pointer){guiaApuntar("monstruo2")}).on("pointerout", function(pointer){guiaApuntar("none")});
 
    //Cosas del progreso
    sc_juegoLocal.progreso1 = sc_juegoLocal.add.image(355, 55, 'progreso0');
@@ -549,6 +553,8 @@ sc_juegoLocal.create = function() {
 
    sc_juegoLocal.recuadroTrampa2 = sc_juegoLocal.add.image(750, 50, 'cuadroTrampa');
    sc_juegoLocal.iconoTrampa2 = sc_juegoLocal.add.image(750, 50, 'empty');
+
+
 
 
     //Inicialización de elementos relativos al pausado del juego
@@ -2377,19 +2383,19 @@ function actualizarRecetas() {
             break;
     }
     if (isNaN(ho.slice(6,7)) || (ho.slice(6,7) == "")) {
-        sc_juegoLocal.Rmetal21.setTexture('empty');
-        sc_juegoLocal.Rmetal11.setTexture('empty');
-        sc_juegoLocal.Rmetal1.setTexture('Rmetal');
+        sc_juegoLocal.Rmetal21.setTexture('empty').removeInteractive();
+        sc_juegoLocal.Rmetal11.setTexture('empty').removeInteractive();
+        sc_juegoLocal.Rmetal1.setTexture('Rmetal').setInteractive({cursor: "help"});
         sc_juegoLocal.Rmetal1.setTint(tint1);
-        sc_juegoLocal.Rhd1.setTexture('Rhorno');
+        sc_juegoLocal.Rhd1.setTexture('Rhorno').setInteractive({cursor: "help"}).on("pointerover", function(pointer){guiaApuntar("horno1")}).on("pointerout", function(pointer){guiaApuntar("none")});
         switch (ho.slice(6)) {
             case "yunquetemplado":
-                sc_juegoLocal.Rym1.setTexture('Ryunque');
+                sc_juegoLocal.Rym1.setTexture('Ryunque').setInteractive({cursor: "help"}).on("pointerover", function(pointer){guiaApuntar("yunque1")}).on("pointerout", function(pointer){guiaApuntar("none")});
                 sc_juegoLocal.Rpieza1.setTexture('Rpiernas');
                 sc_juegoLocal.Rpieza1.setTint(tint1);
                 break;
             case "moldetemplado":
-                sc_juegoLocal.Rym1.setTexture('Rmolde');
+                sc_juegoLocal.Rym1.setTexture('Rmolde').setInteractive({cursor: "help"}).on("pointerover", function(pointer){guiaApuntar("molde1")}).on("pointerout", function(pointer){guiaApuntar("none")});
                 sc_juegoLocal.Rpieza1.setTexture('Rcasco');
                 sc_juegoLocal.Rpieza1.setTint(tint1);
                 break;
@@ -2412,21 +2418,21 @@ function actualizarRecetas() {
                 tint2 = 0xA7AA9D;
                 break;
         }
-        sc_juegoLocal.Rmetal21.setTexture('Rmetal');
+        sc_juegoLocal.Rmetal21.setTexture('Rmetal').setInteractive({cursor: "help"});
         sc_juegoLocal.Rmetal21.setTint(tint2);
-        sc_juegoLocal.Rmetal11.setTexture('Rmetal');
+        sc_juegoLocal.Rmetal11.setTexture('Rmetal').setInteractive({cursor: "help"});
         sc_juegoLocal.Rmetal11.setTint(tint1);
-        sc_juegoLocal.Rmetal1.setTexture('empty');
+        sc_juegoLocal.Rmetal1.setTexture('empty').removeInteractive();
         switch(ho.slice(7)) {
             case "yunquetemplado":
-                sc_juegoLocal.Rhd1.setTexture('Rhorno doble');
-                sc_juegoLocal.Rym1.setTexture('Ryunque');
+                sc_juegoLocal.Rhd1.setTexture('Rhorno doble').setInteractive({cursor: "help"}).on("pointerover", function(pointer){guiaApuntar("hornod1")}).on("pointerout", function(pointer){guiaApuntar("none")});
+                sc_juegoLocal.Rym1.setTexture('Ryunque').setInteractive({cursor: "help"}).on("pointerover", function(pointer){guiaApuntar("yunque1")}).on("pointerout", function(pointer){guiaApuntar("none")});
                 sc_juegoLocal.Rpieza1.setTexture('Rpechera');
                 sc_juegoLocal.Rpieza1.setTint(tint1, tint1, tint2, tint2);
                 break;
             case "espadatemplado":
-                sc_juegoLocal.Rhd1.setTexture('Rhorno');
-                sc_juegoLocal.Rym1.setTexture('Ryunque doble');
+                sc_juegoLocal.Rhd1.setTexture('Rhorno').setInteractive({cursor: "help"}).on("pointerover", function(pointer){guiaApuntar("horno1")}).on("pointerout", function(pointer){guiaApuntar("none")});
+                sc_juegoLocal.Rym1.setTexture('Ryunque doble').setInteractive({cursor: "help"}).on("pointerover", function(pointer){guiaApuntar("yunqued1")}).on("pointerout", function(pointer){guiaApuntar("none")});
                 sc_juegoLocal.Rpieza1.setTexture('Respada');
                 sc_juegoLocal.Rpieza1.setTint(tint1, tint1, tint2, tint2);
                 break;
@@ -2453,19 +2459,19 @@ function actualizarRecetas() {
             break;
     }
     if (isNaN(ho.slice(6,7)) || (ho.slice(6,7) == "")) {
-        sc_juegoLocal.Rmetal22.setTexture('empty');
-        sc_juegoLocal.Rmetal12.setTexture('empty');
-        sc_juegoLocal.Rmetal2.setTexture('Rmetal');
+        sc_juegoLocal.Rmetal22.setTexture('empty').removeInteractive();
+        sc_juegoLocal.Rmetal12.setTexture('empty').removeInteractive();
+        sc_juegoLocal.Rmetal2.setTexture('Rmetal').setInteractive({cursor: "help"});
         sc_juegoLocal.Rmetal2.setTint(tint1);
-        sc_juegoLocal.Rhd2.setTexture('Rhorno');
+        sc_juegoLocal.Rhd2.setTexture('Rhorno').setInteractive({cursor: "help"}).on("pointerover", function(pointer){guiaApuntar("horno2")}).on("pointerout", function(pointer){guiaApuntar("none")});
         switch (ho.slice(6)) {
             case "yunquetemplado":
-                sc_juegoLocal.Rym2.setTexture('Ryunque');
+                sc_juegoLocal.Rym2.setTexture('Ryunque').setInteractive({cursor: "help"}).on("pointerover", function(pointer){guiaApuntar("yunque2")}).on("pointerout", function(pointer){guiaApuntar("none")});
                 sc_juegoLocal.Rpieza2.setTexture('Rpiernas');
                 sc_juegoLocal.Rpieza2.setTint(tint1);
                 break;
             case "moldetemplado":
-                sc_juegoLocal.Rym2.setTexture('Rmolde');
+                sc_juegoLocal.Rym2.setTexture('Rmolde').setInteractive({cursor: "help"}).on("pointerover", function(pointer){guiaApuntar("molde2")}).on("pointerout", function(pointer){guiaApuntar("none")});
                 sc_juegoLocal.Rpieza2.setTexture('Rcasco');
                 sc_juegoLocal.Rpieza2.setTint(tint1);
                 break;
@@ -2488,21 +2494,21 @@ function actualizarRecetas() {
                 tint2 = 0xA7AA9D;
                 break;
         }
-        sc_juegoLocal.Rmetal22.setTexture('Rmetal');
+        sc_juegoLocal.Rmetal22.setTexture('Rmetal').setInteractive({cursor: "help"});
         sc_juegoLocal.Rmetal22.setTint(tint2);
-        sc_juegoLocal.Rmetal12.setTexture('Rmetal');
+        sc_juegoLocal.Rmetal12.setTexture('Rmetal').setInteractive({cursor: "help"});
         sc_juegoLocal.Rmetal12.setTint(tint1);
-        sc_juegoLocal.Rmetal2.setTexture('empty');
+        sc_juegoLocal.Rmetal2.setTexture('empty').removeInteractive();
         switch(ho.slice(7)) {
             case "yunquetemplado":
-                sc_juegoLocal.Rhd2.setTexture('Rhorno doble');
-                sc_juegoLocal.Rym2.setTexture('Ryunque');
+                sc_juegoLocal.Rhd2.setTexture('Rhorno doble').setInteractive({cursor: "help"}).on("pointerover", function(pointer){guiaApuntar("hornod2")}).on("pointerout", function(pointer){guiaApuntar("none")});
+                sc_juegoLocal.Rym2.setTexture('Ryunque').setInteractive({cursor: "help"}).on("pointerover", function(pointer){guiaApuntar("yunque2")}).on("pointerout", function(pointer){guiaApuntar("none")});
                 sc_juegoLocal.Rpieza2.setTexture('Rpechera');
                 sc_juegoLocal.Rpieza2.setTint(tint1, tint1, tint2, tint2);
                 break;
             case "espadatemplado":
-                sc_juegoLocal.Rhd2.setTexture('Rhorno');
-                sc_juegoLocal.Rym2.setTexture('Ryunque doble');
+                sc_juegoLocal.Rhd2.setTexture('Rhorno').setInteractive({cursor: "help"}).on("pointerover", function(pointer){guiaApuntar("horno2")}).on("pointerout", function(pointer){guiaApuntar("none")});
+                sc_juegoLocal.Rym2.setTexture('Ryunque doble').setInteractive({cursor: "help"}).on("pointerover", function(pointer){guiaApuntar("yunqued2")}).on("pointerout", function(pointer){guiaApuntar("none")});
                 sc_juegoLocal.Rpieza2.setTexture('Respada');
                 sc_juegoLocal.Rpieza2.setTint(tint1, tint1, tint2, tint2);
                 break;
@@ -3260,4 +3266,79 @@ function disconnectNeighbours(fila, columna, up, down, left, right)
         
     if (fila - 1 >= 0 && columna - 1 >= 0)
         sc_juegoLocal.adjacencyMatrix[fila - 1][columna - 1][fila][columna] = INF;
+}
+
+function guiaApuntar(objetivo) {
+    if (objetivo == "none") {
+        sc_juegoLocal.circuloGuia.setTexture("empty");
+    } else {
+        var player = objetivo.slice(-1);
+        var target;
+        var iterator;
+        var recetas = sc_juegoLocal.recetas2;
+        if (player == 1) {
+            recetas = sc_juegoLocal.recetas1;
+        }
+        sc_juegoLocal.circuloGuia.x = 0;
+        sc_juegoLocal.circuloGuia.y = 0;
+
+        sc_juegoLocal.circuloGuia.setTexture("guideMarker");
+        switch (objetivo.slice(0,-1)) {
+            case "metal1":
+            case "metal":
+                target = "metal"+recetas[0].slice(5,6);
+                iterator = sc_juegoLocal.cajonesMetal;
+                sc_juegoLocal.circuloGuia.y = 15;
+                break;
+            case "metal2": 
+                target = "metal"+recetas[0].slice(6,7);
+                iterator = sc_juegoLocal.cajonesMetal;
+                sc_juegoLocal.circuloGuia.y = 15;
+                break;
+            case "horno":
+                target = undefined;
+                iterator = sc_juegoLocal.hornos;
+                break;
+            case "hornod":
+                target = undefined;
+                iterator = sc_juegoLocal.hornosd;
+                break;
+            case "molde":
+                target = undefined;
+                iterator = sc_juegoLocal.moldes;
+                break;
+            case "yunque":
+                target = undefined;
+                iterator = sc_juegoLocal.yunques;
+                break;
+            case "yunqued":
+                target = undefined;
+                iterator = sc_juegoLocal.yunquesd;
+                break;
+            case "barril":
+                target = undefined;
+                iterator = sc_juegoLocal.barriles;
+                break;
+            case "monstruo":
+                iterator = undefined;
+                if (player == 1) {
+                    sc_juegoLocal.circuloGuia.x = sc_juegoLocal.monstruo1.x;
+                    sc_juegoLocal.circuloGuia.y = sc_juegoLocal.monstruo1.y;
+                } else {
+                    sc_juegoLocal.circuloGuia.x = sc_juegoLocal.monstruo2.x;
+                    sc_juegoLocal.circuloGuia.y = sc_juegoLocal.monstruo2.y;
+                }
+                break;
+        }
+        if (iterator != undefined) {
+            iterator.children.iterate(function(child){
+                if (child.player == player){
+                    if (child.heldObject == target || target == undefined) {
+                        sc_juegoLocal.circuloGuia.x += child.x;
+                        sc_juegoLocal.circuloGuia.y += child.y;
+                    }
+                }
+            });
+        }
+    }
 }
