@@ -202,6 +202,8 @@ sc_Preloader.preload = function()
     this.load.image('explosion', '../assets/game/explosion.png');
     this.load.image('reloj', '../assets/game/reloj.png');
     this.load.image('trampa muro', '../assets/game/trampa muro.png');
+    //Partículas
+    this.load.image('dust', '../assets/game/dust.png');
     //Monstruos
     this.load.image('MElfoD', '../assets/game/MElfoD.png');
     this.load.image('MElfoI', '../assets/game/MElfoI.png');

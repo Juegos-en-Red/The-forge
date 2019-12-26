@@ -204,6 +204,8 @@ sc_juegoLocal.create = function() {
     //Variable auxiliar that para hacer referencia a this
     var that = this;
 
+    sc_juegoLocal.particles = sc_juegoLocal.add.particles('dust');
+
     //Al crear a los jugadores se inicializan una gran cantidad de variables
     sc_juegoLocal.players.children.iterate(function (child) {
         //spdX y spdY guardan la velocidad del jugador
@@ -247,8 +249,26 @@ sc_juegoLocal.create = function() {
         child.tiempoInmovil = 0;
 
         child.status = sc_juegoLocal.add.image(child.x-6, child.y-25, 'empty');
+
+        //Generadores de partículas
+        child.emitter = sc_juegoLocal.particles.createEmitter({
+            follow: child,
+            followOffset: {
+                y: child.height
+            },
+             radial: true,
+             angle: { min: 0, max: 360 }, 
+             alpha: {start: 1, end: 0}, 
+            delay: 0,
+            lifespan: 500,
+            speed: {min: 25, max: 50},
+            on: false,
+            active: true,
+        
+        });
+
     });
-    
+
     //Inicialización de mesas
     sc_juegoLocal.mesas = this.physics.add.staticGroup();
     sc_juegoLocal.mesas.create(180, 455, 'mesa').player = 1;
@@ -721,8 +741,11 @@ sc_juegoLocal.update = function() {
         }
         //Si el personaje no se está moviendo, sus animaciones paran
         if (child.spdX == 0 && child.spdY == 0) {
+            child.emitter.on = false;
             child.heldObjectSprite.anims.stopOnRepeat();
             child.heldObjectSprite2.anims.stopOnRepeat();
+        } else {
+            child.emitter.on = true;
         }
 
         //Llamada a getAnim para actualizar las animaciones del jugador
