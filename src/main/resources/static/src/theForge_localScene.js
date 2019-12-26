@@ -70,9 +70,10 @@ sc_juegoLocal.create = function() {
     //La inicialización de las basuras no necesita la propiedad heldObject, ya que sólo sirven para que el jugador se deshaga de objetos no deseados.
     sc_juegoLocal.basuras = this.physics.add.staticGroup();
     sc_juegoLocal.basuras.create(340, 320, 'basura').player = 1;
-    sc_juegoLocal.basuras.create(460, 320, 'basura').setFlipX(true).player = 2;
+    sc_juegoLocal.basuras.create(460, 320, 'basura').setFlipX(true);
 
     sc_juegoLocal.basuras.children.iterate(function(child) {
+        if (child.player != 1) child.player = 2;
         disconnectNeighbours(getCell(child.x,child.y).y,getCell(child.x,child.y).x, true, true, false, false);
     });
 
@@ -81,9 +82,10 @@ sc_juegoLocal.create = function() {
     //En este caso se añaden timer, que guarda el progreso del metal en su interior, y status, el sprite que mostrará el estado de la estación.
     sc_juegoLocal.hornos = this.physics.add.staticGroup();
     sc_juegoLocal.hornos.create( 60, 140, 'horno').player = 1;
-    sc_juegoLocal.hornos.create(740, 140, 'horno').setFlipX(true).player = 2;
+    sc_juegoLocal.hornos.create(740, 140, 'horno').setFlipX(true);
 
     sc_juegoLocal.hornos.children.iterate(function(child){
+        if (child.player != 1) child.player = 2;
         disconnectNeighbours(getCell(child.x,child.y).y,getCell(child.x,child.y).x, true, true, false, false);
         child.heldObject = "none";
         child.timer = -1;
@@ -134,9 +136,10 @@ sc_juegoLocal.create = function() {
     //En este caso hay dos heldObjects, ya que se trata de un horno doble. Lo mismo ocurrirá en los yunques dobles.
     sc_juegoLocal.hornosd = this.physics.add.staticGroup();
     sc_juegoLocal.hornosd.create( 60, 260, 'horno doble').player = 1;
-    sc_juegoLocal.hornosd.create(740, 260, 'horno doble').setFlipX(true).player = 2;
+    sc_juegoLocal.hornosd.create(740, 260, 'horno doble').setFlipX(true);
 
     sc_juegoLocal.hornosd.children.iterate(function(child){
+        if (child.player != 1) child.player = 2;
         disconnectNeighbours(getCell(child.x,child.y).y,getCell(child.x,child.y).x, true, true, false, false);
         child.heldObject1 = "none";
         child.heldObject2 = "none";
@@ -527,6 +530,13 @@ sc_juegoLocal.create = function() {
     sc_juegoLocal.Rbarril2 = sc_juegoLocal.add.image(635, 537, 'Rbarril');
     sc_juegoLocal.Rpieza2 = sc_juegoLocal.add.image(680, 537, 'Rcasco');
     sc_juegoLocal.Rmonstruo2 = sc_juegoLocal.add.image(725, 537, 'RMonstruo' + cont.p2.ch.slice(2,3));
+
+   //Cosas del progreso
+   sc_juegoLocal.progreso1 = sc_juegoLocal.add.image(355, 55, 'progreso0');
+   sc_juegoLocal.progreso1.n = 0;
+   sc_juegoLocal.progreso2 = sc_juegoLocal.add.image(445, 55, 'progreso0');
+   sc_juegoLocal.progreso2.n = 0;
+
 
     //Inicialización de elementos relativos al pausado del juego
     //Por un lado tenemos el overlay, que oscurecerá toda la pantalla cuando el juego esté pausado
@@ -2480,6 +2490,10 @@ function interactuarMonstruos(p) {
             getAnim(p, true);
             result = true;
             sc_juegoLocal.recetas1.splice(0,1);
+
+            sc_juegoLocal.progreso1.n = sc_juegoLocal.progreso1.n+1;
+            sc_juegoLocal.progreso1.setTexture('progreso' + sc_juegoLocal.progreso1.n);
+
             if (sc_juegoLocal.recetas1[0] == undefined) {
                 sc_juegoLocal.botonPausa.paused = true;
                 sc_juegoLocal.pausedOverlay.setTexture('pausedOverlay');
@@ -2505,6 +2519,10 @@ function interactuarMonstruos(p) {
             getAnim(p, true);
             result = true;
             sc_juegoLocal.recetas2.splice(0,1);
+
+            sc_juegoLocal.progreso2.n = sc_juegoLocal.progreso2.n+1;
+            sc_juegoLocal.progreso2.setTexture('progreso' + sc_juegoLocal.progreso2.n);
+            
             if (sc_juegoLocal.recetas2[0] == undefined) {
                 sc_juegoLocal.botonPausa.paused = true;
                 sc_juegoLocal.pausedOverlay.setTexture('pausedOverlay');

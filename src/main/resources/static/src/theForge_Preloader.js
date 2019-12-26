@@ -391,6 +391,13 @@ sc_Preloader.preload = function()
     // Triple cartel de prohibido
     this.load.image("tripleMuro", "../assets/game/prohibido3.png");
 
+    // Progreso de los monstruos
+    this.load.image("progreso0", "../assets/game/progreso0.png");
+    this.load.image("progreso1", "../assets/game/progreso1.png");
+    this.load.image("progreso2", "../assets/game/progreso2.png");
+    this.load.image("progreso3", "../assets/game/progreso3.png");
+    this.load.image("progreso4", "../assets/game/progreso4.png");
+
     // Imágenes de la guía
     this.load.image("botonDer", "../assets/guia/botonDer.png");
 
