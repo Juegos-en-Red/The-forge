@@ -564,6 +564,12 @@ sc_juegoLocal.update = function() {
     if (sc_juegoLocal.botonPausa.paused) {
         return;
     }
+
+
+    sc_juegoLocal.progreso1.setTexture('progreso' + (4-sc_juegoLocal.recetas1.length));
+    sc_juegoLocal.progreso2.setTexture('progreso' + (4-sc_juegoLocal.recetas2.length));
+
+
     //var start = new Date().getTime();
     if (cont.lGuia) dijkstra(getCell(sc_juegoLocal.player.x,sc_juegoLocal.player.y),getTargetCell(1),getCell(sc_juegoLocal.player2.x,sc_juegoLocal.player2.y),getTargetCell(2));
     //console.log(new Date().getTime() - start);
@@ -2482,6 +2488,8 @@ function actualizarRecetas() {
 function interactuarMonstruos(p) {
     var result = false;
 
+    if (sc_juegoLocal.victory != undefined) {return false;}
+
     //console.log(sc_juegoLocal.recetas1[0] + ", " + p.heldObject);
     if (sc_juegoLocal.recetas1[0] == p.heldObject) {
         if (Phaser.Math.Distance.Between(p.x, p.y, sc_juegoLocal.monstruo1.x, sc_juegoLocal.monstruo1.y) < 0.75*Math.max(sc_juegoLocal.monstruo1.body.width, sc_juegoLocal.monstruo1.body.height)+0.75*Math.max(p.body.width, p.body.height)) {
@@ -2490,9 +2498,6 @@ function interactuarMonstruos(p) {
             getAnim(p, true);
             result = true;
             sc_juegoLocal.recetas1.splice(0,1);
-
-            sc_juegoLocal.progreso1.n = sc_juegoLocal.progreso1.n+1;
-            sc_juegoLocal.progreso1.setTexture('progreso' + sc_juegoLocal.progreso1.n);
 
             if (sc_juegoLocal.recetas1[0] == undefined) {
                 sc_juegoLocal.botonPausa.paused = true;
@@ -2519,9 +2524,6 @@ function interactuarMonstruos(p) {
             getAnim(p, true);
             result = true;
             sc_juegoLocal.recetas2.splice(0,1);
-
-            sc_juegoLocal.progreso2.n = sc_juegoLocal.progreso2.n+1;
-            sc_juegoLocal.progreso2.setTexture('progreso' + sc_juegoLocal.progreso2.n);
             
             if (sc_juegoLocal.recetas2[0] == undefined) {
                 sc_juegoLocal.botonPausa.paused = true;
@@ -2542,6 +2544,8 @@ function interactuarMonstruos(p) {
         }
     }
 
+    sc_juegoLocal.progreso1.setTexture('progreso' + (4-sc_juegoLocal.recetas1.length));
+    sc_juegoLocal.progreso2.setTexture('progreso' + (4-sc_juegoLocal.recetas2.length));
     return result;
 }
 
