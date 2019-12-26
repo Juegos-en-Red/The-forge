@@ -554,9 +554,9 @@ sc_juegoLocal.update = function() {
     if (sc_juegoLocal.botonPausa.paused) {
         return;
     }
-
+    //var start = new Date().getTime();
     if (cont.lGuia) dijkstra(getCell(sc_juegoLocal.player.x,sc_juegoLocal.player.y),getTargetCell(1),getCell(sc_juegoLocal.player2.x,sc_juegoLocal.player2.y),getTargetCell(2));
-
+    //console.log(new Date().getTime() - start);
     comprobarInteraccion(sc_juegoLocal.player, sc_juegoLocal.player2);
 
     //Llamar a actualizarRecetas();
@@ -747,6 +747,7 @@ sc_juegoLocal.update = function() {
             child.status.setTexture("tic");
         }
     });
+    
 }
 
 //Función initAnimations: Aquí se inicializan todas las animaciones de los personajes.
@@ -2979,7 +2980,7 @@ function dijkstra(start1, end1, start2, end2)
 {
     /* JUGADOR 1 */
 
-    initDistances();
+    resetDistances();
     sc_juegoLocal.graphics.clear();
     sc_juegoLocal.graphics.fillStyle(0x00ff07, 0.3);
     var compare = function(a, b) {return a.distance < b.distance};
@@ -3039,7 +3040,7 @@ function dijkstra(start1, end1, start2, end2)
     
     /* JUGADOR 2 */
 
-    initDistances();
+    resetDistances();
     sc_juegoLocal.distances[start2.y][start2.x] = 0;
     prio_queue = new PriorityQueue({comparator: compare});
     prev = new Array();
@@ -3106,6 +3107,20 @@ function initDistances()
         {
             sc_juegoLocal.distances[i].push(new Array());
             sc_juegoLocal.distances[i][j] = INF;
+        }
+    }
+}
+function resetDistances()
+{
+    for (var i = 0; i < config.height / 40; i++)
+    {
+        for (var j = 0; j < config.width / 40; j++)
+        {
+            //Esto antes lo igualaba a INF, pero ahora lo iguala a 20
+            //20 es el número más bajo en el que sigue funcionando el algoritmo
+            //Si en algún momento deja de funcionar, toca subirlo aquí porque está demasiado lejos.
+            //Cuanto más bajo el número mejor el rendimiento. No tengo ni idea de por qué.
+            sc_juegoLocal.distances[i][j] = 20; 
         }
     }
 }
