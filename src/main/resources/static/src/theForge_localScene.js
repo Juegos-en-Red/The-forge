@@ -3004,7 +3004,7 @@ function dijkstra(start1, end1, start2, end2)
         {
             for (var k = 0; k < config.height / 40; k++)
             {
-                for (var l = 0; l < config.width / 40; l++)
+                for (var l = 0; l < config.width / 80; l++)
                 {
                     var peso = node.distance + sc_juegoLocal.adjacencyMatrix[node.startF][node.startC][k][l];
                     if (peso < sc_juegoLocal.distances[k][l])
@@ -3061,7 +3061,7 @@ function dijkstra(start1, end1, start2, end2)
         {
             for (var k = 0; k < config.height / 40; k++)
             {
-                for (var l = 0; l < config.width / 40; l++)
+                for (var l = config.width / 80; l < config.width / 40; l++)
                 {
                     var peso = node.distance + sc_juegoLocal.adjacencyMatrix[node.startF][node.startC][k][l];
                     if (peso < sc_juegoLocal.distances[k][l])
@@ -3116,11 +3116,7 @@ function resetDistances()
     {
         for (var j = 0; j < config.width / 40; j++)
         {
-            //Esto antes lo igualaba a INF, pero ahora lo iguala a 20
-            //20 es el número más bajo en el que sigue funcionando el algoritmo
-            //Si en algún momento deja de funcionar, toca subirlo aquí porque está demasiado lejos.
-            //Cuanto más bajo el número mejor el rendimiento. No tengo ni idea de por qué.
-            sc_juegoLocal.distances[i][j] = 20; 
+            sc_juegoLocal.distances[i][j] = INF; 
         }
     }
 }
