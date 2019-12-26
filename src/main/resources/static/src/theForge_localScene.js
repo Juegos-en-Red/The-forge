@@ -293,6 +293,7 @@ sc_juegoLocal.create = function() {
         temp = "Elfo";
     }
     sc_juegoLocal.monstruo1 = sc_juegoLocal.monstruos.create(72, 433, 'M'+temp+'D');
+    sc_juegoLocal.monstruo1.setSize(110,128);
     sc_juegoLocal.monstruo1.faction = temp;
     if (cont.p2.ch.slice(2,3) == 'H') {
         temp = "Hielo";
@@ -300,6 +301,7 @@ sc_juegoLocal.create = function() {
         temp = "Elfo";
     }
     sc_juegoLocal.monstruo2 = sc_juegoLocal.monstruos.create(728, 433, 'M'+temp+'D').setFlipX(true);
+    sc_juegoLocal.monstruo1.setSize(110,128);
     sc_juegoLocal.monstruo2.faction = temp;
 
     //mejorar el disconnect para los monstruos no estaría de más
@@ -587,12 +589,31 @@ sc_juegoLocal.create = function() {
     sc_juegoLocal.botonPausa.setInteractive({cursor: "pointer"});
     sc_juegoLocal.botonPausa.on('pointerup', function() {
         if (!sc_juegoLocal.botonPausa.paused) {
-            sc_juegoLocal.pausedOverlay.setTexture('pausedOverlay');
-            sc_juegoLocal.botonPausa.paused = true;
+            pause();
         } else {
-            sc_juegoLocal.pausedOverlay.setTexture('empty');
-            sc_juegoLocal.botonPausa.paused = false;}
+            unPause();
+        }
     });
+
+    //Crear los objetos de pausa desactivados
+    sc_juegoLocal.pausemenu = sc_juegoLocal.add.image(400, 300, 'pausemenu');
+    sc_juegoLocal.pauseguidebutton = sc_juegoLocal.add.image(400, 200, 'pauseguidebutton');
+    sc_juegoLocal.pausequitbutton = sc_juegoLocal.add.image(400, 300, 'pausequitbutton');
+    sc_juegoLocal.pauseresumebutton = sc_juegoLocal.add.image(400, 400, 'pauseresumebutton');
+
+    sc_juegoLocal.pausequitmenu = sc_juegoLocal.add.image(400, 300, 'pausequitmenu');
+    sc_juegoLocal.pausequitbutton2 = sc_juegoLocal.add.image(400, 290, 'pausequitbutton');
+    sc_juegoLocal.pausecancelbutton = sc_juegoLocal.add.image(400, 350, 'pausecancelbutton');
+
+    sc_juegoLocal.pausemenu.setActive(false).setVisible(false);
+    sc_juegoLocal.pauseguidebutton.setActive(false).setVisible(false).on('pointerup', showPauseGuide);
+    sc_juegoLocal.pausequitbutton.setActive(false).setVisible(false).on('pointerup', showQuitMenu);
+    sc_juegoLocal.pauseresumebutton.setActive(false).setVisible(false).on('pointerup', unPause);
+
+    sc_juegoLocal.pausequitmenu.setActive(false).setVisible(false);
+    sc_juegoLocal.pausequitbutton2.setActive(false).setVisible(false).on('pointerup', quitGame);
+    sc_juegoLocal.pausecancelbutton.setActive(false).setVisible(false).on('pointerup', hideQuitMenu);
+
 
     sc_juegoLocal.victory = undefined; //Importante
 
@@ -885,6 +906,62 @@ sc_juegoLocal.update = function() {
         }
     });
     
+}
+
+function pause() {
+    sc_juegoLocal.pausedOverlay.setTexture('pausedOverlay');
+    
+    sc_juegoLocal.pausemenu.setActive(true).setVisible(true);
+    sc_juegoLocal.pauseguidebutton.setActive(true).setVisible(true).setInteractive({cursor: "pointer"});
+    sc_juegoLocal.pausequitbutton.setActive(true).setVisible(true).setInteractive({cursor: "pointer"});
+    sc_juegoLocal.pauseresumebutton.setActive(true).setVisible(true).setInteractive({cursor: "pointer"});
+
+    sc_juegoLocal.botonPausa.paused = true;
+}
+
+function showQuitMenu() {
+    sc_juegoLocal.pauseguidebutton.removeInteractive();
+    sc_juegoLocal.pausequitbutton.removeInteractive();
+    sc_juegoLocal.pauseresumebutton.removeInteractive();
+
+    sc_juegoLocal.pausequitmenu.setActive(true).setVisible(true);
+    sc_juegoLocal.pausequitbutton2.setActive(true).setVisible(true).setInteractive({cursor: "pointer"});
+    sc_juegoLocal.pausecancelbutton.setActive(true).setVisible(true).setInteractive({cursor: "pointer"});
+}
+
+function hideQuitMenu() {
+    
+    sc_juegoLocal.pauseguidebutton.setInteractive({cursor: "pointer"});
+    sc_juegoLocal.pausequitbutton.setInteractive({cursor: "pointer"});
+    sc_juegoLocal.pauseresumebutton.setInteractive({cursor: "pointer"});
+
+    sc_juegoLocal.pausequitmenu.setActive(false).setVisible(false);
+    sc_juegoLocal.pausequitbutton2.setActive(false).setVisible(false).removeInteractive();
+    sc_juegoLocal.pausecancelbutton.setActive(false).setVisible(false).removeInteractive();
+}
+
+function unPause() {
+    sc_juegoLocal.pausedOverlay.setTexture('empty');
+        
+    sc_juegoLocal.pausemenu.setActive(false).setVisible(false);
+    sc_juegoLocal.pauseguidebutton.setActive(false).setVisible(false).removeInteractive();
+    sc_juegoLocal.pausequitbutton.setActive(false).setVisible(false).removeInteractive();
+    sc_juegoLocal.pauseresumebutton.setActive(false).setVisible(false).removeInteractive();
+
+    sc_juegoLocal.pausequitmenu.setActive(false).setVisible(false);
+    sc_juegoLocal.pausequitbutton2.setActive(false).setVisible(false).removeInteractive();
+    sc_juegoLocal.pausecancelbutton.setActive(false).setVisible(false).removeInteractive();
+    
+    sc_juegoLocal.botonPausa.paused = false;
+}
+
+function quitGame() {
+    sc_juegoLocal.scene.start("MenuPrincipal");
+}
+
+function showPauseGuide() {
+    cont.guiaIngame = true;
+    sc_juegoLocal.scene.switch('Guia');
 }
 
 //Función initAnimations: Aquí se inicializan todas las animaciones de los personajes.

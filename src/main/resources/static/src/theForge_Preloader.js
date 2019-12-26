@@ -250,6 +250,12 @@ sc_Preloader.preload = function()
     this.load.image('1de2', '../assets/game/1de2.png');
     this.load.image('botonPausa', '../assets/game/botonPausa.png');
     this.load.image('pausedOverlay', '../assets/game/pausedOverlay.png');
+    this.load.image('pausemenu', '../assets/game/pausemenu.png');
+    this.load.image('pausequitmenu', '../assets/game/pausequitmenu.png');
+    this.load.image('pauseguidebutton', '../assets/game/pauseguidebutton.png');
+    this.load.image('pausequitbutton', '../assets/game/pausequitbutton.png');
+    this.load.image('pauseresumebutton', '../assets/game/pauseresumebutton.png');
+    this.load.image('pausecancelbutton', '../assets/game/pausecancelbutton.png');
 
     this.load.image('guideMarker', '../assets/game/guideMarker.png');
 

@@ -10,9 +10,18 @@ var left, right, escape;
 
 var btnRight, btnLeft, cross;
 
+var ingame;
+
 
 sc_Guia.create = function(escena)
 {
+    if (cont.guiaIngame) {
+        ingame = true;
+        cont.guiaIngame = false;
+    } else {
+        ingame = false;
+    }
+
     array = new Array();
     pos = 0;
     array.push(this.add.image(0, 0, "historia").setOrigin(0, 0));
@@ -32,7 +41,12 @@ sc_Guia.create = function(escena)
     cross = this.add.image(650, 20, "cruz2").setOrigin(0, 0);
     cross.setInteractive({cursor: "pointer"}).on("pointerdown", function(pointer)
     {
-        sc_Guia.scene.start("MenuPrincipal");
+        if (ingame) {
+            sc_Guia.scene.stop("Guia");
+            sc_Guia.scene.wake("JuegoLocal");
+        } else {
+            sc_Guia.scene.start("MenuPrincipal");
+        }
     })
 
     
@@ -102,7 +116,12 @@ sc_Guia.update = function(time, delta)
         
     if (Phaser.Input.Keyboard.JustDown(escape))
         {
-            sc_Guia.scene.start("MenuPrincipal");
+            if (ingame) {
+                sc_Guia.scene.stop("Guia");
+                sc_Guia.scene.wake("JuegoLocal");
+            } else {
+                sc_Guia.scene.start("MenuPrincipal");
+            }
         }
 }
 

@@ -34,7 +34,8 @@ var cont = {
     ch: 'SSHielo1',
     name: null,
     lastChatMessage: -1,
-    lGuia: true
+    lGuia: true,
+    guiaIngame: false
 }
 
 //funciones de música por aquí
