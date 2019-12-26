@@ -2711,65 +2711,73 @@ function lookFor(item, player, p, split, dStation, target) {
         if (dStation == "yunque") {
             if (target == "horno") target = "hornod";
             sc_juegoLocal.hornosd.children.iterate(function (child) {
-                if (child.heldObject2 == "none") {
-                    if (child.heldObject1 == item1) {
-                        foundItem1 = true;
-                    }
-                } else {
-                    if ((child.heldObject1 == item1 && child.heldObject2 == item2) || (child.heldObject2 == item1 && child.heldObject1 == item2)) {
-                        found = true;
-                        x = child.x;
-                        y = child.y;
+                if (child.player == player) {
+                    if (child.heldObject2 == "none") {
+                        if (child.heldObject1 == item1) {
+                            foundItem1 = true;
+                        }
+                    } else {
+                        if ((child.heldObject1 == item1 && child.heldObject2 == item2) || (child.heldObject2 == item1 && child.heldObject1 == item2)) {
+                            found = true;
+                            x = child.x;
+                            y = child.y;
+                        }
                     }
                 }
             });
         } else if (dStation == "espada") {
             sc_juegoLocal.yunquesd.children.iterate(function (child) {
-                if (child.heldObject2 == "none") {
-                    if (child.heldObject1 == item1) {
-                        foundItem1 = true;
-                    }
-                } else {
-                    if ((child.heldObject1 == item1 && child.heldObject2 == item2) || (child.heldObject2 == item1 && child.heldObject1 == item2)) {
-                        found = true;
-                        x = child.x;
-                        y = child.y;
+                if (child.player == player) {
+                    if (child.heldObject2 == "none") {
+                        if (child.heldObject1 == item1) {
+                            foundItem1 = true;
+                        }
+                    } else {
+                        if ((child.heldObject1 == item1 && child.heldObject2 == item2) || (child.heldObject2 == item1 && child.heldObject1 == item2)) {
+                            found = true;
+                            x = child.x;
+                            y = child.y;
+                        }
                     }
                 }
             });
 
             sc_juegoLocal.hornos.children.iterate(function (child) {
-
-                if (!foundItem1) {
-                    if (item1.slice(-4) == "rojo") {
-                        if (child.heldObject == item1.slice(0,-4)) {
-                            found = true;
-                            x = child.x;
-                            y = child.y;
-                        }
-                    } else {
-                        if (child.heldObject == item1) {
-                            found = true;
-                            x = child.x;
-                            y = child.y;
-                        }
-                    }
-                } else {
-                    if (item2.slice(-4) == "rojo") {
-                        if (child.heldObject == item2.slice(0,-4)) {
-                            found = true;
-                            x = child.x;
-                            y = child.y;
-                        } else if (item2 != p.heldObject) {
-                            item2 = item2.slice(0,-4);
-                        }
-                    } else {
-                        if (child.heldObject == item2) {
-                            found = true;
-                            x = child.x;
-                            y = child.y;
+                if (child.player == player) {
+                    if (!foundItem1) {
+                        if (item1.slice(-4) == "rojo") {
+                            if (child.heldObject == item1.slice(0,-4)) {
+                                found = true;
+                                x = child.x;
+                                y = child.y;
+                            }
                         } else {
-                            target = "horno";
+                            if (child.heldObject == item1) {
+                                found = true;
+                                x = child.x;
+                                y = child.y;
+                            }
+                        }
+                    } else {
+                        if (item2.slice(-4) == "rojo") {
+                            if (child.heldObject == item2.slice(0,-4)) {
+                                found = true;
+                                x = child.x;
+                                y = child.y;
+                            } else if (item2 != p.heldObject) {
+                                item2 = item2.slice(0,-4);
+                                if (target == "yunqued") {
+                                    target = "horno";
+                                }
+                            }
+                        } else {
+                            if (child.heldObject == item2) {
+                                found = true;
+                                x = child.x;
+                                y = child.y;
+                            } else {
+                                target = "horno";
+                            }
                         }
                     }
                 }
