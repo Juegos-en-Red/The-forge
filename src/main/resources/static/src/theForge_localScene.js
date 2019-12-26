@@ -13,6 +13,8 @@ sc_juegoLocal.preload = function() {
 //Función create: Aquí se inicializan todos los objetos del juego.
 sc_juegoLocal.create = function() {
 
+    sc_juegoLocal.gameStarted = false;
+
     initDistances();
     initGrafo();
 
@@ -574,11 +576,72 @@ sc_juegoLocal.create = function() {
     });
 
     sc_juegoLocal.victory = undefined; //Importante
+
+    //Empieza la cuenta atrás
+
+    sc_juegoLocal.countdown = sc_juegoLocal.add.image(400, 300, 'countdown5');
+    sc_juegoLocal.tweens.add({
+        targets: sc_juegoLocal.countdown,
+        alpha: {from: 1, to: 0},
+        scale: {from: 1.5, to: 1},
+        ease: 'Linear',
+        onComplete: function() {
+            sc_juegoLocal.countdown.setTexture('countdown4');
+            sc_juegoLocal.tweens.add({
+                targets: sc_juegoLocal.countdown,
+                alpha: {from: 1, to: 0},
+                scale: {from: 1.5, to: 1},
+                ease: 'Linear',
+                onComplete: function() {
+                    sc_juegoLocal.countdown.setTexture('countdown3');
+                    sc_juegoLocal.tweens.add({
+                        targets: sc_juegoLocal.countdown,
+                        alpha: {from: 1, to: 0},
+                        scale: {from: 1.5, to: 1},
+                        ease: 'Linear',
+                        onComplete: function() {
+                            sc_juegoLocal.countdown.setTexture('countdown2');
+                            sc_juegoLocal.tweens.add({
+                                targets: sc_juegoLocal.countdown,
+                                alpha: {from: 1, to: 0},
+                                scale: {from: 1.5, to: 1},
+                                ease: 'Linear',
+                                onComplete: function() {
+                                    sc_juegoLocal.countdown.setTexture('countdown1');
+                                    sc_juegoLocal.tweens.add({
+                                        targets: sc_juegoLocal.countdown,
+                                        alpha: {from: 1, to: 0},
+                                        scale: {from: 1.5, to: 1},
+                                        ease: 'Linear',
+                                        onComplete: function() {
+                                            sc_juegoLocal.countdown.setTexture('countdown0');
+                                            sc_juegoLocal.tweens.add({
+                                                targets: sc_juegoLocal.countdown,
+                                                alpha: {from: 1, to: 0},
+                                                scale: {from: 1.5, to: 1},
+                                                ease: 'Linear',
+                                                onComplete: function() {
+                                                    sc_juegoLocal.countdown.setTexture('empty');
+                                                    sc_juegoLocal.gameStarted = true;
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    });
+
+
+
 }
 
 //Función update: Aquí se maneja todo lo que ocurre durante la partida.
 sc_juegoLocal.update = function() {
-
 
 
     //Si el juego está pausado, la función no se ejecuta.
@@ -601,6 +664,10 @@ sc_juegoLocal.update = function() {
 
     //Llamar a actualizarRecetas();
     actualizarRecetas();
+
+    if (!sc_juegoLocal.gameStarted) {
+        return;
+    }
 
     //Altar trampas
     if (sc_juegoLocal.altarTrampas.timer == 1000) {

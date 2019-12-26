@@ -243,6 +243,13 @@ sc_Preloader.preload = function()
     this.load.image('pausedOverlay', '../assets/game/pausedOverlay.png');
 
     this.load.image('guideMarker', '../assets/game/guideMarker.png');
+
+    this.load.image('countdown5', '../assets/game/countdown5.png');
+    this.load.image('countdown4', '../assets/game/countdown4.png');
+    this.load.image('countdown3', '../assets/game/countdown3.png');
+    this.load.image('countdown2', '../assets/game/countdown2.png');
+    this.load.image('countdown1', '../assets/game/countdown1.png');
+    this.load.image('countdown0', '../assets/game/countdown0.png');
     //De aquí para abajo los spritesheet
     this.load.spritesheet('SSElfa1', 
         '../assets/game/SSElfa1.png',
