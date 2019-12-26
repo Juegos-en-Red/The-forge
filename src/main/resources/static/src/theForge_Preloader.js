@@ -175,6 +175,11 @@ sc_Preloader.preload = function()
     this.load.image('cajon3', '../assets/game/cajon3.png');
     this.load.image('cajon4', '../assets/game/cajon4.png');
     this.load.image('cajon5', '../assets/game/cajon5.png');
+    this.load.image('cajon1I', '../assets/game/cajon1I.png');
+    this.load.image('cajon2I', '../assets/game/cajon2I.png');
+    this.load.image('cajon3I', '../assets/game/cajon3I.png');
+    this.load.image('cajon4I', '../assets/game/cajon4I.png');
+    this.load.image('cajon5I', '../assets/game/cajon5I.png');
     this.load.image('mesa', '../assets/game/mesa.png');
     this.load.spritesheet('horno', 
         '../assets/game/horno.png',
@@ -188,6 +193,7 @@ sc_Preloader.preload = function()
     this.load.image('yunque doble', '../assets/game/yunque doble.png');
     this.load.image('barril de templado', '../assets/game/barril de templado.png');
     this.load.image('basura', '../assets/game/basura.png');
+    this.load.image('basuraI', '../assets/game/basuraI.png');
     this.load.image('molde', '../assets/game/molde.png');
     this.load.image('moldeU', '../assets/game/moldeU.png');
     this.load.image('barreras', '../assets/game/barreras.png');

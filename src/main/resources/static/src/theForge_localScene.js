@@ -3034,8 +3034,14 @@ function comprobarInteraccion(p1,p2) {
     sc_juegoLocal.cajonesMetal.children.iterate(function (child) {
         if (isAdyacent(p1.x,p1.y,child.x,child.y) || isAdyacent(p2.x,p2.y,child.x,child.y)) {
             child.setTint(0xFFFF00);
+            if (child.texture.key.slice(-1) != "I") {
+                child.setTexture(child.texture.key+"I");
+            }
         } else {
             child.setTint(0xFFFFFF);
+            if (child.texture.key.slice(-1) == "I") {
+                child.setTexture(child.texture.key.slice(0,-1));
+            }
         }
     });
 
@@ -3098,8 +3104,14 @@ function comprobarInteraccion(p1,p2) {
     sc_juegoLocal.basuras.children.iterate(function (child) {
         if (isAdyacent(p1.x,p1.y,child.x,child.y) || isAdyacent(p2.x,p2.y,child.x,child.y)) {
             child.setTint(0xFFFF00);
+            if (child.texture.key.slice(-1) != "I") {
+                child.setTexture(child.texture.key+"I");
+            }
         } else {
             child.setTint(0xFFFFFF);
+            if (child.texture.key.slice(-1) == "I") {
+                child.setTexture(child.texture.key.slice(0,-1));
+            }
         }
     });
 }
