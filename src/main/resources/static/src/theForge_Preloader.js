@@ -182,7 +182,7 @@ sc_Preloader.preload = function()
     );
     this.load.spritesheet('horno doble', 
         '../assets/game/horno doble.png',
-        { frameWidth: 40, frameHeight: 120 }
+        { frameWidth: 40, frameHeight: 172 }
     );
     this.load.image('yunque', '../assets/game/yunque.png');
     this.load.image('yunque doble', '../assets/game/yunque doble.png');
