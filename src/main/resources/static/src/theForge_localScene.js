@@ -627,42 +627,42 @@ sc_juegoLocal.create = function() {
     //Empieza la cuenta atrás
 
     sc_juegoLocal.countdown = sc_juegoLocal.add.image(400, 300, 'countdown5');
-    sc_juegoLocal.tweens.add({
+    sc_juegoLocal.cdTween = sc_juegoLocal.tweens.add({
         targets: sc_juegoLocal.countdown,
         alpha: {from: 1, to: 0},
         scale: {from: 1.5, to: 1},
         ease: 'Linear',
         onComplete: function() {
             sc_juegoLocal.countdown.setTexture('countdown4');
-            sc_juegoLocal.tweens.add({
+            sc_juegoLocal.cdTween = sc_juegoLocal.tweens.add({
                 targets: sc_juegoLocal.countdown,
                 alpha: {from: 1, to: 0},
                 scale: {from: 1.5, to: 1},
                 ease: 'Linear',
                 onComplete: function() {
                     sc_juegoLocal.countdown.setTexture('countdown3');
-                    sc_juegoLocal.tweens.add({
+                    sc_juegoLocal.cdTween = sc_juegoLocal.tweens.add({
                         targets: sc_juegoLocal.countdown,
                         alpha: {from: 1, to: 0},
                         scale: {from: 1.5, to: 1},
                         ease: 'Linear',
                         onComplete: function() {
                             sc_juegoLocal.countdown.setTexture('countdown2');
-                            sc_juegoLocal.tweens.add({
+                            sc_juegoLocal.cdTween = sc_juegoLocal.tweens.add({
                                 targets: sc_juegoLocal.countdown,
                                 alpha: {from: 1, to: 0},
                                 scale: {from: 1.5, to: 1},
                                 ease: 'Linear',
                                 onComplete: function() {
                                     sc_juegoLocal.countdown.setTexture('countdown1');
-                                    sc_juegoLocal.tweens.add({
+                                    sc_juegoLocal.cdTween = sc_juegoLocal.tweens.add({
                                         targets: sc_juegoLocal.countdown,
                                         alpha: {from: 1, to: 0},
                                         scale: {from: 1.5, to: 1},
                                         ease: 'Linear',
                                         onComplete: function() {
                                             sc_juegoLocal.countdown.setTexture('countdown0');
-                                            sc_juegoLocal.tweens.add({
+                                            sc_juegoLocal.cdTween = sc_juegoLocal.tweens.add({
                                                 targets: sc_juegoLocal.countdown,
                                                 alpha: {from: 1, to: 0},
                                                 scale: {from: 1.5, to: 1},
@@ -928,6 +928,7 @@ sc_juegoLocal.update = function(time, delta) {
 }
 
 function pause() {
+    sc_juegoLocal.cdTween.pause();
     sc_juegoLocal.pausedOverlay.setTexture('pausedOverlay');
     
     sc_juegoLocal.pausemenu.setActive(true).setVisible(true);
@@ -960,6 +961,7 @@ function hideQuitMenu() {
 }
 
 function unPause() {
+    sc_juegoLocal.cdTween.resume();
     sc_juegoLocal.pausedOverlay.setTexture('empty');
         
     sc_juegoLocal.pausemenu.setActive(false).setVisible(false);
