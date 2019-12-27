@@ -682,8 +682,7 @@ sc_juegoLocal.create = function() {
 }
 
 //Función update: Aquí se maneja todo lo que ocurre durante la partida.
-sc_juegoLocal.update = function() {
-
+sc_juegoLocal.update = function(time, delta) {
 
     //Si el juego está pausado, la función no se ejecuta.
     if (sc_juegoLocal.botonPausa.paused) {
@@ -711,7 +710,7 @@ sc_juegoLocal.update = function() {
     }
 
     //Altar trampas
-    if (sc_juegoLocal.altarTrampas.timer == 1000) {
+    if (sc_juegoLocal.altarTrampas.timer >= 1000 && sc_juegoLocal.altarTrampas.trampa == "none") {
         //activar trampa
         if (Phaser.Math.Between(1, 2) == 2) {
             sc_juegoLocal.altarTrampas.trampa = "trampaReloj";
@@ -722,7 +721,7 @@ sc_juegoLocal.update = function() {
             sc_juegoLocal.altarTrampas.trampaSprite.setTexture("trampaMuro");
             sc_juegoLocal.altarTrampas.setTexture("altar2");
         }
-        sc_juegoLocal.altarTrampas.timer++;
+        sc_juegoLocal.altarTrampas.timer+=(0.06*delta);
     } else if (sc_juegoLocal.altarTrampas.timer >= 2000) {
         //defusear trampa
         sc_juegoLocal.altarTrampas.trampa = "none";
@@ -730,14 +729,14 @@ sc_juegoLocal.update = function() {
         sc_juegoLocal.altarTrampas.setTexture("altar1");
         sc_juegoLocal.altarTrampas.timer = 0;
     } else {
-        sc_juegoLocal.altarTrampas.timer++;
+        sc_juegoLocal.altarTrampas.timer+=(0.06*delta);;
     }
 
     sc_juegoLocal.muros.children.iterate(function(child){
         if (child != undefined) {
-            if (child.timer > 0) child.timer--;
+            if (child.timer > 0) child.timer-=(0.06*delta);;
             child.status.setTexture("reloj" + (Phaser.Math.CeilTo(child.timer/1000*9)-1));
-            if (child.timer == 0) {
+            if (child.timer <= 0) {
                 child.status.setTexture("empty");
                 disconnectNeighbours(getCell(child.x, child.y).y,getCell(child.x, child.y).x, false, false, false, false);
                 disconnectNeighbours(getCell(child.x, child.y).y,getCell(child.x, child.y).x+1, false, false, false, false);
@@ -752,7 +751,7 @@ sc_juegoLocal.update = function() {
         if (child.tiempoInmovil > 0) {
             child.spdX = 0;
             child.spdY = 0;
-            child.tiempoInmovil--;
+            child.tiempoInmovil-=(0.06*delta);
             //console.log(child.tiempoInmovil);
             child.status.x = child.x-6;
             child.status.y = child.y-25;
@@ -771,6 +770,15 @@ sc_juegoLocal.update = function() {
 
         //Llamada a getAnim para actualizar las animaciones del jugador
         getAnim(child, true);
+
+        //Ajustar la velocidad para que utilice delta
+        if (child.spdX == 400 || child.spdX == -400) {
+            child.spdX = (child.spdX/400)*(24*delta);
+        }
+        if (child.spdY == 400 || child.spdY == -400) {
+            child.spdY = (child.spdY/400)*(24*delta);
+        }
+
 
         //Aquí se ajusta la velocidad del jugador según su spdX y spdY. Si lleva un objeto, su velocidad se reduce a la mitad.
         if (child.heldObject == "none") {
@@ -802,13 +810,13 @@ sc_juegoLocal.update = function() {
     //Aumenta timer cuando sea necesario, y cambia el gráfico de status al apropiado según el estado del horno.
     sc_juegoLocal.hornos.children.iterate(function(child){
         if (child.timer >= 0 && child.timer < 100) {
-            child.timer+=0.25;
+            child.timer+=(0.015*delta);
             child.status.setTexture("reloj" + Phaser.Math.CeilTo(child.timer/100*8));
         } else if (child.timer >= 100 && child.timer < 150) {
-            child.timer+=0.25;
+            child.timer+=(0.015*delta);
             child.status.setTexture("tic");
         } else if (child.timer >= 150 && child.timer < 200) {
-            child.timer+=0.25;
+            child.timer+=(0.015*delta);
             child.status.setTexture("cruz");
         } else if (child.timer >= 200) {
             child.timer = -1;
@@ -822,7 +830,9 @@ sc_juegoLocal.update = function() {
     //Si el yunque tiene un metal, saldrá el icono del martillo. Al interactuar con el yunque, se animará.
     sc_juegoLocal.yunques.children.iterate(function(child){
         if (child.cooldown > 0) {
-            child.cooldown--;
+            child.cooldown-=(0.06*delta);
+        } else {
+            child.cooldown = 0;
         }
         if (child.timer >= 0 && child.timer < 100) {
             if (child.cooldown > 0) {
@@ -839,7 +849,7 @@ sc_juegoLocal.update = function() {
     //Similar a la de los hornos
     sc_juegoLocal.barriles.children.iterate(function(child){
         if (child.timer >= 0 && child.timer < 100) {
-            child.timer+=0.5;
+            child.timer+=(0.03*delta);
             child.status.setTexture("reloj" + Phaser.Math.CeilTo(child.timer/100*8));
         } else if (child.timer >= 100) {
             child.status.setTexture("tic");
@@ -853,7 +863,7 @@ sc_juegoLocal.update = function() {
     sc_juegoLocal.moldes.children.iterate(function(child){
         if (child.timer >= 0 && child.timer < 100) {
             child.setTexture("moldeU");
-            child.timer+=0.25;
+            child.timer+=(0.015*delta);
             child.status.setTexture("reloj" + Phaser.Math.CeilTo(child.timer/100*8));
         } else if (child.timer >= 100) {
             child.setTexture("moldeU");
@@ -868,13 +878,13 @@ sc_juegoLocal.update = function() {
     //Igual a la de los hornos, pero si sólo hay un metal dentro aparece un icono indicándolo
     sc_juegoLocal.hornosd.children.iterate(function(child){
         if (child.timer >= 0 && child.timer < 100) {
-            child.timer+=0.125;
+            child.timer+=(0.0075*delta);
             child.status.setTexture("reloj" + Phaser.Math.CeilTo(child.timer/100*8));
         } else if (child.timer >= 100 && child.timer < 150) {
-            child.timer+=0.125;
+            child.timer+=(0.0075*delta);
             child.status.setTexture("tic");
         } else if (child.timer >= 150 && child.timer < 200) {
-            child.timer+=0.125;
+            child.timer+=(0.0075*delta);
             child.status.setTexture("cruz");
         } else if (child.timer >= 200) {
             child.timer = -1;
@@ -893,7 +903,9 @@ sc_juegoLocal.update = function() {
     //Igual a la de los yunques, pero si sólo hay un metal dentro aparece un icono indicándolo
     sc_juegoLocal.yunquesd.children.iterate(function(child){
         if (child.cooldown > 0) {
-            child.cooldown--;
+            child.cooldown-=(0.06*delta);
+        } else {
+            child.cooldown = 0;
         }
         if (child.timer >= 0 && child.timer < 100) {
             if (child.cooldown > 0) {

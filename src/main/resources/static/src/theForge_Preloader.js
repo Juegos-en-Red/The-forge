@@ -245,6 +245,7 @@ sc_Preloader.preload = function()
     this.load.image('reloj6', '../assets/game/reloj6.png');
     this.load.image('reloj7', '../assets/game/reloj7.png');
     this.load.image('reloj8', '../assets/game/reloj8.png');
+    this.load.image('reloj9', '../assets/game/reloj8.png');
     this.load.image('cruz', '../assets/game/cruz.png');
     this.load.image('tic', '../assets/game/tic.png');
     this.load.image('1de2', '../assets/game/1de2.png');
