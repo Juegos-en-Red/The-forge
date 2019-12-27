@@ -121,10 +121,14 @@ sc_Preloader.preload = function()
     // Botón de fuego
     this.load.image("btn_fuego", "../assets/seleccionPersonaje/botonFuego.png");
 
+    // Botones de la interfaz
+    this.load.image("botonBack", "../assets/seleccionPersonaje/botonBack.png");
+
     /* TEXTO */
 
     // Sprite de texto de elegir personaje
     this.load.image("elige", "../assets/seleccionPersonaje/elige.png");
+    this.load.image("elige2", "../assets/seleccionPersonaje/elige2.png");
 
     /* PERSONAJES */
 
