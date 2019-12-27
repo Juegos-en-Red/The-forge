@@ -117,6 +117,9 @@ sc_Preloader.preload = function()
 
     // Botón de elfo
     this.load.image("btn_elfo", "../assets/seleccionPersonaje/botonElfo.png");
+    
+    // Botón de fuego
+    this.load.image("btn_fuego", "../assets/seleccionPersonaje/botonFuego.png");
 
     /* TEXTO */
 
@@ -141,6 +144,14 @@ sc_Preloader.preload = function()
     // Cargamos la imagen de la plataforma
     this.load.image("platform2", ["../assets/seleccionPersonaje/plataformaSeleccion.png", "../assets/seleccionPersonaje/plataformaSeleccion-normal.png"]);
 
+    // Fuego
+
+    // Cargamos la imagen del personaje
+    this.load.image("fuego", ["../assets/seleccionPersonaje/fuegoPlayer.png", "../assets/seleccionPersonaje/fuegoPlayer-normal.png"]);
+
+    // Cargamos la imagen de la plataforma
+    this.load.image("platform3", ["../assets/seleccionPersonaje/plataformaSeleccion.png", "../assets/seleccionPersonaje/plataformaSeleccion-normal.png"]);
+
 
     //Escenario
     this.load.image('sky', '../assets/game/sky.png');
@@ -153,21 +164,29 @@ sc_Preloader.preload = function()
     this.load.image('CascoElfoI', '../assets/game/CascoElfoI.png');
     this.load.image('CascoHieloD', '../assets/game/CascoHieloD.png');
     this.load.image('CascoHieloI', '../assets/game/CascoHieloI.png');
+    this.load.image('CascoFuegoD', '../assets/game/CascoFuegoD.png');
+    this.load.image('CascoFuegoI', '../assets/game/CascoFuegoI.png');
     this.load.image('espada', '../assets/game/espada.png');
     this.load.image('EspadaElfoD', '../assets/game/EspadaElfoD.png');
     this.load.image('EspadaElfoI', '../assets/game/EspadaElfoI.png');
     this.load.image('EspadaHieloD', '../assets/game/EspadaHieloD.png');
     this.load.image('EspadaHieloI', '../assets/game/EspadaHieloI.png');
+    this.load.image('EspadaFuegoD', '../assets/game/EspadaFuegoD.png');
+    this.load.image('EspadaFuegoI', '../assets/game/EspadaFuegoI.png');
     this.load.image('pechera', '../assets/game/pechera.png');
     this.load.image('PecheraElfoD', '../assets/game/PecheraElfoD.png');
     this.load.image('PecheraElfoI', '../assets/game/PecheraElfoI.png');
     this.load.image('PecheraHieloD', '../assets/game/PecheraHieloD.png');
     this.load.image('PecheraHieloI', '../assets/game/PecheraHieloI.png');
+    this.load.image('PecheraFuegoD', '../assets/game/PecheraFuegoD.png');
+    this.load.image('PecheraFuegoI', '../assets/game/PecheraFuegoI.png');
     this.load.image('protecciones piernas', '../assets/game/protecciones piernas.png');
     this.load.image('ProtPiernasElfoD', '../assets/game/ProtPiernasElfoD.png');
     this.load.image('ProtPiernasElfoI', '../assets/game/ProtPiernasElfoI.png');
     this.load.image('ProtPiernasHieloD', '../assets/game/ProtPiernasHieloD.png');
     this.load.image('ProtPiernasHieloI', '../assets/game/ProtPiernasHieloI.png');
+    this.load.image('ProtPiernasFuegoD', '../assets/game/ProtPiernasFuegoD.png');
+    this.load.image('ProtPiernasFuegoI', '../assets/game/ProtPiernasFuegoI.png');
     //Elementos del escenario
     this.load.image('empty', '../assets/game/empty.png');
     this.load.image('cajon1', '../assets/game/cajon1.png');
@@ -209,6 +228,8 @@ sc_Preloader.preload = function()
     this.load.image('MElfoI', '../assets/game/MElfoI.png');
     this.load.image('MHieloD', '../assets/game/MHieloD.png');
     this.load.image('MHieloI', '../assets/game/MHieloI.png');
+    this.load.image('MFuegoD', '../assets/game/MFuegoD.png');
+    this.load.image('MFuegoI', '../assets/game/MFuegoI.png');
     //Interfaz
     this.load.image('victoria', '../assets/game/victoria.png');
     this.load.image('derrota', '../assets/game/derrota.png');
@@ -372,6 +393,59 @@ sc_Preloader.preload = function()
         { frameWidth: 70, frameHeight: 58 }
     );
 
+    this.load.spritesheet('SSFuego1', 
+    '../assets/game/SSFuego1.png',
+    { frameWidth: 70, frameHeight: 58 }
+    );
+    this.load.spritesheet('SSFuegoEmpty', 
+        '../assets/game/SSFuegoEmpty.png',
+        { frameWidth: 70, frameHeight: 58 }
+    );
+    this.load.spritesheet('SSFuegoCasco', 
+        '../assets/game/SSFuegoCasco.png',
+        { frameWidth: 70, frameHeight: 58 }
+    );
+    this.load.spritesheet('SSFuegoCascoOverlay', 
+        '../assets/game/SSFuegoCascoOverlay.png',
+        { frameWidth: 70, frameHeight: 58 }
+    );
+    this.load.spritesheet('SSFuegoEspada', 
+        '../assets/game/SSFuegoEspada.png',
+        { frameWidth: 70, frameHeight: 58 }
+    );
+    this.load.spritesheet('SSFuegoEspadaOverlay', 
+        '../assets/game/SSFuegoEspadaOverlay.png',
+        { frameWidth: 70, frameHeight: 58 }
+    );
+    this.load.spritesheet('SSFuegoMetal', 
+        '../assets/game/SSFuegoMetal.png',
+        { frameWidth: 70, frameHeight: 58 }
+    );
+    this.load.spritesheet('SSFuegoMetalOverlay', 
+        '../assets/game/SSFuegoMetalOverlay.png',
+        { frameWidth: 70, frameHeight: 58 }
+    );
+    this.load.spritesheet('SSFuegoMetalCaliente', 
+        '../assets/game/SSFuegoMetalCaliente.png',
+        { frameWidth: 70, frameHeight: 58 }
+    );
+    this.load.spritesheet('SSFuegoPechera', 
+        '../assets/game/SSFuegoPechera.png',
+        { frameWidth: 70, frameHeight: 58 }
+    );
+    this.load.spritesheet('SSFuegoPecheraOverlay', 
+        '../assets/game/SSFuegoPecheraOverlay.png',
+        { frameWidth: 70, frameHeight: 58 }
+    );
+    this.load.spritesheet('SSFuegoProtecPiernas', 
+        '../assets/game/SSFuegoProtecPiernas.png',
+        { frameWidth: 70, frameHeight: 58 }
+    );
+    this.load.spritesheet('SSFuegoProtecPiernasOverlay', 
+        '../assets/game/SSFuegoProtecPiernasOverlay.png',
+        { frameWidth: 70, frameHeight: 58 }
+    );
+
     //Menú ajustes
     this.load.image('fondo menu ajustes', '../assets/game/fondo menu ajustes.png');
     this.load.image('botonTecla', '../assets/game/botonTecla.png');
@@ -394,6 +468,7 @@ sc_Preloader.preload = function()
     this.load.image('Rmolde', '../assets/game/Rmolde.png');
     this.load.image('RMonstruoE', '../assets/game/RMonstruoE.png');
     this.load.image('RMonstruoH', '../assets/game/RMonstruoH.png');
+    this.load.image('RMonstruoF', '../assets/game/RMonstruoF.png');
     this.load.image('Rpechera', '../assets/game/Rpechera.png');
     this.load.image('Rpiernas', '../assets/game/Rpiernas.png');
     this.load.image('Ryunque', '../assets/game/Ryunque.png');

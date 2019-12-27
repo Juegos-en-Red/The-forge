@@ -239,6 +239,9 @@ sc_juegoLocal.create = function() {
             case 'SSElfa1':
                 child.setSize(61, 64);
                 break;
+            case 'SSFuego1':
+                child.setSize(70, 58);
+                break;
         }
 
         //interacted se activa al pulsar la tecla de interacción y se desactiva al levantarla.
@@ -289,6 +292,8 @@ sc_juegoLocal.create = function() {
     var temp;
     if (cont.p1.ch.slice(2,3) == 'H') {
         temp = "Hielo";
+    } else if (cont.p1.ch.slice(2,3) == 'F') {
+        temp = "Fuego";
     } else {
         temp = "Elfo";
     }
@@ -297,6 +302,8 @@ sc_juegoLocal.create = function() {
     sc_juegoLocal.monstruo1.faction = temp;
     if (cont.p2.ch.slice(2,3) == 'H') {
         temp = "Hielo";
+    } else if (cont.p2.ch.slice(2,3) == 'F') {
+        temp = "Fuego";
     } else {
         temp = "Elfo";
     }
@@ -1701,6 +1708,361 @@ function initAnimations(that) {
         frameRate: 7,
         repeat: -1
     });
+
+//Animaciones del de fuego
+    //Sin objetos
+    that.anims.create({
+        key: 'pFDown',
+        frames: that.anims.generateFrameNumbers('SSFuego1', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pFUp',
+        frames: that.anims.generateFrameNumbers('SSFuego1', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pFLeft',
+        frames: that.anims.generateFrameNumbers('SSFuego1', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pFRight',
+        frames: that.anims.generateFrameNumbers('SSFuego1', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //Metal
+    that.anims.create({
+        key: 'pFDownM',
+        frames: that.anims.generateFrameNumbers('SSFuegoMetal', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pFUpM',
+        frames: that.anims.generateFrameNumbers('SSFuegoMetal', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pFLeftM',
+        frames: that.anims.generateFrameNumbers('SSFuegoMetal', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pFRightM',
+        frames: that.anims.generateFrameNumbers('SSFuegoMetal', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //Metal caliente
+    that.anims.create({
+        key: 'pFDownMC',
+        frames: that.anims.generateFrameNumbers('SSFuegoMetalCaliente', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pFUpMC',
+        frames: that.anims.generateFrameNumbers('SSFuegoMetalCaliente', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pFLeftMC',
+        frames: that.anims.generateFrameNumbers('SSFuegoMetalCaliente', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pFRightMC',
+        frames: that.anims.generateFrameNumbers('SSFuegoMetalCaliente', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //casco
+    that.anims.create({
+        key: 'pFDownC',
+        frames: that.anims.generateFrameNumbers('SSFuegoCasco', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pFUpC',
+        frames: that.anims.generateFrameNumbers('SSFuegoCasco', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pFLeftC',
+        frames: that.anims.generateFrameNumbers('SSFuegoCasco', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pFRightC',
+        frames: that.anims.generateFrameNumbers('SSFuegoCasco', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //pechera
+    that.anims.create({
+        key: 'pFDownP',
+        frames: that.anims.generateFrameNumbers('SSFuegoPechera', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pFUpP',
+        frames: that.anims.generateFrameNumbers('SSFuegoPechera', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pFLeftP',
+        frames: that.anims.generateFrameNumbers('SSFuegoPechera', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pFRightP',
+        frames: that.anims.generateFrameNumbers('SSFuegoPechera', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //piernas
+    that.anims.create({
+        key: 'pFDownI',
+        frames: that.anims.generateFrameNumbers('SSFuegoProtecPiernas', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pFUpI',
+        frames: that.anims.generateFrameNumbers('SSFuegoProtecPiernas', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pFLeftI',
+        frames: that.anims.generateFrameNumbers('SSFuegoProtecPiernas', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pFRightI',
+        frames: that.anims.generateFrameNumbers('SSFuegoProtecPiernas', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //espada
+    that.anims.create({
+        key: 'pFDownE',
+        frames: that.anims.generateFrameNumbers('SSFuegoEspada', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pFUpE',
+        frames: that.anims.generateFrameNumbers('SSFuegoEspada', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pFLeftE',
+        frames: that.anims.generateFrameNumbers('SSFuegoEspada', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'pFRightE',
+        frames: that.anims.generateFrameNumbers('SSFuegoEspada', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+
+//OBJETOS del de fuego
+    //Sin objetos
+    that.anims.create({
+        key: 'iFDown',
+        frames: that.anims.generateFrameNumbers('SSFuegoEmpty', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iFUp',
+        frames: that.anims.generateFrameNumbers('SSFuegoEmpty', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iFLeft',
+        frames: that.anims.generateFrameNumbers('SSFuegoEmpty', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iFRight',
+        frames: that.anims.generateFrameNumbers('SSFuegoEmpty', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //Metal
+    that.anims.create({
+        key: 'iFDownM',
+        frames: that.anims.generateFrameNumbers('SSFuegoMetalOverlay', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iFUpM',
+        frames: that.anims.generateFrameNumbers('SSFuegoMetalOverlay', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iFLeftM',
+        frames: that.anims.generateFrameNumbers('SSFuegoMetalOverlay', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iFRightM',
+        frames: that.anims.generateFrameNumbers('SSFuegoMetalOverlay', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //Metal caliente
+    that.anims.create({
+        key: 'iFDownMC',
+        frames: that.anims.generateFrameNumbers('SSFuegoEmpty', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iFUpMC',
+        frames: that.anims.generateFrameNumbers('SSFuegoEmpty', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iFLeftMC',
+        frames: that.anims.generateFrameNumbers('SSFuegoEmpty', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iFRightMC',
+        frames: that.anims.generateFrameNumbers('SSFuegoEmpty', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //casco
+    that.anims.create({
+        key: 'iFDownC',
+        frames: that.anims.generateFrameNumbers('SSFuegoCascoOverlay', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iFUpC',
+        frames: that.anims.generateFrameNumbers('SSFuegoCascoOverlay', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iFLeftC',
+        frames: that.anims.generateFrameNumbers('SSFuegoCascoOverlay', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iFRightC',
+        frames: that.anims.generateFrameNumbers('SSFuegoCascoOverlay', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //pechera
+    that.anims.create({
+        key: 'iFDownP',
+        frames: that.anims.generateFrameNumbers('SSFuegoPecheraOverlay', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iFUpP',
+        frames: that.anims.generateFrameNumbers('SSFuegoPecheraOverlay', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iFLeftP',
+        frames: that.anims.generateFrameNumbers('SSFuegoPecheraOverlay', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iFRightP',
+        frames: that.anims.generateFrameNumbers('SSFuegoPecheraOverlay', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //piernas
+    that.anims.create({
+        key: 'iFDownI',
+        frames: that.anims.generateFrameNumbers('SSFuegoProtecPiernasOverlay', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iFUpI',
+        frames: that.anims.generateFrameNumbers('SSFuegoProtecPiernasOverlay', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iFLeftI',
+        frames: that.anims.generateFrameNumbers('SSFuegoProtecPiernasOverlay', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iFRightI',
+        frames: that.anims.generateFrameNumbers('SSFuegoProtecPiernasOverlay', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    //espada
+    that.anims.create({
+        key: 'iFDownE',
+        frames: that.anims.generateFrameNumbers('SSFuegoEspadaOverlay', { start: 0, end: 3 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iFUpE',
+        frames: that.anims.generateFrameNumbers('SSFuegoEspadaOverlay', { start: 4, end: 7 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iFLeftE',
+        frames: that.anims.generateFrameNumbers('SSFuegoEspadaOverlay', { start: 8, end: 11 }),
+        frameRate: 7,
+        repeat: -1
+    });
+    that.anims.create({
+        key: 'iFRightE',
+        frames: that.anims.generateFrameNumbers('SSFuegoEspadaOverlay', { start: 12, end: 15 }),
+        frameRate: 7,
+        repeat: -1
+    });
+
 }
 
 //Función interactuar: comprueba la interacción del jugador con las estaciones de trabajo
@@ -2717,6 +3079,8 @@ function interactuarMonstruos(p) {
                 sc_juegoLocal.victory = sc_juegoLocal.add.image(400, 100, 'victoria');
                 if (cont.p1.ch == "SSHielo1") {
                     sc_juegoLocal.winner = sc_juegoLocal.add.image(400, 375, 'hielo');
+                } else if (cont.p1.ch == "SSFuego1") {
+                    sc_juegoLocal.winner = sc_juegoLocal.add.image(400, 375, 'fuego');
                 } else {
                 sc_juegoLocal.winner = sc_juegoLocal.add.image(400, 375, 'elfa');
                 }
@@ -2744,6 +3108,8 @@ function interactuarMonstruos(p) {
                 sc_juegoLocal.victory = sc_juegoLocal.add.image(400, 100, 'victoria');
                 if (cont.p2.ch == "SSHielo1") {
                     sc_juegoLocal.winner = sc_juegoLocal.add.image(400, 375, 'hielo');
+                } else if (cont.p2.ch == "SSFuego1") {
+                    sc_juegoLocal.winner = sc_juegoLocal.add.image(400, 375, 'fuego');
                 } else {
                 sc_juegoLocal.winner = sc_juegoLocal.add.image(400, 375, 'elfa');
                 }

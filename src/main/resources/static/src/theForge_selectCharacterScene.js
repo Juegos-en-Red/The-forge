@@ -32,6 +32,9 @@ function MenuSeleccion(escena)
     // Nombre del botón de elfa
     this.nombreBtnElfo = "btn_elfo";
 
+    // Nombre del botón de fuego
+    this.nombreBtnFuego = "btn_fuego";
+
     // Nombre del sprite de fondo
     this.nombreBg = "fondo";
 
@@ -43,6 +46,9 @@ function MenuSeleccion(escena)
 
     // Persona elfo que renderizaremos
     this.elfoPlayer = new playerElfo(escena);
+
+    // Personaje de fuego que renderizaremos
+    this.fuegoPlayer = new playerFuego(escena);
 
     /* FUNCIONES PÚBLICAS */
 
@@ -69,18 +75,25 @@ function MenuSeleccion(escena)
         /* BOTONES */
 
         // Botón de hielo
-        this.btnHielo = escena.add.image((config.width / 2) / 2 -100, 100, this.nombreBtnHielo);
+        this.btnHielo = escena.add.image((config.width / 2) / 2 -150, 100, this.nombreBtnHielo);
         // Cambiamos el origen
         this.btnHielo.setOrigin(0, 0);
         // Cambiamos el alpha del botón
         this.btnHielo.alpha = 0.7;
 
         // Botón de elfa
-        this.btnElfa = escena.add.image((config.width / 2) + ((config.width / 2) / 2) - 100, 100 , this.nombreBtnElfo);
+        this.btnElfa = escena.add.image((config.width / 2) + ((config.width / 2) / 2) - 50, 100 , this.nombreBtnElfo);
         // Cambiamos el origen
         this.btnElfa.setOrigin(0, 0);
         // Cambiamos el alpha del botón
         this.btnElfa.alpha = 0.7;
+
+        // Botón de fuego
+        this.btnFuego = escena.add.image((config.width / 2)  -100, 100, this.nombreBtnFuego);
+        // Cambiamos el origen
+        this.btnFuego.setOrigin(0, 0);
+        // Cambiamos el alpha del botón
+        this.btnFuego.alpha = 0.7;
 
         /* PERSONAJES */
 
@@ -90,6 +103,9 @@ function MenuSeleccion(escena)
         //Personaje elfo
         this.elfoPlayer.create();
 
+        //Personaje de fuego
+        this.fuegoPlayer.create();
+
         /* TEXTO DE LA ESCENA */
 
         //Sprite de texto de elegir personaje
@@ -97,21 +113,24 @@ function MenuSeleccion(escena)
 
         this.btnHielo.setInteractive({cursor: "pointer"}).on("pointerdown", function(pointer)
             {
-                /*player1 = "hielo";
-                player2 = "elfo";*/
                 cont.p1.ch = 'SSHielo1';
                 cont.p2.ch = 'SSElfa1';
-                escena.scene.start("JuegoLocal");
+                escena.scene.start("JuegoLocal"); //Toca cambiar estas funciones y eso
             });
 
-            this.btnElfa.setInteractive({cursor: "pointer"}).on("pointerdown", function(pointer)
-            {
-                /*player1 = "elfo";
-                player2 = "hielo";*/
-                cont.p2.ch = 'SSHielo1';
-                cont.p1.ch = 'SSElfa1';
-                escena.scene.start("JuegoLocal");
-            });
+        this.btnElfa.setInteractive({cursor: "pointer"}).on("pointerdown", function(pointer)
+        {
+            cont.p2.ch = 'SSHielo1';
+            cont.p1.ch = 'SSElfa1';
+            escena.scene.start("JuegoLocal");
+        });
+
+        this.btnFuego.setInteractive({cursor: "pointer"}).on("pointerdown", function(pointer)
+        {
+            cont.p2.ch = 'SSFuego1';
+            cont.p1.ch = 'SSFuego1';
+            escena.scene.start("JuegoLocal");
+        });
 
     }    
 
@@ -121,6 +140,7 @@ function MenuSeleccion(escena)
 
         this.btnHielo.alpha = 0.6;
         this.btnElfa.alpha = 0.6;
+        this.btnFuego.alpha = 0.6;
         if (isColliding(this.btnHielo))
         {
             if (this.light.x < this.btnHielo.x + 120)
@@ -135,6 +155,15 @@ function MenuSeleccion(escena)
             if (this.light.x < this.btnElfa.x + 100)
                 this.light.x += 1 * delta;   
             this.btnElfa.alpha = 1;
+            
+        }
+        if (isColliding(this.btnFuego))
+        {
+            if (this.light.x < this.btnFuego.x + 120)
+                this.light.x += 1 * delta;   
+            if (this.light.x > this.btnFuego.x + 120)
+                this.light.x -= 1 * delta;
+            this.btnFuego.alpha = 1;
             
         }
         
@@ -173,10 +202,10 @@ function playerHielo(escena)
     this.create = function()
     {
         //Añadimos la imagen de la plataforma a la escena
-        this.platform = escena.add.image((config.width / 2) / 2 + 10, 500, this.nombrePlatform).setPipeline('Light2D');
+        this.platform = escena.add.image((config.width / 2) / 2 + 10-50, 500, this.nombrePlatform).setPipeline('Light2D');
 
         // Añadimos la imagen del personaje a la escena
-        this.character = escena.add.image((config.width / 2) / 2, 400, this.nombre).setPipeline('Light2D');
+        this.character = escena.add.image((config.width / 2) / 2 -50, 400, this.nombre).setPipeline('Light2D');
         // Cambiamos la escala del personaje
         this.character.setScale(0.9);        
     }
@@ -198,9 +227,34 @@ function playerElfo(escena)
     this.create = function()
     {
         //Añadimos la imagen de la plataforma a la escena
-        this.platform = escena.add.image((config.width / 2) + ((config.width / 2) / 2) + 5, 500, this.nombrePlatform).setPipeline('Light2D');
+        this.platform = escena.add.image((config.width / 2) + ((config.width / 2) / 2) + 5+50, 500, this.nombrePlatform).setPipeline('Light2D');
 
         // Añadimos la imagen a la escena
-        this.character = escena.add.image((config.width / 2) + ((config.width / 2) / 2), 400, this.nombre).setPipeline('Light2D');
+        this.character = escena.add.image((config.width / 2) + ((config.width / 2) / 2 +50), 400, this.nombre).setPipeline('Light2D');
+    }
+}
+
+// Jugador de fuego
+function playerFuego(escena)
+{
+    /* VARIABLES */
+
+    // Nombre interno del sprite
+    this.nombre = "fuego";
+
+    // Nombre de la plataforma
+    this.nombrePlatform = "platform3";
+
+    /* FUNCIONES PÚBLICAS */
+
+    this.create = function()
+    {
+        //Añadimos la imagen de la plataforma a la escena
+        this.platform = escena.add.image((config.width / 2)  + 10, 500, this.nombrePlatform).setPipeline('Light2D');
+
+        // Añadimos la imagen del personaje a la escena
+        this.character = escena.add.image((config.width / 2) , 400, this.nombre).setPipeline('Light2D');
+        // Cambiamos la escala del personaje
+        this.character.setScale(0.9);        
     }
 }
