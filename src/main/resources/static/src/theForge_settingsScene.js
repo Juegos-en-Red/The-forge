@@ -293,6 +293,8 @@ function musVol(cambio) {
     cont.mus_vol = Math.round(cont.mus_vol*10)/10; //Para evitar errores de redondeo
     sc_menuAjustes.volMusText.setText((cont.mus_vol*100)+"%");
     mus_menu.volume = cont.mus_vol;
+    mus_victory.volume = cont.mus_vol;
+    mus_defeat.volume = cont.mus_vol;
     mus_game.volume = cont.mus_vol;
 }
 

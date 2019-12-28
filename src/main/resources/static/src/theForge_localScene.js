@@ -2989,6 +2989,9 @@ function gameVictory(player) {
     sc_juegoLocal.pausedOverlay.setTexture('pausedOverlay');
     sc_juegoLocal.botonPausa.removeInteractive();
     if (player == 0) {
+        mus_game.pause();
+        mus_game.currentTime = 0;
+        mus_defeat.play();
         sc_juegoLocal.victory = sc_juegoLocal.add.image(400, 100, 'empate'); //TIE
 
         if (cont.p1.ch == "SSHielo1") {
@@ -3012,6 +3015,9 @@ function gameVictory(player) {
         }
 
     } else {
+        mus_game.pause();
+        mus_game.currentTime = 0;
+        mus_victory.play();
         sc_juegoLocal.victory = sc_juegoLocal.add.image(400, 100, 'victoria');
         if (ch == "SSHielo1") {
             sc_juegoLocal.winner = sc_juegoLocal.add.image(400, 375, 'hielo');

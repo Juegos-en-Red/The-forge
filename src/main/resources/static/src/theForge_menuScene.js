@@ -28,6 +28,10 @@ function Menu(escena)
         
         mus_game.pause();
         mus_game.currentTime = 0;
+        mus_victory.pause();
+        mus_victory.currentTime = 0;
+        mus_defeat.pause();
+        mus_defeat.currentTime = 0;
         mus_menu.play();
 
         /* PONEMOS LUCES EN LA ESCENA */
