@@ -139,14 +139,20 @@ sc_Preloader.preload = function()
 
     // Cargamos la imagen de la plataforma
     this.load.image("platform1", ["../assets/seleccionPersonaje/plataformaSeleccion.png", "../assets/seleccionPersonaje/plataformaSeleccion-normal.png"]);
+    
+    // Cargamos la imagen del personaje triste
+    this.load.image("hieloTriste", ["../assets/seleccionPersonaje/hieloPlayerTriste.png", "../assets/seleccionPersonaje/hieloPlayer-normal.png"]);
 
     // Elfo
 
-    // Cargamos la imagen
+    // Cargamos la imagen del personaje
     this.load.image("elfa", ["../assets/seleccionPersonaje/elfaPlayer.png", "../assets/seleccionPersonaje/elfaPlayer-normal.png"]);
 
     // Cargamos la imagen de la plataforma
     this.load.image("platform2", ["../assets/seleccionPersonaje/plataformaSeleccion.png", "../assets/seleccionPersonaje/plataformaSeleccion-normal.png"]);
+
+    // Cargamos la imagen del personaje triste
+    this.load.image("elfaTriste", ["../assets/seleccionPersonaje/elfaPlayerTriste.png", "../assets/seleccionPersonaje/elfaPlayer-normal.png"]);
 
     // Fuego
 
@@ -155,6 +161,9 @@ sc_Preloader.preload = function()
 
     // Cargamos la imagen de la plataforma
     this.load.image("platform3", ["../assets/seleccionPersonaje/plataformaSeleccion.png", "../assets/seleccionPersonaje/plataformaSeleccion-normal.png"]);
+
+    // Cargamos la imagen del personaje triste
+    this.load.image("fuegoTriste", ["../assets/seleccionPersonaje/fuegoPlayerTriste.png", "../assets/seleccionPersonaje/fuegoPlayer-normal.png"]);
 
 
     //Escenario
@@ -237,6 +246,7 @@ sc_Preloader.preload = function()
     //Interfaz
     this.load.image('victoria', '../assets/game/victoria.png');
     this.load.image('derrota', '../assets/game/derrota.png');
+    this.load.image('empate', '../assets/game/empate.png');
     this.load.image('martillo', '../assets/game/martillo.png');
     this.load.image('martillo0', '../assets/game/martillo.png');
     this.load.image('martillo20', '../assets/game/martillo.png');

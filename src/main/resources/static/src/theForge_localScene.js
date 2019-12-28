@@ -586,11 +586,14 @@ sc_juegoLocal.create = function() {
 
 
 
+    //Tiempo
+    sc_juegoLocal.timerText = sc_juegoLocal.add.text(400, 20, "5:00", {fontSize: '24px', fontFamily: 'Bookman', color: '#ffffff', stroke: '#000000', strokeThickness: 2}).setOrigin(0.5, 0.5);
+
 
     //Inicialización de elementos relativos al pausado del juego
     //Por un lado tenemos el overlay, que oscurecerá toda la pantalla cuando el juego esté pausado
     //Por otro lado tenemos el botón de pausa, el cual se podrá pulsar para activar o desactivar el pausado del juego.
-    sc_juegoLocal.botonPausa = this.physics.add.sprite(400,555, 'botonPausa');
+    sc_juegoLocal.botonPausa = this.physics.add.sprite(400,537, 'botonPausa');
     sc_juegoLocal.pausedOverlay = sc_juegoLocal.add.image(400, 300, 'empty');
     sc_juegoLocal.botonPausa.paused = false;
     sc_juegoLocal.botonPausa.setInteractive({cursor: "pointer"});
@@ -669,6 +672,7 @@ sc_juegoLocal.create = function() {
                                                 ease: 'Linear',
                                                 onComplete: function() {
                                                     sc_juegoLocal.countdown.setTexture('empty');
+                                                    sc_juegoLocal.gameTime = 300000;
                                                     sc_juegoLocal.gameStarted = true;
                                                     mus_game.play();
                                                 }
@@ -696,7 +700,6 @@ sc_juegoLocal.update = function(time, delta) {
         return;
     }
 
-
     sc_juegoLocal.progreso1.setTexture('progreso' + (4-sc_juegoLocal.recetas1.length));
     sc_juegoLocal.progreso2.setTexture('progreso' + (4-sc_juegoLocal.recetas2.length));
 
@@ -713,6 +716,24 @@ sc_juegoLocal.update = function(time, delta) {
     actualizarRecetas();
 
     if (!sc_juegoLocal.gameStarted) {
+        return;
+    }
+    sc_juegoLocal.gameTime -= delta;
+    sc_juegoLocal.minutesLeft = Math.max(Math.floor((sc_juegoLocal.gameTime/1000)/60),0);
+    sc_juegoLocal.secondsLeft = Math.max(Math.floor((sc_juegoLocal.gameTime/1000)%60),0);
+    
+    sc_juegoLocal.timerText.setText(sc_juegoLocal.minutesLeft + ":" + ((sc_juegoLocal.secondsLeft<10)?"0":"") + sc_juegoLocal.secondsLeft);
+
+    if (sc_juegoLocal.gameTime <= -1000) {
+        var score1 = 4-sc_juegoLocal.recetas1.length;
+        var score2 = 4-sc_juegoLocal.recetas2.length;
+        if (score1 > score2) {
+            gameVictory(1);
+        } else if (score2 > score1) {
+            gameVictory(2);
+        } else {
+            gameVictory(0);
+        }
         return;
     }
 
@@ -736,12 +757,12 @@ sc_juegoLocal.update = function(time, delta) {
         sc_juegoLocal.altarTrampas.setTexture("altar1");
         sc_juegoLocal.altarTrampas.timer = 0;
     } else {
-        sc_juegoLocal.altarTrampas.timer+=(0.06*delta);;
+        sc_juegoLocal.altarTrampas.timer+=(0.06*delta);
     }
 
     sc_juegoLocal.muros.children.iterate(function(child){
         if (child != undefined) {
-            if (child.timer > 0) child.timer-=(0.06*delta);;
+            if (child.timer > 0) child.timer-=(0.06*delta);
             child.status.setTexture("reloj" + (Phaser.Math.CeilTo(child.timer/1000*9)-1));
             if (child.timer <= 0) {
                 child.status.setTexture("empty");
@@ -817,13 +838,13 @@ sc_juegoLocal.update = function(time, delta) {
     //Aumenta timer cuando sea necesario, y cambia el gráfico de status al apropiado según el estado del horno.
     sc_juegoLocal.hornos.children.iterate(function(child){
         if (child.timer >= 0 && child.timer < 100) {
-            child.timer+=(0.015*delta);
+            child.timer+=(0.02*delta);
             child.status.setTexture("reloj" + Phaser.Math.CeilTo(child.timer/100*8));
         } else if (child.timer >= 100 && child.timer < 150) {
-            child.timer+=(0.015*delta);
+            child.timer+=(0.02*delta);
             child.status.setTexture("tic");
         } else if (child.timer >= 150 && child.timer < 200) {
-            child.timer+=(0.015*delta);
+            child.timer+=(0.02*delta);
             child.status.setTexture("cruz");
         } else if (child.timer >= 200) {
             child.timer = -1;
@@ -856,7 +877,7 @@ sc_juegoLocal.update = function(time, delta) {
     //Similar a la de los hornos
     sc_juegoLocal.barriles.children.iterate(function(child){
         if (child.timer >= 0 && child.timer < 100) {
-            child.timer+=(0.03*delta);
+            child.timer+=(0.033*delta);
             child.status.setTexture("reloj" + Phaser.Math.CeilTo(child.timer/100*8));
         } else if (child.timer >= 100) {
             child.status.setTexture("tic");
@@ -870,7 +891,7 @@ sc_juegoLocal.update = function(time, delta) {
     sc_juegoLocal.moldes.children.iterate(function(child){
         if (child.timer >= 0 && child.timer < 100) {
             child.setTexture("moldeU");
-            child.timer+=(0.015*delta);
+            child.timer+=(0.025*delta);
             child.status.setTexture("reloj" + Phaser.Math.CeilTo(child.timer/100*8));
         } else if (child.timer >= 100) {
             child.setTexture("moldeU");
@@ -885,13 +906,13 @@ sc_juegoLocal.update = function(time, delta) {
     //Igual a la de los hornos, pero si sólo hay un metal dentro aparece un icono indicándolo
     sc_juegoLocal.hornosd.children.iterate(function(child){
         if (child.timer >= 0 && child.timer < 100) {
-            child.timer+=(0.0075*delta);
+            child.timer+=(0.01*delta);
             child.status.setTexture("reloj" + Phaser.Math.CeilTo(child.timer/100*8));
         } else if (child.timer >= 100 && child.timer < 150) {
-            child.timer+=(0.0075*delta);
+            child.timer+=(0.01*delta);
             child.status.setTexture("tic");
         } else if (child.timer >= 150 && child.timer < 200) {
-            child.timer+=(0.0075*delta);
+            child.timer+=(0.01*delta);
             child.status.setTexture("cruz");
         } else if (child.timer >= 200) {
             child.timer = -1;
@@ -2092,148 +2113,6 @@ function interactuar(p) {
     }
 }
 
-//Esta es la base de la unificación de todas las funciones de interacción. Se mejorará en un futuro.
-function superInteract(p, group, metal, swap, destroy, tablaIO, checkInteracted, horno, yunque, checkCooldown, barril, molde, hornod, yunqued, tablaInputsValidos) {
-    var result = false;
-    var proceed = true;
-    if (checkInteracted) {
-        proceed = !p.interacted;
-    }
-
-    if (proceed) {
-        group.children.iterate(function (child) {
-            if (checkCooldown) { if (child.cooldown != 0) {proceed = false;} }
-            if (proceed) {
-                if (isAdyacent(p.x,p.y,child.x,child.y)) {
-                    if (metal) {
-                        if (p.heldObject == "none") {
-                            p.heldObject = child.heldObject;
-                        }
-                        else if (p.heldObject == child.heldObject) {
-                            p.heldObject = "none";
-                        }
-                        result = true;
-                    } else if (swap) {
-                        var temp = child.heldObject;
-                        child.heldObject = p.heldObject;
-                        p.heldObject = temp;
-                        result = true;
-                    } else if (destroy) {
-                        p.heldObject = "none";
-                        result = true;
-                    } else if (horno) {
-                        if ((child.timer == -1 || (child.timer > 100 && child.timer < 150))) {
-                            if (child.heldObject == "none" && child.timer == -1 && (tablaIO[p.heldObject] != undefined)) {
-                                child.heldObject = p.heldObject;
-                                p.heldObject = "none";
-                                child.timer = 0;
-                                result = true;
-                            } else {
-                                if (p.heldObject == "none" && child.timer > 100 && child.heldObject != "none") {
-                                    if (tablaIO[child.heldObject] != undefined) {
-                                        p.heldObject = tablaIO[child.heldObject];
-                                    }
-                                    child.heldObject = "none";
-                                    child.timer = -1;
-                                    result = true;
-                                }
-                            }
-                        }
-                    } else if (yunque) {
-                        if (child.timer == -1 && child.heldObject == "none" && (tablaIO[p.heldObject] != undefined)) {
-                            child.heldObject = p.heldObject;
-                            p.heldObject = "none";
-                            child.timer = 0;
-                            child.cooldown = 5;
-                        } else if (child.timer >= 0 && child.timer < 100) {
-                            child.timer += 5;
-                            child.cooldown = 15;
-                            snd_yunque.pause();
-                            snd_yunque.currentTime = 0;
-                            snd_yunque.play();
-                        } else if (child.timer >= 100 && p.heldObject == "none") {
-                            if (tablaIO[child.heldObject] != undefined) {
-                                p.heldObject = tablaIO[child.heldObject];
-                            }
-                            child.heldObject = "none";
-                            child.timer = -1;
-                            child.status.setTexture("empty");
-                        }
-                    } else if (barril || molde) { 
-                        if ((child.timer == -1 || (child.timer >= 100))) {
-                            if (child.heldObject == "none" && child.timer == -1 && (tablaIO[p.heldObject] != undefined)) {
-                                child.heldObject = p.heldObject;
-                                p.heldObject = "none";
-                                child.timer = 0;
-                                result = true;
-                            } else {
-                                if (p.heldObject == "none" && child.timer >= 100 && child.heldObject != "none") {
-                                    if (tablaIO[child.heldObject] != undefined) {
-                                        p.heldObject = tablaIO[child.heldObject];
-                                    }
-                                    child.heldObject = "none";
-                                    child.timer = -1;
-                                    result = true;
-                                }
-                            }
-                        }
-                    } else if (hornod) {
-                        if ((child.timer == -1 || (child.timer > 100 && child.timer < 150))) {
-                            if (child.heldObject1 == "none" && child.heldObject2 == "none" && child.timer == -1 && (tablaInputsValidos[p.heldObject])) {
-                                child.heldObject1 = p.heldObject;
-                                p.heldObject = "none";
-                                result = true;
-                            } else if (child.heldObject1 != "none" && child.heldObject2 == "none" && child.timer == -1 && (tablaInputsValidos[p.heldObject]) && (p.heldObject != child.heldObject1)) {
-                                child.heldObject2 = p.heldObject;
-                                p.heldObject = "none";
-                                child.timer = 0;
-                                result = true;
-                            } else if (p.heldObject == "none" && child.timer > 100 && child.heldObject1 != "none" && child.heldObject2 != "none") {
-                                if (tablaIO[child.heldObject1][child.heldObject2] != undefined) {
-                                    p.heldObject = tablaIO[child.heldObject1][child.heldObject2];
-                                }
-                                
-                                child.heldObject1 = "none";
-                                child.heldObject2 = "none";
-                                child.timer = -1;
-                                result = true;
-                            }
-                        }
-                    } else if (yunqued) {
-                        if (child.timer == -1 && child.heldObject1 == "none" && child.heldObject2 == "none" && (tablaInputsValidos[p.heldObject])) {
-                            child.heldObject1 = p.heldObject;
-                            p.heldObject = "none";
-                            child.status.setTexture("1de2");
-                        } else if (child.timer == -1 && child.heldObject1 != "none" && child.heldObject2 == "none" && (tablaInputsValidos[p.heldObject]) && p.heldObject != child.heldObject1) {
-                            child.heldObject2 = p.heldObject;
-                            p.heldObject = "none";
-                            child.timer = 0;
-                            child.cooldown = 5;
-                        } else if (child.timer >= 0 && child.timer < 100) {
-                            child.timer += 5;
-                            child.cooldown = 15;
-                            snd_yunque.pause();
-                            snd_yunque.currentTime = 0;
-                            snd_yunque.play();
-                        } else if (child.timer >= 100 && p.heldObject == "none") {
-                            if (tablaIO[child.heldObject1][child.heldObject2] != undefined) {
-                                p.heldObject = tablaIO[child.heldObject1][child.heldObject2];
-                            }
-                            child.heldObject1 = "none";
-                            child.heldObject2 = "none";
-                            child.timer = -1;
-                            child.status.setTexture("empty");
-                        }
-                    }
-
-                }
-            }
-        });
-    }
-
-    return result;
-}
-
 //Función interactuarCajones: Si el jugador está suficientemente cerca y no lleva objetos, pasa a tener el metal correspondiente al cajón
 function interactuarCajones(p) {
     var result = false;
@@ -3074,23 +2953,7 @@ function interactuarMonstruos(p) {
             sc_juegoLocal.recetas1.splice(0,1);
 
             if (sc_juegoLocal.recetas1[0] == undefined) {
-                sc_juegoLocal.botonPausa.paused = true;
-                sc_juegoLocal.pausedOverlay.setTexture('pausedOverlay');
-                sc_juegoLocal.botonPausa.removeInteractive();
-                sc_juegoLocal.that = this;
-                sc_juegoLocal.victory = sc_juegoLocal.add.image(400, 100, 'victoria');
-                if (cont.p1.ch == "SSHielo1") {
-                    sc_juegoLocal.winner = sc_juegoLocal.add.image(400, 375, 'hielo');
-                } else if (cont.p1.ch == "SSFuego1") {
-                    sc_juegoLocal.winner = sc_juegoLocal.add.image(400, 375, 'fuego');
-                } else {
-                sc_juegoLocal.winner = sc_juegoLocal.add.image(400, 375, 'elfa');
-                }
-                sc_juegoLocal.botonSalir = sc_juegoLocal.add.image(400, 550, 'botonSalir');
-                sc_juegoLocal.botonSalir.setInteractive({cursor: "pointer"});
-                sc_juegoLocal.botonSalir.on('pointerup', function() {
-                    sc_juegoLocal.scene.start("MenuPrincipal");
-                });
+                gameVictory(1);
             }
         }
     }
@@ -3103,23 +2966,7 @@ function interactuarMonstruos(p) {
             sc_juegoLocal.recetas2.splice(0,1);
             
             if (sc_juegoLocal.recetas2[0] == undefined) {
-                sc_juegoLocal.botonPausa.paused = true;
-                sc_juegoLocal.pausedOverlay.setTexture('pausedOverlay');
-                sc_juegoLocal.botonPausa.removeInteractive();
-                sc_juegoLocal.that = this;
-                sc_juegoLocal.victory = sc_juegoLocal.add.image(400, 100, 'victoria');
-                if (cont.p2.ch == "SSHielo1") {
-                    sc_juegoLocal.winner = sc_juegoLocal.add.image(400, 375, 'hielo');
-                } else if (cont.p2.ch == "SSFuego1") {
-                    sc_juegoLocal.winner = sc_juegoLocal.add.image(400, 375, 'fuego');
-                } else {
-                sc_juegoLocal.winner = sc_juegoLocal.add.image(400, 375, 'elfa');
-                }
-                sc_juegoLocal.botonSalir = sc_juegoLocal.add.image(400, 550, 'botonSalir');
-                sc_juegoLocal.botonSalir.setInteractive({cursor: "pointer"});
-                sc_juegoLocal.botonSalir.on('pointerup', function() {
-                    sc_juegoLocal.scene.start("MenuPrincipal");
-                });
+                gameVictory(2);
             }
         }
     }
@@ -3129,6 +2976,60 @@ function interactuarMonstruos(p) {
     return result;
 }
 
+
+function gameVictory(player) {
+    var ch;
+    if (player == 1) {
+        ch = cont.p1.ch;
+    } else if (player == 2) {
+        ch = cont.p2.ch;
+    }
+
+    sc_juegoLocal.botonPausa.paused = true;
+    sc_juegoLocal.pausedOverlay.setTexture('pausedOverlay');
+    sc_juegoLocal.botonPausa.removeInteractive();
+    if (player == 0) {
+        sc_juegoLocal.victory = sc_juegoLocal.add.image(400, 100, 'empate'); //TIE
+
+        if (cont.p1.ch == "SSHielo1") {
+            sc_juegoLocal.add.image(200, 375, 'hieloTriste'); //PERSONAJES TRISTES
+        }
+        else if (cont.p1.ch == "SSFuego1") {
+            sc_juegoLocal.add.image(200, 375, 'fuegoTriste');
+        }
+        else {
+            sc_juegoLocal.add.image(200, 375, 'elfaTriste');
+        }
+
+        if (cont.p2.ch == "SSHielo1") {
+            sc_juegoLocal.add.image(600, 375, 'hieloTriste');
+        }
+        else if (cont.p2.ch == "SSFuego1") {
+            sc_juegoLocal.add.image(600, 375, 'fuegoTriste');
+        }
+        else {
+            sc_juegoLocal.add.image(600, 375, 'elfaTriste');
+        }
+
+    } else {
+        sc_juegoLocal.victory = sc_juegoLocal.add.image(400, 100, 'victoria');
+        if (ch == "SSHielo1") {
+            sc_juegoLocal.winner = sc_juegoLocal.add.image(400, 375, 'hielo');
+        }
+        else if (ch == "SSFuego1") {
+            sc_juegoLocal.winner = sc_juegoLocal.add.image(400, 375, 'fuego');
+        }
+        else {
+            sc_juegoLocal.winner = sc_juegoLocal.add.image(400, 375, 'elfa');
+        }
+    }
+    
+    sc_juegoLocal.botonSalir = sc_juegoLocal.add.image(400, 550, 'botonSalir');
+    sc_juegoLocal.botonSalir.setInteractive({ cursor: "pointer" });
+    sc_juegoLocal.botonSalir.on('pointerup', function () {
+        sc_juegoLocal.scene.start("MenuPrincipal");
+    });
+}
 
 function armarMonstruo(m, ho) {
     var tint1 = 0xFF0000, tint2 = 0xFF0000;
