@@ -34,25 +34,16 @@ sc_lobby.create = function() {
 
     sendButton.setInteractive();
     sendButton.on('pointerdown', function (event) {
-        if (chatInput.getChildByName('chatField').value !== '') {
-            $.ajax({
-                method: "POST",
-                    url: cont.server_ip + "chat/",
-                    data: JSON.stringify({
-                        sender: cont.name,
-                        message: chatInput.getChildByName('chatField').value
-                    }),
-                    processData: false,
-                    headers: {
-                        "Content-type": "application/json"
-                    },
-                    success: function(item, textStatus, jqXHR) {
-                        chatInput.getChildByName('chatField').value = "";
-                    }
-            });
-        }
+        sendChatMessage(chatInput);
     });
 
+    //Lo de darle al enter
+    this.input.keyboard.on('keyup', 
+    function (event) {
+        if (event.keyCode == 13 && document.activeElement == chatInput.getChildByName('chatField')) {
+            sendChatMessage(chatInput);
+        }
+    });
 
 
 }
@@ -67,5 +58,24 @@ sc_lobby.update = function() {
     for(var i = 0; i < onlineUsers.length; i++) {
         sc_lobby.usersBox.getChildByName('usersBox').value += onlineUsers[i]+"\n";
     }
-       
+}
+
+function sendChatMessage(chatInput) {
+    if (chatInput.getChildByName('chatField').value !== '') {
+        $.ajax({
+            method: "POST",
+            url: cont.server_ip + "chat/",
+            data: JSON.stringify({
+                sender: cont.name,
+                message: chatInput.getChildByName('chatField').value
+            }),
+            processData: false,
+            headers: {
+                "Content-type": "application/json"
+            },
+            success: function (item, textStatus, jqXHR) {
+                chatInput.getChildByName('chatField').value = "";
+            }
+        });
+    }
 }
