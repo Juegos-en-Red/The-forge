@@ -196,11 +196,7 @@ public class PlayerController {
 	@PostMapping("/register/")
 	public ResponseEntity<Integer> register(@RequestBody Player player) {
 		int firstEmptyId = getFirstFreeSlot();
-		
-		if (player.getName().contains(" ") || player.getPassword().contains(" ")) {
-			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
-		}
-		
+
 		for (Player p : registeredPlayers) {
 			if (p.getName().equals(player.getName())) {
 				return new ResponseEntity<>(HttpStatus.CONFLICT);
@@ -212,20 +208,6 @@ public class PlayerController {
 		ids[firstEmptyId] = true;
 		try {
 			BufferedWriter out = new BufferedWriter(new FileWriter ("users.txt", true));
-			/*while (line != null) {
-				String name = line;
-				line = in.readLine();
-				String password = line;
-				line = in.readLine();
-				String character = line;
-				line = in.readLine();
-				int wins = Integer.parseInt(line);
-				line = in.readLine();
-				int losses = Integer.parseInt(line);
-				registeredPlayers.add(new Player(name, password, character, wins, losses));
-			}*/
-			/*out.append(player.getName() + " " + player.getPassword() + " " + player.getWins() + " " + player.getLosses());
-			out.newLine();*/
 			out.append(player.getName());
 			out.newLine();
 			out.append(player.getPassword());
