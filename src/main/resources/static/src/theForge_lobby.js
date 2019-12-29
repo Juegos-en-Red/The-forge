@@ -20,9 +20,8 @@ sc_lobby.create = function() {
     disconnectButton.on('pointerdown', function (event) {
         $.ajax({
             method: "DELETE",
-            url: "http://" + cont.server_ip + "/players/"+cont.id
+            url: cont.server_ip + "players/"+cont.id
         }).done(function (item) {
-            cont.server_ip = null;
             cont.connected = false;
             cont.id = -1;
             cont.name = null;
@@ -38,7 +37,7 @@ sc_lobby.create = function() {
         if (chatInput.getChildByName('chatField').value !== '') {
             $.ajax({
                 method: "POST",
-                    url: "http://" + cont.server_ip + "/chat/",
+                    url: cont.server_ip + "chat/",
                     data: JSON.stringify({
                         sender: cont.name,
                         message: chatInput.getChildByName('chatField').value

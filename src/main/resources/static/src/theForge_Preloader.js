@@ -557,6 +557,7 @@ sc_Preloader.preload = function()
     
     this.load.image("fondo online-lobby", "../assets/online/fondo online-lobby.png");
     this.load.image("botonConectar", "../assets/online/botonConectar.png");
+    this.load.image("botonReconectar", "../assets/online/botonReconectar.png");
     this.load.image("botonDesconectar", "../assets/online/botonDesconectar.png");
     this.load.image("botonIniciarSesion", "../assets/online/botonIniciarSesion.png");
     this.load.image("botonRegistrarse", "../assets/online/botonRegistrarse.png");

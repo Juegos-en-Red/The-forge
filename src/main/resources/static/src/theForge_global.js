@@ -28,7 +28,7 @@ var cont = {
     mus_vol: 0.5,
     snd_vol: 0.5,
     online: true,
-    server_ip: null,
+    server_ip: window.location.href,
     connected: false, 
     id: -1,
     ch: 'SSHielo1',
@@ -72,7 +72,7 @@ function fetchChat() {
 
         $.ajax({
             method: "PUT",
-            url: "http://" + cont.server_ip + "/reminder/"+cont.id,
+            url: cont.server_ip + "reminder/"+cont.id,
             timeout: 3000
         }).done(function (item) {
             //console.log("Nuevo timeout: " + JSON.stringify(item));
@@ -83,7 +83,7 @@ function fetchChat() {
 
         $.ajax({
             method: "GET",
-            url: "http://" + cont.server_ip + "/chat/"+cont.lastChatMessage
+            url: cont.server_ip + "chat/"+cont.lastChatMessage
         }).success(function (item) {
             //console.log("Último mensaje del chat recibido: " + JSON.stringify(item));
             if (item != undefined) {
@@ -98,7 +98,7 @@ function fetchChat() {
 
         $.ajax({
             method: "GET",
-            url: "http://" + cont.server_ip + "/users/"
+            url: cont.server_ip + "users/"
         }).success(function (item) {
             if (item != undefined) {
                 //console.log(item);

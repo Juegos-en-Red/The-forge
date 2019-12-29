@@ -13,7 +13,6 @@ sc_disconnect.create = function() {
     var disconnectButton = sc_disconnect.add.sprite(90, 556, "botonSalir");
     disconnectButton.setInteractive();
     disconnectButton.on('pointerdown', function (event) {
-            cont.server_ip = null;
             cont.connected = false;
             cont.id = -1;
             cont.name = null;
