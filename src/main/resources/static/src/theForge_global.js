@@ -38,7 +38,8 @@ var cont = {
     guiaIngame: false,
     disconnecting: false,
     prevScene: undefined,
-    prevSceneName: ""
+    prevSceneName: "",
+    ping: 0
 }
 
 //funciones de música por aquí
@@ -72,6 +73,7 @@ var unreadChatMessages = [];
 var onlineUsers = [];
 function fetchChat() {
     if (cont.connected) {
+        var start = new Date().getTime();
         $.ajax({
             method: "PUT",
             url: cont.server_ip + "reminder/"+cont.id,
@@ -101,7 +103,8 @@ function fetchChat() {
                     }
                 }
             }, 2000);
-        });
+        });    
+        cont.ping = (new Date().getTime() - start);
 
         $.ajax({
             method: "GET",

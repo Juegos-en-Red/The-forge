@@ -15,6 +15,9 @@ sc_lobby.create = function() {
     sc_lobby.usersBox = sc_lobby.add.dom(355,241).createFromCache('usersBox');
     var sendButton = sc_lobby.add.sprite(591, 547, "botonEnviar");
 
+    sc_lobby.pingText = sc_lobby.add.text(790, 10, "Ping: 0", {fontSize: '12px', fontFamily: 'Bookman', color: '#ffffff', stroke: '#000000', strokeThickness: 2, align: 'center'});
+    sc_lobby.pingText.setOrigin(1, 0);
+
     sc_lobby.chatBox.getChildByName('chatBox').value = "";
     sc_lobby.usersBox.getChildByName('usersBox').value = "";
 
@@ -30,7 +33,7 @@ sc_lobby.create = function() {
             cont.lastChatMessage = -1;
             sc_lobby.scene.start("MenuPrincipal");
         }).error(function(item){
-            console.log("Algo ha salido mal al desconectarte, pero creo que ya te has dado cuenta de eso.");
+            console.log("Something went wrong when disconnecting, but I think you already noticed that.");
         });
     });
 
@@ -51,12 +54,13 @@ sc_lobby.create = function() {
 }
 
 sc_lobby.update = function() {
+    sc_lobby.pingText.setText("Ping: " + cont.ping);
     while (unreadChatMessages.length != 0) {
         var msg = unreadChatMessages.pop();
         sc_lobby.chatBox.getChildByName('chatBox').value += "["+msg.time+"] "+msg.sender+": "+msg.message+"\n";
         sc_lobby.chatBox.getChildByName('chatBox').scrollTop = sc_lobby.chatBox.getChildByName('chatBox').scrollHeight;
     }
-    sc_lobby.usersBox.getChildByName('usersBox').value = "USUARIOS CONECTADOS\n";
+    sc_lobby.usersBox.getChildByName('usersBox').value = "ONLINE USERS\n";
     for(var i = 0; i < onlineUsers.length; i++) {
         sc_lobby.usersBox.getChildByName('usersBox').value += onlineUsers[i]+"\n";
     }
