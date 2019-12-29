@@ -12,6 +12,7 @@ sc_juegoLocal.preload = function() {
 
 //Función create: Aquí se inicializan todos los objetos del juego.
 sc_juegoLocal.create = function() {
+    console.log("Local game: begin.");
 
     sc_juegoLocal.gameStarted = false;
 

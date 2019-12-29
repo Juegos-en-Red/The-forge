@@ -83,6 +83,8 @@ sc_onlineIP.create = function() {
                     inputButtonFunction();
                     break;
                 case sc_onlineIP.login.getChildByName('nameField'):
+                    sc_onlineIP.login.getChildByName('passwordField').focus();
+                    break;
                 case sc_onlineIP.login.getChildByName('passwordField'):
                     loginFunction();
                     break;

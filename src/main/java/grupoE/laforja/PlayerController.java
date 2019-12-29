@@ -299,7 +299,7 @@ public class PlayerController {
 		for (int i = 0; i < players.length; i++) {
 			if (players[i] != null) {
 				players[i].setTimeout(players[i].getTimeout()-1);
-				if (players[i].getTimeout() == 0) {
+				if (players[i].getTimeout() <= -60) { //Tienen un minuto para reconectarse los jugadores que se desconecten
 					if (players[i].getOpponentId() != -1 && players[i].getOpponentName() != null) {
 						if (ids[players[i].getOpponentId()]) {
 							if (players[players[i].getOpponentId()].getName().equals(players[i].getOpponentName()))

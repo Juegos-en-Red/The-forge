@@ -35,7 +35,10 @@ var cont = {
     name: null,
     lastChatMessage: -1,
     lGuia: true,
-    guiaIngame: false
+    guiaIngame: false,
+    disconnecting: false,
+    prevScene: undefined,
+    prevSceneName: ""
 }
 
 //funciones de música por aquí
@@ -69,16 +72,35 @@ var unreadChatMessages = [];
 var onlineUsers = [];
 function fetchChat() {
     if (cont.connected) {
-
         $.ajax({
             method: "PUT",
             url: cont.server_ip + "reminder/"+cont.id,
             timeout: 3000
-        }).done(function (item) {
-            //console.log("Nuevo timeout: " + JSON.stringify(item));
-        }).error(function(e) {
-            cont.connected = false;
-            sc_lobby.scene.start("Disconnect");
+        }).success(function (item) {
+            if (cont.disconnecting) {
+                cont.disconnecting = false;
+            }
+            if (cont.prevScene.scene.isActive("DisconnectOverlay")) {
+                if (cont.prevScene == sc_lobby) {
+                    showLobbyDom();
+                }
+                cont.prevScene.scene.stop("DisconnectOverlay");
+                cont.prevScene.scene.resume(cont.prevSceneName);
+            }
+        }).error(function(e,r,t) {
+            cont.disconnecting = true;
+            setTimeout(function() {
+                if (cont.disconnecting) {
+                    if (cont.prevScene.scene.isActive(cont.prevSceneName)) {
+                        if (cont.prevScene == sc_lobby) {
+                            hideLobbyDom();
+                        }
+                        cont.prevScene.scene.pause(cont.prevSceneName);
+                        cont.prevScene.scene.launch("DisconnectOverlay");
+                        cont.prevScene.scene.moveBelow("DisconnectOverlay");
+                    }
+                }
+            }, 2000);
         });
 
         $.ajax({
