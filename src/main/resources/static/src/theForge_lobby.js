@@ -19,7 +19,7 @@ sc_lobby.create = function() {
     sc_lobby.pingText.setOrigin(1, 0);
 
     sc_lobby.chatBox.getChildByName('chatBox').value = "";
-    sc_lobby.usersBox.getChildByName('usersBox').value = "";
+    //sc_lobby.usersBox.getChildByName('usersBox').value = "";
 
     disconnectButton.setInteractive();
     disconnectButton.on('pointerdown', function (event) {
@@ -60,10 +60,19 @@ sc_lobby.update = function() {
         sc_lobby.chatBox.getChildByName('chatBox').value += "["+msg.time+"] "+msg.sender+": "+msg.message+"\n";
         sc_lobby.chatBox.getChildByName('chatBox').scrollTop = sc_lobby.chatBox.getChildByName('chatBox').scrollHeight;
     }
-    sc_lobby.usersBox.getChildByName('usersBox').value = "ONLINE USERS\n";
-    for(var i = 0; i < onlineUsers.length; i++) {
-        sc_lobby.usersBox.getChildByName('usersBox').value += onlineUsers[i]+"\n";
+
+    /*
+    document.getElementById('tabla').innerHTML = ''; 
+    for (var i = 0; i < 100; i++) {
+      document.getElementById('tabla').innerHTML +="<tr><td        style='width:200px;border:1px solid black'>Cell Content 1</td></tr>"; 
     }
+    */
+    var usersList = ""
+    for(var i = 0; i < onlineUsers.length; i++) {
+        //sc_lobby.usersBox.getChildByName('usersBox').value += onlineUsers[i]+"\n";
+        usersList +="<tr><td style='width:200px;border:1px solid black'>" + onlineUsers[i] + "</td></tr>"; 
+    }
+    sc_lobby.usersBox.getChildByID('tabla').innerHTML = usersList;
 }
 
 function sendChatMessage() {
