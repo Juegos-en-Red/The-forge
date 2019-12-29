@@ -237,7 +237,8 @@ function showLoginPrompt() {
                 data: JSON.stringify({
                     name: inputText.value,
                     password: inputPassword.value,
-                    timeout: 10
+                    timeout: 10,
+                    character: "SSHielo1"
                 }),
                 processData: false,
                 headers: {

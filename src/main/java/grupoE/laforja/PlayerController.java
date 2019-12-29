@@ -50,9 +50,17 @@ public class PlayerController {
 			String line = in.readLine();
 			
 			while (line != null) {
-				String[] data = line.split(" ");
-				registeredPlayers.add(new Player(data[0],data[1],Integer.parseInt(data[2]),data[3]));
+				String name = line;
 				line = in.readLine();
+				String password = line;
+				line = in.readLine();
+				String character = line;
+				line = in.readLine();
+				int wins = Integer.parseInt(line);
+				line = in.readLine();
+				int losses = Integer.parseInt(line);
+				line = in.readLine();
+				registeredPlayers.add(new Player(name, password, character, wins, losses));
 			}
 			
 			in.close();
@@ -204,7 +212,29 @@ public class PlayerController {
 		ids[firstEmptyId] = true;
 		try {
 			BufferedWriter out = new BufferedWriter(new FileWriter ("users.txt", true));
-			out.append(player.getName() + " " + player.getPassword() + " " + player.getWins() + " " + player.getLosses());
+			/*while (line != null) {
+				String name = line;
+				line = in.readLine();
+				String password = line;
+				line = in.readLine();
+				String character = line;
+				line = in.readLine();
+				int wins = Integer.parseInt(line);
+				line = in.readLine();
+				int losses = Integer.parseInt(line);
+				registeredPlayers.add(new Player(name, password, character, wins, losses));
+			}*/
+			/*out.append(player.getName() + " " + player.getPassword() + " " + player.getWins() + " " + player.getLosses());
+			out.newLine();*/
+			out.append(player.getName());
+			out.newLine();
+			out.append(player.getPassword());
+			out.newLine();
+			out.append(player.getCharacter());
+			out.newLine();
+			out.append(String.valueOf(player.getWins()));
+			out.newLine();
+			out.append(String.valueOf(player.getLosses()));
 			out.newLine();
 			out.close();
 		} catch (IOException e) {
