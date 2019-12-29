@@ -174,32 +174,20 @@ sc_Preloader.preload = function()
     //Partes de la armadura
     this.load.image('casco', '../assets/game/casco.png');
     this.load.image('CascoElfoD', '../assets/game/CascoElfoD.png');
-    this.load.image('CascoElfoI', '../assets/game/CascoElfoI.png');
     this.load.image('CascoHieloD', '../assets/game/CascoHieloD.png');
-    this.load.image('CascoHieloI', '../assets/game/CascoHieloI.png');
     this.load.image('CascoFuegoD', '../assets/game/CascoFuegoD.png');
-    this.load.image('CascoFuegoI', '../assets/game/CascoFuegoI.png');
     this.load.image('espada', '../assets/game/espada.png');
     this.load.image('EspadaElfoD', '../assets/game/EspadaElfoD.png');
-    this.load.image('EspadaElfoI', '../assets/game/EspadaElfoI.png');
     this.load.image('EspadaHieloD', '../assets/game/EspadaHieloD.png');
-    this.load.image('EspadaHieloI', '../assets/game/EspadaHieloI.png');
     this.load.image('EspadaFuegoD', '../assets/game/EspadaFuegoD.png');
-    this.load.image('EspadaFuegoI', '../assets/game/EspadaFuegoI.png');
     this.load.image('pechera', '../assets/game/pechera.png');
     this.load.image('PecheraElfoD', '../assets/game/PecheraElfoD.png');
-    this.load.image('PecheraElfoI', '../assets/game/PecheraElfoI.png');
     this.load.image('PecheraHieloD', '../assets/game/PecheraHieloD.png');
-    this.load.image('PecheraHieloI', '../assets/game/PecheraHieloI.png');
     this.load.image('PecheraFuegoD', '../assets/game/PecheraFuegoD.png');
-    this.load.image('PecheraFuegoI', '../assets/game/PecheraFuegoI.png');
     this.load.image('protecciones piernas', '../assets/game/protecciones piernas.png');
     this.load.image('ProtPiernasElfoD', '../assets/game/ProtPiernasElfoD.png');
-    this.load.image('ProtPiernasElfoI', '../assets/game/ProtPiernasElfoI.png');
     this.load.image('ProtPiernasHieloD', '../assets/game/ProtPiernasHieloD.png');
-    this.load.image('ProtPiernasHieloI', '../assets/game/ProtPiernasHieloI.png');
     this.load.image('ProtPiernasFuegoD', '../assets/game/ProtPiernasFuegoD.png');
-    this.load.image('ProtPiernasFuegoI', '../assets/game/ProtPiernasFuegoI.png');
     //Elementos del escenario
     this.load.image('empty', '../assets/game/empty.png');
     this.load.image('cajon1', '../assets/game/cajon1.png');
@@ -207,11 +195,6 @@ sc_Preloader.preload = function()
     this.load.image('cajon3', '../assets/game/cajon3.png');
     this.load.image('cajon4', '../assets/game/cajon4.png');
     this.load.image('cajon5', '../assets/game/cajon5.png');
-    this.load.image('cajon1I', '../assets/game/cajon1I.png');
-    this.load.image('cajon2I', '../assets/game/cajon2I.png');
-    this.load.image('cajon3I', '../assets/game/cajon3I.png');
-    this.load.image('cajon4I', '../assets/game/cajon4I.png');
-    this.load.image('cajon5I', '../assets/game/cajon5I.png');
     this.load.image('mesa', '../assets/game/mesa.png');
     this.load.spritesheet('horno', 
         '../assets/game/horno.png',
@@ -225,24 +208,18 @@ sc_Preloader.preload = function()
     this.load.image('yunque doble', '../assets/game/yunque doble.png');
     this.load.image('barril de templado', '../assets/game/barril de templado.png');
     this.load.image('basura', '../assets/game/basura.png');
-    this.load.image('basuraI', '../assets/game/basuraI.png');
     this.load.image('molde', '../assets/game/molde.png');
     this.load.image('moldeU', '../assets/game/moldeU.png');
     this.load.image('barreras', '../assets/game/barreras.png');
     //Otros extras (trampas)
-    this.load.image('barril explosivo', '../assets/game/barril explosivo.png');
-    this.load.image('explosion', '../assets/game/explosion.png');
     this.load.image('reloj', '../assets/game/reloj.png');
     this.load.image('trampa muro', '../assets/game/trampa muro.png');
     //Partículas
     this.load.image('dust', '../assets/game/dust.png');
     //Monstruos
     this.load.image('MElfoD', '../assets/game/MElfoD.png');
-    this.load.image('MElfoI', '../assets/game/MElfoI.png');
     this.load.image('MHieloD', '../assets/game/MHieloD.png');
-    this.load.image('MHieloI', '../assets/game/MHieloI.png');
     this.load.image('MFuegoD', '../assets/game/MFuegoD.png');
-    this.load.image('MFuegoI', '../assets/game/MFuegoI.png');
     //Interfaz
     this.load.image('victoria', '../assets/game/victoria.png');
     this.load.image('derrota', '../assets/game/derrota.png');
