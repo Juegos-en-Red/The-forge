@@ -171,8 +171,9 @@ public class PlayerController {
 					} else {
 						if (players[i].getPassword().equals(player.getPassword())) {
 							player.setId(i);
-							players[player.getId()] = player;
-							ids[player.getId()] = true;
+							/*players[player.getId()] = player;
+							ids[player.getId()] = true;*/
+							players[i].setTimeout(4);
 							return new ResponseEntity<>(player.getId(),HttpStatus.OK);
 						} else {
 							return new ResponseEntity<>(-1, HttpStatus.UNAUTHORIZED);
@@ -185,10 +186,12 @@ public class PlayerController {
 		for (Player p : registeredPlayers) {
 			if (p.getName().equals(player.getName())) {
 				if (p.getPassword().equals(player.getPassword())) {
+					player = p;
 					player.setId(getFirstFreeSlot());
 					players[player.getId()] = player;
 					ids[player.getId()] = true;
 					//System.out.println("OK");
+					//System.out.println(players[player.getId()].getCharacter());
 					return new ResponseEntity<>(player.getId(),HttpStatus.OK);
 				} else {
 					//System.out.println("UNAUTHORIZED");
@@ -262,13 +265,13 @@ public class PlayerController {
 	 * */
 	@PutMapping("/reminder/{id}")
 	public ResponseEntity<Integer> resetTimeout(@PathVariable int id) {
-		if (ids[id]) {
-			players[id].setTimeout(4);
-			return new ResponseEntity<>(4,HttpStatus.OK);
-		} else {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		if (id >= 0) {
+			if (ids[id]) {
+				players[id].setTimeout(4);
+				return new ResponseEntity<>(4,HttpStatus.OK);
+			}
 		}
-		
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	
 	/*

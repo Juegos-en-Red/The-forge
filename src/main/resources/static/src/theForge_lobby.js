@@ -6,6 +6,7 @@ sc_lobby.preload = function() {
 }
 
 sc_lobby.create = function() {
+    cont.lastChatMessage = -1;
     cont.prevScene = sc_lobby;
     cont.prevSceneName = "Lobby"; //Importante cambiarlo en cada escena en la que se pueda ir la conexión
     this.bg = sc_lobby.add.image(400, 300, "fondo online-lobby");
@@ -21,7 +22,7 @@ sc_lobby.create = function() {
     sc_lobby.chatBox.getChildByName('chatBox').value = "";
     //sc_lobby.usersBox.getChildByName('usersBox').value = "";
 
-    disconnectButton.setInteractive();
+    disconnectButton.setInteractive({cursor: "pointer"});
     disconnectButton.on('pointerdown', function (event) {
         $.ajax({
             method: "DELETE",
@@ -37,7 +38,7 @@ sc_lobby.create = function() {
         });
     });
 
-    sendButton.setInteractive();
+    sendButton.setInteractive({cursor: "pointer"});
     sendButton.on('pointerdown', function (event) {
         sendChatMessage();
     });
@@ -50,6 +51,19 @@ sc_lobby.create = function() {
         }
     });
 
+    //Perfil del usuario
+    sc_lobby.profileBG = sc_lobby.add.sprite(5, 5, "recuadroPje");
+    sc_lobby.profileBG.setOrigin(0,0);
+    sc_lobby.profileText = sc_lobby.add.text(20, 20, "", {fontSize: '20px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2, align: 'left'});
+    sc_lobby.profileText.setOrigin(0, 0);
+    sc_lobby.changeCharacterButton = sc_lobby.add.sprite(20, 115, "botonChange");
+    sc_lobby.changeCharacterButton.setOrigin(0, 0);
+    sc_lobby.changeCharacterButton.setInteractive({cursor: "pointer"});
+    sc_lobby.changeCharacterButton.on('pointerdown', function (event) {
+        //Cambio de personaje
+        sc_lobby.scene.start('SeleccionPersonajeOnline');
+        //hideLobbyDom();
+    });
 
 }
 
@@ -68,6 +82,28 @@ sc_lobby.update = function() {
 
     var usersList = ""
     for(var i = 0; i < onlineUsers.length; i++) {
+
+        if (onlineUsers[i].id == cont.id) {
+            //Este es nuestro perfil, así que vamos a mostrar la información necesaria
+            var text = onlineUsers[i].name + "\nWins: " + onlineUsers[i].wins + "\nLosses: " + onlineUsers[i].losses + "\nCharacter: ";
+            cont.ch = onlineUsers[i].character;
+            switch (onlineUsers[i].character.slice(2,3)) {
+                case "H":
+                    text += "Ice";
+                break;
+                case "E":
+                    text += "Elf";
+                break;
+                case "F":
+                    text += "Fire";
+                break;
+            }
+            sc_lobby.profileText.setText(text);
+        }
+
+
+
+
         if (onlineUsers[i].timeout > -10) {
             usersList +="<tr><td style='width:200px;border:1px solid black; background-image:url(../assets/online/chatBoxBG.png);'>" + onlineUsers[i].name;
             

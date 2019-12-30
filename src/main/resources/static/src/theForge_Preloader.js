@@ -539,6 +539,8 @@ sc_Preloader.preload = function()
     this.load.image("botonIniciarSesion", "../assets/online/botonIniciarSesion.png");
     this.load.image("botonRegistrarse", "../assets/online/botonRegistrarse.png");
     this.load.image("botonEnviar", "../assets/online/botonEnviar.png");
+    this.load.image("recuadroPje", "../assets/online/recuadroPje.png");
+    this.load.image("botonChange", "../assets/online/botonChange.png");
 
     //Elementos HTML
     

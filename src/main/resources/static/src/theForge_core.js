@@ -15,7 +15,7 @@ var config = {
             debug: false
         }
     },
-    scene: [sc_Preloader,  sc_disconnectOverlay,sc_menuPrincipal, sc_Creditos, sc_Guia, sc_Next, sc_menuAjustes, sc_SeleccionPersonaje, sc_juegoLocal, sc_onlineIP, sc_lobby, sc_disconnect] //Importante meter todas las escenas aquí
+    scene: [sc_Preloader,  sc_disconnectOverlay,sc_menuPrincipal, sc_Creditos, sc_Guia, sc_Next, sc_menuAjustes, sc_SeleccionPersonaje, sc_juegoLocal, sc_onlineIP, sc_lobby, sc_disconnect, sc_SeleccionPersonajeOnline] //Importante meter todas las escenas aquí
 };
 
 

@@ -73,7 +73,7 @@ public class PlayerListElement implements Comparable<PlayerListElement> {
 
 	@Override
 	public int compareTo(PlayerListElement p2) {
-		return name.compareTo(p2.getName());
+		return name.compareToIgnoreCase(p2.getName());
 	}
 	
 }

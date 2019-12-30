@@ -17,7 +17,7 @@ public class Player {
 		this.name = name;
 		this.password = password;
 		this.timeout = timeout;
-		this.character = "ssHielo1";
+		this.character = "SSHielo1";
 		this.wins = 0;
 		this.losses = 0;
 	}
@@ -26,7 +26,7 @@ public class Player {
 		this.name = name;
 		this.password = password;
 		this.timeout = timeout;
-		this.character = character;
+		this.character = "SSHielo1";
 		this.wins = 0;
 		this.losses = 0;
 	}

@@ -11,8 +11,8 @@ sc_disconnectOverlay.create = function() {
     this.black = sc_disconnectOverlay.add.image(400, 300, "pausedOverlay");
     this.bg = sc_disconnectOverlay.add.image(400, 300, "pausemenu");
 
-    var disconnectButton = sc_disconnectOverlay.add.sprite(400, 350, "botonDesconectar");
-    disconnectButton.setInteractive();
+    var disconnectButton = sc_disconnectOverlay.add.sprite(550, 350, "botonDesconectar");
+    disconnectButton.setInteractive({cursor: "pointer"});
     disconnectButton.on('pointerdown', function (event) {
         sc_disconnectOverlay.scene.stop(cont.prevSceneName);
         cont.disconnecting = false;

@@ -24,6 +24,9 @@ function Menu(escena)
 
     this.create = function()
     {
+        cont.prevScene = sc_menuPrincipal;
+        cont.prevSceneName = "MenuPrincipal";
+
         //Música. Si se añade más música es importante parar aquí toda la que haya
         
         mus_game.pause();
@@ -217,13 +220,13 @@ function Menu(escena)
 
     function mouseClick(button, buttonPress, type)
     {
-        button.setInteractive().on("pointerdown", function(pointer)
+        button.setInteractive({cursor: "pointer"}).on("pointerdown", function(pointer)
         {
             buttonPress.visible = true;
             pressed = true;
         });
 
-        button.setInteractive().on("pointerup", function(pointer)
+        button.setInteractive({cursor: "pointer"}).on("pointerup", function(pointer)
         {
             buttonPress.visible = false;
             if (type == "local" && pressed === true)

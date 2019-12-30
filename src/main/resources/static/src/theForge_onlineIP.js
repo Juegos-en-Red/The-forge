@@ -18,7 +18,7 @@ sc_onlineIP.create = function() {
     this.bg = sc_onlineIP.add.image(400, 300, "fondo online-lobby");
 
     var disconnectButton = sc_onlineIP.add.sprite(90, 556, "botonSalir");
-    disconnectButton.setInteractive();
+    disconnectButton.setInteractive({cursor: "pointer"});
     disconnectButton.on('pointerdown', function (event) {
             cont.connected = false;
             cont.id = -1;
@@ -51,9 +51,9 @@ sc_onlineIP.create = function() {
         onStart: function() {
             sc_onlineIP.inputBox.setVisible(true);
             sc_onlineIP.inputButton.setVisible(true);
-            sc_onlineIP.inputButton.setInteractive();
+            sc_onlineIP.inputButton.setInteractive({cursor: "pointer"});
             sc_onlineIP.inputButton2.setVisible(true);
-            sc_onlineIP.inputButton2.setInteractive();
+            sc_onlineIP.inputButton2.setInteractive({cursor: "pointer"});
         }
     });
     sc_onlineIP.fadeInTween.stop();
@@ -122,9 +122,9 @@ function defaultConnection() {
                 onStart: function () {
                     sc_onlineIP.inputBox.setVisible(true);
                     sc_onlineIP.inputButton.setVisible(true);
-                    sc_onlineIP.inputButton.setInteractive();
+                    sc_onlineIP.inputButton.setInteractive({cursor: "pointer"});
                     sc_onlineIP.inputButton2.setVisible(true);
-                    sc_onlineIP.inputButton2.setInteractive();
+                    sc_onlineIP.inputButton2.setInteractive({cursor: "pointer"});
                 }
             });
             sc_onlineIP.textInfo.setText("Connection error. Please try to reconnect.\n\n\nIf you wish, you can try to directly connect to a different server:");
@@ -180,9 +180,9 @@ function inputButtonFunction() {
                     onStart: function () {
                         sc_onlineIP.inputBox.setVisible(true);
                         sc_onlineIP.inputButton.setVisible(true);
-                        sc_onlineIP.inputButton.setInteractive();
+                        sc_onlineIP.inputButton.setInteractive({cursor: "pointer"});
                         sc_onlineIP.inputButton2.setVisible(true);
-                        sc_onlineIP.inputButton2.setInteractive();
+                        sc_onlineIP.inputButton2.setInteractive({cursor: "pointer"});
                     }
                 });
             }
@@ -204,8 +204,8 @@ function showLoginPrompt() {
             sc_onlineIP.login.setVisible(true);
             sc_onlineIP.loginButton.setVisible(true);
             sc_onlineIP.registerButton.setVisible(true);
-            sc_onlineIP.loginButton.setInteractive();
-            sc_onlineIP.registerButton.setInteractive();
+            sc_onlineIP.loginButton.setInteractive({cursor: "pointer"});
+            sc_onlineIP.registerButton.setInteractive({cursor: "pointer"});
         }
     });
 
@@ -281,8 +281,8 @@ function showLoginPrompt() {
                             sc_onlineIP.login.setVisible(true);
                             sc_onlineIP.loginButton.setVisible(true);
                             sc_onlineIP.registerButton.setVisible(true);
-                            sc_onlineIP.loginButton.setInteractive();
-                            sc_onlineIP.registerButton.setInteractive();
+                            sc_onlineIP.loginButton.setInteractive({cursor: "pointer"});
+                            sc_onlineIP.registerButton.setInteractive({cursor: "pointer"});
                         }
                     });
                 }
@@ -350,8 +350,8 @@ function loginFunction() {
                         sc_onlineIP.login.setVisible(true);
                         sc_onlineIP.loginButton.setVisible(true);
                         sc_onlineIP.registerButton.setVisible(true);
-                        sc_onlineIP.loginButton.setInteractive();
-                        sc_onlineIP.registerButton.setInteractive();
+                        sc_onlineIP.loginButton.setInteractive({cursor: "pointer"});
+                        sc_onlineIP.registerButton.setInteractive({cursor: "pointer"});
                     }
                 });
             }

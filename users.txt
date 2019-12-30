@@ -1,6 +1,6 @@
 a
 a
-SSHielo1
+SSFuego1
 0
 0
 b
@@ -75,6 +75,21 @@ SSHielo1
 0
 aa
 aa
+SSHielo1
+0
+0
+r
+r
+SSHielo1
+0
+0
+s
+s
+SSHielo1
+0
+0
+Trenson Star
+TRENSONSTAR
 SSHielo1
 0
 0

@@ -11,7 +11,7 @@ sc_disconnect.create = function() {
     this.bg = sc_disconnect.add.image(400, 300, "fondo online-lobby");
 
     var disconnectButton = sc_disconnect.add.sprite(90, 556, "botonSalir");
-    disconnectButton.setInteractive();
+    disconnectButton.setInteractive({cursor: "pointer"});
     disconnectButton.on('pointerdown', function (event) {
             cont.connected = false;
             cont.id = -1;
