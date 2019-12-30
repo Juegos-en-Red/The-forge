@@ -9,11 +9,11 @@ sc_lobby.create = function() {
     cont.prevScene = sc_lobby;
     cont.prevSceneName = "Lobby"; //Importante cambiarlo en cada escena en la que se pueda ir la conexión
     this.bg = sc_lobby.add.image(400, 300, "fondo online-lobby");
-    var disconnectButton = sc_lobby.add.sprite(79, 556, "botonDesconectar");
+    var disconnectButton = sc_lobby.add.sprite(85, 556, "botonDesconectar");
     sc_lobby.chatInput = sc_lobby.add.dom(355,557).createFromCache('chatInput');
     sc_lobby.chatBox = sc_lobby.add.dom(355,481).createFromCache('chatBox');
     sc_lobby.usersBox = sc_lobby.add.dom(355,241).createFromCache('usersBox');
-    var sendButton = sc_lobby.add.sprite(591, 547, "botonEnviar");
+    var sendButton = sc_lobby.add.sprite(610, 557, "botonEnviar");
 
     sc_lobby.pingText = sc_lobby.add.text(790, 10, "Ping: 0", {fontSize: '12px', fontFamily: 'Bookman', color: '#ffffff', stroke: '#000000', strokeThickness: 2, align: 'center'});
     sc_lobby.pingText.setOrigin(1, 0);
@@ -55,9 +55,13 @@ sc_lobby.create = function() {
 
 sc_lobby.update = function() {
     sc_lobby.pingText.setText("Ping: " + cont.ping);
+
     while (unreadChatMessages.length != 0) {
         var msg = unreadChatMessages.pop();
-        sc_lobby.chatBox.getChildByName('chatBox').value += "["+msg.time+"] "+msg.sender+": "+msg.message+"\n";
+        if (sc_lobby.chatBox.getChildByName('chatBox').value != "") {
+            sc_lobby.chatBox.getChildByName('chatBox').value += "\n";
+        }
+        sc_lobby.chatBox.getChildByName('chatBox').value += "["+msg.time+"] "+msg.sender+": "+msg.message;
         sc_lobby.chatBox.getChildByName('chatBox').scrollTop = sc_lobby.chatBox.getChildByName('chatBox').scrollHeight;
     }
 
@@ -70,7 +74,7 @@ sc_lobby.update = function() {
     var usersList = ""
     for(var i = 0; i < onlineUsers.length; i++) {
         //sc_lobby.usersBox.getChildByName('usersBox').value += onlineUsers[i]+"\n";
-        usersList +="<tr><td style='width:200px;border:1px solid black'>" + onlineUsers[i] + "</td></tr>"; 
+        usersList +="<tr><td style='width:200px;border:1px solid black; background-image:url(../assets/online/chatBoxBG.png);'>" + onlineUsers[i].name + "</td></tr>"; 
     }
     sc_lobby.usersBox.getChildByID('tabla').innerHTML = usersList;
 }
@@ -97,11 +101,11 @@ function sendChatMessage() {
 
 function hideLobbyDom() {
     sc_lobby.chatBox.getChildByName('chatBox').style.visibility = "hidden";
-    sc_lobby.usersBox.getChildByName('usersBox').style.visibility = "hidden";
+    sc_lobby.usersBox.getChildByID('usersBox').style.visibility = "hidden";
     sc_lobby.chatInput.getChildByName('chatField').style.visibility = "hidden";
 }
 function showLobbyDom() {
     sc_lobby.chatBox.getChildByName('chatBox').style.visibility = "visible";
-    sc_lobby.usersBox.getChildByName('usersBox').style.visibility = "visible";
+    sc_lobby.usersBox.getChildByID('usersBox').style.visibility = "visible";
     sc_lobby.chatInput.getChildByName('chatField').style.visibility = "visible";
 }

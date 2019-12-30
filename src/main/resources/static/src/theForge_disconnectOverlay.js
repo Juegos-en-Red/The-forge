@@ -7,7 +7,6 @@ sc_disconnectOverlay.preload = function() {
 }
 
 sc_disconnectOverlay.create = function() {
-    console.log("EY BUENAS A TODOS");
 
     this.black = sc_disconnectOverlay.add.image(400, 300, "pausedOverlay");
     this.bg = sc_disconnectOverlay.add.image(400, 300, "pausemenu");

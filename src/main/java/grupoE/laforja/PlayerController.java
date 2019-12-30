@@ -10,6 +10,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -383,22 +384,26 @@ public class PlayerController {
 	 * Al hacer esta petición, se devuelve un array con los nombres de todos los usuarios conectados
 	 * */
 	@GetMapping("/users/")
-	public ResponseEntity<String[]> getPlayerNames() {
+	public ResponseEntity<PlayerListElement[]> getPlayerNames() {
 		
 		int i = 100-freeSlots();
 		int j = 0;
 		int k = 0;
 		
-		String[] onlinePlayers = new String[i];
+		PlayerListElement[] onlinePlayers = new PlayerListElement[i];
 		
 		while (i > 0 && j < 100) {
 			if (ids[j]) {
-				onlinePlayers[k] = players[j].getName();
+				onlinePlayers[k] = new PlayerListElement(players[j]);
 				k++;
 				i--;
 			}
 			j++;
 		}
+		
+		//Ordenar el array, para que se muestren en orden alfabético
+		Arrays.sort(onlinePlayers);
+		
 
 		return new ResponseEntity<>(onlinePlayers, HttpStatus.OK);
 
