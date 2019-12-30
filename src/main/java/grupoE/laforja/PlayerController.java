@@ -423,4 +423,80 @@ public class PlayerController {
 
 	}
 	
+	/*
+	 * PUT "/character/id"
+	 * Al hacer esta petición, si hay un jugador en la id especificada, se actualiza el personaje que tiene seleccionado.
+	 * */
+	@PutMapping("/character/{id}")
+	public ResponseEntity<String> changeCharacter(@PathVariable int id, @RequestBody String character) {
+		if (id >= 0) {
+			if (ids[id]) {
+				if (character.equals("SSHielo1") || character.equals("SSElfa1") || character.equals("SSFuego1")) {
+					players[id].setCharacter(character);
+					//ESCRIBIRLO AL TXT
+					replaceLine(players[id].getName(), 2, players[id].getCharacter());
+					//FIN DE ESCRIBIRLO AL TXT
+					return new ResponseEntity<>(character,HttpStatus.OK);
+				} else {
+					System.out.println(character + "is not allowed.");
+					return new ResponseEntity<>(character,HttpStatus.BAD_REQUEST);
+				}
+				
+			}
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+	
+	private void replaceLine(String name, int replaceLine, String replaceContent) {
+		try {
+			
+			BufferedReader in = new BufferedReader(new FileReader ("users.txt"));
+			String line = in.readLine();
+			String file = "";
+			if (line != null) {
+				file += (line + "\n");
+			}
+			
+			while (line != null) {
+				if (line.equals(name)) {
+					for (int i = 0; i < replaceLine-1; i++) {
+						line = in.readLine();
+						if (line != null) {
+							file += (line + "\n");
+						}
+					}
+					line = in.readLine();
+					System.out.println("Line '" + line + "' replaced by line '" + replaceContent + "'");
+					line = replaceContent;
+					if (line != null) {
+						file += (line + "\n");
+					}
+					for (int i = 0; i < 5-replaceLine; i++) {
+						line = in.readLine();
+						if (line != null) {
+							file += (line + "\n");
+						}
+					}
+				} else {
+					for (int i = 0; i < 5; i++) {
+						line = in.readLine();
+						if (line != null) {
+							file += (line + "\n");
+						}
+					}
+				}
+			}
+			
+			in.close();
+
+			BufferedWriter out = new BufferedWriter(new FileWriter ("users.txt"));
+			out.append(file);
+			out.close();
+			
+		} catch (FileNotFoundException e) {
+			//e.printStackTrace();
+		} catch (IOException e) {
+			//e.printStackTrace();
+		}
+	}
 }

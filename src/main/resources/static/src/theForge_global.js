@@ -92,7 +92,7 @@ function fetchChat() {
         }).error(function(e,r,t) {
             cont.disconnecting = true;
             setTimeout(function() {
-                if (cont.disconnecting) {
+                if (cont.disconnecting && cont.prevSceneName != "MenuPrincipal") {
                     if (cont.prevScene.scene.isActive(cont.prevSceneName)) {
                         if (cont.prevScene == sc_lobby) {
                             hideLobbyDom();
@@ -100,6 +100,7 @@ function fetchChat() {
                         cont.prevScene.scene.pause(cont.prevSceneName);
                         cont.prevScene.scene.launch("DisconnectOverlay");
                         cont.prevScene.scene.moveBelow("DisconnectOverlay");
+                        console.log("Connection lost");
                     }
                 }
             }, 2000);

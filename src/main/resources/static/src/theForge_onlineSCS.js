@@ -129,26 +129,72 @@ function MenuSeleccionOnline(escena)
 
         this.btnHielo.setInteractive({cursor: "pointer"}).on("pointerdown", function(pointer)
         {
-            cont.p2.ch = 'SSHielo1';
-            //showLobbyDom();
-            sc_SeleccionPersonajeOnline.scene.stop("SeleccionPersonajeOnline");
-            sc_SeleccionPersonajeOnline.scene.start("Lobby");
+            cont.ch = 'SSHielo1';
+            $.ajax({
+                method: "PUT",
+                url: cont.server_ip + "character/"+cont.id,
+                timeout: 3000,
+                data: cont.ch,
+                processData: false,
+                headers: {
+                    "Content-type": "application/json"
+                },
+            }).success(function (item) {
+                console.log("Character changed.");
+                sc_SeleccionPersonajeOnline.scene.stop("SeleccionPersonajeOnline");
+                sc_SeleccionPersonajeOnline.scene.start("Lobby");
+            }).error(function(e) {
+                console.log("Character couldn't be changed.");
+                sc_SeleccionPersonajeOnline.scene.stop("SeleccionPersonajeOnline");
+                sc_SeleccionPersonajeOnline.scene.start("Lobby");
+            });   
+            
         });
 
         this.btnElfa.setInteractive({cursor: "pointer"}).on("pointerdown", function(pointer)
         {
-            cont.p2.ch = 'SSElfa1';
-            //showLobbyDom();
-            sc_SeleccionPersonajeOnline.scene.stop("SeleccionPersonajeOnline");
-            sc_SeleccionPersonajeOnline.scene.start("Lobby");
+            cont.ch = 'SSElfa1';
+            $.ajax({
+                method: "PUT",
+                url: cont.server_ip + "character/"+cont.id,
+                timeout: 3000,
+                data: cont.ch,
+                processData: false,
+                headers: {
+                    "Content-type": "application/json"
+                },
+            }).success(function (item) {
+                console.log("Character changed.");
+                sc_SeleccionPersonajeOnline.scene.stop("SeleccionPersonajeOnline");
+                sc_SeleccionPersonajeOnline.scene.start("Lobby");
+            }).error(function(e) {
+                console.log("Character couldn't be changed.");
+                sc_SeleccionPersonajeOnline.scene.stop("SeleccionPersonajeOnline");
+                sc_SeleccionPersonajeOnline.scene.start("Lobby");
+            });
         });
 
         this.btnFuego.setInteractive({cursor: "pointer"}).on("pointerdown", function(pointer)
         {
-            cont.p2.ch = 'SSFuego1';
-            //showLobbyDom();
-            sc_SeleccionPersonajeOnline.scene.stop("SeleccionPersonajeOnline");
-            sc_SeleccionPersonajeOnline.scene.start("Lobby");
+            cont.ch = 'SSFuego1';
+            $.ajax({
+                method: "PUT",
+                url: cont.server_ip + "character/"+cont.id,
+                timeout: 3000,
+                data: cont.ch,
+                processData: false,
+                headers: {
+                    "Content-type": "application/json"
+                },
+            }).success(function (item) {
+                console.log("Character changed.");
+                sc_SeleccionPersonajeOnline.scene.stop("SeleccionPersonajeOnline");
+                sc_SeleccionPersonajeOnline.scene.start("Lobby");
+            }).error(function(e) {
+                console.log("Character couldn't be changed.");
+                sc_SeleccionPersonajeOnline.scene.stop("SeleccionPersonajeOnline");
+                sc_SeleccionPersonajeOnline.scene.start("Lobby");
+            });
         });
 
     }    
