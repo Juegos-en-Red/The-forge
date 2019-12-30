@@ -252,7 +252,6 @@ function MenuSeleccionOnline(escena)
 }
 
 function clickBackOnline() {
-    showLobbyDom();
     sc_SeleccionPersonajeOnline.scene.stop("SeleccionPersonajeOnline");
     sc_SeleccionPersonajeOnline.scene.start("Lobby");
 }
