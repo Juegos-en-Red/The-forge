@@ -65,16 +65,22 @@ sc_lobby.update = function() {
         sc_lobby.chatBox.getChildByName('chatBox').scrollTop = sc_lobby.chatBox.getChildByName('chatBox').scrollHeight;
     }
 
-    /*
-    document.getElementById('tabla').innerHTML = ''; 
-    for (var i = 0; i < 100; i++) {
-      document.getElementById('tabla').innerHTML +="<tr><td        style='width:200px;border:1px solid black'>Cell Content 1</td></tr>"; 
-    }
-    */
+
     var usersList = ""
     for(var i = 0; i < onlineUsers.length; i++) {
-        //sc_lobby.usersBox.getChildByName('usersBox').value += onlineUsers[i]+"\n";
-        usersList +="<tr><td style='width:200px;border:1px solid black; background-image:url(../assets/online/chatBoxBG.png);'>" + onlineUsers[i].name + "</td></tr>"; 
+        if (onlineUsers[i].timeout > -10) {
+            usersList +="<tr><td style='width:200px;border:1px solid black; background-image:url(../assets/online/chatBoxBG.png);'>" + onlineUsers[i].name;
+            
+            if (onlineUsers[i].inGame) {
+                usersList += " (vs. " + onlineUsers[i].opponentName + ")";
+            }
+
+            if (onlineUsers[i].timeout < 0) {
+                usersList += " (Away)";
+            }
+
+            usersList += "</td></tr>"; 
+        }
     }
     sc_lobby.usersBox.getChildByID('tabla').innerHTML = usersList;
 }

@@ -166,7 +166,18 @@ public class PlayerController {
 		for (int i = 0; i < players.length; i++) {
 			if (ids[i]) {
 				if (players[i].getName().equals(player.getName())) {
-					return new ResponseEntity<>(i,HttpStatus.CONFLICT);
+					if (players[i].getTimeout() > 0) {
+						return new ResponseEntity<>(i,HttpStatus.CONFLICT);
+					} else {
+						if (players[i].getPassword().equals(player.getPassword())) {
+							player.setId(i);
+							players[player.getId()] = player;
+							ids[player.getId()] = true;
+							return new ResponseEntity<>(player.getId(),HttpStatus.OK);
+						} else {
+							return new ResponseEntity<>(-1, HttpStatus.UNAUTHORIZED);
+						}
+					}
 				}
 			}
 		}
