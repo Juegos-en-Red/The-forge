@@ -20,7 +20,6 @@ sc_lobby.create = function() {
     sc_lobby.pingText.setOrigin(1, 0);
 
     sc_lobby.chatBox.getChildByName('chatBox').value = "";
-    //sc_lobby.usersBox.getChildByName('usersBox').value = "";
 
     disconnectButton.setInteractive({cursor: "pointer"});
     disconnectButton.on('pointerdown', function (event) {
@@ -62,7 +61,35 @@ sc_lobby.create = function() {
     sc_lobby.changeCharacterButton.on('pointerdown', function (event) {
         //Cambio de personaje
         sc_lobby.scene.start('SeleccionPersonajeOnline');
-        //hideLobbyDom();
+    });
+
+    //Perfil de otro jugador
+    sc_lobby.enemyProfileBG = sc_lobby.add.sprite(449, 100, "recuadroPje");
+    sc_lobby.enemyProfileBG.setOrigin(0,0);
+    sc_lobby.enemyProfileText = sc_lobby.add.text(464, 115, "", {fontSize: '20px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2, align: 'left'});
+    sc_lobby.enemyProfileText.setOrigin(0, 0);
+    sc_lobby.challengeButton = sc_lobby.add.sprite(464, 230, "botonChallenge");
+    sc_lobby.challengeButton.setOrigin(0, 0);
+    sc_lobby.challengeButton.setInteractive({cursor: "pointer"});
+    sc_lobby.challengeButton.on('pointerdown', function (event) {
+
+    });
+    sc_lobby.enemyCross = sc_lobby.add.sprite(597, 115, "cruz3");
+    sc_lobby.enemyCross.setOrigin(0, 0);
+    sc_lobby.enemyCross.setInteractive({cursor: "pointer"});
+    
+    sc_lobby.enemyProfileBG.setVisible(false);
+    sc_lobby.enemyProfileText.setVisible(false);
+    sc_lobby.challengeButton.setVisible(false);
+    sc_lobby.enemyCross.setVisible(false);
+
+    sc_lobby.enemyCross.on('pointerdown', function (event) {
+        sc_lobby.enemyProfileBG.setVisible(false);
+        sc_lobby.enemyProfileText.setVisible(false);
+        sc_lobby.challengeButton.setVisible(false);
+        sc_lobby.challengeButton.removeInteractive();
+        sc_lobby.enemyCross.setVisible(false);
+        sc_lobby.enemyCross.removeInteractive();
     });
 
 }
@@ -78,7 +105,6 @@ sc_lobby.update = function() {
         sc_lobby.chatBox.getChildByName('chatBox').value += "["+msg.time+"] "+msg.sender+": "+msg.message;
         sc_lobby.chatBox.getChildByName('chatBox').scrollTop = sc_lobby.chatBox.getChildByName('chatBox').scrollHeight;
     }
-
 
     var usersList = ""
     for(var i = 0; i < onlineUsers.length; i++) {
@@ -105,7 +131,7 @@ sc_lobby.update = function() {
 
 
         if (onlineUsers[i].timeout > -10) {
-            usersList +="<tr><td style='width:200px;border:1px solid black; background-image:url(../assets/online/chatBoxBG.png);'>" + onlineUsers[i].name;
+            usersList +="<tr onmousedown='showUserProfile(onlineUsers["+i+"])'><td id='row'  style='cursor:pointer;width:200px;border:1px solid black; background-image:url(../assets/online/chatBoxBG.png);'>" + onlineUsers[i].name;
             
             if (onlineUsers[i].inGame) {
                 usersList += " (vs. " + onlineUsers[i].opponentName + ")";
@@ -150,4 +176,34 @@ function showLobbyDom() {
     sc_lobby.chatBox.getChildByName('chatBox').style.visibility = "visible";
     sc_lobby.usersBox.getChildByID('usersBox').style.visibility = "visible";
     sc_lobby.chatInput.getChildByName('chatField').style.visibility = "visible";
+}
+
+function showUserProfile(player) {
+    sc_lobby.enemyProfileBG.setVisible(true);
+    sc_lobby.enemyProfileText.setVisible(true);
+    sc_lobby.enemyCross.setVisible(true);
+    sc_lobby.enemyCross.setInteractive({cursor: "pointer"});
+
+    if (player.name != cont.name) {
+        sc_lobby.challengeButton.setVisible(true);
+        sc_lobby.challengeButton.setInteractive({cursor: "pointer"});
+    } else {
+        sc_lobby.challengeButton.setVisible(false);
+        sc_lobby.challengeButton.removeInteractive();
+    }
+
+    var text = player.name + "\nWins: " + player.wins + "\nLosses: " + player.losses + "\nCharacter: ";
+        cont.ch = player.character;
+        switch (player.character.slice(2,3)) {
+            case "H":
+                text += "Ice";
+            break;
+            case "E":
+                text += "Elf";
+            break;
+            case "F":
+                text += "Fire";
+            break;
+        }
+    sc_lobby.enemyProfileText.setText(text);
 }
