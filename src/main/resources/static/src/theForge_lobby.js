@@ -6,6 +6,8 @@ sc_lobby.preload = function() {
 }
 
 sc_lobby.create = function() {
+    sc_lobby.openEnemyName = "none";
+    sc_lobby.userBoxOpen = false;
     cont.lastChatMessage = -1;
     cont.prevScene = sc_lobby;
     cont.prevSceneName = "Lobby"; //Importante cambiarlo en cada escena en la que se pueda ir la conexión
@@ -68,11 +70,32 @@ sc_lobby.create = function() {
     sc_lobby.enemyProfileBG.setOrigin(0,0);
     sc_lobby.enemyProfileText = sc_lobby.add.text(464, 115, "", {fontSize: '20px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2, align: 'left'});
     sc_lobby.enemyProfileText.setOrigin(0, 0);
-    sc_lobby.challengeButton = sc_lobby.add.sprite(464, 230, "botonChallenge");
+    sc_lobby.challengeButton = sc_lobby.add.sprite(464, 210, "botonChallenge");
     sc_lobby.challengeButton.setOrigin(0, 0);
     sc_lobby.challengeButton.setInteractive({cursor: "pointer"});
     sc_lobby.challengeButton.on('pointerdown', function (event) {
-
+        //Decirle al servidor que quieres desafiar a tal persona
+        //AJAX (PUT) CON:
+        // cont.id en la url
+        // sc_lobby.openEnemyName como data
+        //Si te dice que todo bien, pues te toca esperar a que te acepte o no.
+        //En el servidor debería actualizar los datos de un jugador en los del otro y viceversa (si es que se puede, claro)
+        console.log(sc_lobby.openEnemyName);
+        $.ajax({
+            method: "PUT",
+            url: cont.server_ip + "challenge/"+cont.id,
+            timeout: 3000,
+            data: sc_lobby.openEnemyName,
+            processData: false,
+            headers: {
+                "Content-type": "application/json"
+            },
+        }).success(function (item) {
+            console.log("Challenge sent.");
+        }).error(function(e) {
+            console.log("Couldn't challenge that player.");
+            console.log(e);
+        });   
     });
     sc_lobby.enemyCross = sc_lobby.add.sprite(597, 115, "cruz3");
     sc_lobby.enemyCross.setOrigin(0, 0);
@@ -90,7 +113,21 @@ sc_lobby.create = function() {
         sc_lobby.challengeButton.removeInteractive();
         sc_lobby.enemyCross.setVisible(false);
         sc_lobby.enemyCross.removeInteractive();
+        sc_lobby.userBoxOpen = false;
     });
+
+    //Cuadro de que te están desafiando
+    sc_lobby.challengeBG = sc_lobby.add.sprite(560, 230, "recuadroDesafio");
+    sc_lobby.challengeText = sc_lobby.add.text(560, 160, "\nWants to fight!", {fontSize: '24px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2, align: 'center'});
+    sc_lobby.challengeText.setOrigin(0.5,0.5);
+    sc_lobby.acceptButton = sc_lobby.add.sprite(560, 230, "botonAccept");
+    sc_lobby.declineButton = sc_lobby.add.sprite(560, 300, "botonDecline");
+
+    //Hacer que no se vean
+    sc_lobby.challengeBG.setVisible(false);
+    sc_lobby.challengeText.setVisible(false);
+    sc_lobby.acceptButton.setVisible(false);
+    sc_lobby.declineButton.setVisible(false);
 
 }
 
@@ -125,6 +162,41 @@ sc_lobby.update = function() {
                 break;
             }
             sc_lobby.profileText.setText(text);
+
+            //Si nos están desafiando, que salga la caja
+            if (onlineUsers[i].opponentName != "" && !onlineUsers[i].sendingChallenge) {
+                if (!sc_lobby.challengeBG.visible) {
+                    sc_lobby.challengeBG.setVisible(true);
+                    sc_lobby.challengeText.setVisible(true);
+                    sc_lobby.challengeText.setText(onlineUsers[i].opponentName+"\nWants to fight!");
+                    sc_lobby.acceptButton.setVisible(true);
+                    sc_lobby.acceptButton.setInteractive({cursor: "pointer"});
+                    sc_lobby.declineButton.setVisible(true);
+                    sc_lobby.declineButton.setInteractive({cursor: "pointer"});
+                    if (sc_lobby.userBoxOpen) {
+                        sc_lobby.enemyCross.removeInteractive();
+                        if (sc_lobby.challengeButton.visible) {
+                            sc_lobby.challengeButton.removeInteractive();
+                        }
+                    }
+                }
+            } else {
+                if (sc_lobby.challengeBG.visible) {
+                    sc_lobby.challengeBG.setVisible(false);
+                    sc_lobby.challengeText.setVisible(false);
+                    sc_lobby.acceptButton.setVisible(false);
+                    sc_lobby.acceptButton.removeInteractive();
+                    sc_lobby.declineButton.setVisible(false);
+                    sc_lobby.declineButton.removeInteractive();
+                    if (sc_lobby.userBoxOpen) {
+                        sc_lobby.enemyCross.setInteractive({cursor: "pointer"});
+                        if (sc_lobby.challengeButton.visible) {
+                            sc_lobby.challengeButton.setInteractive({cursor: "pointer"});
+                        }
+                    }
+                }
+            }
+            
         }
 
 
@@ -135,6 +207,12 @@ sc_lobby.update = function() {
             
             if (onlineUsers[i].inGame) {
                 usersList += " (vs. " + onlineUsers[i].opponentName + ")";
+            } else if (onlineUsers[i].opponentName != "") {
+                if (onlineUsers[i].sendingChallenge) {
+                    usersList += " (Challenging " + onlineUsers[i].opponentName + "...)";
+                } else {
+                    usersList += " (Challenged by " + onlineUsers[i].opponentName + "...)";
+                }
             }
 
             if (onlineUsers[i].timeout < 0) {
@@ -145,6 +223,7 @@ sc_lobby.update = function() {
         }
     }
     sc_lobby.usersBox.getChildByID('tabla').innerHTML = usersList;
+    updateEnemyProfile();
 }
 
 function sendChatMessage() {
@@ -179,14 +258,17 @@ function showLobbyDom() {
 }
 
 function showUserProfile(player) {
+    sc_lobby.openEnemyName = player.name;
     sc_lobby.enemyProfileBG.setVisible(true);
     sc_lobby.enemyProfileText.setVisible(true);
     sc_lobby.enemyCross.setVisible(true);
     sc_lobby.enemyCross.setInteractive({cursor: "pointer"});
+    sc_lobby.userBoxOpen = true;
 
     if (player.name != cont.name) {
         sc_lobby.challengeButton.setVisible(true);
         sc_lobby.challengeButton.setInteractive({cursor: "pointer"});
+        sc_lobby.challengeButton.setAlpha(1);
     } else {
         sc_lobby.challengeButton.setVisible(false);
         sc_lobby.challengeButton.removeInteractive();
@@ -206,4 +288,67 @@ function showUserProfile(player) {
             break;
         }
     sc_lobby.enemyProfileText.setText(text);
+}
+
+function updateEnemyProfile() {
+    if (sc_lobby.openEnemyName == "none") {
+        return;
+    } else {
+        var player = undefined;
+        for (var i = 0; i < onlineUsers.length; i++) {
+            if (onlineUsers[i].name == sc_lobby.openEnemyName) {
+                player = onlineUsers[i];
+            }
+        }
+        if (player != undefined) {
+            if (player.timeout < 0 || player.inGame || player.opponentName != "") {
+                sc_lobby.challengeButton.setAlpha(0.5);
+                sc_lobby.challengeButton.removeInteractive();
+            }
+            if (player.timeout < -10) {
+                player = undefined;
+            }
+        }
+        if (player == undefined) {
+            sc_lobby.enemyProfileBG.setVisible(false);
+            sc_lobby.enemyProfileText.setVisible(false);
+            sc_lobby.challengeButton.setVisible(false);
+            sc_lobby.challengeButton.removeInteractive();
+            sc_lobby.enemyCross.setVisible(false);
+            sc_lobby.enemyCross.removeInteractive();
+            sc_lobby.userBoxOpen = false;
+            return;
+        }
+    
+        var text = player.name;
+
+        /*if (player.inGame) {
+            text += " (vs. " + player.opponentName + ")";
+        } else if (player.opponentName != "") {
+            if (player.sendingChallenge) {
+                text += " (Challenging " + player.opponentName + "...)";
+            } else {
+                text += " (Waiting for " + player.opponentName + "...)";
+            }
+        }
+
+        if (player.timeout < 0) {
+            text += " (Away)";
+        }*/
+        
+        text += "\nWins: " + player.wins + "\nLosses: " + player.losses + "\nCharacter: ";
+            cont.ch = player.character;
+            switch (player.character.slice(2,3)) {
+                case "H":
+                    text += "Ice";
+                break;
+                case "E":
+                    text += "Elf";
+                break;
+                case "F":
+                    text += "Fire";
+                break;
+            }
+        sc_lobby.enemyProfileText.setText(text);
+    }
 }

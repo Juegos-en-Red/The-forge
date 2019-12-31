@@ -1,11 +1,11 @@
 a
 a
-SSHielo1
-0
-0
-b
-b
 SSFuego1
+0
+0
+b
+b
+SSElfa1
 0
 0
 a a

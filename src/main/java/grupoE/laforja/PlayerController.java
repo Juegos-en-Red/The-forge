@@ -105,10 +105,10 @@ public class PlayerController {
 	 * Al hacer esta petición, se devuelve un array con los jugadores conectados.
 	 * Devuelve toda la información relativa a los jugadores, incluidas contraseñas, por lo que el método no se usa.
 	 * */
-	/*@GetMapping("/players/")
+	@GetMapping("/players/")
 	public Player[] players() {
 		return players;
-	}*/
+	}
 	
 	/*
 	 * GET "/freeslots/"
@@ -283,13 +283,17 @@ public class PlayerController {
 		Player player = players[id];
 
 		if (player != null) {
-			if (player.getOpponentId() != -1 && player.getOpponentName() != null) {
+			if (player.getOpponentId() != -1 && !player.getOpponentName().equals("")) {
 				if (ids[player.getOpponentId()]) {
 					if (players[player.getOpponentId()].getName().equals(player.getOpponentName()))
 					players[player.getOpponentId()].setOpponentId(-1);
-					players[player.getOpponentId()].setOpponentName(null);
+					players[player.getOpponentId()].setOpponentName("");
+					players[player.getOpponentId()].setSendingChallenge(false);
 				}
 			}
+			players[id].setOpponentId(-1);
+			players[id].setOpponentName("");
+			players[id].setSendingChallenge(false);
 		}
 		
 		
@@ -315,15 +319,19 @@ public class PlayerController {
 			if (players[i] != null) {
 				players[i].setTimeout(players[i].getTimeout()-1);
 				if (players[i].getTimeout() <= -60) { //Tienen un minuto para reconectarse los jugadores que se desconecten
-					if (players[i].getOpponentId() != -1 && players[i].getOpponentName() != null) {
+					if (players[i].getOpponentId() != -1 && !players[i].getOpponentName().equals("")) {
 						if (ids[players[i].getOpponentId()]) {
 							if (players[players[i].getOpponentId()].getName().equals(players[i].getOpponentName()))
 							players[players[i].getOpponentId()].setOpponentId(-1);
-							players[players[i].getOpponentId()].setOpponentName(null);
+							players[players[i].getOpponentId()].setOpponentName("");
+							players[players[i].getOpponentId()].setSendingChallenge(false);
 						}
 					}
+					players[i].setOpponentId(-1);
+					players[i].setOpponentName("");
 					players[i] = null;
 					ids[i] = false;
+					players[i].setSendingChallenge(false);
 				}
 			}
 		}
@@ -466,7 +474,7 @@ public class PlayerController {
 						}
 					}
 					line = in.readLine();
-					System.out.println("Line '" + line + "' replaced by line '" + replaceContent + "'");
+					System.out.println("Line '" + line + "' replaced by line '" + replaceContent + "' for player " + name);
 					line = replaceContent;
 					if (line != null) {
 						file += (line + "\n");
@@ -499,4 +507,37 @@ public class PlayerController {
 			//e.printStackTrace();
 		}
 	}
+	
+	/*
+	 * PUT "/challenge/id"
+	 * Al hacer esta petición, si hay un jugador en la id especificada, se le intenta asignar como oponente al jugador que tenga el nombre proporcionado
+	 * */
+	@PutMapping("/challenge/{id}")
+	public ResponseEntity<String> challenge(@PathVariable int id, @RequestBody String opponentName) {
+		int opId = -1;
+		for (int i = 0; i < players.length; i++) {
+			if (ids[i]) {
+				if (players[i].getName().contentEquals(opponentName)) {
+					opId = i;
+				}
+			}
+		}
+		if (opId != -1) {
+			//Existe el oponente, vamos a ver si ambos tienen el hueco de oponente libre
+			if (players[opId].getOpponentId() == -1 && players[opId].getOpponentName().equals("") && players[id].getOpponentId() == -1 && players[id].getOpponentName().equals("")) {
+				//Huecos libres, vamos a asignar a cada jugador la información de su oponente
+				players[opId].setOpponentId(id);
+				players[opId].setOpponentName(players[id].getName());
+				players[id].setOpponentId(opId);
+				players[id].setOpponentName(players[opId].getName());
+				players[id].setSendingChallenge(true);
+				return new ResponseEntity<>(HttpStatus.OK);
+			} else {
+				//No hay huecos libres, vamos a dar un error
+				return new ResponseEntity<>(HttpStatus.CONFLICT);
+			}
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+	
 }

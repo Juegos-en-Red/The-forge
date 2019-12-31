@@ -546,9 +546,12 @@ sc_Preloader.preload = function()
     this.load.image("botonRegistrarse", "../assets/online/botonRegistrarse.png");
     this.load.image("botonEnviar", "../assets/online/botonEnviar.png");
     this.load.image("recuadroPje", "../assets/online/recuadroPje.png");
+    this.load.image("recuadroDesafio", "../assets/online/recuadroDesafio.png");
     this.load.image("botonChange", "../assets/online/botonChange.png");
     this.load.image("botonChallenge", "../assets/online/botonChallenge.png");
     this.load.image("cruz3", "../assets/online/cruz3.png");
+    this.load.image("botonAccept", "../assets/online/botonAccept.png");
+    this.load.image("botonDecline", "../assets/online/botonDecline.png");
 
     //Elementos HTML
     

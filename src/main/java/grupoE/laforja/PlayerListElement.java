@@ -7,6 +7,7 @@ public class PlayerListElement implements Comparable<PlayerListElement> {
 	private String character;
 	private String opponentName;
 	private boolean inGame;
+	private boolean sendingChallenge = false;
 	private int wins;
 	private int losses;
 	
@@ -19,6 +20,7 @@ public class PlayerListElement implements Comparable<PlayerListElement> {
 		this.character = p.getCharacter();
 		this.opponentName = p.getOpponentName();
 		this.inGame = p.isInGame();
+		this.sendingChallenge = p.isSendingChallenge();
 		this.wins = p.getWins();
 		this.losses = p.getLosses();
 	}
@@ -69,6 +71,12 @@ public class PlayerListElement implements Comparable<PlayerListElement> {
 	}
 	public void setLosses(int losses) {
 		this.losses = losses;
+	}
+	public boolean isSendingChallenge() {
+		return sendingChallenge;
+	}
+	public void setSendingChallenge(boolean sendingChallenge) {
+		this.sendingChallenge = sendingChallenge;
 	}
 
 	@Override

@@ -9,6 +9,7 @@ public class Player {
 	private int opponentId = -1;
 	private String opponentName = "";
 	private boolean inGame = false;
+	private boolean sendingChallenge = false;
 	private int wins;
 	private int losses;
 	
@@ -99,6 +100,12 @@ public class Player {
 	}
 	public void setLosses(int losses) {
 		this.losses = losses;
+	}
+	public boolean isSendingChallenge() {
+		return sendingChallenge;
+	}
+	public void setSendingChallenge(boolean sendingChallenge) {
+		this.sendingChallenge = sendingChallenge;
 	}
 	
 }
