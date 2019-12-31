@@ -540,4 +540,38 @@ public class PlayerController {
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	
+	
+	/*
+	 * DELETE "/challenge/id"
+	 * Al hacer esta petición, si hay un jugador en la id especificada, se le intenta asignar como oponente al jugador que tenga el nombre proporcionado
+	 * */
+	@DeleteMapping("/challenge/{id}")
+	public ResponseEntity<String> removeChallenge(@PathVariable int id, @RequestBody String opponentName) {
+		int opId = -1;
+		for (int i = 0; i < players.length; i++) {
+			if (ids[i]) {
+				if (players[i].getName().contentEquals(opponentName)) {
+					opId = i;
+				}
+			}
+		}
+		if (opId != -1) {
+			//Existe el oponente, vamos a ver si ambos son oponentes entre sí
+			if (players[opId].getOpponentId() == players[id].getId() && players[opId].getOpponentName().equals(players[id].getName()) && players[id].getOpponentId() == players[opId].getId() && players[id].getOpponentName().equals(players[opId].getName())) {
+				//Son oponentes, vamos a hacer que dejen de serlo
+				players[opId].setOpponentId(-1);
+				players[opId].setOpponentName("");
+				players[id].setOpponentId(-1);
+				players[id].setOpponentName("");
+				players[id].setSendingChallenge(false);
+				players[opId].setSendingChallenge(false);
+				return new ResponseEntity<>(HttpStatus.OK);
+			} else {
+				//No son oponentes, vamos a dar un error
+				return new ResponseEntity<>(HttpStatus.CONFLICT);
+			}
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+	
 }

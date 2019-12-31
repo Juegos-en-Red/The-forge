@@ -173,6 +173,24 @@ sc_lobby.update = function() {
                     sc_lobby.acceptButton.setInteractive({cursor: "pointer"});
                     sc_lobby.declineButton.setVisible(true);
                     sc_lobby.declineButton.setInteractive({cursor: "pointer"});
+                    sc_lobby.declineButton.opponentName = onlineUsers[i].opponentName;
+                    sc_lobby.declineButton.on('pointerdown', function (event) {
+                        $.ajax({
+                            method: "DELETE",
+                            url: cont.server_ip + "challenge/"+cont.id,
+                            timeout: 3000,
+                            data: sc_lobby.declineButton.opponentName,
+                            processData: false,
+                            headers: {
+                                "Content-type": "application/json"
+                            }
+                        }).done(function (item) {
+                            console.log("Challenge declined");
+                        }).error(function(item){
+                            console.log("Challenge couldn't be declined");
+                        });
+                    });
+
                     if (sc_lobby.userBoxOpen) {
                         sc_lobby.enemyCross.removeInteractive();
                         if (sc_lobby.challengeButton.visible) {
@@ -304,6 +322,11 @@ function updateEnemyProfile() {
             if (player.timeout < 0 || player.inGame || player.opponentName != "") {
                 sc_lobby.challengeButton.setAlpha(0.5);
                 sc_lobby.challengeButton.removeInteractive();
+            } else {
+                if (sc_lobby.challengeButton.visible) {
+                    sc_lobby.challengeButton.setAlpha(1);
+                    sc_lobby.challengeButton.setInteractive({cursor: "pointer"});
+                }
             }
             if (player.timeout < -10) {
                 player = undefined;
