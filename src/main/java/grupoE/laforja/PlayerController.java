@@ -264,11 +264,15 @@ public class PlayerController {
 	 * Al hacer esta petición, si hay un jugador en la id especificada, se actualiza su timeout a 4 segundos.
 	 * */
 	@PutMapping("/reminder/{id}")
-	public ResponseEntity<Integer> resetTimeout(@PathVariable int id) {
+	public ResponseEntity<Integer> resetTimeout(@PathVariable int id, @RequestBody String name) {
 		if (id >= 0) {
 			if (ids[id]) {
-				players[id].setTimeout(4);
-				return new ResponseEntity<>(4,HttpStatus.OK);
+				if (players[id].getName().equals(name)) { //Esto igual da algún error, si se echa a los jugadores de forma rara es por esto probablemente
+					players[id].setTimeout(4);
+					return new ResponseEntity<>(4,HttpStatus.OK);
+				} else {
+					return new ResponseEntity<>(HttpStatus.CONFLICT); 
+				}
 			}
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -289,11 +293,13 @@ public class PlayerController {
 					players[player.getOpponentId()].setOpponentId(-1);
 					players[player.getOpponentId()].setOpponentName("");
 					players[player.getOpponentId()].setSendingChallenge(false);
+					players[player.getOpponentId()].setInGame(false);
 				}
 			}
 			players[id].setOpponentId(-1);
 			players[id].setOpponentName("");
 			players[id].setSendingChallenge(false);
+			players[id].setInGame(false);
 		}
 		
 		
@@ -325,13 +331,15 @@ public class PlayerController {
 							players[players[i].getOpponentId()].setOpponentId(-1);
 							players[players[i].getOpponentId()].setOpponentName("");
 							players[players[i].getOpponentId()].setSendingChallenge(false);
+							players[players[i].getOpponentId()].setInGame(false);
 						}
 					}
 					players[i].setOpponentId(-1);
 					players[i].setOpponentName("");
+					players[i].setInGame(false);
+					System.out.println("Kicked " + players[i].getName() + " for inactivity.");
 					players[i] = null;
 					ids[i] = false;
-					players[i].setSendingChallenge(false);
 				}
 			}
 		}
@@ -517,7 +525,7 @@ public class PlayerController {
 		int opId = -1;
 		for (int i = 0; i < players.length; i++) {
 			if (ids[i]) {
-				if (players[i].getName().contentEquals(opponentName)) {
+				if (players[i].getName().equals(opponentName)) {
 					opId = i;
 				}
 			}
@@ -550,7 +558,7 @@ public class PlayerController {
 		int opId = -1;
 		for (int i = 0; i < players.length; i++) {
 			if (ids[i]) {
-				if (players[i].getName().contentEquals(opponentName)) {
+				if (players[i].getName().equals(opponentName)) {
 					opId = i;
 				}
 			}
@@ -565,10 +573,49 @@ public class PlayerController {
 				players[id].setOpponentName("");
 				players[id].setSendingChallenge(false);
 				players[opId].setSendingChallenge(false);
+				players[opId].setInGame(false);
+				players[id].setInGame(false);
 				return new ResponseEntity<>(HttpStatus.OK);
 			} else {
 				//No son oponentes, vamos a dar un error
 				return new ResponseEntity<>(HttpStatus.CONFLICT);
+			}
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+	
+	/*
+	 * PUT "/beginGame/id"
+	 * Al hacer esta petición, se empieza una partida si los jugadores existen y son oponentes
+	 * */
+	@PutMapping("/beginGame/{id}")
+	public ResponseEntity<String> beginGame(@PathVariable int id, @RequestBody String name) {
+		if (id >= 0) {
+			if (ids[id]) {
+				if (players[id].getName().equals(name)) { 
+					int opId = -1;
+					for (int i = 0; i < players.length; i++) {
+						if (ids[i]) {
+							if (players[i].getName().equals(players[id].getOpponentName())) {
+								opId = i;
+							}
+						}
+					}
+					if (opId == -1) {
+						return new ResponseEntity<>(HttpStatus.CONFLICT); 
+					} else {
+						if (players[opId].getOpponentId() == players[id].getId() && players[opId].getOpponentName().equals(players[id].getName()) && players[id].getOpponentId() == players[opId].getId() && players[id].getOpponentName().equals(players[opId].getName())) {
+							players[id].setInGame(true);
+							players[opId].setInGame(true);
+							return new ResponseEntity<>(HttpStatus.OK);
+						} else {
+							return new ResponseEntity<>(HttpStatus.CONFLICT);
+						}
+					}
+					
+				} else {
+					return new ResponseEntity<>(HttpStatus.CONFLICT); 
+				}
 			}
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);

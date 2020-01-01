@@ -8,9 +8,11 @@ sc_lobby.preload = function() {
 sc_lobby.create = function() {
     sc_lobby.openEnemyName = "none";
     sc_lobby.userBoxOpen = false;
+    sc_lobby.userChallenging = false;
     cont.lastChatMessage = -1;
     cont.prevScene = sc_lobby;
     cont.prevSceneName = "Lobby"; //Importante cambiarlo en cada escena en la que se pueda ir la conexión
+    cont.connection = undefined;
     this.bg = sc_lobby.add.image(400, 300, "fondo online-lobby");
     var disconnectButton = sc_lobby.add.sprite(85, 556, "botonDesconectar");
     sc_lobby.chatInput = sc_lobby.add.dom(355,557).createFromCache('chatInput');
@@ -147,6 +149,37 @@ sc_lobby.update = function() {
     for(var i = 0; i < onlineUsers.length; i++) {
 
         if (onlineUsers[i].id == cont.id) {
+
+            if (onlineUsers[i].inGame && cont.connection == undefined) { 
+                //Si tenemos que estar en partida, abrimos websocket
+                sc_lobby.opponentName = onlineUsers[i].opponentName;
+                var wsUrl;
+                if (cont.server_ip.slice(0,4) == "http") {
+                    wsUrl = cont.server_ip.slice(4);
+                } else if (cont.server_ip.slice(0,5) == "https") {
+                    wsUrl = cont.server_ip.slice(5);
+                }
+                cont.connection = new WebSocket("ws"+wsUrl+"echo");
+                cont.connection.onopen = function() {
+                    console.log("Websocket opened");
+                    cont.connection.send(JSON.stringify({
+                        message_type: "OPEN2",
+                        opponent_name: sc_lobby.opponentName,
+                        player_name: cont.name
+                    }));
+                }
+                cont.connection.onerror = function(e) {
+                    console.log("WS error: " + e);
+                }
+                cont.connection.onmessage = function(msg) {
+                    websocketOnMessage(msg);
+                }
+                cont.connection.onclose = function() {
+                    console.log("Websocket closed.");
+                }
+            }
+
+
             //Este es nuestro perfil, así que vamos a mostrar la información necesaria
             var text = onlineUsers[i].name + "\nWins: " + onlineUsers[i].wins + "\nLosses: " + onlineUsers[i].losses + "\nCharacter: ";
             cont.ch = onlineUsers[i].character;
@@ -171,9 +204,57 @@ sc_lobby.update = function() {
                     sc_lobby.challengeText.setText(onlineUsers[i].opponentName+"\nWants to fight!");
                     sc_lobby.acceptButton.setVisible(true);
                     sc_lobby.acceptButton.setInteractive({cursor: "pointer"});
+
+                    sc_lobby.acceptButton.on('pointerdown', function (event) {
+
+                        //Primero mandar una petición ajax diciendo que entramos en partida para que el otro jugador se pueda enterar
+                        $.ajax({
+                            method: "PUT",
+                            url: cont.server_ip + "beginGame/"+cont.id,
+                            timeout: 3000,
+                            data: cont.name,
+                            processData: false,
+                            headers: {
+                                "Content-type": "application/json"
+                            },
+                        }).success(function (item) {
+                            console.log("Challenge accepted.");
+                            var wsUrl;
+                            if (cont.server_ip.slice(0,4) == "http") {
+                                wsUrl = cont.server_ip.slice(4);
+                            } else if (cont.server_ip.slice(0,5) == "https") {
+                                wsUrl = cont.server_ip.slice(5);
+                            }
+                            cont.connection = new WebSocket("ws"+wsUrl+"echo");
+                            cont.connection.onopen = function() {
+                                console.log("Websocket opened");
+                                cont.connection.send(JSON.stringify({
+                                    message_type: "OPEN",
+                                    opponent_name: sc_lobby.declineButton.opponentName,
+                                    player_name: cont.name
+                                }));
+                            }
+                            cont.connection.onerror = function(e) {
+                                console.log("WS error: " + e);
+                            }
+                            cont.connection.onmessage = function(msg) {
+                                websocketOnMessage(msg);
+                            }
+                            cont.connection.onclose = function() {
+                                console.log("Websocket closed.");
+                            }
+                        }).error(function(e) {
+                            console.log("Couldn't accept that challenge.");
+                        });   
+
+
+                        
+                    });
+
                     sc_lobby.declineButton.setVisible(true);
                     sc_lobby.declineButton.setInteractive({cursor: "pointer"});
                     sc_lobby.declineButton.opponentName = onlineUsers[i].opponentName;
+
                     sc_lobby.declineButton.on('pointerdown', function (event) {
                         $.ajax({
                             method: "DELETE",
@@ -214,6 +295,13 @@ sc_lobby.update = function() {
                     }
                 }
             }
+
+            //Si estamos desafiando a alguien, que no podamos intentar desafiar a otro
+            if (onlineUsers[i].opponentName != "") {
+                sc_lobby.userChallenging = true;
+            } else {
+                sc_lobby.userChallenging = false;
+            }
             
         }
 
@@ -242,6 +330,13 @@ sc_lobby.update = function() {
     }
     sc_lobby.usersBox.getChildByID('tabla').innerHTML = usersList;
     updateEnemyProfile();
+}
+
+function websocketOnMessage(msg) {
+    var message = JSON.parse(msg.data);
+    if (message.message_type == "begin_game") {
+        sc_lobby.scene.start("JuegoLocal");
+    }
 }
 
 function sendChatMessage() {
@@ -319,7 +414,7 @@ function updateEnemyProfile() {
             }
         }
         if (player != undefined) {
-            if (player.timeout < 0 || player.inGame || player.opponentName != "") {
+            if (player.timeout < 0 || player.inGame || player.opponentName != "" || sc_lobby.userChallenging) {
                 sc_lobby.challengeButton.setAlpha(0.5);
                 sc_lobby.challengeButton.removeInteractive();
             } else {

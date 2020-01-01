@@ -39,7 +39,8 @@ var cont = {
     disconnecting: false,
     prevScene: undefined,
     prevSceneName: "",
-    ping: 0
+    ping: 0,
+    connection: undefined
 }
 
 //funciones de música por aquí
@@ -77,12 +78,18 @@ function fetchChat() {
         $.ajax({
             method: "PUT",
             url: cont.server_ip + "reminder/"+cont.id,
-            timeout: 3000
+            timeout: 3000,
+            data: cont.name,
+            processData: false,
+            headers: {
+                "Content-type": "application/json"
+            },
         }).success(function (item) {
             if (cont.disconnecting) {
                 cont.disconnecting = false;
             }
             if (cont.prevScene.scene.isActive("DisconnectOverlay")) {
+                console.log("Connection restored.");
                 if (cont.prevScene == sc_lobby) {
                     showLobbyDom();
                 }
@@ -105,6 +112,11 @@ function fetchChat() {
             }, 2000);
         });    
         cont.ping = (new Date().getTime() - start);
+
+
+        if (cont.connection != undefined) {
+            //Enviar mensaje de websocket para resetear el timeout
+        }
 
         $.ajax({
             method: "GET",
