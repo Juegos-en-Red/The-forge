@@ -99,8 +99,7 @@ function fetchChat() {
                         }
                         cont.prevScene.scene.pause(cont.prevSceneName);
                         cont.prevScene.scene.launch("DisconnectOverlay");
-                        cont.prevScene.scene.moveBelow("DisconnectOverlay");
-                        console.log("Connection lost");
+                        sc_disconnectOverlay.scene.bringToTop();
                     }
                 }
             }, 2000);
