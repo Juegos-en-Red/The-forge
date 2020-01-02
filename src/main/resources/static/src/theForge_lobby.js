@@ -335,7 +335,7 @@ sc_lobby.update = function() {
 function websocketOnMessage(msg) {
     var message = JSON.parse(msg.data);
     if (message.message_type == "begin_game") {
-        sc_lobby.scene.start("JuegoLocal");
+        sc_lobby.scene.start("JuegoOnline");
     }
 }
 
