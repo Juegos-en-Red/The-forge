@@ -25,6 +25,9 @@ sc_onlineIP.create = function() {
             cont.name = null;
             cont.lastChatMessage = -1;
             sc_onlineIP.scene.start("MenuPrincipal");
+            if (cont.connection != undefined) {
+                cont.connection.close();
+            }
     });
 
     sc_onlineIP.inputButton = sc_onlineIP.add.sprite(400, 350, "botonConectar");

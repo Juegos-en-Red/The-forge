@@ -43,7 +43,12 @@ sc_Guia.create = function(escena)
     {
         if (ingame) {
             sc_Guia.scene.stop("Guia");
-            sc_Guia.scene.wake("JuegoLocal");
+            if (cont.guiaOnline) {
+                cont.guiaOnline = false;
+                sc_Guia.scene.wake("JuegoOnline");
+            } else {
+                sc_Guia.scene.wake("JuegoLocal");
+            }
         } else {
             sc_Guia.scene.start("MenuPrincipal");
         }
@@ -117,6 +122,7 @@ sc_Guia.update = function(time, delta)
     if (Phaser.Input.Keyboard.JustDown(escape))
         {
             if (ingame) {
+
                 sc_Guia.scene.stop("Guia");
                 sc_Guia.scene.wake("JuegoLocal");
             } else {

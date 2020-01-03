@@ -36,6 +36,7 @@ var cont = {
     lastChatMessage: -1,
     lGuia: true,
     guiaIngame: false,
+    guiaOnline: false,
     disconnecting: false,
     prevScene: undefined,
     prevSceneName: "",

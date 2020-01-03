@@ -39,6 +39,9 @@ sc_lobby.create = function() {
         }).error(function(item){
             console.log("Something went wrong when disconnecting, but I think you already noticed that.");
         });
+        if (cont.connection != undefined) {
+            cont.connection.close();
+        }
     });
 
     sendButton.setInteractive({cursor: "pointer"});
@@ -165,7 +168,8 @@ sc_lobby.update = function() {
                     cont.connection.send(JSON.stringify({
                         message_type: "OPEN2",
                         opponent_name: sc_lobby.opponentName,
-                        player_name: cont.name
+                        player_name: cont.name,
+                        player_character: cont.ch
                     }));
                 }
                 cont.connection.onerror = function(e) {
@@ -231,7 +235,8 @@ sc_lobby.update = function() {
                                 cont.connection.send(JSON.stringify({
                                     message_type: "OPEN",
                                     opponent_name: sc_lobby.declineButton.opponentName,
-                                    player_name: cont.name
+                                    player_name: cont.name,
+                                    player_character: cont.ch,//cambiarlo en el otro sitio tambien
                                 }));
                             }
                             cont.connection.onerror = function(e) {
@@ -335,7 +340,40 @@ sc_lobby.update = function() {
 function websocketOnMessage(msg) {
     var message = JSON.parse(msg.data);
     if (message.message_type == "begin_game") {
+        if (message.player_1 == cont.name) {
+            sc_lobby.playercontrolling = 1;
+        } else {
+            sc_lobby.playercontrolling = 2;
+        }
+        cont.p1.ch = message.p2_character;
+        cont.p2.ch = message.p1_character;
         sc_lobby.scene.start("JuegoOnline");
+    } else {
+        //if (sc_juegoOnline.scene.isActive()) { //No debería hacer falta, espero
+            switch(message.message_type) {
+                case "game_time":
+                    sc_juegoOnline.gameTime = message.game_time;
+                break;
+                case "trap_change":
+                    if (message.target == "altar") {
+                        if (message.trap == "none") {
+                            sc_juegoOnline.altarTrampas.setTexture("altar1");
+                        } else {
+                            sc_juegoOnline.altarTrampas.setTexture("altar2");
+                        }
+                        sc_juegoOnline.altarTrampas.trampa = message.trap;
+                    } else {
+                        if (message.target == cont.name) {
+                            //cambiar la trampa que lleva el jugador
+                        } else {
+                            //cambiar la trampa que lleva el oponente
+                        }
+                    }
+                break;
+            }
+        /*} else {
+            console.log("Received WebSocket message, but game scene isn't loaded.");
+        }*/
     }
 }
 
@@ -455,7 +493,7 @@ function updateEnemyProfile() {
         }*/
         
         text += "\nWins: " + player.wins + "\nLosses: " + player.losses + "\nCharacter: ";
-            cont.ch = player.character;
+            //cont.ch = player.character;
             switch (player.character.slice(2,3)) {
                 case "H":
                     text += "Ice";

@@ -3,8 +3,6 @@
 //Inicialización de la escena del juego en local
 var sc_juegoOnline = new Phaser.Scene('JuegoOnline');
 
-const INF = 0X3F3F3F3F;
-
 //Función preload: Aquí se cargan todos los sprites necesarios para el juego.
 sc_juegoOnline.preload = function() {
     
@@ -20,7 +18,7 @@ sc_juegoOnline.create = function() {
     onlineInitGrafo();
 
     //Música. Si se añade más música es importante parar aquí toda la que haya
-    mus_menu.onlinePause();
+    mus_menu.pause();
     mus_menu.currentTime = 0;
 
 
@@ -200,6 +198,14 @@ sc_juegoOnline.create = function() {
     sc_juegoOnline.player = sc_juegoOnline.players.create(210, 320, cont.p1.ch);
     sc_juegoOnline.player2 = sc_juegoOnline.players.create(590, 320, cont.p2.ch);
 
+    if (sc_lobby.playercontrolling == 1) {
+        sc_juegoOnline.userPlayer = sc_juegoOnline.player;
+        sc_juegoOnline.opponentPlayer = sc_juegoOnline.player2;
+    } else {
+        sc_juegoOnline.userPlayer = sc_juegoOnline.player2;
+        sc_juegoOnline.opponentPlayer = sc_juegoOnline.player;
+    }
+
     //Inicialización de características comunes a ambos jugadores
     //Variable auxiliar that para hacer referencia a this
     var that = this;
@@ -346,50 +352,27 @@ sc_juegoOnline.create = function() {
     function (event) {
         switch (event.keyCode) {
             case cont.p1.w:
-                if (sc_juegoOnline.player.spdY <= 0) {
-                    sc_juegoOnline.player.spdY = 0;
+                if (sc_juegoOnline.userPlayer.spdY <= 0) {
+                    sc_juegoOnline.userPlayer.spdY = 0;
                 }
             break;
             case cont.p1.s:
-                if (sc_juegoOnline.player.spdY >= 0) {
-                    sc_juegoOnline.player.spdY = 0;
+                if (sc_juegoOnline.userPlayer.spdY >= 0) {
+                    sc_juegoOnline.userPlayer.spdY = 0;
                 }
             break;
             case cont.p1.a:
-                if (sc_juegoOnline.player.spdX <= 0) {
-                    sc_juegoOnline.player.spdX = 0;
+                if (sc_juegoOnline.userPlayer.spdX <= 0) {
+                    sc_juegoOnline.userPlayer.spdX = 0;
                 }
             break;
             case cont.p1.d:
-                if (sc_juegoOnline.player.spdX >= 0) {
-                    sc_juegoOnline.player.spdX = 0;
+                if (sc_juegoOnline.userPlayer.spdX >= 0) {
+                    sc_juegoOnline.userPlayer.spdX = 0;
                 }
             break;
             case cont.p1.i1:
-                sc_juegoOnline.player.interacted = false;
-            break;
-            case cont.p2.w:
-                if (sc_juegoOnline.player2.spdY <= 0) {
-                    sc_juegoOnline.player2.spdY = 0;
-                }
-            break;
-            case cont.p2.s:
-                if (sc_juegoOnline.player2.spdY >= 0) {
-                    sc_juegoOnline.player2.spdY = 0;
-                }
-            break;
-            case cont.p2.a:
-                if (sc_juegoOnline.player2.spdX <= 0) {
-                    sc_juegoOnline.player2.spdX = 0;
-                }
-            break;
-            case cont.p2.d:
-                if (sc_juegoOnline.player2.spdX >= 0) {
-                    sc_juegoOnline.player2.spdX = 0;
-                }
-            break;
-            case cont.p2.i1:
-                sc_juegoOnline.player2.interacted = false;
+                sc_juegoOnline.userPlayer.interacted = false;
             break;
         }
     });
@@ -405,26 +388,26 @@ sc_juegoOnline.create = function() {
             //jugador 1
             //movimiento
             case cont.p1.w:
-                    sc_juegoOnline.player.spdY = -400;
+                    sc_juegoOnline.userPlayer.spdY = -400;
             break;
             case cont.p1.s:
-                    sc_juegoOnline.player.spdY = 400;
+                    sc_juegoOnline.userPlayer.spdY = 400;
             break;
             case cont.p1.a:
-                    sc_juegoOnline.player.spdX = -400;
+                    sc_juegoOnline.userPlayer.spdX = -400;
             break;
             case cont.p1.d:
-                    sc_juegoOnline.player.spdX = 400;
+                    sc_juegoOnline.userPlayer.spdX = 400;
             break;
             case cont.p1.i1:
-                onlineInteractuar(sc_juegoOnline.player);
-                sc_juegoOnline.player.interacted = true;
+                onlineInteractuar(sc_juegoOnline.userPlayer);
+                sc_juegoOnline.userPlayer.interacted = true;
             break;
             case cont.p1.i2:
-                switch(sc_juegoOnline.player.trampa) {
+                switch(sc_juegoOnline.userPlayer.trampa) {
                     case "trampaReloj":
-                        sc_juegoOnline.player2.tiempoInmovil = 250;
-                        sc_juegoOnline.player.trampa = "none";
+                        sc_juegoOnline.opponentPlayer.tiempoInmovil = 250;
+                        sc_juegoOnline.userPlayer.trampa = "none";
                         break;
                     case "trampaMuro":
                         var muro = sc_juegoOnline.muros.create(540, 300, 'tripleMuro');
@@ -433,42 +416,7 @@ sc_juegoOnline.create = function() {
                         onlineDisconnectNeighbours(getCell(540,300).y,getCell(540,300).x, true, true, true, true);
                         onlineDisconnectNeighbours(getCell(540,300).y,getCell(540,300).x+1, true, true, true, true);
                         onlineDisconnectNeighbours(getCell(540,300).y,getCell(540,300).x-1, true, true, true, true);
-                        sc_juegoOnline.player.trampa = "none";
-                        break;
-                }
-            break;
-
-            //jugador 2
-            case cont.p2.w:
-                    sc_juegoOnline.player2.spdY = -400;
-            break;
-            case cont.p2.s:
-                    sc_juegoOnline.player2.spdY = 400;
-            break;
-            case cont.p2.a:
-                    sc_juegoOnline.player2.spdX = -400;
-            break;
-            case cont.p2.d:
-                    sc_juegoOnline.player2.spdX = 400;
-            break;
-            case cont.p2.i1:
-                onlineInteractuar(sc_juegoOnline.player2);
-                sc_juegoOnline.player2.interacted = true;
-            break;
-            case cont.p2.i2:
-                switch(sc_juegoOnline.player2.trampa) {
-                    case "trampaReloj":
-                        sc_juegoOnline.player.tiempoInmovil = 250;
-                        sc_juegoOnline.player2.trampa = "none";
-                        break;
-                    case "trampaMuro":
-                        var muro = sc_juegoOnline.muros.create(260, 300, 'tripleMuro');
-                        muro.timer = 1000;
-                        muro.status = sc_juegoOnline.add.image(muro.x-6, muro.y-25, 'empty');
-                        onlineDisconnectNeighbours(getCell(260,300).y,getCell(260,300).x, true, true, true, true);
-                        onlineDisconnectNeighbours(getCell(260,300).y,getCell(260,300).x+1, true, true, true, true);
-                        onlineDisconnectNeighbours(getCell(260,300).y,getCell(260,300).x-1, true, true, true, true);
-                        sc_juegoOnline.player2.trampa = "none";
+                        sc_juegoOnline.userPlayer.trampa = "none";
                         break;
                 }
             break;
@@ -626,6 +574,9 @@ sc_juegoOnline.create = function() {
     sc_juegoOnline.pausecancelbutton.setActive(false).setVisible(false).on('pointerup', onlineHideQuitMenu);
 
 
+    sc_juegoOnline.pingText = sc_juegoOnline.add.text(790, 10, "Ping: 0", {fontSize: '12px', fontFamily: 'Bookman', color: '#ffffff', stroke: '#000000', strokeThickness: 2, align: 'center'});
+    sc_juegoOnline.pingText.setOrigin(1, 0);
+
     sc_juegoOnline.victory = undefined; //Importante
 
     //Empieza la cuenta atrás
@@ -636,57 +587,7 @@ sc_juegoOnline.create = function() {
         alpha: {from: 1, to: 0},
         scale: {from: 1.5, to: 1},
         ease: 'Linear',
-        onComplete: function() {
-            sc_juegoOnline.countdown.setTexture('countdown4');
-            sc_juegoOnline.cdTween = sc_juegoOnline.tweens.add({
-                targets: sc_juegoOnline.countdown,
-                alpha: {from: 1, to: 0},
-                scale: {from: 1.5, to: 1},
-                ease: 'Linear',
-                onComplete: function() {
-                    sc_juegoOnline.countdown.setTexture('countdown3');
-                    sc_juegoOnline.cdTween = sc_juegoOnline.tweens.add({
-                        targets: sc_juegoOnline.countdown,
-                        alpha: {from: 1, to: 0},
-                        scale: {from: 1.5, to: 1},
-                        ease: 'Linear',
-                        onComplete: function() {
-                            sc_juegoOnline.countdown.setTexture('countdown2');
-                            sc_juegoOnline.cdTween = sc_juegoOnline.tweens.add({
-                                targets: sc_juegoOnline.countdown,
-                                alpha: {from: 1, to: 0},
-                                scale: {from: 1.5, to: 1},
-                                ease: 'Linear',
-                                onComplete: function() {
-                                    sc_juegoOnline.countdown.setTexture('countdown1');
-                                    sc_juegoOnline.cdTween = sc_juegoOnline.tweens.add({
-                                        targets: sc_juegoOnline.countdown,
-                                        alpha: {from: 1, to: 0},
-                                        scale: {from: 1.5, to: 1},
-                                        ease: 'Linear',
-                                        onComplete: function() {
-                                            sc_juegoOnline.countdown.setTexture('countdown0');
-                                            sc_juegoOnline.cdTween = sc_juegoOnline.tweens.add({
-                                                targets: sc_juegoOnline.countdown,
-                                                alpha: {from: 1, to: 0},
-                                                scale: {from: 1.5, to: 1},
-                                                ease: 'Linear',
-                                                onComplete: function() {
-                                                    sc_juegoOnline.countdown.setTexture('empty');
-                                                    sc_juegoOnline.gameTime = 300000;
-                                                    sc_juegoOnline.gameStarted = true;
-                                                    mus_game.play();
-                                                }
-                                            });
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    });
-                }
-            });
-        }
+        duration: 1000
     });
 
 
@@ -695,6 +596,70 @@ sc_juegoOnline.create = function() {
 
 //Función update: Aquí se maneja todo lo que ocurre durante la partida.
 sc_juegoOnline.update = function(time, delta) {
+
+    //Actualizar la cuenta atrás
+    if (sc_juegoOnline.gameTime == 305000) {
+        sc_juegoOnline.countdown.setTexture('countdown4');
+        sc_juegoOnline.cdTween = sc_juegoOnline.tweens.add({
+            targets: sc_juegoOnline.countdown,
+            alpha: {from: 1, to: 0},
+            scale: {from: 1.5, to: 1},
+            ease: 'Linear',
+            duration: 1000
+        });
+    } else if (sc_juegoOnline.gameTime == 304000) {
+        sc_juegoOnline.countdown.setTexture('countdown3');
+        sc_juegoOnline.cdTween = sc_juegoOnline.tweens.add({
+            targets: sc_juegoOnline.countdown,
+            alpha: {from: 1, to: 0},
+            scale: {from: 1.5, to: 1},
+            ease: 'Linear',
+            duration: 1000
+        });
+    } else if (sc_juegoOnline.gameTime == 303000) {
+        sc_juegoOnline.countdown.setTexture('countdown2');
+        sc_juegoOnline.cdTween = sc_juegoOnline.tweens.add({
+            targets: sc_juegoOnline.countdown,
+            alpha: {from: 1, to: 0},
+            scale: {from: 1.5, to: 1},
+            ease: 'Linear',
+            duration: 1000
+        });
+    } else if (sc_juegoOnline.gameTime == 302000) {
+        sc_juegoOnline.countdown.setTexture('countdown1');
+        sc_juegoOnline.cdTween = sc_juegoOnline.tweens.add({
+            targets: sc_juegoOnline.countdown,
+            alpha: {from: 1, to: 0},
+            scale: {from: 1.5, to: 1},
+            ease: 'Linear',
+            duration: 1000
+        });
+    } else if (sc_juegoOnline.gameTime == 301000) {
+        sc_juegoOnline.countdown.setTexture('countdown0');
+        sc_juegoOnline.cdTween = sc_juegoOnline.tweens.add({
+            targets: sc_juegoOnline.countdown,
+            alpha: {from: 1, to: 0},
+            scale: {from: 1.5, to: 1},
+            ease: 'Linear',
+            duration: 1000,
+            onComplete: function() {
+                sc_juegoOnline.countdown.setTexture('empty');
+            }
+        });
+    } else if (sc_juegoOnline.gameTime <= 300000) {
+        if (!sc_juegoOnline.gameStarted) {
+            sc_juegoOnline.countdown.setTexture('empty');
+            sc_juegoOnline.gameStarted = true;
+            mus_game.play();
+        }
+    }
+    
+    //
+
+
+
+
+    sc_juegoOnline.pingText.setText("Ping: " + cont.ping);
 
     //Si el juego está pausado, la función no se ejecuta.
     if (sc_juegoOnline.botonPausa.paused) {
@@ -719,7 +684,7 @@ sc_juegoOnline.update = function(time, delta) {
     if (!sc_juegoOnline.gameStarted) {
         return;
     }
-    sc_juegoOnline.gameTime -= delta;
+    //sc_juegoOnline.gameTime -= delta;
     sc_juegoOnline.minutesLeft = Math.max(Math.floor((sc_juegoOnline.gameTime/1000)/60),0);
     sc_juegoOnline.secondsLeft = Math.max(Math.floor((sc_juegoOnline.gameTime/1000)%60),0);
     
@@ -739,7 +704,12 @@ sc_juegoOnline.update = function(time, delta) {
     }
 
     //Altar trampas
-    if (sc_juegoOnline.altarTrampas.timer >= 1000 && sc_juegoOnline.altarTrampas.trampa == "none") {
+    if (sc_juegoOnline.altarTrampas.trampa == "none") {
+        sc_juegoOnline.altarTrampas.trampaSprite.setTexture("empty");
+    } else {
+        sc_juegoOnline.altarTrampas.trampaSprite.setTexture(sc_juegoOnline.altarTrampas.trampa);
+    }
+    /*if (sc_juegoOnline.altarTrampas.timer >= 1000 && sc_juegoOnline.altarTrampas.trampa == "none") {
         //activar trampa
         if (Phaser.Math.Between(1, 2) == 2) {
             sc_juegoOnline.altarTrampas.trampa = "trampaReloj";
@@ -759,7 +729,7 @@ sc_juegoOnline.update = function(time, delta) {
         sc_juegoOnline.altarTrampas.timer = 0;
     } else {
         sc_juegoOnline.altarTrampas.timer+=(0.06*delta);
-    }
+    }*/
 
     sc_juegoOnline.muros.children.iterate(function(child){
         if (child != undefined) {
@@ -950,7 +920,7 @@ sc_juegoOnline.update = function(time, delta) {
 }
 
 function onlinePause() {
-    sc_juegoOnline.cdTween.onlinePause();
+    sc_juegoOnline.cdTween.pause();
     sc_juegoOnline.pausedOverlay.setTexture('pausedOverlay');
     
     sc_juegoOnline.pausemenu.setActive(true).setVisible(true);
@@ -999,11 +969,18 @@ function onlineUnPause() {
 }
 
 function onlineQuitGame() {
-    sc_juegoOnline.scene.start("MenuPrincipal");
+    //Ajax que le diga al servidor que te has rendido, por lo que gana el otro. Igual también mensaje de websocket sería buena idea, sabes.
+
+
+    if (cont.connection != undefined) {
+        cont.connection.close();
+    }
+    sc_juegoOnline.scene.start("Lobby");
 }
 
 function onlineShowPauseGuide() {
     cont.guiaIngame = true;
+    cont.guiaOnline = true;
     sc_juegoOnline.scene.switch('Guia');
 }
 
@@ -1195,7 +1172,7 @@ function onlineInteractuarYunques(p) {
                 } else if (child.timer >= 0 && child.timer < 100) {
                     child.timer += 5;
                     child.cooldown = 15;
-                    snd_yunque.onlinePause();
+                    snd_yunque.pause();
                     snd_yunque.currentTime = 0;
                     snd_yunque.play();
                 } else if (child.timer >= 100 && p.heldObject == "none") {
@@ -1462,7 +1439,7 @@ function onlineInteractuarYunquesd(p) {
                 } else if (child.timer >= 0 && child.timer < 100) {
                     child.timer += 5;
                     child.cooldown = 15;
-                    snd_yunque.onlinePause();
+                    snd_yunque.pause();
                     snd_yunque.currentTime = 0;
                     snd_yunque.play();
                 } else if (child.timer >= 100 && p.heldObject == "none") {
@@ -1686,7 +1663,7 @@ function onlineGameVictory(player) {
     sc_juegoOnline.pausedOverlay.setTexture('pausedOverlay');
     sc_juegoOnline.botonPausa.removeInteractive();
     if (player == 0) {
-        mus_game.onlinePause();
+        mus_game.pause();
         mus_game.currentTime = 0;
         mus_defeat.play();
         sc_juegoOnline.victory = sc_juegoOnline.add.image(400, 100, 'empate'); //TIE
@@ -1712,7 +1689,7 @@ function onlineGameVictory(player) {
         }
 
     } else {
-        mus_game.onlinePause();
+        mus_game.pause();
         mus_game.currentTime = 0;
         mus_victory.play();
         sc_juegoOnline.victory = sc_juegoOnline.add.image(400, 100, 'victoria');
@@ -1730,7 +1707,10 @@ function onlineGameVictory(player) {
     sc_juegoOnline.botonSalir = sc_juegoOnline.add.image(400, 550, 'botonSalir');
     sc_juegoOnline.botonSalir.setInteractive({ cursor: "pointer" });
     sc_juegoOnline.botonSalir.on('pointerup', function () {
-        sc_juegoOnline.scene.start("MenuPrincipal");
+        if (cont.connection != undefined) {
+            cont.connection.close();
+        }
+        sc_juegoOnline.scene.start("Lobby");
     });
 }
 
@@ -1802,11 +1782,11 @@ function onlineArmarMonstruo(m, ho) {
 
 function onlineCogerTrampa(p, t) {
     if (sc_juegoOnline.altarTrampas.trampa == "none") return;
-    p.trampa = sc_juegoOnline.altarTrampas.trampa;
+    /*p.trampa = sc_juegoOnline.altarTrampas.trampa;
     sc_juegoOnline.altarTrampas.trampa = "none";
     sc_juegoOnline.altarTrampas.timer = 0;
     sc_juegoOnline.altarTrampas.trampaSprite.setTexture("empty");
-    sc_juegoOnline.altarTrampas.setTexture("altar1");
+    sc_juegoOnline.altarTrampas.setTexture("altar1");*/
 }
 
 function onlineGetTargetCell(player) {

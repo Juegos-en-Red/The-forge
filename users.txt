@@ -5,7 +5,7 @@ SSFuego1
 0
 b
 b
-SSElfa1
+SSHielo1
 0
 0
 a a

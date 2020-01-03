@@ -18,6 +18,9 @@ sc_disconnect.create = function() {
             cont.name = null;
             cont.lastChatMessage = -1;
             sc_disconnect.scene.start("MenuPrincipal");
+            if (cont.connection != undefined) {
+                cont.connection.close();
+            }
     });
 
     sc_disconnect.textInfo = sc_disconnect.add.text(400, 200, "Se ha interrumpido la conexión con el servidor", {fontSize: '30px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2, align: 'center'}).setOrigin(0.5, 0.5);

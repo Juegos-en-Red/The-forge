@@ -21,6 +21,9 @@ sc_disconnectOverlay.create = function() {
         cont.name = null;
         cont.lastChatMessage = -1;
         sc_disconnectOverlay.scene.start("MenuPrincipal");
+        if (cont.connection != undefined) {
+            cont.connection.close();
+        }
     });
 
     sc_disconnectOverlay.textInfo = sc_disconnectOverlay.add.text(400, 150, "CONNECTION LOST", {fontSize: '30px', fontFamily: 'Bookman', color: '#ff6600', stroke: '#000000', strokeThickness: 2, align: 'center'}).setOrigin(0.5, 0.5);
