@@ -6,7 +6,3 @@ Esta clase es una tostadora
 01:06
 a
 aa
-2
-23:55
-null
- 

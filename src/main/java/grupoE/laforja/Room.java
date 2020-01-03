@@ -1,6 +1,7 @@
 package grupoE.laforja;
 
 import java.util.HashMap;
+import java.util.Random;
 
 import org.springframework.web.socket.WebSocketSession;
 
@@ -10,17 +11,27 @@ public class Room {
 	private int p1Timeout;
 	private String p1Character;
 	private WebSocketSession p1Session;
+	private int p1x;
+	private int p1y;
+	private int p1Spdx;
+	private int p1Spdy;
 	private String p2Name;
 	private boolean p2Online;
 	private int p2Timeout;
 	private WebSocketSession p2Session;
 	private String p2Character;
+	private int p2x;
+	private int p2y;
+	private int p2Spdx;
+	private int p2Spdy;
 	private boolean full;
 	private boolean gameOver;
 	private int gameTime;
 	private String[] p1Recipes;
 	private String[] p2Recipes;
 	private String currentTrap;
+	private String p1Trap;
+	private String p2Trap;
 	private boolean trapActive;
 	private HashMap<String,Station> stations;
 
@@ -43,8 +54,98 @@ public class Room {
 		p1Recipes = new String[4];
 		p2Recipes = new String[4];
 		currentTrap = "none";
+		p1Trap = "none";
+		p2Trap = "none";
 		trapActive = true;
 		stations = new HashMap<>();
+		p1x=590;
+		p1y=320;
+		p2x=210;
+		p2y=320;
+		p1Spdx=0;
+		p1Spdy=0;
+		p2Spdx=0;
+		p2Spdy=0;
+		
+		//Vamos a generar las recetas
+	
+	    int aux1, aux2;
+
+	    //piernas
+	    aux1 = (int) Math.round((Math.random()*4)+1);
+	    p1Recipes[0] = ("metal"+aux1+"yunquetemplado");
+	    aux1 = (int) Math.round((Math.random()*4)+1);
+	    p2Recipes[0] = ("metal"+aux1+"yunquetemplado");
+
+	    //cascos
+	    aux1 = (int) Math.round((Math.random()*4)+1);
+	    p1Recipes[1] = ("metal"+aux1+"moldetemplado");
+	    aux1 = (int) Math.round((Math.random()*4)+1);
+	    p2Recipes[1] = ("metal"+aux1+"moldetemplado");
+
+	    //espadas
+	    aux1 = (int) Math.round((Math.random()*4)+1);
+	    do {
+	    	aux2 = (int) Math.round((Math.random()*4)+1);
+	    } while (aux2 == aux1);
+	    if (aux2 < aux1) {
+	    	int temp = aux2;
+	    	aux2 = aux1;
+	    	aux1 = temp;
+	    }
+	    p1Recipes[2] = ("metal"+aux1+aux2+"espadatemplado");
+	    aux1 = (int) Math.round((Math.random()*4)+1);
+	    do {
+	    	aux2 = (int) Math.round((Math.random()*4)+1);
+	    } while (aux2 == aux1);
+	    if (aux2 < aux1) {
+	    	int temp = aux2;
+	    	aux2 = aux1;
+	    	aux1 = temp;
+	    }
+	    p2Recipes[2] = ("metal"+aux1+aux2+"espadatemplado");
+
+	    //pecheras
+	    aux1 = (int) Math.round((Math.random()*4)+1);
+	    do {
+	    	aux2 = (int) Math.round((Math.random()*4)+1);
+	    } while (aux2 == aux1);
+	    if (aux2 < aux1) {
+	    	int temp = aux2;
+	    	aux2 = aux1;
+	    	aux1 = temp;
+	    }
+	    p1Recipes[3] = ("metal"+aux1+aux2+"yunquetemplado");
+	    aux1 = (int) Math.round((Math.random()*4)+1);
+	    do {
+	    	aux2 = (int) Math.round((Math.random()*4)+1);
+	    } while (aux2 == aux1);
+	    if (aux2 < aux1) {
+	    	int temp = aux2;
+	    	aux2 = aux1;
+	    	aux1 = temp;
+	    }
+	    p2Recipes[3] = ("metal"+aux1+aux2+"yunquetemplado");
+	    
+	    //Randomizar recetas
+	   
+	   	Random rand = new Random();
+	   	for (int i = 0; i < 4; i++) {
+	   		int swapIndex = rand.nextInt(4);
+	   		String temp = p1Recipes[swapIndex];
+	   		p1Recipes[swapIndex] = p1Recipes[i];
+	   		p1Recipes[i] = temp;
+	   	}
+	   	for (int i = 0; i < 4; i++) {
+	   		int swapIndex = rand.nextInt(4);
+	   		String temp = p2Recipes[swapIndex];
+	   		p2Recipes[swapIndex] = p2Recipes[i];
+	   		p2Recipes[i] = temp;
+	   	}
+		//
+	    
+		
+		
 	}
 	
 	public String getP1Name() {
@@ -164,7 +265,7 @@ public class Room {
 		return stations;
 	}
 
-	public void setStationTimes(HashMap<String, Station> stations) {
+	public void setStations(HashMap<String, Station> stations) {
 		this.stations = stations;
 	}
 
@@ -174,6 +275,86 @@ public class Room {
 
 	public void setTrapActive(boolean trapActive) {
 		this.trapActive = trapActive;
+	}
+
+	public String getP1Trap() {
+		return p1Trap;
+	}
+
+	public void setP1Trap(String p1Trap) {
+		this.p1Trap = p1Trap;
+	}
+
+	public String getP2Trap() {
+		return p2Trap;
+	}
+
+	public void setP2Trap(String p2Trap) {
+		this.p2Trap = p2Trap;
+	}
+
+	public int getP1x() {
+		return p1x;
+	}
+
+	public void setP1x(int p1x) {
+		this.p1x = p1x;
+	}
+
+	public int getP1y() {
+		return p1y;
+	}
+
+	public void setP1y(int p1y) {
+		this.p1y = p1y;
+	}
+
+	public int getP2x() {
+		return p2x;
+	}
+
+	public void setP2x(int p2x) {
+		this.p2x = p2x;
+	}
+
+	public int getP2y() {
+		return p2y;
+	}
+
+	public void setP2y(int p2y) {
+		this.p2y = p2y;
+	}
+
+	public int getP1Spdx() {
+		return p1Spdx;
+	}
+
+	public void setP1Spdx(int p1Spdx) {
+		this.p1Spdx = p1Spdx;
+	}
+
+	public int getP1Spdy() {
+		return p1Spdy;
+	}
+
+	public void setP1Spdy(int p1Spdy) {
+		this.p1Spdy = p1Spdy;
+	}
+
+	public int getP2Spdx() {
+		return p2Spdx;
+	}
+
+	public void setP2Spdx(int p2Spdx) {
+		this.p2Spdx = p2Spdx;
+	}
+
+	public int getP2Spdy() {
+		return p2Spdy;
+	}
+
+	public void setP2Spdy(int p2Spdy) {
+		this.p2Spdy = p2Spdy;
 	}
 	
 	

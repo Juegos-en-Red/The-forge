@@ -178,8 +178,14 @@ sc_lobby.update = function() {
                 cont.connection.onmessage = function(msg) {
                     websocketOnMessage(msg);
                 }
-                cont.connection.onclose = function() {
-                    console.log("Websocket closed.");
+                cont.connection.onclose = function(e) {
+                    console.log("Websocket closed." + e);
+                    console.log(e);
+                    /*if (sc_juegoOnline.scene.isActive()) {
+                        //poner condición de que la partida no haya terminado
+                        sc_juegoOnline.scene.start("Lobby");
+                        //cerrar la condición
+                    }*/
                 }
             }
 
@@ -349,31 +355,89 @@ function websocketOnMessage(msg) {
         cont.p2.ch = message.p1_character;
         sc_lobby.scene.start("JuegoOnline");
     } else {
-        //if (sc_juegoOnline.scene.isActive()) { //No debería hacer falta, espero
+        if (sc_juegoOnline.scene.isActive()) { //No debería hacer falta, espero. Bueno venga vale, igual sí.
             switch(message.message_type) {
                 case "game_time":
                     sc_juegoOnline.gameTime = message.game_time;
                 break;
                 case "trap_change":
-                    if (message.target == "altar") {
-                        if (message.trap == "none") {
-                            sc_juegoOnline.altarTrampas.setTexture("altar1");
-                        } else {
-                            sc_juegoOnline.altarTrampas.setTexture("altar2");
-                        }
-                        sc_juegoOnline.altarTrampas.trampa = message.trap;
+                    if (message.altarTrap == "none") {
+                        sc_juegoOnline.altarTrampas.setTexture("altar1");
                     } else {
-                        if (message.target == cont.name) {
-                            //cambiar la trampa que lleva el jugador
-                        } else {
-                            //cambiar la trampa que lleva el oponente
-                        }
+                        sc_juegoOnline.altarTrampas.setTexture("altar2");
                     }
+                    //cambiar la trampa del altar
+                    sc_juegoOnline.altarTrampas.trampa = message.altarTrap
+                    //cambiar la trampa que lleva el jugador 2 (viene del servidor como el 1)
+                    sc_juegoOnline.player2.trampa = message.p1Trap;
+                    //cambiar la trampa que lleva el jugador 1 (viene del servidor como el 2)
+                    sc_juegoOnline.player.trampa = message.p2Trap;
                 break;
+                case "player_move":
+                    sc_juegoOnline.player.x = message.player2_x;
+                    sc_juegoOnline.player.y = message.player2_y;
+                    sc_juegoOnline.player2.x = message.player1_x;
+                    sc_juegoOnline.player2.y = message.player1_y;
+                    break;
+                case "player_move_single":
+                    if (message.player == 1) {
+                        //console.log("SE MUEVE EL DE LA DERECHA");
+                        sc_juegoOnline.player2.x = message.player_x;
+                        sc_juegoOnline.player2.y = message.player_y;
+                        sc_juegoOnline.player2.spdX = message.player_spdx;
+                        sc_juegoOnline.player2.spdY = message.player_spdy;
+                    } else {
+                        //console.log("SE MUEVE EL DE LA IZQUIERDA");
+                        sc_juegoOnline.player.x = message.player_x;
+                        sc_juegoOnline.player.y = message.player_y;
+                        sc_juegoOnline.player.spdX = message.player_spdx;
+                        sc_juegoOnline.player.spdY = message.player_spdy;
+                    }
+                    break;
+                case "recetas":
+                    sc_juegoOnline.recetas1 = [message.receta_p1_0,message.receta_p1_1,message.receta_p1_2,message.receta_p1_3];
+                    sc_juegoOnline.recetas2 = [message.receta_p2_0,message.receta_p2_1,message.receta_p2_2,message.receta_p2_3];
+                    break;
             }
-        /*} else {
-            console.log("Received WebSocket message, but game scene isn't loaded.");
-        }*/
+        } else {
+            switch(message.message_type) {
+                case "game_time":
+                    sc_juegoOnline.gameTime = message.game_time;
+                break;
+                case "trap_change":
+                    //Cambiar la trampa del altar
+                    cont.trampa = message.altarTrap;
+                    //cambiar la trampa que lleva el jugador 2 (viene del servidor como el 1)
+                    cont.p2.trampa = message.p1Trap;
+                    //cambiar la trampa que lleva el jugador 1 (viene del servidor como el 2)
+                    cont.p1.trampa = message.p2Trap;
+                break;
+                case "player_move":
+                    console.log(message.player2_x + ", " + message.player2_y + ", " + message.player1_x + ", " + message.player1_y);
+                    cont.p1.x = message.player2_x;
+                    cont.p1.y = message.player2_y;
+                    cont.p2.x = message.player1_x;
+                    cont.p2.y = message.player1_y;
+                    break;
+                case "player_move_single":
+                    if (message.player == 1) {
+                        cont.p2.x = message.player_x;
+                        cont.p2.y = message.player_y;
+                    } else {
+                        cont.p1.x = message.player_x;
+                        cont.p1.y = message.player_y;
+                    }
+                    break;
+            }
+        }
+        if (message.message_type == "timeout") {
+            cont.opTimeOut = message.op_timeout;
+            if (cont.opTimeout == -1) {
+                cont.opTimedOut = false;
+            } else {
+                cont.opTimedOut = true;
+            }
+        }
     }
 }
 

@@ -52,9 +52,33 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 							
 							ObjectNode sendNode = createBeginGameMessage(mapper, r);
 							System.out.println("Sending message " + sendNode.toString());
-							r.getP1Session().sendMessage(new TextMessage(sendNode.toString()));
-							r.getP2Session().sendMessage(new TextMessage(sendNode.toString()));
+							if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendNode.toString()));
+							if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendNode.toString()));
 							
+							//Enviar al cliente la trampa
+							ObjectNode sendTrap = createSendTrapMessage(mapper, r);
+							try {
+								System.out.println("Sending message " + sendTrap.toString());
+								if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
+								if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
+							} catch (IOException e) {
+								//System.out.println(e);
+							}
+							
+							//Enviar a los clientes las posiciones de ambos
+							ObjectNode sendPos = mapper.createObjectNode();
+							sendPos.put("message_type","player_move");
+							sendPos.put("player1_x",r.getP1x());
+							sendPos.put("player1_y",r.getP1y());
+							sendPos.put("player2_x",r.getP2x());
+							sendPos.put("player2_y",r.getP2y());
+							try {
+								System.out.println("Sending message " + sendPos.toString());
+								if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendPos.toString()));
+								if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendPos.toString()));
+							} catch (IOException e) {
+								//System.out.println(e);
+							}
 							
 						} else {
 							//Si el jugador ya estaba conectado, le sustituimos
@@ -64,6 +88,31 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 							ObjectNode sendNode = createBeginGameMessage(mapper, r);
 							System.out.println("Sending message " + sendNode.toString());
 							r.getP2Session().sendMessage(new TextMessage(sendNode.toString()));
+							
+							//Enviar al cliente la trampa
+							ObjectNode sendTrap = createSendTrapMessage(mapper, r);
+							try {
+								System.out.println("Sending message " + sendTrap.toString());
+								if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
+								if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
+							} catch (IOException e) {
+								//System.out.println(e);
+							}
+							
+							//Enviar a los clientes las posiciones de ambos
+							ObjectNode sendPos = mapper.createObjectNode();
+							sendPos.put("message_type","player_move");
+							sendPos.put("player1_x",r.getP1x());
+							sendPos.put("player1_y",r.getP1y());
+							sendPos.put("player2_x",r.getP2x());
+							sendPos.put("player2_y",r.getP2y());
+							try {
+								System.out.println("Sending message " + sendPos.toString());
+								if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendPos.toString()));
+								if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendPos.toString()));
+							} catch (IOException e) {
+								//System.out.println(e);
+							}
 							
 						}
 					} else if (r.getP2Name().equals(node.get("opponent_name").asText()) && r.getP1Name().equals(node.get("player_name").asText())) {
@@ -77,6 +126,31 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 							r.setP1Session(session);
 							r.setFull(true);
 							
+							//Enviar al cliente la trampa
+							ObjectNode sendTrap = createSendTrapMessage(mapper, r);
+							try {
+								System.out.println("Sending message " + sendTrap.toString());
+								if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
+								if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
+							} catch (IOException e) {
+								//System.out.println(e);
+							}
+							
+							//Enviar a los clientes las posiciones de ambos
+							ObjectNode sendPos = mapper.createObjectNode();
+							sendPos.put("message_type","player_move");
+							sendPos.put("player1_x",r.getP1x());
+							sendPos.put("player1_y",r.getP1y());
+							sendPos.put("player2_x",r.getP2x());
+							sendPos.put("player2_y",r.getP2y());
+							try {
+								System.out.println("Sending message " + sendPos.toString());
+								if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendPos.toString()));
+								if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendPos.toString()));
+							} catch (IOException e) {
+								//System.out.println(e);
+							}
+							
 							
 						} else {
 							//Si el jugador ya estaba conectado, le sustituimos
@@ -87,11 +161,143 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 							System.out.println("Sending message " + sendNode.toString());
 							r.getP1Session().sendMessage(new TextMessage(sendNode.toString()));
 							
+							//Enviar al cliente la trampa
+							ObjectNode sendTrap = createSendTrapMessage(mapper, r);
+							try {
+								System.out.println("Sending message " + sendTrap.toString());
+								if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
+								if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
+							} catch (IOException e) {
+								//System.out.println(e);
+							}
+							
+							//Enviar a los clientes las posiciones de ambos
+							ObjectNode sendPos = mapper.createObjectNode();
+							sendPos.put("message_type","player_move");
+							sendPos.put("player1_x",r.getP1x());
+							sendPos.put("player1_y",r.getP1y());
+							sendPos.put("player2_x",r.getP2x());
+							sendPos.put("player2_y",r.getP2y());
+							try {
+								System.out.println("Sending message " + sendPos.toString());
+								if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendPos.toString()));
+								if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendPos.toString()));
+							} catch (IOException e) {
+								//System.out.println(e);
+							}
 						}
 					}
 				}
 			break;
 			case "GRAB TRAP":
+				for (Room r : rooms.values()) {
+					if (!r.getCurrentTrap().equals("none")) {
+						if (r.getP1Name().equals(node.get("player_name").asText())) {
+							System.out.println("Trap grabbed by player " + node.get("player_name").asText());
+							r.setP1Trap(r.getCurrentTrap());
+							r.setCurrentTrap("none");
+							//Enviar a los clientes la trampa
+							ObjectNode sendTrap = createSendTrapMessage(mapper, r);
+							try {
+								System.out.println("Sending message " + sendTrap.toString());
+								if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
+								if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
+							} catch (IOException e) {
+								//System.out.println(e);
+							}
+						} else if (r.getP2Name().equals(node.get("player_name").asText())) { //Algo de aquí no va, no se muy bien el qué puede ser.
+							System.out.println("Trap grabbed by player " + node.get("player_name").asText());
+							r.setP2Trap(r.getCurrentTrap());
+							r.setCurrentTrap("none");
+							//Enviar a los clientes la trampa
+							ObjectNode sendTrap = createSendTrapMessage(mapper, r);
+							try {
+								System.out.println("Sending message " + sendTrap.toString());
+								if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
+								if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
+							} catch (IOException e) {
+								//System.out.println(e);
+							}
+						}
+					}
+				}
+				
+			break;
+			case "USE TRAP":
+				for (Room r : rooms.values()) {
+					if (!r.getCurrentTrap().equals("none")) {
+						if (r.getP1Name().equals(node.get("player_name").asText())) {
+							System.out.println("Trap grabbed by player " + node.get("player_name").asText());
+							r.setP1Trap(r.getCurrentTrap());
+							r.setCurrentTrap("none");
+							//Enviar a los clientes la trampa
+							ObjectNode sendTrap = createSendTrapMessage(mapper, r);
+							try {
+								System.out.println("Sending message " + sendTrap.toString());
+								if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
+								if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
+							} catch (IOException e) {
+								//System.out.println(e);
+							}
+						} else if (r.getP2Name().equals(node.get("player_name").asText())) {
+							System.out.println("Trap grabbed by player " + node.get("player_name").asText());
+							r.setP2Trap(r.getCurrentTrap());
+							r.setCurrentTrap("none");
+							//Enviar a los clientes la trampa
+							ObjectNode sendTrap = createSendTrapMessage(mapper, r);
+							try {
+								System.out.println("Sending message " + sendTrap.toString());
+								if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
+								if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
+							} catch (IOException e) {
+								//System.out.println(e);
+							}
+						}
+					}
+				}
+				
+			break;
+			
+			case "PLAYER MOVE":
+				for (Room r : rooms.values()) {
+					if (r.getP1Name().equals(node.get("player_name").asText())) {
+						r.setP1x(node.get("player_x").asInt());
+						r.setP1y(node.get("player_y").asInt());
+						r.setP1Spdx(node.get("player_spdx").asInt());
+						r.setP1Spdy(node.get("player_spdy").asInt());
+						//Enviar al otro cliente la posición
+						/*ObjectNode sendPos = mapper.createObjectNode();
+						sendPos.put("message_type","player_move_single");
+						sendPos.put("player",1);
+						sendPos.put("player_x",r.getP1x());
+						sendPos.put("player_y",r.getP1y());
+						try {
+							System.out.println("Sending message " + sendPos.toString());
+							if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendPos.toString()));
+						} catch (IOException e) {
+							//System.out.println(e);
+						}*/
+						
+					} else if (r.getP2Name().equals(node.get("player_name").asText())) {
+						r.setP2x(node.get("player_x").asInt());
+						r.setP2y(node.get("player_y").asInt());
+						r.setP2Spdx(node.get("player_spdx").asInt());
+						r.setP2Spdy(node.get("player_spdy").asInt());
+						//Enviar al otro cliente la posición
+						/*ObjectNode sendPos = mapper.createObjectNode();
+						sendPos.put("message_type","player_move_single");
+						sendPos.put("player",2);
+						sendPos.put("player_x",r.getP2x());
+						sendPos.put("player_y",r.getP2y());
+						try {
+							System.out.println("Sending message " + sendPos.toString());
+							if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendPos.toString()));
+						} catch (IOException e) {
+							//System.out.println(e);
+						}*/
+						
+					}
+				}
 				
 			break;
 		}
@@ -100,11 +306,16 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		//No hay que echar al jugador de la sala, pero sí marcarlo como que se ha ido. Podrá volver, espero
+		System.out.println("Session disconnected: " + session.getId() + ". Status: " + status);
 		for (Room r : rooms.values()) {
 			if (r.getP1Session().equals(session)) {
 				r.setP1Timeout(30000);
+				r.setP1Session(null);
 			} else if (r.getP2Session().equals(session)) {
 				r.setP2Timeout(30000);
+				r.setP2Session(null);
+			} else {
+				System.out.println("Ah pues la sesión no coincide con ninguna. jaja que mal.");
 			}
 		}
 	}
@@ -130,87 +341,148 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 					//Sólo debería ocurrir si alguien se desconecta y ha perdido, aunque complicado lo veo, ya que el juego le haría no irse del lobby y ya.
 					
 				} else {
-					//Si no se ha acabado la partida, toca disminuir todos los valores del juego
 					
 					if (r.getP1Timeout() > 0) {
 						r.setP1Timeout(r.getP1Timeout()-100);
-						if (r.getP1Timeout() == 0) {
+						if (r.getP1Timeout() <= 0) {
 							r.setP1Online(false);
 							//Tramitar victoria del jugador 2
 						}
 					}
 					if (r.getP2Timeout() > 0) {
 						r.setP2Timeout(r.getP2Timeout()-100);
-						if (r.getP2Timeout() == 0) {
+						if (r.getP2Timeout() <= 0) {
 							r.setP2Online(false);
 							//Tramitar victoria del jugador 1
 						}
 					}
 					
-					if (r.getGameTime() > -1000) {
-						r.setGameTime(r.getGameTime()-100);
-						//Enviar a los jugadores el tiempo que lleva la partida
-						ObjectNode sendNode = mapper.createObjectNode();
-						sendNode.put("message_type","game_time");
-						sendNode.put("game_time", r.getGameTime());
+					//Enviar el timeout de un jugador al otro para que sepa si se ha ido o algo
+					try {
+						ObjectNode sendPos = mapper.createObjectNode();
+						sendPos.put("message_type","timeout");
+						sendPos.put("op_timeout",r.getP2Timeout());
+						if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendPos.toString()));
+						 sendPos = mapper.createObjectNode();
+						sendPos.put("message_type","timeout");
+						sendPos.put("op_timeout",r.getP1Timeout());
+						if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendPos.toString()));
+					} catch (IOException e) {
+						//System.out.println(e);
+					}
+					if (r.isP1Online() && r.isP2Online() && r.getP1Timeout() == -1 && r.getP2Timeout() == -1) { //Si ambos jugadores están conectados, seguimos calculando todo. Si no, se pausa.
+						//Enviar a los clientes las posiciones de ambos
+						
 						try {
-							r.getP1Session().sendMessage(new TextMessage(sendNode.toString()));
-							r.getP2Session().sendMessage(new TextMessage(sendNode.toString()));
+							ObjectNode sendPos = mapper.createObjectNode();
+							sendPos.put("message_type","player_move_single");
+							sendPos.put("player",2);
+							sendPos.put("player_x",r.getP2x());
+							sendPos.put("player_y",r.getP2y());
+							sendPos.put("player_spdx",r.getP2Spdx());
+							sendPos.put("player_spdy",r.getP2Spdy());
+							if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendPos.toString()));
+							sendPos = mapper.createObjectNode();
+							sendPos.put("message_type","player_move_single");
+							sendPos.put("player",1);
+							sendPos.put("player_x",r.getP1x());
+							sendPos.put("player_y",r.getP1y());
+							sendPos.put("player_spdx",r.getP1Spdx());
+							sendPos.put("player_spdy",r.getP1Spdy());
+							if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendPos.toString()));
 						} catch (IOException e) {
-							System.out.println(e);
+							//System.out.println(e);
 						}
 						
-						if (r.getGameTime() <= 300000) {
-							//Si la partida ha empezado
-							//Cada 17 segundos se activa/desactiva la trampa. no hace falta guardar tiempos de trampas, cuando toque, se genera una trampa y se le envía a los clientes
-							if (r.getGameTime()%17000 == 11000) {
-								if (!r.isTrapActive()) {
-									r.setTrapActive(true);
-									if (r.getCurrentTrap().equals("none")) {
-										//Generar aleatoriamente una trampa
-										int trampa = (int) Math.round(Math.random());
-										if (trampa == 0) {
-											r.setCurrentTrap("trampaMuro");
-										} else {
-											r.setCurrentTrap("trampaReloj");
+						//Vamos a enviar las recetas a ambos clientes
+						try {
+							ObjectNode sendPos = mapper.createObjectNode();
+							sendPos.put("message_type","recetas");
+							sendPos.put("receta_p1_0",r.getP1Recipes()[0]);
+							sendPos.put("receta_p1_1",r.getP1Recipes()[1]);
+							sendPos.put("receta_p1_2",r.getP1Recipes()[2]);
+							sendPos.put("receta_p1_3",r.getP1Recipes()[3]);
+							sendPos.put("receta_p2_0",r.getP2Recipes()[0]);
+							sendPos.put("receta_p2_1",r.getP2Recipes()[1]);
+							sendPos.put("receta_p2_2",r.getP2Recipes()[2]);
+							sendPos.put("receta_p2_3",r.getP2Recipes()[3]);
+							if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendPos.toString()));
+							if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendPos.toString()));
+						} catch (IOException e) {
+							//System.out.println(e);
+						}
+						
+						
+						
+						
+						//Si no se ha acabado la partida, toca disminuir todos los valores del juego
+						
+						
+						
+						if (r.getGameTime() > -1000) {
+							r.setGameTime(r.getGameTime()-100);
+							//Enviar a los jugadores el tiempo que lleva la partida
+							ObjectNode sendNode = mapper.createObjectNode();
+							sendNode.put("message_type","game_time");
+							sendNode.put("game_time", r.getGameTime());
+							//if (r.getGameTime() >= 300000 || r.getGameTime()%1000 == 0) { //quitar esto por favor
+								try {
+									//System.out.println("Sending message " + sendNode.toString());
+									if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendNode.toString()));
+									if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendNode.toString()));
+									//System.out.println("Time sent.");
+								} catch (IOException e) {
+									//System.out.println(e);
+								}
+							//}
+							
+							if (r.getGameTime() <= 300000) {
+								//Si la partida ha empezado
+								//Cada 17 segundos se activa/desactiva la trampa. no hace falta guardar tiempos de trampas, cuando toque, se genera una trampa y se le envía a los clientes
+								if (r.getGameTime()%17000 == 11000) {
+									if (!r.isTrapActive()) {
+										r.setTrapActive(true);
+										if (r.getCurrentTrap().equals("none")) {
+											//Generar aleatoriamente una trampa
+											int trampa = (int) Math.round(Math.random());
+											if (trampa == 0) {
+												r.setCurrentTrap("trampaMuro");
+											} else {
+												r.setCurrentTrap("trampaReloj");
+											}
+											//Enviar al cliente la trampa nueva
+											ObjectNode sendTrap = createSendTrapMessage(mapper, r);
+											try {
+												System.out.println("Sending message " + sendTrap.toString());
+												if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
+												if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
+											} catch (IOException e) {
+												//System.out.println(e);
+											}
 										}
-										//Enviar al cliente la trampa nueva
-										ObjectNode sendTrap = mapper.createObjectNode();
-										sendTrap.put("message_type","trap_change");
-										sendTrap.put("target", "altar");
-										sendTrap.put("trap", r.getCurrentTrap());
+									} else if (r.isTrapActive()) {
+										r.setTrapActive(false);
+										r.setCurrentTrap("none");
+										//Enviar al cliente que ya no hay trampa
+										ObjectNode sendTrap = createSendTrapMessage(mapper, r);
 										try {
 											System.out.println("Sending message " + sendTrap.toString());
-											r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
-											r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
+											if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
+											if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
 										} catch (IOException e) {
-											System.out.println(e);
+											//System.out.println(e);
 										}
 									}
-								} else if (r.isTrapActive()) {
-									r.setTrapActive(false);
-									r.setCurrentTrap("none");
-									//Enviar al cliente que ya no hay trampa
-									ObjectNode sendTrap = mapper.createObjectNode();
-									sendTrap.put("message_type","trap_change");
-									sendTrap.put("target", "altar");
-									sendTrap.put("trap", r.getCurrentTrap());
-									try {
-										System.out.println("Sending message " + sendTrap.toString());
-										r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
-										r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
-									} catch (IOException e) {
-										System.out.println(e);
-									}
 								}
+								
+								//Ahora vamos a modificar los tiempos de las estaciones de trabajo.
+								//Vamos a trabajar en milisegundos aquí, pero en el cliente van de 0 a 100 (sin contar duraciones extras)
+								
+								
+								//Enviar todas las estaciones de trabajo a los clientes
+							
 							}
-							
-							//Ahora vamos a modificar los tiempos de las estaciones de trabajo.
-							//Vamos a trabajar en milisegundos aquí, pero en el cliente van de 0 a 100 (sin contar duraciones extras)
-							
-							
-							//Enviar todas las estaciones de trabajo a los clientes
-							
+						
 						}
 					} else {
 						//La partida se ha acabado. Mandar mensajes de que hasta aquí hemos llegado.
@@ -238,5 +510,14 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 		sendNode.put("p1_character", r.getP1Character());
 		sendNode.put("p2_character", r.getP2Character());
 		return sendNode;
+	}
+	
+	public ObjectNode createSendTrapMessage(ObjectMapper mapper, Room r) {
+		ObjectNode sendTrap = mapper.createObjectNode();
+		sendTrap.put("message_type","trap_change");
+		sendTrap.put("altarTrap", r.getCurrentTrap());
+		sendTrap.put("p1Trap", r.getP1Trap());
+		sendTrap.put("p2Trap", r.getP2Trap());
+		return sendTrap;
 	}
 }

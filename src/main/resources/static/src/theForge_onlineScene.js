@@ -167,6 +167,13 @@ sc_juegoOnline.create = function() {
     //Inicialización de trampas
     sc_juegoOnline.altarTrampas = this.physics.add.staticSprite(400,  400, 'altar1');
     sc_juegoOnline.altarTrampas.trampa = "none";
+    if (cont.trampa != undefined) {
+        sc_juegoOnline.altarTrampas.trampa = cont.trampa;
+        if (cont.trampa != "none") {
+            sc_juegoOnline.altarTrampas.setTexture("altar2");
+        }
+        cont.trampa = undefined;
+    }
     sc_juegoOnline.altarTrampas.timer = 0;
     sc_juegoOnline.altarTrampas.trampaSprite = sc_juegoOnline.add.image(sc_juegoOnline.altarTrampas.x, sc_juegoOnline.altarTrampas.y, 'empty');
     sc_juegoOnline.trampasb = this.physics.add.staticGroup();
@@ -277,6 +284,41 @@ sc_juegoOnline.create = function() {
         });
 
     });
+
+    if (cont.p1.ch == cont.p2.ch) {
+        sc_juegoOnline.opponentPlayer.heldObjectSprite.setTint(0xffff00);
+    }
+
+    //Asignar aquí las trampas que vengan del servidor, si es el caso
+    if (cont.p1.trampa != undefined) {
+        sc_juegoOnline.player.trampa = cont.p1.trampa;
+        cont.p1.trampa = undefined;
+    }
+    if (cont.p2.trampa != undefined) {
+        sc_juegoOnline.player2.trampa = cont.p2.trampa;
+        cont.p2.trampa = undefined;
+    }
+    //Lo mismo con las posiciones
+    if (cont.p1.x != undefined) {
+        sc_juegoOnline.player.x = cont.p1.x;
+        cont.p1.x = undefined;
+    }
+    if (cont.p1.y != undefined) {
+        sc_juegoOnline.player.y = cont.p1.y;
+        cont.p1.y = undefined;
+    }
+    if (cont.p2.x != undefined) {
+        sc_juegoOnline.player2.x = cont.p2.x;
+        cont.p2.x = undefined;
+    }
+    if (cont.p2.y != undefined) {
+        sc_juegoOnline.player2.y = cont.p2.y;
+        cont.p2.y = undefined;
+    }
+    sc_juegoOnline.player.oldX = sc_juegoOnline.player.x;
+    sc_juegoOnline.player.oldY = sc_juegoOnline.player.y;
+    sc_juegoOnline.player2.oldX = sc_juegoOnline.player2.x;
+    sc_juegoOnline.player2.oldY = sc_juegoOnline.player2.y;
 
     //Inicialización de mesas
     sc_juegoOnline.mesas = this.physics.add.staticGroup();
@@ -404,7 +446,18 @@ sc_juegoOnline.create = function() {
                 sc_juegoOnline.userPlayer.interacted = true;
             break;
             case cont.p1.i2:
-                switch(sc_juegoOnline.userPlayer.trampa) {
+                //Hacer que le diga al servidor que quiere usar la trampa, y el servidor le devuelva:
+                //-mensaje diciendo quién ha utilizado la trampa y cual trampa es
+                //-mensaje actualizando las trampas otra vez ya que estamos
+                if (sc_juegoOnline.userPlayer.trampa != "none") {
+                    cont.connection.send(JSON.stringify({
+                        message_type: "USE TRAP",
+                        player_name: cont.name,
+                    }));
+                }
+                //El tiempo de las trampas lo tendrá que gestionar el servidor. Igual tomarlo como una estación de trabajo extra por trampa por jugador???
+
+                /*switch(sc_juegoOnline.userPlayer.trampa) {
                     case "trampaReloj":
                         sc_juegoOnline.opponentPlayer.tiempoInmovil = 250;
                         sc_juegoOnline.userPlayer.trampa = "none";
@@ -418,16 +471,16 @@ sc_juegoOnline.create = function() {
                         onlineDisconnectNeighbours(getCell(540,300).y,getCell(540,300).x-1, true, true, true, true);
                         sc_juegoOnline.userPlayer.trampa = "none";
                         break;
-                }
+                }*/
             break;
         }
     });
 
     //Inicializar recetas
 
-    sc_juegoOnline.recetas1 = [];
-    sc_juegoOnline.recetas2 = [];
-
+    sc_juegoOnline.recetas1 = ["metal1yunquetemplado", "metal1moldetemplado", "metal12yunquetemplado", "metal12espadatemplado"];
+    sc_juegoOnline.recetas2 = ["metal1yunquetemplado", "metal1moldetemplado", "metal12yunquetemplado", "metal12espadatemplado"];
+/*
     var aux1, aux2;
 
     //piernas
@@ -488,7 +541,7 @@ sc_juegoOnline.create = function() {
 
     //Randomizar recetas
     Phaser.Utils.Array.Shuffle(sc_juegoOnline.recetas1);
-    Phaser.Utils.Array.Shuffle(sc_juegoOnline.recetas2);
+    Phaser.Utils.Array.Shuffle(sc_juegoOnline.recetas2);*/
 
     //console.log(sc_juegoOnline.recetas1[0]+", "+sc_juegoOnline.recetas1[1]+", "+sc_juegoOnline.recetas1[2]+", "+sc_juegoOnline.recetas1[3]);
     //console.log(sc_juegoOnline.recetas2[0]+", "+sc_juegoOnline.recetas2[1]+", "+sc_juegoOnline.recetas2[2]+", "+sc_juegoOnline.recetas2[3]);
@@ -576,6 +629,8 @@ sc_juegoOnline.create = function() {
 
     sc_juegoOnline.pingText = sc_juegoOnline.add.text(790, 10, "Ping: 0", {fontSize: '12px', fontFamily: 'Bookman', color: '#ffffff', stroke: '#000000', strokeThickness: 2, align: 'center'});
     sc_juegoOnline.pingText.setOrigin(1, 0);
+    sc_juegoOnline.leaverText = sc_juegoOnline.add.text(400, 300, "He left boi", {fontSize: '40px', fontFamily: 'Bookman', color: '#ffffff', stroke: '#000000', strokeThickness: 2, align: 'center'});
+    sc_juegoOnline.leaverText.setOrigin(0.5,0.5);
 
     sc_juegoOnline.victory = undefined; //Importante
 
@@ -652,6 +707,22 @@ sc_juegoOnline.update = function(time, delta) {
             sc_juegoOnline.gameStarted = true;
             mus_game.play();
         }
+        //Enviar la posición al servidor
+
+        //console.log(sc_juegoOnline.userPlayer.oldX != sc_juegoOnline.userPlayer.x && sc_juegoOnline.userPlayer.oldY != sc_juegoOnline.userPlayer.y);
+        if (sc_juegoOnline.userPlayer.oldX != sc_juegoOnline.userPlayer.x || sc_juegoOnline.userPlayer.oldY != sc_juegoOnline.userPlayer.y) {
+            //console.log("SENDING POSITION");
+            cont.connection.send(JSON.stringify({
+                message_type: "PLAYER MOVE",
+                player_name: cont.name,
+                player_x: sc_juegoOnline.userPlayer.x,
+                player_y: sc_juegoOnline.userPlayer.y,
+                player_spdx: sc_juegoOnline.userPlayer.spdX,
+                player_spdy: sc_juegoOnline.userPlayer.spdY
+            }));
+            sc_juegoOnline.userPlayer.oldX = sc_juegoOnline.userPlayer.x;
+            sc_juegoOnline.userPlayer.oldY = sc_juegoOnline.userPlayer.y;
+        }
     }
     
     //
@@ -661,9 +732,20 @@ sc_juegoOnline.update = function(time, delta) {
 
     sc_juegoOnline.pingText.setText("Ping: " + cont.ping);
 
-    //Si el juego está pausado, la función no se ejecuta.
-    if (sc_juegoOnline.botonPausa.paused) {
+    //Si el juego está pausado, la función se ejecuta igual porque esto es online. Te puedes seguir moviendo y todo, le da igual todo.
+    /*if (sc_juegoOnline.botonPausa.paused) {
         return;
+    }*/
+    //Vamos a ver si hay que pausar esto o no por la desconexión del oponente
+    if (!cont.opTimedOut || cont.opTimeOut == -1) {
+        sc_juegoOnline.leaverText.setText("");
+    } else {
+        if (cont.opTimeOut > 0) {
+            sc_juegoOnline.leaverText.setText("Your opponent left.\nYou will win in " + Math.max(Math.floor((cont.opTimeOut/1000)%60),0) + " seconds.");
+            return;
+        } else {
+            //Tramitar la victoria del jugador por aquí.
+        }
     }
 
     sc_juegoOnline.progreso1.setTexture('progreso' + (4-sc_juegoOnline.recetas1.length));
@@ -773,21 +855,23 @@ sc_juegoOnline.update = function(time, delta) {
         //Ajustar la velocidad para que utilice delta
         if (child.spdX == 400 || child.spdX == -400) {
             child.spdX = (child.spdX/400)*(24*delta);
+            if (child.spdX > 400) {
+                child.spdX = 400;
+            } else if (child.spdX < -400) {
+                child.spdX = -400;
+            }
         }
         if (child.spdY == 400 || child.spdY == -400) {
             child.spdY = (child.spdY/400)*(24*delta);
+            if (child.spdY > 400) {
+                child.spdY = 400;
+            } else if (child.spdY < -400) {
+                child.spdY = -400;
+            }
         }
 
 
-        //Aquí se ajusta la velocidad del jugador según su spdX y spdY. Si lleva un objeto, su velocidad se reduce a la mitad.
-        if (child.heldObject == "none") {
-            child.setVelocityY(child.spdY);
-            child.setVelocityX(child.spdX);
-        } else {
-            
-            child.setVelocityY(child.spdY/2);
-            child.setVelocityX(child.spdX/2);
-        }
+        
 
         //Ajuste de la posición de heldObjectSprite y heldObjectSprite2 a la posición del jugador.
         child.heldObjectSprite.setX(child.x);
@@ -799,6 +883,16 @@ sc_juegoOnline.update = function(time, delta) {
         
 
     });
+
+    //Aquí se ajusta la velocidad del jugador según su spdX y spdY. Si lleva un objeto, su velocidad se reduce a la mitad.
+    if (sc_juegoOnline.userPlayer.heldObject == "none") {
+        sc_juegoOnline.userPlayer.setVelocityY(sc_juegoOnline.userPlayer.spdY);
+        sc_juegoOnline.userPlayer.setVelocityX(sc_juegoOnline.userPlayer.spdX);
+    } else {
+        
+        sc_juegoOnline.userPlayer.setVelocityY(sc_juegoOnline.userPlayer.spdY/2);
+        sc_juegoOnline.userPlayer.setVelocityX(sc_juegoOnline.userPlayer.spdX/2);
+    }
     
     //Actualización de los sprites de las mesas
     sc_juegoOnline.mesas.children.iterate(function(child){
@@ -974,6 +1068,7 @@ function onlineQuitGame() {
 
     if (cont.connection != undefined) {
         cont.connection.close();
+        cont.connection = undefined; //Si se rompe algo de websockets tras cerrarlo al salir, es por esto probablemente.
     }
     sc_juegoOnline.scene.start("Lobby");
 }
@@ -1782,6 +1877,12 @@ function onlineArmarMonstruo(m, ho) {
 
 function onlineCogerTrampa(p, t) {
     if (sc_juegoOnline.altarTrampas.trampa == "none") return;
+    if (p == sc_juegoOnline.userPlayer) {
+        cont.connection.send(JSON.stringify({
+            message_type: "GRAB TRAP",
+            player_name: cont.name,
+        }));
+    }
     /*p.trampa = sc_juegoOnline.altarTrampas.trampa;
     sc_juegoOnline.altarTrampas.trampa = "none";
     sc_juegoOnline.altarTrampas.timer = 0;
