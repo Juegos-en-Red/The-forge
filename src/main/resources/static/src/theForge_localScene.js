@@ -29,7 +29,9 @@ sc_juegoLocal.create = function() {
 
     sc_juegoLocal.graphics = sc_juegoLocal.add.graphics();
     //Inicialización de animaciones
-    initAnimations(this);
+    if(cont.animsOn == undefined) {
+        initAnimations(this);
+    }
 
     //Inicialización de colisiones
     sc_juegoLocal.colisiones = this.physics.add.staticGroup();
@@ -1009,6 +1011,7 @@ function showPauseGuide() {
 
 //Función initAnimations: Aquí se inicializan todas las animaciones de los personajes.
 function initAnimations(that) {
+    cont.animsOn = true;
     //Animaciones de los objetos
     //Animaciones del horno
     that.anims.create({

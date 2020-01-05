@@ -621,4 +621,55 @@ public class PlayerController {
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	
+	/*
+	 * PUT "/gameEnd/id"
+	 * Al hacer esta petición, si hay un jugador en la id especificada, se actualiza su timeout a 4 segundos.
+	 * */
+	@PutMapping("/gameEnd/{id}")
+	public ResponseEntity<Integer> gameEnd(@PathVariable int id, @RequestBody String winner) {
+		if (id >= 0) {
+			if (ids[id]) {
+				
+				if (!winner.equals("none")) {
+					if (players[id].getName().equals(winner)) { //Esto igual da algún error, si se echa a los jugadores de forma rara es por esto probablemente
+						players[id].setWins(players[id].getWins()+1);
+						if (ids[players[id].getOpponentId()]) {
+							players[players[id].getOpponentId()].setLosses(players[players[id].getOpponentId()].getLosses()+1);
+						}
+						replaceLine(players[id].getName(), 3, Integer.toString(players[id].getWins()));
+						replaceLine(players[players[id].getOpponentId()].getName(), 4, Integer.toString(players[players[id].getOpponentId()].getLosses()));
+						
+						if (ids[players[id].getOpponentId()]) {
+							players[players[id].getOpponentId()].setOpponentId(-1);
+							players[players[id].getOpponentId()].setOpponentName("");
+							players[players[id].getOpponentId()].setSendingChallenge(false);
+							players[players[id].getOpponentId()].setInGame(false);
+							players[id].setOpponentId(-1);
+							players[id].setOpponentName("");
+							players[id].setSendingChallenge(false);
+							players[id].setInGame(false);
+						}
+						return new ResponseEntity<>(4,HttpStatus.OK);
+					} else {
+						return new ResponseEntity<>(HttpStatus.CONFLICT); 
+					}
+				} else {
+					if (ids[players[id].getOpponentId()]) {
+						players[players[id].getOpponentId()].setOpponentId(-1);
+						players[players[id].getOpponentId()].setOpponentName("");
+						players[players[id].getOpponentId()].setSendingChallenge(false);
+						players[players[id].getOpponentId()].setInGame(false);
+						players[id].setOpponentId(-1);
+						players[id].setOpponentName("");
+						players[id].setSendingChallenge(false);
+						players[id].setInGame(false);
+					}
+					return new ResponseEntity<>(4,HttpStatus.OK);
+				}
+				
+			}
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+	
 }

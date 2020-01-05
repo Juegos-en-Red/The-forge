@@ -225,33 +225,21 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 			break;
 			case "USE TRAP":
 				for (Room r : rooms.values()) {
-					if (!r.getCurrentTrap().equals("none")) {
-						if (r.getP1Name().equals(node.get("player_name").asText())) {
-							System.out.println("Trap grabbed by player " + node.get("player_name").asText());
-							r.setP1Trap(r.getCurrentTrap());
-							r.setCurrentTrap("none");
-							//Enviar a los clientes la trampa
-							ObjectNode sendTrap = createSendTrapMessage(mapper, r);
-							try {
-								System.out.println("Sending message " + sendTrap.toString());
-								if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
-								if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
-							} catch (IOException e) {
-								//System.out.println(e);
-							}
-						} else if (r.getP2Name().equals(node.get("player_name").asText())) {
-							System.out.println("Trap grabbed by player " + node.get("player_name").asText());
-							r.setP2Trap(r.getCurrentTrap());
-							r.setCurrentTrap("none");
-							//Enviar a los clientes la trampa
-							ObjectNode sendTrap = createSendTrapMessage(mapper, r);
-							try {
-								System.out.println("Sending message " + sendTrap.toString());
-								if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
-								if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
-							} catch (IOException e) {
-								//System.out.println(e);
-							}
+					if (r.getP1Name().equals(node.get("player_name").asText())) {
+						if (r.getP1Trap().equals("trampaMuro")) {
+							r.getStations().get("trampamuro2").setTime(1000);
+							r.setP1Trap("none");
+						} else if (r.getP1Trap().equals("trampaReloj")) {
+							r.getStations().get("trampareloj2").setTime(250);
+							r.setP1Trap("none");
+						}
+					} else if (r.getP2Name().equals(node.get("player_name").asText())) {
+						if (r.getP2Trap().equals("trampaMuro")) {
+							r.getStations().get("trampamuro1").setTime(1000);
+							r.setP2Trap("none");
+						} else if (r.getP2Trap().equals("trampaReloj")) {
+							r.getStations().get("trampareloj1").setTime(250);
+							r.setP2Trap("none");
 						}
 					}
 				}
@@ -265,41 +253,165 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 						r.setP1y(node.get("player_y").asInt());
 						r.setP1Spdx(node.get("player_spdx").asInt());
 						r.setP1Spdy(node.get("player_spdy").asInt());
-						//Enviar al otro cliente la posición
-						/*ObjectNode sendPos = mapper.createObjectNode();
-						sendPos.put("message_type","player_move_single");
-						sendPos.put("player",1);
-						sendPos.put("player_x",r.getP1x());
-						sendPos.put("player_y",r.getP1y());
-						try {
-							System.out.println("Sending message " + sendPos.toString());
-							if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendPos.toString()));
-						} catch (IOException e) {
-							//System.out.println(e);
-						}*/
 						
 					} else if (r.getP2Name().equals(node.get("player_name").asText())) {
 						r.setP2x(node.get("player_x").asInt());
 						r.setP2y(node.get("player_y").asInt());
 						r.setP2Spdx(node.get("player_spdx").asInt());
 						r.setP2Spdy(node.get("player_spdy").asInt());
-						//Enviar al otro cliente la posición
-						/*ObjectNode sendPos = mapper.createObjectNode();
-						sendPos.put("message_type","player_move_single");
-						sendPos.put("player",2);
-						sendPos.put("player_x",r.getP2x());
-						sendPos.put("player_y",r.getP2y());
-						try {
-							System.out.println("Sending message " + sendPos.toString());
-							if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendPos.toString()));
-						} catch (IOException e) {
-							//System.out.println(e);
-						}*/
 						
 					}
 				}
 				
 			break;
+			case "INTERACT":
+				for (Room r : rooms.values()) {
+					if (r.getP1Name().equals(node.get("player_name").asText())) {
+						r.setP1HeldObject(node.get("player_ho").asText());
+						//ver a qué estación de trabajo se refiere y cambiar el objeto y el tiempo según toque
+						for (Station s : r.getStations().values()) {
+							if (s.getType().equals(node.get("station_type").asText()) && s.getPlayer() == (node.get("station_player").asInt())) {
+								s.setTime(node.get("station_time").asDouble());
+								s.setHeldObject(node.get("station_ho").asText());
+								if (s.getType().equals("hornod") || s.getType().equals("yunqued")) {
+									s.setHeldObject2(node.get("station_ho2").asText());
+								}
+							}
+						}
+						
+					} else if (r.getP2Name().equals(node.get("player_name").asText())) {
+						r.setP2HeldObject(node.get("player_ho").asText());
+						//ver a qué estación de trabajo se refiere y cambiar el objeto y el tiempo según toque
+						for (Station s : r.getStations().values()) {
+							if (s.getType().equals(node.get("station_type").asText()) && s.getPlayer() == (node.get("station_player").asInt())) {
+								s.setTime(node.get("station_time").asDouble());
+								s.setHeldObject(node.get("station_ho").asText());
+								if (s.getType().equals("hornod") || s.getType().equals("yunqued")) {
+									s.setHeldObject2(node.get("station_ho2").asText());
+								}
+							}
+						}
+					}
+				}
+				break;
+			case "INTERACT_TIMER":
+				for (Room r : rooms.values()) {
+					if (r.getP1Name().equals(node.get("player_name").asText())) {;
+						//ver a qué estación de trabajo se refiere y cambiar el tiempo según toque
+						for (Station s : r.getStations().values()) {
+							if (s.getType().equals(node.get("station_type").asText()) && s.getPlayer() == (node.get("station_player").asInt())) {
+								s.setTime(node.get("station_time").asDouble());
+							}
+						}
+						
+					} else if (r.getP2Name().equals(node.get("player_name").asText())) {
+						//ver a qué estación de trabajo se refiere y cambiar el tiempo según toque
+						for (Station s : r.getStations().values()) {
+							if (s.getType().equals(node.get("station_type").asText()) && s.getPlayer() == (node.get("station_player").asInt())) {
+								s.setTime(node.get("station_time").asDouble());
+							}
+						}
+					}
+				}
+				break;
+			case "INTERACT_MONSTER":
+				for (Room r : rooms.values()) {
+					if (r.getP1Name().equals(node.get("player_name").asText())) {
+						if (node.get("monster").asInt() == 1) {
+							if (r.getP1HeldObject().equals(r.getP1Recipes()[0])) {
+								if (r.getP1Recipes()[1].equals("none")) {
+									r.setP1MHeldObject4(r.getP1HeldObject());
+								} else if (r.getP1Recipes()[2].equals("none")) {
+									r.setP1MHeldObject3(r.getP1HeldObject());
+								} if (r.getP1Recipes()[3].equals("none")) {
+									r.setP1MHeldObject2(r.getP1HeldObject());
+								} else {
+									r.setP1MHeldObject1(r.getP1HeldObject());
+								}
+								r.setP1HeldObject("none");
+								r.getP1Recipes()[0] = r.getP1Recipes()[1];
+								r.getP1Recipes()[1] = r.getP1Recipes()[2];
+								r.getP1Recipes()[2] = r.getP1Recipes()[3];
+								r.getP1Recipes()[3] = "none";
+								if (r.getP1Recipes()[0].equals("none")) {
+									System.out.println("Player 1 is the winner!");
+									//llamar al método de victoria por aquí
+									gameOver(2,r);
+								}
+							}
+						} else if (node.get("monster").asInt() == 2) {
+							if (r.getP1HeldObject().equals(r.getP2Recipes()[0])) {
+								if (r.getP2Recipes()[1].equals("none")) {
+									r.setP2MHeldObject4(r.getP1HeldObject());
+								} else if (r.getP2Recipes()[2].equals("none")) {
+									r.setP2MHeldObject3(r.getP1HeldObject());
+								} if (r.getP2Recipes()[3].equals("none")) {
+									r.setP2MHeldObject2(r.getP1HeldObject());
+								} else {
+									r.setP2MHeldObject1(r.getP1HeldObject());
+								}
+								r.setP1HeldObject("none");
+								r.getP2Recipes()[0] = r.getP2Recipes()[1];
+								r.getP2Recipes()[1] = r.getP2Recipes()[2];
+								r.getP2Recipes()[2] = r.getP2Recipes()[3];
+								r.getP2Recipes()[3] = "none";
+								if (r.getP2Recipes()[0].equals("none")) {
+									System.out.println("Player 2 is the winner!");
+									//llamar al método de victoria por aquí
+									gameOver(1,r);
+								}
+							}
+						}
+						
+					} else if (r.getP2Name().equals(node.get("player_name").asText())) {
+						if (node.get("monster").asInt() == 1) {
+							if (r.getP2HeldObject().equals(r.getP1Recipes()[0])) {
+								if (r.getP1Recipes()[1].equals("none")) {
+									r.setP1MHeldObject4(r.getP2HeldObject());
+								} else if (r.getP1Recipes()[2].equals("none")) {
+									r.setP1MHeldObject3(r.getP2HeldObject());
+								} if (r.getP1Recipes()[3].equals("none")) {
+									r.setP1MHeldObject2(r.getP2HeldObject());
+								} else {
+									r.setP1MHeldObject1(r.getP2HeldObject());
+								}
+								r.setP2HeldObject("none");
+								r.getP1Recipes()[0] = r.getP1Recipes()[1];
+								r.getP1Recipes()[1] = r.getP1Recipes()[2];
+								r.getP1Recipes()[2] = r.getP1Recipes()[3];
+								r.getP1Recipes()[3] = "none";
+								if (r.getP1Recipes()[0].equals("none")) {
+									System.out.println("Player 1 is the winner!");
+									//llamar al método de victoria por aquí
+									gameOver(2,r);
+								}
+							}
+						} else if (node.get("monster").asInt() == 2) {
+							if (r.getP2HeldObject().equals(r.getP2Recipes()[0])) {
+								if (r.getP2Recipes()[1].equals("none")) {
+									r.setP2MHeldObject4(r.getP2HeldObject());
+								} else if (r.getP2Recipes()[2].equals("none")) {
+									r.setP2MHeldObject3(r.getP2HeldObject());
+								} if (r.getP2Recipes()[3].equals("none")) {
+									r.setP2MHeldObject2(r.getP2HeldObject());
+								} else {
+									r.setP2MHeldObject1(r.getP2HeldObject());
+								}
+								r.setP2HeldObject("none");
+								r.getP2Recipes()[0] = r.getP2Recipes()[1];
+								r.getP2Recipes()[1] = r.getP2Recipes()[2];
+								r.getP2Recipes()[2] = r.getP2Recipes()[3];
+								r.getP2Recipes()[3] = "none";
+								if (r.getP2Recipes()[0].equals("none")) {
+									System.out.println("Player 2 is the winner!");
+									//llamar al método de victoria por aquí
+									gameOver(1,r);
+								}
+							}
+						}
+					}
+				}
+				break;
 		}
 	}
 	
@@ -314,8 +426,6 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 			} else if (r.getP2Session().equals(session)) {
 				r.setP2Timeout(30000);
 				r.setP2Session(null);
-			} else {
-				System.out.println("Ah pues la sesión no coincide con ninguna. jaja que mal.");
 			}
 		}
 	}
@@ -347,6 +457,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 						if (r.getP1Timeout() <= 0) {
 							r.setP1Online(false);
 							//Tramitar victoria del jugador 2
+							gameOver(2,r);
 						}
 					}
 					if (r.getP2Timeout() > 0) {
@@ -354,6 +465,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 						if (r.getP2Timeout() <= 0) {
 							r.setP2Online(false);
 							//Tramitar victoria del jugador 1
+							gameOver(1,r);
 						}
 					}
 					
@@ -435,7 +547,26 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 									//System.out.println(e);
 								}
 							//}
-							
+							if (r.getGameTime() <= 0) {
+								int puntos1=0,puntos2=0;
+								for (int i = 0; i < 4; i++) {
+									if (r.getP1Recipes()[i].equals("none")) {
+										puntos1++;
+									}
+
+									if (r.getP2Recipes()[i].equals("none")) {
+										puntos2++;
+									}
+								}
+								if (puntos1 > puntos2) {
+									gameOver(2,r);
+								} else if (puntos1 < puntos2) {
+									gameOver(1,r);
+								} else {
+									gameOver(0,r);
+								}
+								
+							}
 							if (r.getGameTime() <= 300000) {
 								//Si la partida ha empezado
 								//Cada 17 segundos se activa/desactiva la trampa. no hace falta guardar tiempos de trampas, cuando toque, se genera una trampa y se le envía a los clientes
@@ -450,53 +581,65 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 											} else {
 												r.setCurrentTrap("trampaReloj");
 											}
-											//Enviar al cliente la trampa nueva
-											ObjectNode sendTrap = createSendTrapMessage(mapper, r);
-											try {
-												System.out.println("Sending message " + sendTrap.toString());
-												if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
-												if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
-											} catch (IOException e) {
-												//System.out.println(e);
-											}
+											
 										}
 									} else if (r.isTrapActive()) {
 										r.setTrapActive(false);
 										r.setCurrentTrap("none");
-										//Enviar al cliente que ya no hay trampa
-										ObjectNode sendTrap = createSendTrapMessage(mapper, r);
-										try {
-											System.out.println("Sending message " + sendTrap.toString());
-											if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
-											if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
-										} catch (IOException e) {
-											//System.out.println(e);
-										}
 									}
+								}
+								//Enviar al cliente las trampas
+								ObjectNode sendTrap = createSendTrapMessage(mapper, r);
+								try {
+									System.out.println("Sending message " + sendTrap.toString());
+									if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
+									if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
+								} catch (IOException e) {
+									//System.out.println(e);
 								}
 								
 								//Ahora vamos a modificar los tiempos de las estaciones de trabajo.
-								//Vamos a trabajar en milisegundos aquí, pero en el cliente van de 0 a 100 (sin contar duraciones extras)
+								for (Station s : r.getStations().values()) {
+									s.updateTimer();
+								}
 								
 								
 								//Enviar todas las estaciones de trabajo a los clientes
-							
+								try {
+									ObjectNode sendStations = mapper.createObjectNode();
+									sendStations.put("message_type","estaciones");
+									//enviar objetos de los jugadores
+									sendStations.put("p1_ho",r.getP1HeldObject());
+									sendStations.put("p2_ho",r.getP2HeldObject());
+									//enviar información de las estaciones de trabajo
+									for (Station s : r.getStations().values()) {
+										sendStations.put(s.getType()+s.getPlayer()+"time",s.getTime());
+										sendStations.put(s.getType()+s.getPlayer()+"ho",s.getHeldObject());
+										if (s.getType().equals("hornod") || s.getType().equals("yunqued")) {
+											sendStations.put(s.getType()+s.getPlayer()+"ho2",s.getHeldObject2());
+										}
+									}
+									//enviar objetos de los monstruos
+									sendStations.put("p1m_ho1",r.getP1MHeldObject1());
+									sendStations.put("p1m_ho2",r.getP1MHeldObject2());
+									sendStations.put("p1m_ho3",r.getP1MHeldObject3());
+									sendStations.put("p1m_ho4",r.getP1MHeldObject4());
+									sendStations.put("p2m_ho1",r.getP2MHeldObject1());
+									sendStations.put("p2m_ho2",r.getP2MHeldObject2());
+									sendStations.put("p2m_ho3",r.getP2MHeldObject3());
+									sendStations.put("p2m_ho4",r.getP2MHeldObject4());
+									//enviar los mensajes a los clientes
+									if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendStations.toString()));
+									if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendStations.toString()));
+								} catch (IOException e) {
+									//System.out.println(e);
+								}
 							}
 						
 						}
 					} else {
 						//La partida se ha acabado. Mandar mensajes de que hasta aquí hemos llegado.
 					}
-					/*	private String[] p1Recipes; //Enviarla al conectarse por primera vez. Tendrá que perder elementos según se vayan entregando objetos.
-						private String[] p2Recipes; //Enviarla al conectarse por primera vez. Lo mismo que lo de arriba.
-						//Cuando el cliente diga que ha pillado una trampa, asignarle la que sea y ponerla a none. Si llega tarde pues mala suerte oye.
-						private HashMap<String,Integer> stationTimes; //Habrá que inicializarlas en algún momento igual a lo mejor no se
-						//Cada vez que un cliente interactúe con una estación de trabajo, hay que 
-						//También hacer que si ambos jugadores se han desconectado se anule la partida. En api rest en cuanto uno se va se acabó. Aquí no vale eso.
-						//Si hacemos que cuando se va uno gana el otro, todo bien. Si se van los dos, qué pasa? Sencillo.
-						//Si uno se desconecta por timeout, le mandamos al otro un mensaje de que se acabó la fiesta y cerramos la sala.
-						//Qué pasa si el otro no lo recibe? Pues da absolutamente igual, ya que es él el que debe mandar el resultado de la victoria por API REST.
-						*/
 				}
 			}
 		}
@@ -519,5 +662,29 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 		sendTrap.put("p1Trap", r.getP1Trap());
 		sendTrap.put("p2Trap", r.getP2Trap());
 		return sendTrap;
+	}
+	
+	public void gameOver(int winner, Room r) {
+		ObjectMapper mapper = new ObjectMapper();
+		
+		//Enviar a ambos el nombre del ganador con un mensaje de victoria
+		ObjectNode sendWinner = mapper.createObjectNode();
+		sendWinner.put("message_type","winner");
+		if (winner == 0) {
+			sendWinner.put("winner", "none");
+		} else if (winner == 1) {
+			sendWinner.put("winner", r.getP1Name());
+		} else if (winner == 2) {
+			sendWinner.put("winner", r.getP2Name());
+		}
+		try {
+			System.out.println("Sending message " + sendWinner.toString());
+			if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendWinner.toString()));
+			if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendWinner.toString()));
+		} catch (IOException e) {
+			//System.out.println(e);
+		}
+		//Importante destruir la sala, ya no tiene sentido que siga existiendo
+		rooms.remove(r.getP1Name());
 	}
 }

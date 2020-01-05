@@ -20,6 +20,7 @@ sc_disconnect.create = function() {
             sc_disconnect.scene.start("MenuPrincipal");
             if (cont.connection != undefined) {
                 cont.connection.close();
+                cont.connection = undefined;
             }
     });
 

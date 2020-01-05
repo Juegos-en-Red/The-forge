@@ -24,6 +24,7 @@ function Menu(escena)
 
     this.create = function()
     {
+        console.log("Main menu: begin");
         cont.prevScene = sc_menuPrincipal;
         cont.prevSceneName = "MenuPrincipal";
 

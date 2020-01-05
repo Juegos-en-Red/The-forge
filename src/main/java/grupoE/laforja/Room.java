@@ -15,6 +15,11 @@ public class Room {
 	private int p1y;
 	private int p1Spdx;
 	private int p1Spdy;
+	private String p1HeldObject;
+	private String p1MHeldObject1;
+	private String p1MHeldObject2;
+	private String p1MHeldObject3;
+	private String p1MHeldObject4;
 	private String p2Name;
 	private boolean p2Online;
 	private int p2Timeout;
@@ -24,6 +29,11 @@ public class Room {
 	private int p2y;
 	private int p2Spdx;
 	private int p2Spdy;
+	private String p2HeldObject;
+	private String p2MHeldObject1;
+	private String p2MHeldObject2;
+	private String p2MHeldObject3;
+	private String p2MHeldObject4;
 	private boolean full;
 	private boolean gameOver;
 	private int gameTime;
@@ -66,6 +76,16 @@ public class Room {
 		p1Spdy=0;
 		p2Spdx=0;
 		p2Spdy=0;
+		p1HeldObject = "none";
+		p2HeldObject = "none";
+		p1MHeldObject1 = "none";
+		p1MHeldObject2 = "none";
+		p1MHeldObject3 = "none";
+		p1MHeldObject4 = "none";
+		p2MHeldObject1 = "none";
+		p2MHeldObject2 = "none";
+		p2MHeldObject3 = "none";
+		p2MHeldObject4 = "none";
 		
 		//Vamos a generar las recetas
 	
@@ -142,8 +162,30 @@ public class Room {
 	   		p2Recipes[swapIndex] = p2Recipes[i];
 	   		p2Recipes[i] = temp;
 	   	}
-		//
-	    
+		//Generamos las estaciones de trabajo
+	    stations.put("horno1", new Station("horno", 1));
+	    stations.put("hornod1", new Station("hornod", 1));
+	    stations.put("yunque1", new Station("yunque", 1));
+	    stations.put("yunqued1", new Station("yunqued", 1));
+	    stations.put("molde1", new Station("molde", 1));
+	    stations.put("barril1", new Station("barril", 1));
+	    stations.put("mesa11", new Station("mesa1", 1));
+	    stations.put("mesa21", new Station("mesa2", 1));
+	    stations.put("mesa31", new Station("mesa3", 1));
+	    stations.put("trampamuro1", new Station("trampamuro", 1));
+	    stations.put("trampareloj1", new Station("trampareloj", 1));
+
+	    stations.put("horno2", new Station("horno", 2));
+	    stations.put("hornod2", new Station("hornod", 2));
+	    stations.put("yunque2", new Station("yunque", 2));
+	    stations.put("yunqued2", new Station("yunqued", 2));
+	    stations.put("molde2", new Station("molde", 2));
+	    stations.put("barril2", new Station("barril", 2));
+	    stations.put("mesa12", new Station("mesa1", 2));
+	    stations.put("mesa22", new Station("mesa2", 2));
+	    stations.put("mesa32", new Station("mesa3", 2));
+	    stations.put("trampamuro2", new Station("trampamuro", 2));
+	    stations.put("trampareloj2", new Station("trampareloj", 2));
 		
 		
 	}
@@ -355,6 +397,86 @@ public class Room {
 
 	public void setP2Spdy(int p2Spdy) {
 		this.p2Spdy = p2Spdy;
+	}
+
+	public String getP1HeldObject() {
+		return p1HeldObject;
+	}
+
+	public void setP1HeldObject(String p1HeldObject) {
+		this.p1HeldObject = p1HeldObject;
+	}
+
+	public String getP2HeldObject() {
+		return p2HeldObject;
+	}
+
+	public void setP2HeldObject(String p2HeldObject) {
+		this.p2HeldObject = p2HeldObject;
+	}
+
+	public String getP1MHeldObject1() {
+		return p1MHeldObject1;
+	}
+
+	public void setP1MHeldObject1(String p1mHeldObject1) {
+		p1MHeldObject1 = p1mHeldObject1;
+	}
+
+	public String getP1MHeldObject2() {
+		return p1MHeldObject2;
+	}
+
+	public void setP1MHeldObject2(String p1mHeldObject2) {
+		p1MHeldObject2 = p1mHeldObject2;
+	}
+
+	public String getP1MHeldObject3() {
+		return p1MHeldObject3;
+	}
+
+	public void setP1MHeldObject3(String p1mHeldObject3) {
+		p1MHeldObject3 = p1mHeldObject3;
+	}
+
+	public String getP1MHeldObject4() {
+		return p1MHeldObject4;
+	}
+
+	public void setP1MHeldObject4(String p1mHeldObject4) {
+		p1MHeldObject4 = p1mHeldObject4;
+	}
+
+	public String getP2MHeldObject1() {
+		return p2MHeldObject1;
+	}
+
+	public void setP2MHeldObject1(String p2mHeldObject1) {
+		p2MHeldObject1 = p2mHeldObject1;
+	}
+
+	public String getP2MHeldObject2() {
+		return p2MHeldObject2;
+	}
+
+	public void setP2MHeldObject2(String p2mHeldObject2) {
+		p2MHeldObject2 = p2mHeldObject2;
+	}
+
+	public String getP2MHeldObject3() {
+		return p2MHeldObject3;
+	}
+
+	public void setP2MHeldObject3(String p2mHeldObject3) {
+		p2MHeldObject3 = p2mHeldObject3;
+	}
+
+	public String getP2MHeldObject4() {
+		return p2MHeldObject4;
+	}
+
+	public void setP2MHeldObject4(String p2mHeldObject4) {
+		p2MHeldObject4 = p2mHeldObject4;
 	}
 	
 	

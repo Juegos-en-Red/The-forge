@@ -1,13 +1,13 @@
 a
 a
 SSHielo1
-0
-0
+20
+4
 b
 b
-SSHielo1
-0
-0
+SSElfa1
+4
+20
 a a
 a
 SSHielo1

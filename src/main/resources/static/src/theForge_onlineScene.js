@@ -13,6 +13,7 @@ sc_juegoOnline.create = function() {
     console.log("Online game: begin.");
 
     sc_juegoOnline.gameStarted = false;
+    sc_juegoOnline.gameTime = 306000;
 
     onlineInitDistances();
     onlineInitGrafo();
@@ -27,7 +28,9 @@ sc_juegoOnline.create = function() {
 
     sc_juegoOnline.graphics = sc_juegoOnline.add.graphics();
     //Inicialización de animaciones
-    initAnimations(this);
+    if(cont.animsOn == undefined) {
+        initAnimations(this);
+    }
 
     //Inicialización de colisiones
     sc_juegoOnline.colisiones = this.physics.add.staticGroup();
@@ -452,7 +455,7 @@ sc_juegoOnline.create = function() {
                 if (sc_juegoOnline.userPlayer.trampa != "none") {
                     cont.connection.send(JSON.stringify({
                         message_type: "USE TRAP",
-                        player_name: cont.name,
+                        player_name: cont.name
                     }));
                 }
                 //El tiempo de las trampas lo tendrá que gestionar el servidor. Igual tomarlo como una estación de trabajo extra por trampa por jugador???
@@ -597,6 +600,7 @@ sc_juegoOnline.create = function() {
     //Por otro lado tenemos el botón de pausa, el cual se podrá pulsar para activar o desactivar el pausado del juego.
     sc_juegoOnline.botonPausa = this.physics.add.sprite(400,537, 'botonPausa');
     sc_juegoOnline.pausedOverlay = sc_juegoOnline.add.image(400, 300, 'empty');
+    sc_juegoOnline.pausedOverlay.depth = 997;
     sc_juegoOnline.botonPausa.paused = false;
     sc_juegoOnline.botonPausa.setInteractive({cursor: "pointer"});
     sc_juegoOnline.botonPausa.on('pointerup', function() {
@@ -609,13 +613,20 @@ sc_juegoOnline.create = function() {
 
     //Crear los objetos de pausa desactivados
     sc_juegoOnline.pausemenu = sc_juegoOnline.add.image(400, 300, 'pausemenu');
+    sc_juegoOnline.pausemenu.depth = 998;
     sc_juegoOnline.pauseguidebutton = sc_juegoOnline.add.image(400, 200, 'pauseguidebutton');
     sc_juegoOnline.pausequitbutton = sc_juegoOnline.add.image(400, 300, 'pausequitbutton');
     sc_juegoOnline.pauseresumebutton = sc_juegoOnline.add.image(400, 400, 'pauseresumebutton');
+    sc_juegoOnline.pauseguidebutton.depth = 999;
+    sc_juegoOnline.pausequitbutton.depth = 999;
+    sc_juegoOnline.pauseresumebutton.depth = 999;
 
     sc_juegoOnline.pausequitmenu = sc_juegoOnline.add.image(400, 300, 'pausequitmenu');
     sc_juegoOnline.pausequitbutton2 = sc_juegoOnline.add.image(400, 290, 'pausequitbutton');
     sc_juegoOnline.pausecancelbutton = sc_juegoOnline.add.image(400, 350, 'pausecancelbutton');
+    sc_juegoOnline.pausequitmenu.depth = 1000;
+    sc_juegoOnline.pausequitbutton2.depth = 1000;
+    sc_juegoOnline.pausecancelbutton.depth = 1000;
 
     sc_juegoOnline.pausemenu.setActive(false).setVisible(false);
     sc_juegoOnline.pauseguidebutton.setActive(false).setVisible(false).on('pointerup', onlineShowPauseGuide);
@@ -651,6 +662,12 @@ sc_juegoOnline.create = function() {
 
 //Función update: Aquí se maneja todo lo que ocurre durante la partida.
 sc_juegoOnline.update = function(time, delta) {
+    //Ver si se ha ganado antes de nada
+    if (cont.victoryState != -1) {
+        onlineGameVictory(cont.victoryState);
+        return;
+    }
+
 
     //Actualizar la cuenta atrás
     if (sc_juegoOnline.gameTime == 305000) {
@@ -705,6 +722,7 @@ sc_juegoOnline.update = function(time, delta) {
         if (!sc_juegoOnline.gameStarted) {
             sc_juegoOnline.countdown.setTexture('empty');
             sc_juegoOnline.gameStarted = true;
+            console.log("GAME START");
             mus_game.play();
         }
         //Enviar la posición al servidor
@@ -775,13 +793,13 @@ sc_juegoOnline.update = function(time, delta) {
     if (sc_juegoOnline.gameTime <= -1000) {
         var score1 = 4-sc_juegoOnline.recetas1.length;
         var score2 = 4-sc_juegoOnline.recetas2.length;
-        if (score1 > score2) {
+        /*if (score1 > score2) {
             onlineGameVictory(1);
         } else if (score2 > score1) {
             onlineGameVictory(2);
         } else {
             onlineGameVictory(0);
-        }
+        }*/
         return;
     }
 
@@ -791,31 +809,9 @@ sc_juegoOnline.update = function(time, delta) {
     } else {
         sc_juegoOnline.altarTrampas.trampaSprite.setTexture(sc_juegoOnline.altarTrampas.trampa);
     }
-    /*if (sc_juegoOnline.altarTrampas.timer >= 1000 && sc_juegoOnline.altarTrampas.trampa == "none") {
-        //activar trampa
-        if (Phaser.Math.Between(1, 2) == 2) {
-            sc_juegoOnline.altarTrampas.trampa = "trampaReloj";
-            sc_juegoOnline.altarTrampas.trampaSprite.setTexture("trampaReloj");
-            sc_juegoOnline.altarTrampas.setTexture("altar2");
-        } else {
-            sc_juegoOnline.altarTrampas.trampa = "trampaMuro";
-            sc_juegoOnline.altarTrampas.trampaSprite.setTexture("trampaMuro");
-            sc_juegoOnline.altarTrampas.setTexture("altar2");
-        }
-        sc_juegoOnline.altarTrampas.timer+=(0.06*delta);
-    } else if (sc_juegoOnline.altarTrampas.timer >= 2000) {
-        //defusear trampa
-        sc_juegoOnline.altarTrampas.trampa = "none";
-        sc_juegoOnline.altarTrampas.trampaSprite.setTexture("empty");
-        sc_juegoOnline.altarTrampas.setTexture("altar1");
-        sc_juegoOnline.altarTrampas.timer = 0;
-    } else {
-        sc_juegoOnline.altarTrampas.timer+=(0.06*delta);
-    }*/
 
     sc_juegoOnline.muros.children.iterate(function(child){
         if (child != undefined) {
-            if (child.timer > 0) child.timer-=(0.06*delta);
             child.status.setTexture("reloj" + (Phaser.Math.CeilTo(child.timer/1000*9)-1));
             if (child.timer <= 0) {
                 child.status.setTexture("empty");
@@ -903,16 +899,12 @@ sc_juegoOnline.update = function(time, delta) {
     //Aumenta timer cuando sea necesario, y cambia el gráfico de status al apropiado según el estado del horno.
     sc_juegoOnline.hornos.children.iterate(function(child){
         if (child.timer >= 0 && child.timer < 100) {
-            child.timer+=(0.02*delta);
             child.status.setTexture("reloj" + Phaser.Math.CeilTo(child.timer/100*8));
         } else if (child.timer >= 100 && child.timer < 150) {
-            child.timer+=(0.02*delta);
             child.status.setTexture("tic");
         } else if (child.timer >= 150 && child.timer < 200) {
-            child.timer+=(0.02*delta);
             child.status.setTexture("cruz");
         } else if (child.timer >= 200) {
-            child.timer = -1;
             child.heldObject = "none";
         } else {
             child.status.setTexture("empty");
@@ -935,6 +927,8 @@ sc_juegoOnline.update = function(time, delta) {
             }
         } else if (child.timer >= 100) {
             child.status.setTexture("tic");
+        } else {
+            child.status.setTexture("empty");
         }
     });
 
@@ -942,7 +936,6 @@ sc_juegoOnline.update = function(time, delta) {
     //Similar a la de los hornos
     sc_juegoOnline.barriles.children.iterate(function(child){
         if (child.timer >= 0 && child.timer < 100) {
-            child.timer+=(0.033*delta);
             child.status.setTexture("reloj" + Phaser.Math.CeilTo(child.timer/100*8));
         } else if (child.timer >= 100) {
             child.status.setTexture("tic");
@@ -956,7 +949,6 @@ sc_juegoOnline.update = function(time, delta) {
     sc_juegoOnline.moldes.children.iterate(function(child){
         if (child.timer >= 0 && child.timer < 100) {
             child.setTexture("moldeU");
-            child.timer+=(0.025*delta);
             child.status.setTexture("reloj" + Phaser.Math.CeilTo(child.timer/100*8));
         } else if (child.timer >= 100) {
             child.setTexture("moldeU");
@@ -971,16 +963,12 @@ sc_juegoOnline.update = function(time, delta) {
     //Igual a la de los hornos, pero si sólo hay un metal dentro aparece un icono indicándolo
     sc_juegoOnline.hornosd.children.iterate(function(child){
         if (child.timer >= 0 && child.timer < 100) {
-            child.timer+=(0.01*delta);
             child.status.setTexture("reloj" + Phaser.Math.CeilTo(child.timer/100*8));
         } else if (child.timer >= 100 && child.timer < 150) {
-            child.timer+=(0.01*delta);
             child.status.setTexture("tic");
         } else if (child.timer >= 150 && child.timer < 200) {
-            child.timer+=(0.01*delta);
             child.status.setTexture("cruz");
         } else if (child.timer >= 200) {
-            child.timer = -1;
             child.heldObject1 = "none";
             child.heldObject2 = "none";
         } else {
@@ -1000,6 +988,7 @@ sc_juegoOnline.update = function(time, delta) {
         } else {
             child.cooldown = 0;
         }
+        
         if (child.timer >= 0 && child.timer < 100) {
             if (child.cooldown > 0) {
                 child.status.setTexture("martillo2" + Phaser.Math.CeilTo(child.timer/10));
@@ -1008,6 +997,12 @@ sc_juegoOnline.update = function(time, delta) {
             }
         } else if (child.timer >= 100) {
             child.status.setTexture("tic");
+        } else {
+            if (child.heldObject1 != "none" && child.heldObject2 == "none") {
+                child.status.setTexture("1de2");
+            } else {
+                child.status.setTexture("empty");
+            }
         }
     });
     
@@ -1070,6 +1065,7 @@ function onlineQuitGame() {
         cont.connection.close();
         cont.connection = undefined; //Si se rompe algo de websockets tras cerrarlo al salir, es por esto probablemente.
     }
+    sc_juegoOnline.scene.stop("Lobby");
     sc_juegoOnline.scene.start("Lobby");
 }
 
@@ -1111,10 +1107,26 @@ function onlineInteractuarCajones(p) {
         //if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.55*Math.max(child.body.width, child.body.height)+0.55*Math.max(p.body.width, p.body.height)) {
         if (isAdyacent(p.x,p.y,child.x,child.y)) {
             if (p.heldObject == "none") {
-                p.heldObject = child.heldObject;
+                cont.connection.send(JSON.stringify({
+                    message_type: "INTERACT",
+                    player_name: cont.name,
+                    player_ho: child.heldObject,
+                    station_type: "cajon",
+                    station_player: child.player,
+                    station_ho: child.heldObject,
+                    station_time: 0
+                }));
             }
             else if (p.heldObject == child.heldObject) {
-                p.heldObject = "none";
+                cont.connection.send(JSON.stringify({
+                    message_type: "INTERACT",
+                    player_name: cont.name,
+                    player_ho: "none",
+                    station_type: "cajon",
+                    station_player: child.player,
+                    station_ho: child.heldObject,
+                    station_time: 0
+                }));
             }
             result = true;
         }
@@ -1125,14 +1137,34 @@ function onlineInteractuarCajones(p) {
 //Función onlineInteractuarMesas: Si el jugador está suficientemente cerca, intercambia sus objetos con los de la mesa
 function onlineInteractuarMesas(p) {
     var result = false;
-    sc_juegoOnline.mesas.children.iterate(function (child) {
+    /*sc_juegoOnline.mesas.children.iterate(function (child) {
         if (isAdyacent(p.x,p.y,child.x,child.y)) {
-            var temp = child.heldObject;
-            child.heldObject = p.heldObject;
-            p.heldObject = temp;
+            cont.connection.send(JSON.stringify({
+                message_type: "INTERACT",
+                player_name: cont.name,
+                player_ho: child.heldObject,
+                station_type: "mesa",
+                station_player: child.player,
+                station_ho: p.heldObject,
+                station_time: 0
+            }));
             result = true;
         }
-    });
+    });*/
+    for (var i = 0; i < 6; i++) {
+        if (isAdyacent(p.x,p.y,sc_juegoOnline.mesas.children.entries[i].x,sc_juegoOnline.mesas.children.entries[i].y)) {
+            cont.connection.send(JSON.stringify({
+                message_type: "INTERACT",
+                player_name: cont.name,
+                player_ho: sc_juegoOnline.mesas.children.entries[i].heldObject,
+                station_type: "mesa"+((i%3)+1),
+                station_player: sc_juegoOnline.mesas.children.entries[i].player,
+                station_ho: p.heldObject,
+                station_time: 0
+            }));
+            result = true;
+        }
+    }
     return result;
 }
 
@@ -1141,7 +1173,15 @@ function onlineInteractuarBasuras(p) {
     var result = false;
     sc_juegoOnline.basuras.children.iterate(function (child) {
         if (isAdyacent(p.x,p.y,child.x,child.y)) {
-            p.heldObject = "none";
+            cont.connection.send(JSON.stringify({
+                message_type: "INTERACT",
+                player_name: cont.name,
+                player_ho: "none",
+                station_type: "basura",
+                station_player: child.player,
+                station_ho: "none",
+                station_time: 0
+            }));
             result = true;
         }
     });
@@ -1206,17 +1246,31 @@ function onlineInteractuarHornos(p) {
             if ((child.timer == -1 || (child.timer > 100 && child.timer < 150))) {
                 if (isAdyacent(p.x,p.y,child.x,child.y)) {
                     if (child.heldObject == "none" && child.timer == -1 && (tablaIO[p.heldObject] != undefined)) {
-                        child.heldObject = p.heldObject;
-                        p.heldObject = "none";
-                        child.timer = 0;
+                        cont.connection.send(JSON.stringify({
+                            message_type: "INTERACT",
+                            player_name: cont.name,
+                            player_ho: "none",
+                            station_type: "horno",
+                            station_player: child.player,
+                            station_ho: p.heldObject,
+                            station_time: 0
+                        }));
                         result = true;
                     } else {
                         if (p.heldObject == "none" && child.timer > 100 && child.heldObject != "none") {
+                            var pho = "none";
                             if (tablaIO[child.heldObject] != undefined) {
-                                p.heldObject = tablaIO[child.heldObject];
+                                pho = tablaIO[child.heldObject];
                             }
-                            child.heldObject = "none";
-                            child.timer = -1;
+                            cont.connection.send(JSON.stringify({
+                                message_type: "INTERACT",
+                                player_name: cont.name,
+                                player_ho: pho,
+                                station_type: "horno",
+                                station_player: child.player,
+                                station_ho: "none",
+                                station_time: -1
+                            }));
                             result = true;
                         }
                     }
@@ -1260,28 +1314,45 @@ function onlineInteractuarYunques(p) {
         if (child.cooldown == 0 && p.interacted != true){
             if (isAdyacent(p.x,p.y,child.x,child.y)) {
                 if (child.timer == -1 && child.heldObject == "none" && (tablaIO[p.heldObject] != undefined)) {
-                    child.heldObject = p.heldObject;
-                    p.heldObject = "none";
-                    child.timer = 0;
+                    cont.connection.send(JSON.stringify({
+                        message_type: "INTERACT",
+                        player_name: cont.name,
+                        player_ho: "none",
+                        station_type: "yunque",
+                        station_player: child.player,
+                        station_ho: p.heldObject,
+                        station_time: 0
+                    }));
                     child.cooldown = 5;
                 } else if (child.timer >= 0 && child.timer < 100) {
-                    child.timer += 5;
+                    cont.connection.send(JSON.stringify({
+                        message_type: "INTERACT_TIMER",
+                        player_name: cont.name,
+                        station_type: "yunque",
+                        station_player: child.player,
+                        station_time: child.timer+5
+                    }));
                     child.cooldown = 15;
-                    snd_yunque.pause();
-                    snd_yunque.currentTime = 0;
-                    snd_yunque.play();
                 } else if (child.timer >= 100 && p.heldObject == "none") {
+                    var pho = "none";
                     if (tablaIO[child.heldObject] != undefined) {
-                        p.heldObject = tablaIO[child.heldObject];
+                        pho = tablaIO[child.heldObject];
                     }
-                    child.heldObject = "none";
-                    child.timer = -1;
+                    cont.connection.send(JSON.stringify({
+                        message_type: "INTERACT",
+                        player_name: cont.name,
+                        player_ho: pho,
+                        station_type: "yunque",
+                        station_player: child.player,
+                        station_ho: "none",
+                        station_time: -1
+                    }));
                     child.status.setTexture("empty");
                 }
             }
         }
     });
-    
+
     return result;
 }
 
@@ -1336,17 +1407,31 @@ function onlineInteractuarBarriles(p) {
             if ((child.timer == -1 || (child.timer >= 100))) {
                 if (isAdyacent(p.x,p.y,child.x,child.y)) {
                     if (child.heldObject == "none" && child.timer == -1 && (tablaIO[p.heldObject] != undefined)) {
-                        child.heldObject = p.heldObject;
-                        p.heldObject = "none";
-                        child.timer = 0;
+                        cont.connection.send(JSON.stringify({
+                            message_type: "INTERACT",
+                            player_name: cont.name,
+                            station_type: "barril",
+                            station_player: child.player,
+                            player_ho: "none",
+                            station_ho: p.heldObject,
+                            station_time: 0
+                        }));
                         result = true;
                     } else {
                         if (p.heldObject == "none" && child.timer >= 100 && child.heldObject != "none") {
+                            var pho = "none";
                             if (tablaIO[child.heldObject] != undefined) {
-                                p.heldObject = tablaIO[child.heldObject];
+                                pho = tablaIO[child.heldObject];
                             }
-                            child.heldObject = "none";
-                            child.timer = -1;
+                            cont.connection.send(JSON.stringify({
+                                message_type: "INTERACT",
+                                player_name: cont.name,
+                                station_type: "barril",
+                                station_player: child.player,
+                                player_ho: pho,
+                                station_ho: "none",
+                                station_time: -1
+                            }));
                             result = true;
                         }
                     }
@@ -1376,17 +1461,31 @@ function onlineInteractuarMoldes(p) {
             if ((child.timer == -1 || (child.timer >= 100))) {
                 if (isAdyacent(p.x,p.y,child.x,child.y)) {
                     if (child.heldObject == "none" && child.timer == -1 && (tablaIO[p.heldObject] != undefined)) {
-                        child.heldObject = p.heldObject;
-                        p.heldObject = "none";
-                        child.timer = 0;
+                        cont.connection.send(JSON.stringify({
+                            message_type: "INTERACT",
+                            player_name: cont.name,
+                            station_type: "molde",
+                            station_player: child.player,
+                            player_ho: "none",
+                            station_ho: p.heldObject,
+                            station_time: 0
+                        }));
                         result = true;
                     } else {
                         if (p.heldObject == "none" && child.timer >= 100 && child.heldObject != "none") {
+                            var pho = "none";
                             if (tablaIO[child.heldObject] != undefined) {
-                                p.heldObject = tablaIO[child.heldObject];
+                                pho = tablaIO[child.heldObject];
                             }
-                            child.heldObject = "none";
-                            child.timer = -1;
+                            cont.connection.send(JSON.stringify({
+                                message_type: "INTERACT",
+                                player_name: cont.name,
+                                station_type: "molde",
+                                station_player: child.player,
+                                player_ho: pho,
+                                station_ho: "none",
+                                station_time: -1
+                            }));
                             result = true;
                         }
                     }
@@ -1448,22 +1547,44 @@ function onlineInteractuarHornosd(p) {
             if ((child.timer == -1 || (child.timer > 100 && child.timer < 150))) {
                 if (isAdyacent(p.x,p.y,child.x,child.y)) {
                     if (child.heldObject1 == "none" && child.heldObject2 == "none" && child.timer == -1 && (tablaInputsValidos[p.heldObject])) {
-                        child.heldObject1 = p.heldObject;
-                        p.heldObject = "none";
+                        cont.connection.send(JSON.stringify({
+                            message_type: "INTERACT",
+                            player_name: cont.name,
+                            station_type: "hornod",
+                            station_player: child.player,
+                            player_ho: "none",
+                            station_ho: p.heldObject,
+                            station_ho2: "none",
+                            station_time: child.timer
+                        }));
                         result = true;
                     } else if (child.heldObject1 != "none" && child.heldObject2 == "none" && child.timer == -1 && (tablaInputsValidos[p.heldObject]) && (p.heldObject != child.heldObject1)) {
-                        child.heldObject2 = p.heldObject;
-                        p.heldObject = "none";
-                        child.timer = 0;
+                        cont.connection.send(JSON.stringify({
+                            message_type: "INTERACT",
+                            player_name: cont.name,
+                            station_type: "hornod",
+                            station_player: child.player,
+                            player_ho: "none",
+                            station_ho: child.heldObject1,
+                            station_ho2: p.heldObject,
+                            station_time: 0
+                        }));
                         result = true;
                     } else if (p.heldObject == "none" && child.timer > 100 && child.heldObject1 != "none" && child.heldObject2 != "none") {
+                        var pho = "none";
                         if (tablaIO[child.heldObject1][child.heldObject2] != undefined) {
-                            p.heldObject = tablaIO[child.heldObject1][child.heldObject2];
+                            pho = tablaIO[child.heldObject1][child.heldObject2];
                         }
-                        
-                        child.heldObject1 = "none";
-                        child.heldObject2 = "none";
-                        child.timer = -1;
+                        cont.connection.send(JSON.stringify({
+                            message_type: "INTERACT",
+                            player_name: cont.name,
+                            station_type: "hornod",
+                            station_player: child.player,
+                            player_ho: pho,
+                            station_ho: "none",
+                            station_ho2: "none",
+                            station_time: -1
+                        }));
                         result = true;
                     }
                 }
@@ -1523,27 +1644,52 @@ function onlineInteractuarYunquesd(p) {
         if (child.cooldown == 0 && p.interacted != true){
             if (isAdyacent(p.x,p.y,child.x,child.y)) {
                 if (child.timer == -1 && child.heldObject1 == "none" && child.heldObject2 == "none" && (tablaInputsValidos[p.heldObject])) {
-                    child.heldObject1 = p.heldObject;
-                    p.heldObject = "none";
-                    child.status.setTexture("1de2");
+                    cont.connection.send(JSON.stringify({
+                        message_type: "INTERACT",
+                        player_name: cont.name,
+                        station_type: "yunqued",
+                        station_player: child.player,
+                        player_ho: "none",
+                        station_ho: p.heldObject,
+                        station_ho2: "none",
+                        station_time: child.timer
+                    }));
                 } else if (child.timer == -1 && child.heldObject1 != "none" && child.heldObject2 == "none" && (tablaInputsValidos[p.heldObject]) && p.heldObject != child.heldObject1) {
-                    child.heldObject2 = p.heldObject;
-                    p.heldObject = "none";
-                    child.timer = 0;
+                    cont.connection.send(JSON.stringify({
+                        message_type: "INTERACT",
+                        player_name: cont.name,
+                        station_type: "yunqued",
+                        station_player: child.player,
+                        player_ho: "none",
+                        station_ho: child.heldObject1,
+                        station_ho2: p.heldObject,
+                        station_time: 0
+                    }));
                     child.cooldown = 5;
                 } else if (child.timer >= 0 && child.timer < 100) {
-                    child.timer += 5;
+                    cont.connection.send(JSON.stringify({
+                        message_type: "INTERACT_TIMER",
+                        player_name: cont.name,
+                        station_type: "yunqued",
+                        station_player: child.player,
+                        station_time: child.timer+5
+                    }));
                     child.cooldown = 15;
-                    snd_yunque.pause();
-                    snd_yunque.currentTime = 0;
-                    snd_yunque.play();
                 } else if (child.timer >= 100 && p.heldObject == "none") {
+                    var pho = "none";
                     if (tablaIO[child.heldObject1][child.heldObject2] != undefined) {
-                        p.heldObject = tablaIO[child.heldObject1][child.heldObject2];
+                        pho = tablaIO[child.heldObject1][child.heldObject2];
                     }
-                    child.heldObject1 = "none";
-                    child.heldObject2 = "none";
-                    child.timer = -1;
+                    cont.connection.send(JSON.stringify({
+                        message_type: "INTERACT",
+                        player_name: cont.name,
+                        station_type: "yunqued",
+                        station_player: child.player,
+                        player_ho: pho,
+                        station_ho: "none",
+                        station_ho2: "none",
+                        station_time: -1
+                    }));
                     child.status.setTexture("empty");
                 }
             }
@@ -1715,28 +1861,39 @@ function onlineInteractuarMonstruos(p) {
     //console.log(sc_juegoOnline.recetas1[0] + ", " + p.heldObject);
     if (sc_juegoOnline.recetas1[0] == p.heldObject) {
         if (Phaser.Math.Distance.Between(p.x, p.y, sc_juegoOnline.monstruo1.x, sc_juegoOnline.monstruo1.y) < 0.75*Math.max(sc_juegoOnline.monstruo1.body.width, sc_juegoOnline.monstruo1.body.height)+0.75*Math.max(p.body.width, p.body.height)) {
-            onlineArmarMonstruo(sc_juegoOnline.monstruo1, p.heldObject)
-            p.heldObject = "none";
-            getAnim(p, true);
+            //onlineArmarMonstruo(sc_juegoOnline.monstruo1, p.heldObject);
+            //p.heldObject = "none";
+            //getAnim(p, true);
+            cont.connection.send(JSON.stringify({
+                message_type: "INTERACT_MONSTER",
+                player_name: cont.name,
+                monster: 1
+            }));
             result = true;
-            sc_juegoOnline.recetas1.splice(0,1);
+            //sc_juegoOnline.recetas1.splice(0,1);
 
-            if (sc_juegoOnline.recetas1[0] == undefined) {
+            /*if (sc_juegoOnline.recetas1[0] == undefined) {
                 onlineGameVictory(1);
-            }
+            }*/
+            
         }
     }
     if (sc_juegoOnline.recetas2[0] == p.heldObject) {
         if (Phaser.Math.Distance.Between(p.x, p.y, sc_juegoOnline.monstruo2.x, sc_juegoOnline.monstruo2.y) < 0.75*Math.max(sc_juegoOnline.monstruo2.body.width, sc_juegoOnline.monstruo2.body.height)+0.75*Math.max(p.body.width, p.body.height)) {
-            onlineArmarMonstruo(sc_juegoOnline.monstruo2, p.heldObject)
-            p.heldObject = "none";
-            getAnim(p, true);
+            //onlineArmarMonstruo(sc_juegoOnline.monstruo2, p.heldObject);
+            //p.heldObject = "none";
+            //getAnim(p, true);
+            cont.connection.send(JSON.stringify({
+                message_type: "INTERACT_MONSTER",
+                player_name: cont.name,
+                monster: 2
+            }));
             result = true;
-            sc_juegoOnline.recetas2.splice(0,1);
+            //sc_juegoOnline.recetas2.splice(0,1);
             
-            if (sc_juegoOnline.recetas2[0] == undefined) {
+            /*if (sc_juegoOnline.recetas2[0] == undefined) {
                 onlineGameVictory(2);
-            }
+            }*/
         }
     }
 
@@ -1747,12 +1904,14 @@ function onlineInteractuarMonstruos(p) {
 
 
 function onlineGameVictory(player) {
+    cont.victoryState = -1;
     var ch;
-    if (player == 1) {
-        ch = cont.p1.ch;
-    } else if (player == 2) {
-        ch = cont.p2.ch;
+    var derrota = false;
+    if (player != 0) {
+        ch = cont.ch;
+        if (player == 2) derrota = true;
     }
+    
 
     sc_juegoOnline.botonPausa.paused = true;
     sc_juegoOnline.pausedOverlay.setTexture('pausedOverlay');
@@ -1762,49 +1921,73 @@ function onlineGameVictory(player) {
         mus_game.currentTime = 0;
         mus_defeat.play();
         sc_juegoOnline.victory = sc_juegoOnline.add.image(400, 100, 'empate'); //TIE
+        sc_juegoOnline.victory.depth=1001;
 
         if (cont.p1.ch == "SSHielo1") {
-            sc_juegoOnline.add.image(200, 375, 'hieloTriste'); //PERSONAJES TRISTES
+            sc_juegoOnline.add.image(200, 375, 'hieloTriste').depth=1001; //PERSONAJES TRISTES
         }
         else if (cont.p1.ch == "SSFuego1") {
-            sc_juegoOnline.add.image(200, 375, 'fuegoTriste');
+            sc_juegoOnline.add.image(200, 375, 'fuegoTriste').depth=1001;
         }
         else {
-            sc_juegoOnline.add.image(200, 375, 'elfaTriste');
+            sc_juegoOnline.add.image(200, 375, 'elfaTriste').depth=1001;
         }
 
         if (cont.p2.ch == "SSHielo1") {
-            sc_juegoOnline.add.image(600, 375, 'hieloTriste');
+            sc_juegoOnline.add.image(600, 375, 'hieloTriste').depth=1001;
         }
         else if (cont.p2.ch == "SSFuego1") {
-            sc_juegoOnline.add.image(600, 375, 'fuegoTriste');
+            sc_juegoOnline.add.image(600, 375, 'fuegoTriste').depth=1001;
         }
         else {
-            sc_juegoOnline.add.image(600, 375, 'elfaTriste');
+            sc_juegoOnline.add.image(600, 375, 'elfaTriste').depth=1001;
         }
 
     } else {
         mus_game.pause();
         mus_game.currentTime = 0;
         mus_victory.play();
-        sc_juegoOnline.victory = sc_juegoOnline.add.image(400, 100, 'victoria');
+        if (derrota) {
+            sc_juegoOnline.victory = sc_juegoOnline.add.image(400, 100, 'derrota');
+        } else {
+            sc_juegoOnline.victory = sc_juegoOnline.add.image(400, 100, 'victoria');
+        }
+        sc_juegoOnline.victory.depth=1001;
         if (ch == "SSHielo1") {
-            sc_juegoOnline.winner = sc_juegoOnline.add.image(400, 375, 'hielo');
+            if (derrota) {
+                sc_juegoOnline.winner = sc_juegoOnline.add.image(400, 375, 'hieloTriste');
+            } else {
+                sc_juegoOnline.winner = sc_juegoOnline.add.image(400, 375, 'hielo');
+            }
+            sc_juegoOnline.winner.depth=1001;
         }
         else if (ch == "SSFuego1") {
-            sc_juegoOnline.winner = sc_juegoOnline.add.image(400, 375, 'fuego');
+            if (derrota) {
+                sc_juegoOnline.winner = sc_juegoOnline.add.image(400, 375, 'fuegoTriste');
+            } else {
+                sc_juegoOnline.winner = sc_juegoOnline.add.image(400, 375, 'fuego');
+            }
+            sc_juegoOnline.winner.depth=1001;
         }
         else {
-            sc_juegoOnline.winner = sc_juegoOnline.add.image(400, 375, 'elfa');
+            if (derrota) {
+                sc_juegoOnline.winner = sc_juegoOnline.add.image(400, 375, 'elfaTriste');
+            } else {
+                sc_juegoOnline.winner = sc_juegoOnline.add.image(400, 375, 'elfa');
+            }
+            sc_juegoOnline.winner.depth=1001;
         }
     }
     
     sc_juegoOnline.botonSalir = sc_juegoOnline.add.image(400, 550, 'botonSalir');
+    sc_juegoOnline.botonSalir.depth=1001;
     sc_juegoOnline.botonSalir.setInteractive({ cursor: "pointer" });
     sc_juegoOnline.botonSalir.on('pointerup', function () {
         if (cont.connection != undefined) {
             cont.connection.close();
+            cont.connection = undefined;
         }
+        sc_juegoOnline.scene.stop("Lobby");
         sc_juegoOnline.scene.start("Lobby");
     });
 }
