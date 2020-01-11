@@ -552,6 +552,11 @@ sc_Preloader.preload = function()
     this.load.image("cruz3", "../assets/online/cruz3.png");
     this.load.image("botonAccept", "../assets/online/botonAccept.png");
     this.load.image("botonDecline", "../assets/online/botonDecline.png");
+    
+    this.load.image('chatBoxBG', '../assets/online/chatBoxBG.png');
+    this.load.image('chatBoxBGTop', '../assets/online/chatBoxBGTop.png');
+    this.load.image('chatBoxBGAway', '../assets/online/chatBoxBGAway.png');
+    this.load.image('chatBoxBGInGame', '../assets/online/chatBoxBGInGame.png');
 
     //Elementos HTML
     

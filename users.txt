@@ -1,13 +1,13 @@
 a
 a
 SSFuego1
-30
-20
+31
+22
 b
 b
 SSElfa1
-20
-30
+22
+31
 a a
 a
 SSHielo1
@@ -16,7 +16,7 @@ SSHielo1
 c
 c
 SSHielo1
-0
+1
 0
 d
 d
@@ -90,6 +90,11 @@ SSHielo1
 0
 Trenson Star
 TRENSONSTAR
+SSHielo1
+0
+1
+Transon Star
+TRANSONSTAR
 SSHielo1
 0
 0

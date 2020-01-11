@@ -52,9 +52,11 @@ sc_Guia.create = function(escena)
                 cont.prevSceneName = "JuegoOnline";
                 sc_Guia.scene.wake("JuegoOnline");
             } else {
+                cont.guiaOnline = false;
                 sc_Guia.scene.wake("JuegoLocal");
             }
         } else {
+            cont.guiaOnline = false;
             sc_Guia.scene.start("MenuPrincipal");
         }
     })
@@ -97,6 +99,7 @@ sc_Guia.update = function(time, delta)
 {
     if (cont.guiaOnline) {
         if (cont.victoryState != -1) {
+            cont.guiaOnline = false;
             sc_Guia.scene.stop("Guia");
             sc_Guia.scene.wake("JuegoOnline");
             return;
@@ -135,6 +138,7 @@ sc_Guia.update = function(time, delta)
         {
             if (ingame) {
             } else {
+                cont.guiaOnline = false;
                 sc_Guia.scene.start("MenuPrincipal");
             }
         }

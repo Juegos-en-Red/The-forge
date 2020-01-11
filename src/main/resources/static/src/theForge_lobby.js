@@ -23,11 +23,13 @@ sc_lobby.create = function() {
     cont.prevSceneName = "Lobby"; //Importante cambiarlo en cada escena en la que se pueda ir la conexión
     cont.connection = undefined;
     this.bg = sc_lobby.add.image(400, 300, "fondo online-lobby");
-    var disconnectButton = sc_lobby.add.sprite(85, 556, "botonDesconectar");
+    var disconnectButton = sc_lobby.add.sprite(80, 556, "botonDesconectar");
     sc_lobby.chatInput = sc_lobby.add.dom(355,557).createFromCache('chatInput');
     sc_lobby.chatBox = sc_lobby.add.dom(355,481).createFromCache('chatBox');
     sc_lobby.usersBox = sc_lobby.add.dom(355,241).createFromCache('usersBox');
-    var sendButton = sc_lobby.add.sprite(610, 557, "botonEnviar");
+    var sendButton = sc_lobby.add.sprite(590, 557, "botonEnviar");
+    
+    var chatBoxBG = sc_lobby.add.sprite(355, 489, "chatBoxBG");
 
     sc_lobby.pingText = sc_lobby.add.text(790, 10, "Ping: 0", {fontSize: '12px', fontFamily: 'Bookman', color: '#ffffff', stroke: '#000000', strokeThickness: 2, align: 'center'});
     sc_lobby.pingText.setOrigin(1, 0);
@@ -328,7 +330,13 @@ sc_lobby.update = function() {
 
 
         if (onlineUsers[i].timeout > -10) {
-            usersList +="<tr onmousedown='showUserProfile(onlineUsers["+i+"])'><td id='row'  style='cursor:pointer;width:200px;border:1px solid black; background-image:url(../assets/online/chatBoxBG.png);'>" + onlineUsers[i].name;
+            usersList +="<tr onmousedown='showUserProfile(onlineUsers["+i+"])'><td id='row'  style='cursor:pointer;width:200px;height:18px;border:0; background-image:url(../assets/online/userBG";
+            if (onlineUsers[i].timeout < 0) {
+                usersList+="Away";
+            } else if (onlineUsers[i].inGame) {
+                usersList+="InGame";
+            }           
+            usersList+=".png);color:white;padding-left:10px;padding-right:20px;'>" + onlineUsers[i].name;
             
             if (onlineUsers[i].inGame) {
                 usersList += " (vs. " + onlineUsers[i].opponentName + ")";
