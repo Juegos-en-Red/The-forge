@@ -186,6 +186,7 @@ public class PlayerController {
 		for (Player p : registeredPlayers) {
 			if (p.getName().equals(player.getName())) {
 				if (p.getPassword().equals(player.getPassword())) {
+					p.setSendingChallenge(false);
 					player = p;
 					player.setId(getFirstFreeSlot());
 					players[player.getId()] = player;
@@ -211,6 +212,10 @@ public class PlayerController {
 	@PostMapping("/register/")
 	public ResponseEntity<Integer> register(@RequestBody Player player) {
 		int firstEmptyId = getFirstFreeSlot();
+		
+		if (player.getName().length() > 12) {
+			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+		}
 
 		for (Player p : registeredPlayers) {
 			if (p.getName().equals(player.getName())) {
@@ -337,6 +342,7 @@ public class PlayerController {
 					players[i].setOpponentId(-1);
 					players[i].setOpponentName("");
 					players[i].setInGame(false);
+					players[i].setSendingChallenge(false);
 					System.out.println("Kicked " + players[i].getName() + " for inactivity.");
 					players[i] = null;
 					ids[i] = false;
@@ -654,17 +660,21 @@ public class PlayerController {
 						return new ResponseEntity<>(HttpStatus.CONFLICT); 
 					}
 				} else {
-					if (ids[players[id].getOpponentId()]) {
-						players[players[id].getOpponentId()].setOpponentId(-1);
-						players[players[id].getOpponentId()].setOpponentName("");
-						players[players[id].getOpponentId()].setSendingChallenge(false);
-						players[players[id].getOpponentId()].setInGame(false);
-						players[id].setOpponentId(-1);
-						players[id].setOpponentName("");
-						players[id].setSendingChallenge(false);
-						players[id].setInGame(false);
+					if (players[id].getOpponentId() >= 0) {
+						if (ids[players[id].getOpponentId()]) {
+							System.out.println(players[id].getOpponentId() + ", " + id + " / " + players[players[id].getOpponentId()].getOpponentId() + ", " + players[players[id].getOpponentId()].getId());
+							players[players[id].getOpponentId()].setOpponentId(-1);
+							players[players[id].getOpponentId()].setOpponentName("");
+							players[players[id].getOpponentId()].setSendingChallenge(false);
+							players[players[id].getOpponentId()].setInGame(false);
+							players[id].setOpponentId(-1);
+							players[id].setOpponentName("");
+							players[id].setSendingChallenge(false);
+							players[id].setInGame(false);
+						}
+						return new ResponseEntity<>(4,HttpStatus.OK);
 					}
-					return new ResponseEntity<>(4,HttpStatus.OK);
+					
 				}
 				
 			}

@@ -53,15 +53,15 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 							
 							ObjectNode sendNode = createBeginGameMessage(mapper, r);
 							System.out.println("Sending message " + sendNode.toString());
-							if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendNode.toString()));
-							if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendNode.toString()));
+							if (r.getP1Session() != null) if (r.getP1Session().isOpen()) r.getP1Session().sendMessage(new TextMessage(sendNode.toString()));
+							if (r.getP2Session() != null) if (r.getP2Session().isOpen()) r.getP2Session().sendMessage(new TextMessage(sendNode.toString()));
 							
 							//Enviar al cliente la trampa
 							ObjectNode sendTrap = createSendTrapMessage(mapper, r);
 							try {
 								System.out.println("Sending message " + sendTrap.toString());
-								if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
-								if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
+								if (r.getP1Session() != null) if (r.getP1Session().isOpen()) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
+								if (r.getP2Session() != null) if (r.getP2Session().isOpen()) r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
 							} catch (IOException e) {
 								//System.out.println(e);
 							}
@@ -75,8 +75,8 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 							sendPos.put("player2_y",r.getP2y());
 							try {
 								System.out.println("Sending message " + sendPos.toString());
-								if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendPos.toString()));
-								if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendPos.toString()));
+								if (r.getP1Session() != null) if (r.getP1Session().isOpen()) r.getP1Session().sendMessage(new TextMessage(sendPos.toString()));
+								if (r.getP2Session() != null) if (r.getP2Session().isOpen()) r.getP2Session().sendMessage(new TextMessage(sendPos.toString()));
 							} catch (IOException e) {
 								//System.out.println(e);
 							}
@@ -94,8 +94,8 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 							ObjectNode sendTrap = createSendTrapMessage(mapper, r);
 							try {
 								System.out.println("Sending message " + sendTrap.toString());
-								if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
-								if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
+								if (r.getP1Session() != null) if (r.getP1Session().isOpen()) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
+								if (r.getP2Session() != null) if (r.getP2Session().isOpen()) r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
 							} catch (IOException e) {
 								//System.out.println(e);
 							}
@@ -109,8 +109,8 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 							sendPos.put("player2_y",r.getP2y());
 							try {
 								System.out.println("Sending message " + sendPos.toString());
-								if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendPos.toString()));
-								if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendPos.toString()));
+								if (r.getP1Session() != null) if (r.getP1Session().isOpen()) r.getP1Session().sendMessage(new TextMessage(sendPos.toString()));
+								if (r.getP2Session() != null) if (r.getP2Session().isOpen()) r.getP2Session().sendMessage(new TextMessage(sendPos.toString()));
 							} catch (IOException e) {
 								//System.out.println(e);
 							}
@@ -131,8 +131,8 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 							ObjectNode sendTrap = createSendTrapMessage(mapper, r);
 							try {
 								System.out.println("Sending message " + sendTrap.toString());
-								if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
-								if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
+								if (r.getP1Session() != null) if (r.getP1Session().isOpen()) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
+								if (r.getP2Session() != null) if (r.getP2Session().isOpen()) r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
 							} catch (IOException e) {
 								//System.out.println(e);
 							}
@@ -146,8 +146,8 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 							sendPos.put("player2_y",r.getP2y());
 							try {
 								System.out.println("Sending message " + sendPos.toString());
-								if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendPos.toString()));
-								if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendPos.toString()));
+								if (r.getP1Session() != null) if (r.getP1Session().isOpen()) r.getP1Session().sendMessage(new TextMessage(sendPos.toString()));
+								if (r.getP2Session() != null) if (r.getP2Session().isOpen()) r.getP2Session().sendMessage(new TextMessage(sendPos.toString()));
 							} catch (IOException e) {
 								//System.out.println(e);
 							}
@@ -166,8 +166,8 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 							ObjectNode sendTrap = createSendTrapMessage(mapper, r);
 							try {
 								System.out.println("Sending message " + sendTrap.toString());
-								if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
-								if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
+								if (r.getP1Session() != null) if (r.getP1Session().isOpen()) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
+								if (r.getP2Session() != null) if (r.getP2Session().isOpen()) r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
 							} catch (IOException e) {
 								//System.out.println(e);
 							}
@@ -181,8 +181,8 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 							sendPos.put("player2_y",r.getP2y());
 							try {
 								System.out.println("Sending message " + sendPos.toString());
-								if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendPos.toString()));
-								if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendPos.toString()));
+								if (r.getP1Session() != null) if (r.getP1Session().isOpen()) r.getP1Session().sendMessage(new TextMessage(sendPos.toString()));
+								if (r.getP2Session() != null) if (r.getP2Session().isOpen()) r.getP2Session().sendMessage(new TextMessage(sendPos.toString()));
 							} catch (IOException e) {
 								//System.out.println(e);
 							}
@@ -201,8 +201,8 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 							ObjectNode sendTrap = createSendTrapMessage(mapper, r);
 							try {
 								System.out.println("Sending message " + sendTrap.toString());
-								if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
-								if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
+								if (r.getP1Session() != null) if (r.getP1Session().isOpen()) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
+								if (r.getP2Session() != null) if (r.getP2Session().isOpen()) r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
 							} catch (IOException e) {
 								//System.out.println(e);
 							}
@@ -214,8 +214,8 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 							ObjectNode sendTrap = createSendTrapMessage(mapper, r);
 							try {
 								System.out.println("Sending message " + sendTrap.toString());
-								if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
-								if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
+								if (r.getP1Session() != null) if (r.getP1Session().isOpen()) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
+								if (r.getP2Session() != null) if (r.getP2Session().isOpen()) r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
 							} catch (IOException e) {
 								//System.out.println(e);
 							}
@@ -487,11 +487,11 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 						ObjectNode sendPos = mapper.createObjectNode();
 						sendPos.put("message_type","timeout");
 						sendPos.put("op_timeout",r.getP2Timeout());
-						if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendPos.toString()));
+						if (r.getP1Session() != null) if (r.getP1Session().isOpen()) r.getP1Session().sendMessage(new TextMessage(sendPos.toString()));
 						 sendPos = mapper.createObjectNode();
 						sendPos.put("message_type","timeout");
 						sendPos.put("op_timeout",r.getP1Timeout());
-						if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendPos.toString()));
+						if (r.getP2Session() != null) if (r.getP2Session().isOpen()) r.getP2Session().sendMessage(new TextMessage(sendPos.toString()));
 					} catch (IOException e) {
 						//System.out.println(e);
 					}
@@ -507,7 +507,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 							sendPos.put("player_spdx",r.getP2Spdx());
 							sendPos.put("player_spdy",r.getP2Spdy());
 							sendPos.put("player_direction",r.getP2Dir());
-							if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendPos.toString()));
+							if (r.getP1Session() != null) if (r.getP1Session().isOpen()) r.getP1Session().sendMessage(new TextMessage(sendPos.toString()));
 							sendPos = mapper.createObjectNode();
 							sendPos.put("message_type","player_move_single");
 							sendPos.put("player",1);
@@ -516,7 +516,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 							sendPos.put("player_spdx",r.getP1Spdx());
 							sendPos.put("player_spdy",r.getP1Spdy());
 							sendPos.put("player_direction",r.getP1Dir());
-							if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendPos.toString()));
+							if (r.getP2Session() != null) if (r.getP2Session().isOpen()) r.getP2Session().sendMessage(new TextMessage(sendPos.toString()));
 						} catch (IOException e) {
 							//System.out.println(e);
 						}
@@ -533,8 +533,8 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 							sendPos.put("receta_p2_1",r.getP2Recipes()[1]);
 							sendPos.put("receta_p2_2",r.getP2Recipes()[2]);
 							sendPos.put("receta_p2_3",r.getP2Recipes()[3]);
-							if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendPos.toString()));
-							if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendPos.toString()));
+							if (r.getP1Session() != null) if (r.getP1Session().isOpen()) r.getP1Session().sendMessage(new TextMessage(sendPos.toString()));
+							if (r.getP2Session() != null) if (r.getP2Session().isOpen()) r.getP2Session().sendMessage(new TextMessage(sendPos.toString()));
 						} catch (IOException e) {
 							//System.out.println(e);
 						}
@@ -564,8 +564,8 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 							//if (r.getGameTime() >= 300000 || r.getGameTime()%1000 == 0) { //quitar esto por favor
 								try {
 									//System.out.println("Sending message " + sendNode.toString());
-									if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendNode.toString()));
-									if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendNode.toString()));
+									if (r.getP1Session() != null) if (r.getP1Session().isOpen()) r.getP1Session().sendMessage(new TextMessage(sendNode.toString()));
+									if (r.getP2Session() != null) if (r.getP2Session().isOpen()) r.getP2Session().sendMessage(new TextMessage(sendNode.toString()));
 									//System.out.println("Time sent.");
 								} catch (IOException e) {
 									//System.out.println(e);
@@ -616,8 +616,8 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 								ObjectNode sendTrap = createSendTrapMessage(mapper, r);
 								try {
 									System.out.println("Sending message " + sendTrap.toString());
-									if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
-									if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
+									if (r.getP1Session() != null) if (r.getP1Session().isOpen()) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
+									if (r.getP2Session() != null) if (r.getP2Session().isOpen()) r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
 								} catch (IOException e) {
 									//System.out.println(e);
 								}
@@ -653,8 +653,8 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 									sendStations.put("p2m_ho3",r.getP2MHeldObject3());
 									sendStations.put("p2m_ho4",r.getP2MHeldObject4());
 									//enviar los mensajes a los clientes
-									if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendStations.toString()));
-									if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendStations.toString()));
+									if (r.getP1Session() != null) if (r.getP1Session().isOpen()) r.getP1Session().sendMessage(new TextMessage(sendStations.toString()));
+									if (r.getP2Session() != null) if (r.getP2Session().isOpen()) r.getP2Session().sendMessage(new TextMessage(sendStations.toString()));
 								} catch (IOException e) {
 									//System.out.println(e);
 								}
@@ -715,8 +715,8 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 			sendStations.put("p2m_ho3",r.getP2MHeldObject3());
 			sendStations.put("p2m_ho4",r.getP2MHeldObject4());
 			//enviar los mensajes a los clientes
-			if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendStations.toString()));
-			if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendStations.toString()));
+			if (r.getP1Session() != null) if (r.getP1Session().isOpen()) r.getP1Session().sendMessage(new TextMessage(sendStations.toString()));
+			if (r.getP2Session() != null) if (r.getP2Session().isOpen()) r.getP2Session().sendMessage(new TextMessage(sendStations.toString()));
 		} catch (IOException e) {
 			//System.out.println(e);
 		}
@@ -735,12 +735,13 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 		}
 		try {
 			System.out.println("Sending message " + sendWinner.toString());
-			if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendWinner.toString()));
-			if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendWinner.toString()));
+			if (r.getP1Session() != null) if (r.getP1Session().isOpen()) r.getP1Session().sendMessage(new TextMessage(sendWinner.toString()));
+			if (r.getP2Session() != null) if (r.getP2Session().isOpen()) r.getP2Session().sendMessage(new TextMessage(sendWinner.toString()));
 		} catch (IOException e) {
 			//System.out.println(e);
 		}
 		//Importante destruir la sala, ya no tiene sentido que siga existiendo
+		System.out.println("Removed room: " + r.getP1Name() + " vs. " + r.getP2Name());
 		rooms.remove(r.getP1Name());
 	}
 }

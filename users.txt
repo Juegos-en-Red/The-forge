@@ -1,12 +1,12 @@
 a
 a
 SSFuego1
-31
-22
+32
+26
 b
 b
 SSElfa1
-22
+25
 31
 a a
 a
@@ -16,8 +16,8 @@ SSHielo1
 c
 c
 SSHielo1
+2
 1
-0
 d
 d
 SSHielo1
@@ -95,6 +95,16 @@ SSHielo1
 1
 Transon Star
 TRANSONSTAR
+SSHielo1
+0
+0
+123456789012
+a
+SSHielo1
+0
+0
+qwertyuiopas
+a
 SSHielo1
 0
 0

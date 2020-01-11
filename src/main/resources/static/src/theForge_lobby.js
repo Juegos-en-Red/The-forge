@@ -164,7 +164,10 @@ sc_lobby.update = function() {
     for(var i = 0; i < onlineUsers.length; i++) {
 
         if (onlineUsers[i].id == cont.id) {
-
+            if (!onlineUsers[i].inGame && onlineUsers[i].opponentName == "" && cont.connection != undefined) {
+                cont.connection.close();
+                cont.connection = undefined;
+            }
             if (onlineUsers[i].inGame && cont.connection == undefined) { 
                 //Si tenemos que estar en partida, abrimos websocket
                 sc_lobby.opponentName = onlineUsers[i].opponentName;
@@ -239,6 +242,9 @@ sc_lobby.update = function() {
                             },
                         }).success(function (item) {
                             console.log("Challenge accepted.");
+                            if (cont.connection != undefined) {
+                                cont.connection.close();
+                            }
                             var wsUrl;
                             if (cont.server_ip.slice(0,4) == "http") {
                                 wsUrl = cont.server_ip.slice(4);
@@ -277,6 +283,9 @@ sc_lobby.update = function() {
                     sc_lobby.declineButton.opponentName = onlineUsers[i].opponentName;
 
                     sc_lobby.declineButton.on('pointerdown', function (event) {
+                        if (cont.connection != undefined) {
+                            cont.connection.close();
+                        }
                         $.ajax({
                             method: "DELETE",
                             url: cont.server_ip + "challenge/"+cont.id,

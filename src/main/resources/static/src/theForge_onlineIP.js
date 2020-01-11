@@ -269,7 +269,7 @@ function showLoginPrompt() {
                             sc_onlineIP.textInfo.setText("That user is already registered\nPlease enter your username and password");
                             break;
                         case 417:
-                            sc_onlineIP.textInfo.setText("No spaces allowed in your username or password\nPlease enter your username and password");
+                            sc_onlineIP.textInfo.setText("Usernames can't be more than 12 characters long!\nPlease enter your username and password");
                             break;
                         default:
                             sc_onlineIP.textInfo.setText("Connection error\nPlease enter your username and password");
@@ -339,7 +339,7 @@ function loginFunction() {
                         sc_onlineIP.textInfo.setText("That user is already logged in\nPlease enter your username and password");
                         break;
                     case 417:
-                        sc_onlineIP.textInfo.setText("No spaces allowed in your username or password\nPlease enter your username and password");
+                        sc_onlineIP.textInfo.setText("Usernames can't be more than 12 characters long!\nPlease enter your username and password");
                         break;
                     default:
                         sc_onlineIP.textInfo.setText("Connection error\nPlease enter your username and password");

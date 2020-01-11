@@ -8,8 +8,8 @@ public class Player {
 	private String character;
 	private int opponentId = -1;
 	private String opponentName = "";
-	private boolean inGame = false;
-	private boolean sendingChallenge = false;
+	private boolean inGame;
+	private boolean sendingChallenge;
 	private int wins;
 	private int losses;
 	
@@ -21,6 +21,8 @@ public class Player {
 		this.character = "SSHielo1";
 		this.wins = 0;
 		this.losses = 0;
+		inGame = false;
+		sendingChallenge = false;
 	}
 	
 	public Player(String name, String password, int timeout, String character) {
@@ -30,6 +32,8 @@ public class Player {
 		this.character = "SSHielo1";
 		this.wins = 0;
 		this.losses = 0;
+		inGame = false;
+		sendingChallenge = false;
 	}
 	
 	public Player(String name, String password, String character, int wins, int losses) {
@@ -39,6 +43,8 @@ public class Player {
 		this.character = character;
 		this.wins = wins;
 		this.losses = losses;
+		inGame = false;
+		sendingChallenge = false;
 	}
 	
 	public String getPassword() {

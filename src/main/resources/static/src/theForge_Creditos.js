@@ -8,7 +8,7 @@ sc_Creditos.create = function()
 {
     imagen = this.add.image(0, 620, "creditos").setOrigin(0, 0);
 
-    cruz = this.add.image(700, 520, "cruz2").setOrigin(0, 0);
+    cruz = this.add.image(700, 10, "cruz2").setOrigin(0, 0);
     cruz.setInteractive({cursor: "pointer"}).on("pointerdown", function(pointer)
     {
         sc_Creditos.scene.start("MenuPrincipal");
