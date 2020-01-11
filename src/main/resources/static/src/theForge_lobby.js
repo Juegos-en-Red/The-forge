@@ -6,6 +6,15 @@ sc_lobby.preload = function() {
 }
 
 sc_lobby.create = function() {
+
+    mus_game.pause();
+    mus_game.currentTime = 0;
+    mus_victory.pause();
+    mus_victory.currentTime = 0;
+    mus_defeat.pause();
+    mus_defeat.currentTime = 0;
+    mus_menu.play();
+
     sc_lobby.openEnemyName = "none";
     sc_lobby.userBoxOpen = false;
     sc_lobby.userChallenging = false;

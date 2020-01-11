@@ -685,6 +685,38 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 	
 	public void gameOver(int winner, Room r) {
 		ObjectMapper mapper = new ObjectMapper();
+		//Enviar todas las estaciones de trabajo a los clientes no está de más
+		try {
+			ObjectNode sendStations = mapper.createObjectNode();
+			sendStations.put("message_type","estaciones");
+			//enviar objetos de los jugadores
+			sendStations.put("p1_ho",r.getP1HeldObject());
+			sendStations.put("p2_ho",r.getP2HeldObject());
+			//enviar información de las estaciones de trabajo
+			for (Station s : r.getStations().values()) {
+				sendStations.put(s.getType()+s.getPlayer()+"time",s.getTime());
+				sendStations.put(s.getType()+s.getPlayer()+"ho",s.getHeldObject());
+				if (s.getType().equals("hornod") || s.getType().equals("yunqued")) {
+					sendStations.put(s.getType()+s.getPlayer()+"ho2",s.getHeldObject2());
+				}
+			}
+			//enviar objetos de los monstruos
+			sendStations.put("p1m_ho1",r.getP1MHeldObject1());
+			sendStations.put("p1m_ho2",r.getP1MHeldObject2());
+			sendStations.put("p1m_ho3",r.getP1MHeldObject3());
+			sendStations.put("p1m_ho4",r.getP1MHeldObject4());
+			sendStations.put("p2m_ho1",r.getP2MHeldObject1());
+			sendStations.put("p2m_ho2",r.getP2MHeldObject2());
+			sendStations.put("p2m_ho3",r.getP2MHeldObject3());
+			sendStations.put("p2m_ho4",r.getP2MHeldObject4());
+			//enviar los mensajes a los clientes
+			if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendStations.toString()));
+			if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendStations.toString()));
+		} catch (IOException e) {
+			//System.out.println(e);
+		}
+		
+		
 		
 		//Enviar a ambos el nombre del ganador con un mensaje de victoria
 		ObjectNode sendWinner = mapper.createObjectNode();

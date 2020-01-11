@@ -105,10 +105,10 @@ public class PlayerController {
 	 * Al hacer esta petición, se devuelve un array con los jugadores conectados.
 	 * Devuelve toda la información relativa a los jugadores, incluidas contraseñas, por lo que el método no se usa.
 	 * */
-	@GetMapping("/players/")
+	/*@GetMapping("/players/")
 	public Player[] players() {
 		return players;
-	}
+	}*/
 	
 	/*
 	 * GET "/freeslots/"

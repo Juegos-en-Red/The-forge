@@ -15,6 +15,7 @@ public class Room {
 	private int p1y;
 	private int p1Spdx;
 	private int p1Spdy;
+	private String p1Dir;
 	private String p1HeldObject;
 	private String p1MHeldObject1;
 	private String p1MHeldObject2;
@@ -29,6 +30,7 @@ public class Room {
 	private int p2y;
 	private int p2Spdx;
 	private int p2Spdy;
+	private String p2Dir;
 	private String p2HeldObject;
 	private String p2MHeldObject1;
 	private String p2MHeldObject2;
@@ -74,8 +76,10 @@ public class Room {
 		p2y=320;
 		p1Spdx=0;
 		p1Spdy=0;
+		p1Dir = "Down";
 		p2Spdx=0;
 		p2Spdy=0;
+		p2Dir = "Down";
 		p1HeldObject = "none";
 		p2HeldObject = "none";
 		p1MHeldObject1 = "none";
@@ -477,6 +481,22 @@ public class Room {
 
 	public void setP2MHeldObject4(String p2mHeldObject4) {
 		p2MHeldObject4 = p2mHeldObject4;
+	}
+
+	public String getP1Dir() {
+		return p1Dir;
+	}
+
+	public void setP1Dir(String p1Dir) {
+		this.p1Dir = p1Dir;
+	}
+
+	public String getP2Dir() {
+		return p2Dir;
+	}
+
+	public void setP2Dir(String p2Dir) {
+		this.p2Dir = p2Dir;
 	}
 	
 	
