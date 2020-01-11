@@ -18,6 +18,9 @@ sc_Guia.create = function(escena)
     if (cont.guiaIngame) {
         ingame = true;
         cont.guiaIngame = false;
+        if (cont.guiaOnline) {
+            cont.prevScene = sc_Guia;
+            cont.prevSceneName = "Guia";}
     } else {
         ingame = false;
     }
@@ -45,6 +48,8 @@ sc_Guia.create = function(escena)
             sc_Guia.scene.stop("Guia");
             if (cont.guiaOnline) {
                 cont.guiaOnline = false;
+                cont.prevScene = sc_juegoOnline;
+                cont.prevSceneName = "JuegoOnline";
                 sc_Guia.scene.wake("JuegoOnline");
             } else {
                 sc_Guia.scene.wake("JuegoLocal");
@@ -90,6 +95,13 @@ sc_Guia.create = function(escena)
 
 sc_Guia.update = function(time, delta)
 {
+    if (cont.guiaOnline) {
+        if (cont.victoryState != -1) {
+            sc_Guia.scene.stop("Guia");
+            sc_Guia.scene.wake("JuegoOnline");
+            return;
+        }
+    }
     if (Phaser.Input.Keyboard.JustDown(left))
     {
         if (pos - 1 >= 0)
@@ -122,9 +134,6 @@ sc_Guia.update = function(time, delta)
     if (Phaser.Input.Keyboard.JustDown(escape))
         {
             if (ingame) {
-
-                sc_Guia.scene.stop("Guia");
-                sc_Guia.scene.wake("JuegoLocal");
             } else {
                 sc_Guia.scene.start("MenuPrincipal");
             }

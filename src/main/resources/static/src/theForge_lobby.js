@@ -364,6 +364,7 @@ function websocketOnMessage(msg) {
         cont.p1.ch = message.p2_character;
         cont.p2.ch = message.p1_character;
         sc_lobby.scene.stop("Lobby");
+        sc_lobby.scene.stop("SeleccionPersonajeOnline");
         game.scene.stop("JuegoOnline");
         game.scene.start("JuegoOnline");
     } else {

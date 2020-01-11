@@ -11,6 +11,8 @@ sc_juegoOnline.preload = function() {
 //Función create: Aquí se inicializan todos los objetos del juego.
 sc_juegoOnline.create = function() {
     console.log("Online game: begin.");
+    cont.prevScene = sc_juegoOnline;
+    cont.prevSceneName = "JuegoOnline";
 
     sc_juegoOnline.gameStarted = false;
     sc_juegoOnline.gameTime = 306000;
@@ -1068,15 +1070,15 @@ function onlineUnPause() {
 }
 
 function onlineQuitGame() {
-    //Ajax que le diga al servidor que te has rendido, por lo que gana el otro. Igual también mensaje de websocket sería buena idea, sabes.
-
-
     if (cont.connection != undefined) {
-        cont.connection.close();
-        cont.connection = undefined; //Si se rompe algo de websockets tras cerrarlo al salir, es por esto probablemente.
+        cont.connection.send(JSON.stringify({
+            message_type: "SURRENDER",
+            player_name: cont.name,
+        }));
+    } else {
+        sc_juegoOnline.scene.stop("Lobby");
+        sc_juegoOnline.scene.start("Lobby");
     }
-    sc_juegoOnline.scene.stop("Lobby");
-    sc_juegoOnline.scene.start("Lobby");
 }
 
 function onlineShowPauseGuide() {

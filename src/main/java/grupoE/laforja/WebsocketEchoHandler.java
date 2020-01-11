@@ -415,6 +415,15 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 					}
 				}
 				break;
+			case "SURRENDER":
+				for (Room r : rooms.values()) {
+					if (r.getP1Name().equals(node.get("player_name").asText())) {
+						gameOver(2,r);
+					} else if (r.getP2Name().equals(node.get("player_name").asText())) {
+						gameOver(1,r);
+					}
+				}
+			break;
 		}
 	}
 	
@@ -423,16 +432,12 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 		//No hay que echar al jugador de la sala, pero sí marcarlo como que se ha ido. Podrá volver, espero
 		System.out.println("Session disconnected: " + session.getId() + ". Status: " + status);
 		for (Room r : rooms.values()) {
-			if (!r.getP1Session().equals(null)) {
-				if (r.getP1Session().equals(session)) {
-					r.setP1Timeout(30000);
-					r.setP1Session(null);
-				}
-			} else if (!r.getP2Session().equals(null)) {
-				if (r.getP2Session().equals(session)) {
-					r.setP2Timeout(30000);
-					r.setP2Session(null);
-				}
+			if (r.getP1Session() == session) {
+				r.setP1Timeout(30000);
+				r.setP1Session(null);
+			} else if (r.getP2Session() == session) {
+				r.setP2Timeout(30000);
+				r.setP2Session(null);
 			}
 		}
 	}

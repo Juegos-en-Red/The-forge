@@ -51,6 +51,9 @@ function MenuSeleccionOnline(escena)
 
     this.create = function()
     {
+        cont.prevScene = sc_SeleccionPersonajeOnline;
+        cont.prevSceneName = "SeleccionPersonajeOnline";
+
         /* ILUMINACIÓN DE LA ESCENA */        
 
         // Activamos la iluminación
@@ -235,6 +238,19 @@ function MenuSeleccionOnline(escena)
         /* ANIMACIÓN DEL FONDO */
 
         this.bg.tilePositionY += 0.4 * delta;
+
+        //Comprobar si han aceptado una invitación
+        for(var i = 0; i < onlineUsers.length; i++) {
+
+            if (onlineUsers[i].id == cont.id) {
+    
+                if (onlineUsers[i].inGame && cont.connection == undefined) { 
+                    sc_SeleccionPersonajeOnline.scene.stop("SeleccionPersonajeOnline");
+                    sc_SeleccionPersonajeOnline.scene.start("Lobby");
+                }
+            }
+        }
+
     }
 
     /* FUNCIONES PRIVADAS */
