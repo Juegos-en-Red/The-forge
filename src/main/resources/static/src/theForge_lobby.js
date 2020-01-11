@@ -180,13 +180,11 @@ sc_lobby.update = function() {
                     websocketOnMessage(msg);
                 }
                 cont.connection.onclose = function(e) {
-                    console.log("Websocket closed." + e);
-                    console.log(e);
-                    /*if (sc_juegoOnline.scene.isActive()) {
-                        //poner condición de que la partida no haya terminado
+                    cont.connection = undefined;
+                    console.log("Websocket closed.");
+                    /*if ((sc_juegoOnline.scene.isActive() || sc_Guia.scene.isActive()) && onlineUsers[cont.id].inGame) { //Esto debería cubrir todos los casos en los que el jugador pueda desconectarse
                         sc_juegoOnline.scene.start("Lobby");
-                        //cerrar la condición
-                    }*/
+                    }*/ //hay que pulirlo un poquitillo más igual
                 }
             }
 
@@ -391,12 +389,14 @@ function websocketOnMessage(msg) {
                         sc_juegoOnline.player2.y = message.player_y;
                         sc_juegoOnline.player2.spdX = message.player_spdx;
                         sc_juegoOnline.player2.spdY = message.player_spdy;
+                        sc_juegoOnline.player2.dir = message.player_direction;
                     } else {
                         //console.log("SE MUEVE EL DE LA IZQUIERDA");
                         sc_juegoOnline.player.x = message.player_x;
                         sc_juegoOnline.player.y = message.player_y;
                         sc_juegoOnline.player.spdX = message.player_spdx;
                         sc_juegoOnline.player.spdY = message.player_spdy;
+                        sc_juegoOnline.player.dir = message.player_direction;
                     }
                     break;
                 case "recetas":

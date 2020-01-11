@@ -320,8 +320,14 @@ sc_juegoOnline.create = function() {
     }
     sc_juegoOnline.player.oldX = sc_juegoOnline.player.x;
     sc_juegoOnline.player.oldY = sc_juegoOnline.player.y;
+    sc_juegoOnline.player.oldSpdX = sc_juegoOnline.player.spdX;
+    sc_juegoOnline.player.oldSpdY = sc_juegoOnline.player.spdY;
+    sc_juegoOnline.player.oldDirection = sc_juegoOnline.userPlayer.dir;
     sc_juegoOnline.player2.oldX = sc_juegoOnline.player2.x;
     sc_juegoOnline.player2.oldY = sc_juegoOnline.player2.y;
+    sc_juegoOnline.player2.oldSpdX = sc_juegoOnline.player2.spdX;
+    sc_juegoOnline.player2.oldSpdY = sc_juegoOnline.player2.spdY;
+    sc_juegoOnline.player2.oldDirection = sc_juegoOnline.player2.dir;
 
     //Inicialización de mesas
     sc_juegoOnline.mesas = this.physics.add.staticGroup();
@@ -452,7 +458,7 @@ sc_juegoOnline.create = function() {
                 //Hacer que le diga al servidor que quiere usar la trampa, y el servidor le devuelva:
                 //-mensaje diciendo quién ha utilizado la trampa y cual trampa es
                 //-mensaje actualizando las trampas otra vez ya que estamos
-                if (sc_juegoOnline.userPlayer.trampa != "none") {
+                if (sc_juegoOnline.userPlayer.trampa != "none" && cont.connection != undefined) {
                     cont.connection.send(JSON.stringify({
                         message_type: "USE TRAP",
                         player_name: cont.name
@@ -728,7 +734,7 @@ sc_juegoOnline.update = function(time, delta) {
         //Enviar la posición al servidor
 
         //console.log(sc_juegoOnline.userPlayer.oldX != sc_juegoOnline.userPlayer.x && sc_juegoOnline.userPlayer.oldY != sc_juegoOnline.userPlayer.y);
-        if (sc_juegoOnline.userPlayer.oldX != sc_juegoOnline.userPlayer.x || sc_juegoOnline.userPlayer.oldY != sc_juegoOnline.userPlayer.y) {
+        if ((sc_juegoOnline.userPlayer.oldX != sc_juegoOnline.userPlayer.x || sc_juegoOnline.userPlayer.oldY != sc_juegoOnline.userPlayer.y || sc_juegoOnline.userPlayer.oldSpdX != sc_juegoOnline.userPlayer.spdX || sc_juegoOnline.userPlayer.oldSpdY != sc_juegoOnline.userPlayer.spdY || sc_juegoOnline.userPlayer.oldDirection != sc_juegoOnline.userPlayer.dir) && cont.connection != undefined) {
             //console.log("SENDING POSITION");
             cont.connection.send(JSON.stringify({
                 message_type: "PLAYER MOVE",
@@ -736,10 +742,14 @@ sc_juegoOnline.update = function(time, delta) {
                 player_x: sc_juegoOnline.userPlayer.x,
                 player_y: sc_juegoOnline.userPlayer.y,
                 player_spdx: sc_juegoOnline.userPlayer.spdX,
-                player_spdy: sc_juegoOnline.userPlayer.spdY
+                player_spdy: sc_juegoOnline.userPlayer.spdY,
+                player_direction: sc_juegoOnline.userPlayer.dir
             }));
             sc_juegoOnline.userPlayer.oldX = sc_juegoOnline.userPlayer.x;
             sc_juegoOnline.userPlayer.oldY = sc_juegoOnline.userPlayer.y;
+            sc_juegoOnline.userPlayer.oldSpdX = sc_juegoOnline.userPlayer.spdX;
+            sc_juegoOnline.userPlayer.oldSpdY = sc_juegoOnline.userPlayer.spdY;
+            sc_juegoOnline.userPlayer.oldDirection = sc_juegoOnline.userPlayer.dir;
         }
     }
     
@@ -1105,7 +1115,7 @@ function onlineInteractuarCajones(p) {
     var result = false;
     sc_juegoOnline.cajonesMetal.children.iterate(function (child) {
         //if (Phaser.Math.Distance.Between(p.x, p.y, child.x, child.y) < 0.55*Math.max(child.body.width, child.body.height)+0.55*Math.max(p.body.width, p.body.height)) {
-        if (isAdyacent(p.x,p.y,child.x,child.y)) {
+        if (isAdyacent(p.x,p.y,child.x,child.y) && cont.connection != undefined) {
             if (p.heldObject == "none") {
                 cont.connection.send(JSON.stringify({
                     message_type: "INTERACT",
@@ -1137,22 +1147,8 @@ function onlineInteractuarCajones(p) {
 //Función onlineInteractuarMesas: Si el jugador está suficientemente cerca, intercambia sus objetos con los de la mesa
 function onlineInteractuarMesas(p) {
     var result = false;
-    /*sc_juegoOnline.mesas.children.iterate(function (child) {
-        if (isAdyacent(p.x,p.y,child.x,child.y)) {
-            cont.connection.send(JSON.stringify({
-                message_type: "INTERACT",
-                player_name: cont.name,
-                player_ho: child.heldObject,
-                station_type: "mesa",
-                station_player: child.player,
-                station_ho: p.heldObject,
-                station_time: 0
-            }));
-            result = true;
-        }
-    });*/
     for (var i = 0; i < 6; i++) {
-        if (isAdyacent(p.x,p.y,sc_juegoOnline.mesas.children.entries[i].x,sc_juegoOnline.mesas.children.entries[i].y)) {
+        if (isAdyacent(p.x,p.y,sc_juegoOnline.mesas.children.entries[i].x,sc_juegoOnline.mesas.children.entries[i].y) && cont.connection != undefined) {
             cont.connection.send(JSON.stringify({
                 message_type: "INTERACT",
                 player_name: cont.name,
@@ -1172,7 +1168,7 @@ function onlineInteractuarMesas(p) {
 function onlineInteractuarBasuras(p) {
     var result = false;
     sc_juegoOnline.basuras.children.iterate(function (child) {
-        if (isAdyacent(p.x,p.y,child.x,child.y)) {
+        if (isAdyacent(p.x,p.y,child.x,child.y) && cont.connection != undefined) {
             cont.connection.send(JSON.stringify({
                 message_type: "INTERACT",
                 player_name: cont.name,
@@ -1904,6 +1900,9 @@ function onlineInteractuarMonstruos(p) {
 
 
 function onlineGameVictory(player) {
+
+    onlineUnPause();
+
     cont.victoryState = -1;
     var ch;
     var derrota = false;

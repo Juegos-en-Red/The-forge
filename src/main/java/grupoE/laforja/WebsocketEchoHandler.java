@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 public class WebsocketEchoHandler extends TextWebSocketHandler {
 	
 	private ConcurrentHashMap<String, Room> rooms = new ConcurrentHashMap<>();
+	private int sent = 0;
 	
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
@@ -253,12 +254,14 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 						r.setP1y(node.get("player_y").asInt());
 						r.setP1Spdx(node.get("player_spdx").asInt());
 						r.setP1Spdy(node.get("player_spdy").asInt());
+						r.setP1Dir(node.get("player_direction").asText());
 						
 					} else if (r.getP2Name().equals(node.get("player_name").asText())) {
 						r.setP2x(node.get("player_x").asInt());
 						r.setP2y(node.get("player_y").asInt());
 						r.setP2Spdx(node.get("player_spdx").asInt());
 						r.setP2Spdy(node.get("player_spdy").asInt());
+						r.setP2Dir(node.get("player_direction").asText());
 						
 					}
 				}
@@ -420,12 +423,16 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 		//No hay que echar al jugador de la sala, pero sí marcarlo como que se ha ido. Podrá volver, espero
 		System.out.println("Session disconnected: " + session.getId() + ". Status: " + status);
 		for (Room r : rooms.values()) {
-			if (r.getP1Session().equals(session)) {
-				r.setP1Timeout(30000);
-				r.setP1Session(null);
-			} else if (r.getP2Session().equals(session)) {
-				r.setP2Timeout(30000);
-				r.setP2Session(null);
+			if (!r.getP1Session().equals(null)) {
+				if (r.getP1Session().equals(session)) {
+					r.setP1Timeout(30000);
+					r.setP1Session(null);
+				}
+			} else if (!r.getP2Session().equals(null)) {
+				if (r.getP2Session().equals(session)) {
+					r.setP2Timeout(30000);
+					r.setP2Session(null);
+				}
 			}
 		}
 	}
@@ -441,7 +448,8 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 	
 	//Función que se ejecuta cada segundo, o algo así. Hace lo mismo para todas las sesiones que [no se lo que iba a poner aquí]
 	//Que sea cada 100 ms y nos quitamos de líos.
-	@Scheduled(fixedDelay=100)
+	//Al final es cada 25 pero como si fuera cada 100
+	@Scheduled(fixedDelay=25)
 	public void serverTick() {
 		ObjectMapper mapper = new ObjectMapper();
 		for (Room r : rooms.values()) {
@@ -453,7 +461,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 				} else {
 					
 					if (r.getP1Timeout() > 0) {
-						r.setP1Timeout(r.getP1Timeout()-100);
+						r.setP1Timeout(r.getP1Timeout()-25);
 						if (r.getP1Timeout() <= 0) {
 							r.setP1Online(false);
 							//Tramitar victoria del jugador 2
@@ -461,7 +469,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 						}
 					}
 					if (r.getP2Timeout() > 0) {
-						r.setP2Timeout(r.getP2Timeout()-100);
+						r.setP2Timeout(r.getP2Timeout()-25);
 						if (r.getP2Timeout() <= 0) {
 							r.setP2Online(false);
 							//Tramitar victoria del jugador 1
@@ -493,6 +501,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 							sendPos.put("player_y",r.getP2y());
 							sendPos.put("player_spdx",r.getP2Spdx());
 							sendPos.put("player_spdy",r.getP2Spdy());
+							sendPos.put("player_direction",r.getP2Dir());
 							if (r.getP1Session() != null) r.getP1Session().sendMessage(new TextMessage(sendPos.toString()));
 							sendPos = mapper.createObjectNode();
 							sendPos.put("message_type","player_move_single");
@@ -501,6 +510,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 							sendPos.put("player_y",r.getP1y());
 							sendPos.put("player_spdx",r.getP1Spdx());
 							sendPos.put("player_spdy",r.getP1Spdy());
+							sendPos.put("player_direction",r.getP1Dir());
 							if (r.getP2Session() != null) r.getP2Session().sendMessage(new TextMessage(sendPos.toString()));
 						} catch (IOException e) {
 							//System.out.println(e);
@@ -524,7 +534,16 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 							//System.out.println(e);
 						}
 						
-						
+						//Si toca, enviamos el resto de información
+						if (sent == 0) {
+							sent = 1;
+						} else {
+							sent++;
+							if (sent > 2) { //Estoy convencido de que esto debería ser un 3 pero bueno
+								sent = 0;
+							}
+							return;
+						}
 						
 						
 						//Si no se ha acabado la partida, toca disminuir todos los valores del juego
