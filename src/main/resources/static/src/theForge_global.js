@@ -53,7 +53,7 @@ mus_menu.volume = cont.mus_vol;
 
 var mus_game = new Audio();
 mus_game.src = "../assets/audio/mus_game.ogg";
-mus_game.loop = true;
+mus_game.loop = false;
 mus_game.volume = cont.mus_vol;
 
 var mus_victory = new Audio();
@@ -65,6 +65,11 @@ var mus_defeat = new Audio();
 mus_defeat.src = "../assets/audio/mus_defeat.ogg";
 mus_defeat.loop = false;
 mus_defeat.volume = cont.mus_vol;
+
+var mus_tutorial = new Audio();
+mus_tutorial.src = "../assets/audio/mus_tutorial.ogg";
+mus_tutorial.loop = true;
+mus_tutorial.volume = cont.mus_vol;
 
 var snd_yunque = new Audio();
 snd_yunque.src = "../assets/audio/snd_yunque.ogg";

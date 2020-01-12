@@ -296,6 +296,7 @@ function musVol(cambio) {
     mus_victory.volume = cont.mus_vol;
     mus_defeat.volume = cont.mus_vol;
     mus_game.volume = cont.mus_vol;
+    mus_tutorial.volume = cont.mus_vol;
 }
 
 //Si el volumen + cambio está entre 0 y 1, se actualiza snd_vol y todos los volúmenes de los efectos de sonido. También se actualiza el texto de la interfaz.

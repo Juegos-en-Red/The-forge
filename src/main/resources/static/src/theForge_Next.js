@@ -22,7 +22,7 @@ sc_Tutorial.create = function() {
     //Música. Si se añade más música es importante parar aquí toda la que haya
     mus_menu.pause();
     mus_menu.currentTime = 0;
-    mus_game.play();
+    mus_tutorial.play();
 
     //Aquí se carga el fondo del juego
     this.add.image(400, 300, 'sky');
@@ -574,7 +574,7 @@ sc_Tutorial.create = function() {
         }
     });
 
-    
+
     //Inicialización de elementos relativos al pausado del juego
     //Por un lado tenemos el overlay, que oscurecerá toda la pantalla cuando el juego esté pausado
     //Por otro lado tenemos el botón de pausa, el cual se podrá pulsar para activar o desactivar el pausado del juego.
@@ -1489,8 +1489,8 @@ function tutorialGameVictory(player) {
     sc_Tutorial.pausedOverlay.setTexture('pausedOverlay');
     sc_Tutorial.botonPausa.removeInteractive();
     if (player == 0) {
-        mus_game.pause();
-        mus_game.currentTime = 0;
+        mus_tutorial.pause();
+        mus_tutorial.currentTime = 0;
         mus_defeat.play();
         sc_Tutorial.victory = sc_Tutorial.add.image(400, 100, 'empate'); //TIE
 
@@ -1515,8 +1515,8 @@ function tutorialGameVictory(player) {
         }
 
     } else {
-        mus_game.pause();
-        mus_game.currentTime = 0;
+        mus_tutorial.pause();
+        mus_tutorial.currentTime = 0;
         mus_victory.play();
         sc_Tutorial.victory = sc_Tutorial.add.image(400, 100, 'victoria');
         if (ch == "SSHielo1") {

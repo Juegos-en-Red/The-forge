@@ -1947,11 +1947,12 @@ function onlineGameVictory(player) {
     } else {
         mus_game.pause();
         mus_game.currentTime = 0;
-        mus_victory.play();
         if (derrota) {
             sc_juegoOnline.victory = sc_juegoOnline.add.image(400, 100, 'derrota');
+            mus_defeat.play();
         } else {
             sc_juegoOnline.victory = sc_juegoOnline.add.image(400, 100, 'victoria');
+            mus_victory.play();
         }
         sc_juegoOnline.victory.depth=1001;
         if (ch == "SSHielo1") {

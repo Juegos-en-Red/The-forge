@@ -32,6 +32,8 @@ function Menu(escena)
         
         mus_game.pause();
         mus_game.currentTime = 0;
+        mus_tutorial.pause();
+        mus_tutorial.currentTime = 0;
         mus_victory.pause();
         mus_victory.currentTime = 0;
         mus_defeat.pause();
