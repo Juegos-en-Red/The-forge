@@ -225,8 +225,6 @@ https://drive.google.com/open?id=1rvBCVqbPnGor9RUyLEz24A49ELa_eSHKa5emECI2Yok
 3. Imagen *Clash of Clans*: https://i.postimg.cc/HxTB3NgV/Screenshot-20171224-223249.png
 4. Imagen *Hollow Knight*: https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/3c6ad2b7-76a1-4e34-b92a-0431101f82f8/ddbz6j3-277d7737-0026-43c7-a802-17bb3fb6c11a.png/v1/fill/w_1280,h_1280,q_80,strp/hollow_knight_characters_studies_2_by_art_revolver_ddbz6j3-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTI4MCIsInBhdGgiOiJcL2ZcLzNjNmFkMmI3LTc2YTEtNGUzNC1iOTJhLTA0MzExMDFmODJmOFwvZGRiejZqMy0yNzdkNzczNy0wMDI2LTQzYzctYTgwMi0xN2JiM2ZiNmMxMWEucG5nIiwid2lkdGgiOiI8PTEyODAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.SJhbkCYVSAYNPyNWjua9tW-oFFCRU2JfZ6Z_L6e36TY
 5. Image *The Swords of Ditto*: https://pbs.twimg.com/media/Di91nr5UUAA9J4o.jpg
-6. Música del menú principal: Northland de Antti Martikainen (https://www.youtube.com/watch?v=tUR6zJcQ6MA)
-7. Música de la partida: Super Hero 3 de Johannes Bornlöf (https://www.youtube.com/watch?v=2Tfw3YuE5_Q)
-8. Sonido del yunque: Sonido del yunque de minecraft (https://gamepedia.cursecdn.com/minecraft_gamepedia/8/8c/Anvil_land.ogg)
-9. Tipografía empleada en los textos: Enchanted Land (https://www.dafont.com/es/enchanted-land.font)
-10. Tutorial de la pantalla de carga (https://gamedevacademy.org/creating-a-preloading-screen-in-phaser-3/)
+6. Sonido del yunque: Anvil de MrAuralization (https://freesound.org/people/MrAuralization/sounds/274846/)
+7. Tipografía empleada en los textos: Enchanted Land de Dennis Ludlow (https://www.dafont.com/es/enchanted-land.font)
+8. Tutorial de la pantalla de carga (https://gamedevacademy.org/creating-a-preloading-screen-in-phaser-3/)
