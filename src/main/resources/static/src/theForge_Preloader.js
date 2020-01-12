@@ -567,6 +567,30 @@ sc_Preloader.preload = function()
     this.load.html('chatInput', '../src/chatInput.html');
     this.load.html('usersBox', '../src/usersBox.html');
 
+    //Tutorial
+    this.load.image("T1", "../assets/tutorial/T1.png");
+    this.load.image("T2", "../assets/tutorial/T2.png");
+    this.load.image("T3", "../assets/tutorial/T3.png");
+    this.load.image("T4", "../assets/tutorial/T4.png");
+    this.load.image("T5", "../assets/tutorial/T5.png");
+    this.load.image("T6", "../assets/tutorial/T6.png");
+    this.load.image("T7", "../assets/tutorial/T7.png");
+    this.load.image("T8", "../assets/tutorial/T8.png");
+    this.load.image("T9", "../assets/tutorial/T9.png");
+    this.load.image("T10", "../assets/tutorial/T10.png");
+    this.load.image("T11", "../assets/tutorial/T11.png");
+    this.load.image("T12", "../assets/tutorial/T12.png");
+    this.load.image("T13", "../assets/tutorial/T13.png");
+    this.load.image("T14", "../assets/tutorial/T14.png");
+    this.load.image("T15", "../assets/tutorial/T15.png");
+    this.load.image("T16", "../assets/tutorial/T16.png");
+    this.load.image("T17", "../assets/tutorial/T17.png");
+    this.load.image("T18", "../assets/tutorial/T18.png");
+    this.load.image("T19", "../assets/tutorial/T19.png");
+    this.load.image("T20", "../assets/tutorial/T20.png");
+    this.load.image("TArrow", "../assets/tutorial/TArrow.png");
+    this.load.image("botonOk", "../assets/tutorial/botonOk.png");
+
 }
 
 sc_Preloader.create = function()

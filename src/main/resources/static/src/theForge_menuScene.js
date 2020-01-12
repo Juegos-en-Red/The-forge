@@ -239,7 +239,7 @@ function Menu(escena)
             if (type == "creditos" && pressed === true)
                 escena.scene.start("Creditos");
             if (type == "next" && pressed === true)
-                escena.scene.start("Next");
+                escena.scene.start("Tutorial");
             if (type == "online" && pressed === true && cont.online)
                 escena.scene.start("OnlineIP");
             pressed = false;
