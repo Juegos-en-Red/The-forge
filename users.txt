@@ -1,13 +1,13 @@
 a
 a
 SSFuego1
-32
-26
+37
+29
 b
 b
 SSElfa1
-25
-31
+28
+36
 a a
 a
 SSHielo1

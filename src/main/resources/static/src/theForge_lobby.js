@@ -260,6 +260,16 @@ sc_lobby.update = function() {
                                     player_name: cont.name,
                                     player_character: cont.ch,//cambiarlo en el otro sitio tambien
                                 }));
+                                //Espero no arrepentirme de poner esto aquí
+                                cont.victoryState = -1;
+                                sc_lobby.playercontrolling = 1;
+                                cont.p1.ch = "SSHielo1";
+                                cont.p2.ch = "SSHielo1";
+                                sc_lobby.scene.stop("Lobby");
+                                sc_lobby.scene.stop("SeleccionPersonajeOnline");
+                                game.scene.stop("JuegoOnline");
+                                game.scene.start("JuegoOnline");
+                                
                             }
                             cont.connection.onerror = function(e) {
                                 console.log("WS error: " + e);

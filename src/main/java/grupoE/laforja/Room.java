@@ -57,7 +57,7 @@ public class Room {
 		this.p1Character = p1Character;
 		this.p2Name = p2Name;
 		p2Online = false;
-		p2Timeout = -1;
+		p2Timeout = 30000;
 		p2Session = null;
 		p2Character = null;
 		full = false;

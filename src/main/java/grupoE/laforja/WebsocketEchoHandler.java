@@ -41,7 +41,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 				System.out.println("Opponent's name: " + node.get("opponent_name").asText());
 				for (Room r : rooms.values()) {
 					if (r.getP1Name().equals(node.get("opponent_name").asText()) && r.getP2Name().equals(node.get("player_name").asText())) {
-						if (!r.isP2Online() && r.getP2Timeout() == -1) {
+						if (!r.isP2Online()) {
 							//Si el jugador no está conectado, le metemos de forma normal
 							if (r.getP2Character() == null) {
 								r.setP2Character(node.get("player_character").asText());
@@ -49,6 +49,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 							r.setP2Name(node.get("player_name").asText());
 							r.setP2Online(true);
 							r.setP2Session(session);
+							r.setP2Timeout(-1);
 							r.setFull(true);
 							
 							ObjectNode sendNode = createBeginGameMessage(mapper, r);
@@ -458,7 +459,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 	public void serverTick() {
 		ObjectMapper mapper = new ObjectMapper();
 		for (Room r : rooms.values()) {
-			if (r.isFull()) {
+			//if (r.isFull()) { //Quitar esto me va a causar más problemas que otra cosa
 				if (r.isGameOver()) {
 					//Si se acaba la partida, ver qué hay que hacer
 					//Sólo debería ocurrir si alguien se desconecta y ha perdido, aunque complicado lo veo, ya que el juego le haría no irse del lobby y ya.
@@ -492,7 +493,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 						sendPos.put("message_type","timeout");
 						sendPos.put("op_timeout",r.getP1Timeout());
 						if (r.getP2Session() != null) if (r.getP2Session().isOpen()) r.getP2Session().sendMessage(new TextMessage(sendPos.toString()));
-					} catch (IOException e) {
+					} catch (Exception e) {
 						//System.out.println(e);
 					}
 					if (r.isP1Online() && r.isP2Online() && r.getP1Timeout() == -1 && r.getP2Timeout() == -1) { //Si ambos jugadores están conectados, seguimos calculando todo. Si no, se pausa.
@@ -665,7 +666,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 						//La partida se ha acabado. Mandar mensajes de que hasta aquí hemos llegado.
 					}
 				}
-			}
+			//}
 		}
 	}
 	
