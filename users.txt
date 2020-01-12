@@ -2,11 +2,11 @@ a
 a
 SSFuego1
 37
-29
+30
 b
 b
 SSElfa1
-28
+29
 36
 a a
 a

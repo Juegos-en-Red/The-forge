@@ -275,6 +275,7 @@ sc_Preloader.preload = function()
     this.load.image('pausequitbutton', '../assets/game/pausequitbutton.png');
     this.load.image('pauseresumebutton', '../assets/game/pauseresumebutton.png');
     this.load.image('pausecancelbutton', '../assets/game/pausecancelbutton.png');
+    this.load.image('pausesurrenderbutton', '../assets/game/botonSurrender.png');
 
     this.load.image('guideMarker', '../assets/game/guideMarker.png');
 

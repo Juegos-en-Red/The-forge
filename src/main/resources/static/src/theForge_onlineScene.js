@@ -623,14 +623,14 @@ sc_juegoOnline.create = function() {
     sc_juegoOnline.pausemenu = sc_juegoOnline.add.image(400, 300, 'pausemenu');
     sc_juegoOnline.pausemenu.depth = 998;
     sc_juegoOnline.pauseguidebutton = sc_juegoOnline.add.image(400, 200, 'pauseguidebutton');
-    sc_juegoOnline.pausequitbutton = sc_juegoOnline.add.image(400, 300, 'pausequitbutton');
+    sc_juegoOnline.pausequitbutton = sc_juegoOnline.add.image(400, 300, 'pausesurrenderbutton');
     sc_juegoOnline.pauseresumebutton = sc_juegoOnline.add.image(400, 400, 'pauseresumebutton');
     sc_juegoOnline.pauseguidebutton.depth = 999;
     sc_juegoOnline.pausequitbutton.depth = 999;
     sc_juegoOnline.pauseresumebutton.depth = 999;
 
     sc_juegoOnline.pausequitmenu = sc_juegoOnline.add.image(400, 300, 'pausequitmenu');
-    sc_juegoOnline.pausequitbutton2 = sc_juegoOnline.add.image(400, 290, 'pausequitbutton');
+    sc_juegoOnline.pausequitbutton2 = sc_juegoOnline.add.image(400, 290, 'pausesurrenderbutton');
     sc_juegoOnline.pausecancelbutton = sc_juegoOnline.add.image(400, 350, 'pausecancelbutton');
     sc_juegoOnline.pausequitmenu.depth = 1000;
     sc_juegoOnline.pausequitbutton2.depth = 1000;

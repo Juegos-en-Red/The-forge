@@ -39,9 +39,9 @@ sc_Guia.create = function(escena)
     array.push(this.add.image(0, 0, "basuraguia").setOrigin(0, 0));
     array.push(this.add.image(0, 0, "trampas").setOrigin(0, 0));
 
-    btnRight = this.add.image(700, 520, "botonDer").setOrigin(0, 0).setScale(0.5, 0.5);
-    btnLeft = this.add.image(50, 520, "botonIzda").setOrigin(0, 0).setScale(0.5, 0.5);
-    cross = this.add.image(650, 20, "cruz2").setOrigin(0, 0);
+    btnRight = this.add.image(795, 520, "botonDer").setOrigin(1, 0).setScale(0.5, 0.5);
+    btnLeft = this.add.image(5, 520, "botonIzda").setOrigin(0, 0).setScale(0.5, 0.5);
+    cross = this.add.image(700, 10, "cruz2").setOrigin(0, 0);
     cross.setInteractive({cursor: "pointer"}).on("pointerdown", function(pointer)
     {
         if (ingame) {

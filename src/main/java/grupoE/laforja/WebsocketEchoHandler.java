@@ -29,7 +29,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 		//Usar aquí cosas concurrentes como ConcurrentHashMap para que no deje de funcionar todo
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode node = mapper.readTree(message.getPayload());
-		System.out.println("Received message of type " + node.get("message_type").asText());
+		//System.out.println("Received message of type " + node.get("message_type").asText());
 		switch (node.get("message_type").asText()) {
 			case "OPEN":
 				rooms.put(node.get("player_name").asText(), new Room(session, node.get("player_name").asText(), node.get("opponent_name").asText(),node.get("player_character").asText()));
@@ -545,7 +545,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 							sent = 1;
 						} else {
 							sent++;
-							if (sent > 2) { //Estoy convencido de que esto debería ser un 3 pero bueno
+							if (sent > 3) { //Estoy convencido de que esto debería ser un 3 pero bueno
 								sent = 0;
 							}
 							return;
@@ -616,7 +616,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 								//Enviar al cliente las trampas
 								ObjectNode sendTrap = createSendTrapMessage(mapper, r);
 								try {
-									System.out.println("Sending message " + sendTrap.toString());
+									//System.out.println("Sending message " + sendTrap.toString());
 									if (r.getP1Session() != null) if (r.getP1Session().isOpen()) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
 									if (r.getP2Session() != null) if (r.getP2Session().isOpen()) r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
 								} catch (IOException e) {
