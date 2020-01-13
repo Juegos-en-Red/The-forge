@@ -80,7 +80,6 @@ function Menu(escena)
         // Cambiamos el alpha de este botón para indicar que no está disponible en el caso de que no lo esté
         this.online.alpha = cont.online?1:0.2;
         // Hacemos que el puntero cambie al situarlo sobre el botón
-        this.online.setInteractive({cursor: "pointer"});
 
         // Botón de ajustes
         this.ajustes = escena.add.sprite(config.width / 2, 400, "ajustes_btn").setPipeline('Light2D');

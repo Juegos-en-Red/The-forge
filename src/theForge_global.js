@@ -27,7 +27,7 @@ var cont = {
     },
     mus_vol: 0.5,
     snd_vol: 0.5,
-    online: true,
+    online: false,
     server_ip: window.location.href,
     connected: false, 
     id: -1,

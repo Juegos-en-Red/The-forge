@@ -556,15 +556,6 @@ sc_Preloader.preload = function()
     
     this.load.image('chatBoxBG', '../assets/online/chatBoxBG.png');
 
-    //Elementos HTML
-    
-    this.load.html('input', '../src/input.html');
-    this.load.html('login', '../src/login.html');
-    
-    this.load.html('chatBox', '../src/chatBox.html');
-    this.load.html('chatInput', '../src/chatInput.html');
-    this.load.html('usersBox', '../src/usersBox.html');
-
     //Tutorial
     this.load.image("T1", "../assets/tutorial/T1.png");
     this.load.image("T2", "../assets/tutorial/T2.png");
