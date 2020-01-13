@@ -214,7 +214,7 @@ sc_lobby.update = function() {
                     text += "Elf";
                 break;
                 case "F":
-                    text += "Fire";
+                    text += "Necro";
                 break;
             }
             sc_lobby.profileText.setText(text);
@@ -720,7 +720,7 @@ function showUserProfile(player) {
                 text += "Elf";
             break;
             case "F":
-                text += "Fire";
+                text += "Necro";
             break;
         }
     sc_lobby.enemyProfileText.setText(text);
@@ -787,7 +787,7 @@ function updateEnemyProfile() {
                     text += "Elf";
                 break;
                 case "F":
-                    text += "Fire";
+                    text += "Necro";
                 break;
             }
         sc_lobby.enemyProfileText.setText(text);

@@ -253,8 +253,8 @@ sc_Preloader.preload = function()
     this.load.image('martillo28', '../assets/game/martillo28.png');
     this.load.image('martillo29', '../assets/game/martillo29.png');
     this.load.image('martillo210', '../assets/game/martillo210.png');
-    this.load.image('relojinterfaz', '../assets/game/relojinterfaz.png');
-    this.load.image('reloj0', '../assets/game/relojinterfaz.png');
+    this.load.image('relojinterfaz', '../assets/game/relojInterfaz.png');
+    this.load.image('reloj0', '../assets/game/relojInterfaz.png');
     this.load.image('reloj1', '../assets/game/reloj1.png');
     this.load.image('reloj2', '../assets/game/reloj2.png');
     this.load.image('reloj3', '../assets/game/reloj3.png');
@@ -268,7 +268,7 @@ sc_Preloader.preload = function()
     this.load.image('tic', '../assets/game/tic.png');
     this.load.image('1de2', '../assets/game/1de2.png');
     this.load.image('botonPausa', '../assets/game/botonPausa.png');
-    this.load.image('pausedOverlay', '../assets/game/pausedOverlay.png');
+    this.load.image('pausedOverlay', '../assets/game/pausedoverlay.png');
     this.load.image('pausemenu', '../assets/game/pausemenu.png');
     this.load.image('pausequitmenu', '../assets/game/pausequitmenu.png');
     this.load.image('pauseguidebutton', '../assets/game/pauseguidebutton.png');
@@ -555,9 +555,6 @@ sc_Preloader.preload = function()
     this.load.image("botonDecline", "../assets/online/botonDecline.png");
     
     this.load.image('chatBoxBG', '../assets/online/chatBoxBG.png');
-    this.load.image('chatBoxBGTop', '../assets/online/chatBoxBGTop.png');
-    this.load.image('chatBoxBGAway', '../assets/online/chatBoxBGAway.png');
-    this.load.image('chatBoxBGInGame', '../assets/online/chatBoxBGInGame.png');
 
     //Elementos HTML
     
