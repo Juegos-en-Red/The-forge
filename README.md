@@ -194,36 +194,36 @@ Escena que muestra los créditos del juego.
 
 Desde el menú principal, pulsando en el botón de "Próximamente" se accede a una nueva pantalla en la que quedan reflejados los cambios o mejoras que se pretenden introducir en un futuro.
 
-![CAPTURA DE PANTALLA DEL MENÚ DEFINITIVO]()
+![CAPTURA DE PANTALLA DEL MENÚ DEFINITIVO](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/MENU%20PRINCIPAL.PNG)
 
 Se ha eliminado el botón de "Próximamente" y se ha sustituido por el de "Tutorial", implementando sus respectivas funcionalidades. Además, con el objetivo de colgarlo en internet, se han actualizado todos los textos del juego al inglés, como se irá viendo en las distintas muestras del juego.
 
-![CAPTURA DE PANTALLA DE LA GUÍA TRADUCIDA]()
+![CAPTURA DE PANTALLA DE LA GUÍA TRADUCIDA](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/MUESTRAGUIA.PNG)
 
 Se han actualizado los controles del segundo jugador y se ha traducido al inglés. Se mantiene el contenido general, pero también se han intercambiado las capturas de pantalla con unas correspondientes al juego actual. 
 
-![CAPTURA DE PANTALLA DEL TUTORIAL]()
+![CAPTURA DE PANTALLA DEL TUTORIAL](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/MUESTRATUTORIAL.PNG)
 
 El tutorial es una funcionalidad completamente nueva implementada para la fase 5. Se trata de una partida en solitario guiada donde una serie de textos van indicándole al jugador las acciones que tiene que realizar paso por paso para ganar la partida.
 
-![CAPTURA DE PANTALLA DEL MENÚ DE SELECCIÓN DE PERSONAJES]()
+![CAPTURA DE PANTALLA DEL MENÚ DE SELECCIÓN DE PERSONAJES](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/MENUSELECCION.PNG)
 
 Se ha introducido un nuevo personaje seleccionable. Junto a él se verá en la partida a su correspondiente monstruo.
 
-![CAPTURA DE PANTALLA DE LA PARTIDA ACTUALIZADA]()
+![CAPTURA DE PANTALLA DE LA PARTIDA ACTUALIZADA](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/PARTIDA.PNG)
 
 Se han hecho una serie de cambios desde la partida para mejorar la fase 2. En el aspecto visual, se han introducido partículas junto al movimiento de los personajes, se ha cambiado el sprite del yunque doble para hacerlo más diferenciable del yunque normal y se han eliminado los signos de prohibido del contenedor de basura. Se ha hecho más reconocible el icono del menú de pausa y se ha cambiado la distribución de las recetas. Además, en la parte superior de la pantalla se han incluido para cada jugador un área que muestre la trampa que posee cada usuario en cada momento, un cronómetro que lleva la cuenta de la duración máxima de la partida y otro que actualiza el progreso de la armadura. 
 Por último, se han implementado pantallas de derrota y empate.
 
-![CAPTURA DE PANTALLA DEL MENÚ DE PAUSA]()
+![CAPTURA DE PANTALLA DEL MENÚ DE PAUSA](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/MENUDEPAUSA.PNG)
 
 Ahora se dispone de un menú de pausa que permite acceder a la guía, salir de la partida y volver a esta.
 
-![CAPTURA DE PANTALLA DEL LOBBY ACTUALIZADO]()
+![CAPTURA DE PANTALLA DEL LOBBY ACTUALIZADO](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/NUEVOLOBBY.PNG)
 
 Se han mejorado los gráficos referentes al chat y a la lista de jugadores, que marca el estado de cada usuario en función a su disponibilidad para realizar una partida. Ahora existe un perfil del jugador. Este mismo es visible para otros jugadore al hacer click sobre el nombre de un usuario e incluye la posibilidad de desafiarlo. Si el jugador es desafiado, le llegará un mensaje que puede aceptar o rechazar. 
 
-![CAPTURA DE PANTALLA DEL LA PARTIDA ONLINE]()
+![CAPTURA DE PANTALLA DEL LA PARTIDA ONLINE](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/partidaOnline.PNG)
 
 Equivalente a la partida local. La mayor diferencia es que el sprite del oponente aparece en un color distinto para diferenciarlo del propio. Aquí también se dispone de un menú de pausa y de todas las funcionalidades de la partida local.
 
@@ -260,9 +260,20 @@ https://drive.google.com/open?id=1rvBCVqbPnGor9RUyLEz24A49ELa_eSHKa5emECI2Yok
 Fase 3:
 https://drive.google.com/open?id=1rvBCVqbPnGor9RUyLEz24A49ELa_eSHKa5emECI2Yok
 
+Fases 4 y 5:
+https://drive.google.com/open?id=1rvBCVqbPnGor9RUyLEz24A49ELa_eSHKa5emECI2Yok
+
+
 ## ENLACE VÍDEO WEBSOCKETS
 
 ## ENLACE A LAS PÁGINAS WEB EN LAS QUE ESTÁ SUBIDO EL JUEGO
+
+Como parte de la fase 5, The Forje se puede encontrar disponible en los siguientes enlaces:
+ 
+ -https://zeus-guy.itch.io/the-forge
+ -https://gamejolt.com/games/theforge/462495
+ -https://www.newgrounds.com/portal/view/746102
+ -https://play.idevgames.co.uk/game/the-forge
 
 ## FUENTES
 1. Imagen *Overcooked*: https://steamcdn-a.akamaihd.net/steam/apps/448510/ss_058c688a6f07a4624b4f775b3e71df8037ef4df2.1920x1080.jpg?t=1567203965
