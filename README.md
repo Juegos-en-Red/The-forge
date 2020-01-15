@@ -270,10 +270,13 @@ https://drive.google.com/open?id=1rvBCVqbPnGor9RUyLEz24A49ELa_eSHKa5emECI2Yok
 
 Como parte de la fase 5, The Forje se puede encontrar disponible en los siguientes enlaces:
  
- -https://zeus-guy.itch.io/the-forge
- -https://gamejolt.com/games/theforge/462495
- -https://www.newgrounds.com/portal/view/746102
- -https://play.idevgames.co.uk/game/the-forge
+ https://zeus-guy.itch.io/the-forge
+ 
+ https://gamejolt.com/games/theforge/462495
+ 
+ https://www.newgrounds.com/portal/view/746102
+ 
+ https://play.idevgames.co.uk/game/the-forge
 
 ## FUENTES
 1. Imagen *Overcooked*: https://steamcdn-a.akamaihd.net/steam/apps/448510/ss_058c688a6f07a4624b4f775b3e71df8037ef4df2.1920x1080.jpg?t=1567203965
