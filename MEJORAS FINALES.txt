@@ -66,7 +66,9 @@ MEJORAS DEL MODO ONLINE, QUE NO ESTÁN EN LA FASE 5 PERO SÍ EN LA 4:
 MEJORAS QUE NO SE HAN PODIDO IMPLEMENTAR, PERO QUE SE TIENEN EN CUENTA:
  -Incluir más animaciones:
   -Un ejemplo sería que el jugador golpease al yunque con el martillo de forma más visual.
-  -La viabilidad sería casi nula, ya que es demasiado trabajo artístico.
+  -La viabilidad sería casi nula, por los siguientes motivos:
+   -Es demasiado trabajo artístico, ya que hay que tener en cuenta todas las posiciones en las que puede estar el jugador, y todos los objetos que puede estar sujetando
+   -No es una tarea fácil a la hora de programarla, ya que el personaje debería estar perfectamente situado para que la animación tuviera sentido
  -Reajustar los sprites del tercer personaje:
   -Los objetos que lleva el personaje se mueven de forma extraña al andar.
   -Viabilidad del 100%, en una tarde se podría solucionar.
