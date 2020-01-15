@@ -10,6 +10,7 @@ sc_juegoOnline.preload = function() {
 
 //Función create: Aquí se inicializan todos los objetos del juego.
 sc_juegoOnline.create = function() {
+    cont.playing = true;
     console.log("Online game: begin.");
     cont.prevScene = sc_juegoOnline;
     cont.prevSceneName = "JuegoOnline";
@@ -1076,6 +1077,7 @@ function onlineQuitGame() {
             player_name: cont.name,
         }));
     } else {
+        cont.playing = false;
         sc_juegoOnline.scene.stop("Lobby");
         sc_juegoOnline.scene.start("Lobby");
     }
@@ -1989,6 +1991,7 @@ function onlineGameVictory(player) {
             cont.connection.close();
             cont.connection = undefined;
         }
+        cont.playing = false;
         sc_juegoOnline.scene.stop("Lobby");
         sc_juegoOnline.scene.start("Lobby");
     });

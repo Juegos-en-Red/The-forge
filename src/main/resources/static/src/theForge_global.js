@@ -41,7 +41,8 @@ var cont = {
     prevScene: undefined,
     prevSceneName: "",
     ping: 0,
-    connection: undefined
+    connection: undefined,
+    playing: false
 }
 
 //funciones de música por aquí

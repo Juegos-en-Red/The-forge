@@ -6,6 +6,7 @@ sc_lobby.preload = function() {
 }
 
 sc_lobby.create = function() {
+    cont.playing = false;
 
     mus_game.pause();
     mus_game.currentTime = 0;
@@ -164,42 +165,57 @@ sc_lobby.update = function() {
     for(var i = 0; i < onlineUsers.length; i++) {
 
         if (onlineUsers[i].id == cont.id) {
-            if (!onlineUsers[i].inGame && onlineUsers[i].opponentName == "" && cont.connection != undefined) {
+            /*if (!onlineUsers[i].inGame && onlineUsers[i].opponentName == "" && cont.connection != undefined) {
                 cont.connection.close();
                 cont.connection = undefined;
-            }
-            if (onlineUsers[i].inGame && cont.connection == undefined) { 
-                //Si tenemos que estar en partida, abrimos websocket
-                sc_lobby.opponentName = onlineUsers[i].opponentName;
-                var wsUrl;
-                if (cont.server_ip.slice(0,4) == "http") {
-                    wsUrl = cont.server_ip.slice(4);
-                } else if (cont.server_ip.slice(0,5) == "https") {
-                    wsUrl = cont.server_ip.slice(5);
+            }*/
+            if (onlineUsers[i].inGame/* && cont.connection == undefined*/) { 
+                var prosiga = !cont.playing;
+
+                if (prosiga) {
+                    
+                    if (cont.connection != undefined) {
+                        if (cont.connection.readyState !== WebSocket.CLOSED) {
+                            cont.connection.close();
+                        }
+                    }
+
+                    //Si tenemos que estar en partida, abrimos websocket
+                    sc_lobby.opponentName = onlineUsers[i].opponentName;
+                    var wsUrl;
+                    if (cont.server_ip.slice(0,4) == "http") {
+                        wsUrl = cont.server_ip.slice(4);
+                    } else if (cont.server_ip.slice(0,5) == "https") {
+                        wsUrl = cont.server_ip.slice(5);
+                    }
+                    cont.connection = new WebSocket("ws"+wsUrl+"echo");
+                    cont.playing = true;
+                    cont.connection.onopen = function() {
+                        console.log("Websocket opened");
+                        cont.connection.send(JSON.stringify({
+                            message_type: "OPEN2",
+                            opponent_name: sc_lobby.opponentName,
+                            player_name: cont.name,
+                            player_character: cont.ch
+                        }));
+                    }
+                    cont.connection.onerror = function(e) {
+                        console.log("WS error: " + e);
+                    }
+                    cont.connection.onmessage = function(msg) {
+                        websocketOnMessage(msg);
+                    }
+                    cont.connection.onclose = function(e) {
+                        cont.connection = undefined;
+                        console.log("Websocket closed.");
+                        /*if ((sc_juegoOnline.scene.isActive() || sc_Guia.scene.isActive()) && onlineUsers[cont.id].inGame) { //Esto debería cubrir todos los casos en los que el jugador pueda desconectarse
+                            sc_juegoOnline.scene.start("Lobby");
+                        }*/ //hay que pulirlo un poquitillo más igual
+                    }
+                } else {
+                    console.log("You are in game, your websocket should already be opened. I hope.");
                 }
-                cont.connection = new WebSocket("ws"+wsUrl+"echo");
-                cont.connection.onopen = function() {
-                    console.log("Websocket opened");
-                    cont.connection.send(JSON.stringify({
-                        message_type: "OPEN2",
-                        opponent_name: sc_lobby.opponentName,
-                        player_name: cont.name,
-                        player_character: cont.ch
-                    }));
-                }
-                cont.connection.onerror = function(e) {
-                    console.log("WS error: " + e);
-                }
-                cont.connection.onmessage = function(msg) {
-                    websocketOnMessage(msg);
-                }
-                cont.connection.onclose = function(e) {
-                    cont.connection = undefined;
-                    console.log("Websocket closed.");
-                    /*if ((sc_juegoOnline.scene.isActive() || sc_Guia.scene.isActive()) && onlineUsers[cont.id].inGame) { //Esto debería cubrir todos los casos en los que el jugador pueda desconectarse
-                        sc_juegoOnline.scene.start("Lobby");
-                    }*/ //hay que pulirlo un poquitillo más igual
-                }
+                
             }
 
 
