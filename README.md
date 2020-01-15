@@ -5,6 +5,9 @@ Juego de la asignatura de Juegos en red desarrollado por:
 * Javier Sendarrubias Otero. Correo: ja.sendarrubias.2017@alumnos.urjc.es, Github: [Javierso1](https://github.com/Javierso1)
 * Jorge Sendarrubias Otero. Correo: j.sendarrubias.2017@alumnos.urjc.es, Github: [JorgeURJC](https://github.com/JorgeURJC)
 
+## VIDEO SOBRE EL USO DEL JUEGO ONLINE
+[![](http://img.youtube.com/vi/Hzufct9Ceo4/0.jpg)](http://www.youtube.com/watch?v=Hzufct9Ceo4 "")
+
 ## CAMBIOS EN EL DOCUMENTO DE DISEÑO V1.3
 Se ha implementado el tercer personaje. Al estar en la versión final del juego, también se ha actualizado lo referente a este en los apartados de HISTORIA y PERSONAJES, de tal forma que ahora solo aparecen en el contexto los tres personajes seleccionables durante las partidas. 
 Se ha actualizado la sección de DIAGRAMAS con uno referente a la implementación de WebSockets. Además se ha añadido un apartado referente a la documentación de WebSockets resumiendo los cambios y la comunicación que se ha realizado para la fase 4 llamado DOCUMENTACION y se ha actualizado la sección de MUESTRAS DEL DISEÑO Y LA NAVEGACIÓN con nuevas capturas de pantalla referente a las actualizaciones de las pantallas en ambas fases, 4 y 5. 
@@ -227,6 +230,44 @@ Se han mejorado los gráficos referentes al chat y a la lista de jugadores, que 
 
 Equivalente a la partida local. La mayor diferencia es que el sprite del oponente aparece en un color distinto para diferenciarlo del propio. Aquí también se dispone de un menú de pausa y de todas las funcionalidades de la partida local.
 
+## PROTOCOLO UTILIZADO SOBRE WEBSOCKETS
+Todos los mensajes enviados por websockets están en formato JSON, y contienen un parámetro llamado message_type.
+
+Dependiendo del tipo de mensaje, se ejecutarán unas acciones u otras.
+
+Cuando un jugador recibe un desafío y pulsa el botón aceptar, abre un websocket y envía un mensaje de tipo "OPEN".
+
+El servidor, al recibirlo, crea una sala para ese jugador y su oponente.
+
+Cuando el otro jugador sabe que está en partida, abre websocket y envía un mensaje de tipo "OPEN2".
+
+Cuando el servidor recibe ese mensaje, busca una sala en la que ya esté y le mete.
+
+Una vez están los dos jugadores dentro de la sala, el servidor envía un mensaje de tipo "begin_game", que indica a ambos jugadores que la partida ha comenzado.
+
+Una vez dentro de la partida, el servidor enviará una serie de mensajes cada 100ms (25 en algunos casos, como la posición de jugadores)
+
+Los mensajes que puede enviar el servidor son:
+- "trap_change": Envía a los clientes las trampas de ambos jugadores y del altar
+- "estaciones": Envía a los clientes todos los tiempos y objetos de todas las estaciones de trabajo, los jugadores y los monstruos
+- "winner": Envía a los clientes el nombre del ganador
+- "player_move": Envía a los clientes la posición de ambos jugadores
+- "player_move_single": Envía a un cliente la posición, velocidad y dirección del otro cliente
+- "timeout": Envía a un cliente el tiempo que le queda al otro para reconectarse antes de perder
+- "recetas": Envía a ambos clientes los arrays que contienen las recetas restantes de los dos jugadores
+- "game_time": Envía a los clientes el tiempo que le queda a la partida
+
+Los mensajes que pueden mandar los clientes son:
+- "GRAB TRAP": El servidor asigna al jugador indicado la trampa que tenga el altar, si es que tiene alguna. Después, elimina la trampa del altar
+- "USE TRAP": El servidor elimina la trampa del jugador indicado, si es que tiene alguna, y asigna los tiempos correspondientes a la trampa eliminada
+- "PLAYER MOVE": El servidor actualiza la posición, velocidad y dirección del jugador indicado
+- "INTERACT": Asigna al jugador y estación de trabajo seleccionadas los tiempos y objetos correspondientes, según los que ya tuvieran
+- "INTERACT_TIMER": Similar al anterior, pero sólo modifica tiempos
+- "INTERACT_MONSTER": Si el jugador tiene el objeto que necesita el monstruo, se realizan todas las acciones necesarias para eliminar el objeto de la receta y asignárselo al monstruo. Si un jugador gana, se enviará el mensaje apropiado a los clientes
+- "SURRENDER": El jugador indicado se rinde, por lo que se envía un mensaje de victoria con el otro jugador como ganador
+
+
+
 ## INSTRUCCIONES DE EJECUCCIÓN
 A la hora de ejecutar el proyecto existen dos maneras. 
 
@@ -239,7 +280,7 @@ Hecho esto se inicia el servidor al que se conectará el navegador.
 
 La otra forma de ejecutarlo es utilizando un archivo .jar, ya sea el que viene incluido u otro que se compile a partir del código fuente. Para compilar un archivo .jar, es necesario tener instalado el JDK. Desde Spring, se debe utilizar el comando "run as: Maven Build.." y en Goals se debe introducir "package". 
 
-Al pulsar el botón "Run", se empezará a compilar el servidor en un archivo .jar. Una vez esté compilado, se puede o abrir directamente o, desde la línea de comandos y en la carpeta en la que se encuentre el .jar, ejecutar "java -jar laforja-0.0.1-SNAPSHOT.jar".
+Al pulsar el botón "Run", se empezará a compilar el servidor en un archivo .jar. Una vez esté compilado, se puede o abrir directamente o, desde la línea de comandos y en la carpeta en la que se encuentre el .jar, ejecutar "java -jar laforja-final.jar". El comando cambiará según el nombre del archivo .jar.
 
 
 Una vez el servidor se esté ejecutando, desde el navegador se accede a la IP del servidor que está activo, que será la del equipo con el puerto 8080. Desde el equipo en el que se esté ejecutando, basta con entrar en localhost:8080.
@@ -262,9 +303,6 @@ https://drive.google.com/open?id=1rvBCVqbPnGor9RUyLEz24A49ELa_eSHKa5emECI2Yok
 
 Fases 4 y 5:
 https://drive.google.com/open?id=1rvBCVqbPnGor9RUyLEz24A49ELa_eSHKa5emECI2Yok
-
-
-## ENLACE VÍDEO WEBSOCKETS
 
 ## ENLACE A LAS PÁGINAS WEB EN LAS QUE ESTÁ SUBIDO EL JUEGO
 
