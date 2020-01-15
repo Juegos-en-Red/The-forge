@@ -268,7 +268,7 @@ https://drive.google.com/open?id=1rvBCVqbPnGor9RUyLEz24A49ELa_eSHKa5emECI2Yok
 
 ## ENLACE A LAS PÁGINAS WEB EN LAS QUE ESTÁ SUBIDO EL JUEGO
 
-Como parte de la fase 5, The Forje se puede encontrar disponible en los siguientes enlaces:
+Como parte de la fase 5, The Forge se puede encontrar disponible en los siguientes enlaces:
  
  https://zeus-guy.itch.io/the-forge
  
