@@ -1,0 +1,79 @@
+__BETA TESTING__
+
+GLITCHES:
+ -Las colisiones con las estaciones de trabajo no funcionan correctamente
+ -Se puede interactuar con algunos botones con el ratón un poco fuera de ellos
+ -Si el juego va lento, la velocidad de los jugadores se ve afectada
+
+SUGERENCIAS:
+ -Indicar al jugador de forma más clara qué es lo que tiene que hacer
+ -Indicar al jugador su progreso, sin tener que fijarse en los monstruos
+ -Hacer que el juego tenga una duración limitada, para por si los jugadores no saben jugar
+ -Hacer que en la pantalla de victoria no te devuelva al menú principal al hacer click en cualquier parte de la pantalla
+ -Añadir más personajes
+ -Incluir una pausa antes de que empiece la partida
+ -Representar visualmente las trampas
+ -Añadir un menú de pausa
+ -Añadir un tutorial para que los jugadores aprendan a jugar
+ -El yunque doble no se diferencia lo suficiente del normal
+ -Hacer que puedas volver al menú principal tanto desde la pantalla de selección de personaje como desde la partida
+ -Incluir más animaciones
+ -Reajustar los sprites del tercer personaje
+ -Más escenarios y trampas
+ -Pantalla de carga
+ -Incluir el modo online en la versión subida a portales
+
+__MEJORAS FINALES__
+
+CORRECCIÓN DE GLITCHES:
+
+MEJORAS AÑADIDAS:
+ -Algoritmo de Dijkstra (linea guia) que indica al jugador a dónde tiene que ir
+ -Botón para activar o desactivar la linea guía
+ -Gráfico que indica el progreso del monstruo
+ -Tiempo máximo de juego (se puede empatar)
+ -Mejora de la pantalla de victoria (tienes que pulsar un botón de salir en vez de cualquier parte de la pantalla)
+ -Mejora visual de la guía, ahora con capturas de pantalla actualizadas
+ -Mejoradas las colisiones con las estaciones de trabajo
+ -Cuando puedes interactuar con una estación de trabajo, ésta se ilumina
+ -Al pasar el ratón por encima de un elemento de la receta, aparece un icono sobre el objeto real que representa
+ -Tercer personaje implementado
+ -Cuando se mueve un personaje, aparecen partículas de polvo
+ -La zona interactuable de los botones ocupa sólo lo que los botones, no un poco más
+ -Cuenta atrás antes de que empiece la partida
+ -Aparece representada la trampa que lleva cada jugador
+ -Aparece visualmente el tiempo que le queda a las trampas
+ -Menú de pausa dentro de la partida. Se puede salir y consultar la guía
+ -La velocidad de los jugadores y los tiempos ahora dependen del tiempo real, no de lo que dure el update
+ -Los tiempos de hornos y demás han sido ajustados para que tengan más sentido
+ -Cuando acaba la partida, suena una música de victoria (y una de derrota si hay empate)
+ -Ahora el juego incluye un tutorial
+ -El yunque doble tiene un color diferente para diferenciarlo más del normal
+ -Se ha eliminado el símbolo prohibido de la basura (pero sigue en los muros que bloquean el paso)
+ -Al situar el ratón sobre elementos interactuables, el puntero cambiará para mostrar que se puede hacer click
+ -Nueva música compuesta por miembros del equipo, en vez de música sacada de youtube
+ -Mejorada la pantalla de selección de personaje, ahora puedes volver atrás y se pide el personaje de los dos jugadores
+
+MEJORAS DEL MODO ONLINE, QUE NO ESTÁN EN LA FASE 5 PERO SÍ EN LA 4:
+ -Nuevos gráficos de la lista de jugadores y del chat
+ -Al entrar en el modo online, intenta conectarse con la url del navegador, en vez de pedir una ip
+ -Al pulsar enter se mandan mensajes del chat
+ -El servidor guarda la lista de jugadores de forma diferente, para permitir espacios en nombres y contraseñas
+ -En los modos online, se muestra el ping en la esquina superior derecha de la pantalla
+ -La lista de jugadores del lobby ahora utiliza una tabla HTML, que permite hacer scroll y pulsar sobre usuarios concretos.
+ -Si dos jugadores controlan al mismo personaje, el del oponente tendrá un color diferente para diferenciarlos
+
+MEJORAS QUE NO SE HAN PODIDO IMPLEMENTAR, PERO QUE SE TIENEN EN CUENTA:
+ -Incluir más animaciones:
+  -Un ejemplo sería que el jugador golpease al yunque con el martillo de forma más visual.
+  -La viabilidad sería casi nula, ya que es demasiado trabajo artístico.
+ -Reajustar los sprites del tercer personaje:
+  -Los objetos que lleva el personaje se mueven de forma extraña al andar.
+  -Viabilidad del 100%, en una tarde se podría solucionar.
+ -Más escenarios y trampas:
+  -Sería perfectamente viable incluir más escenarios.
+  -No sería tan sencillo introducir más trampas, pero no es algo excesivamente complicado.
+ -Pantalla de carga:
+  -Es trivial incluir una pantalla de carga, pero no se ha podido incluir por falta de tiempo.
+ -Incluir el modo online en la versión subida a portales:
+  -Es algo bastante complejo, principalmente por la tecnología utilizada para crear el servidor.

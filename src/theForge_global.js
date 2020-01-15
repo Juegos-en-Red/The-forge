@@ -16,12 +16,12 @@ var cont = {
     },
     p2: {
         //controles
-        w: 38,
-        a: 37,
-        s: 40,
-        d: 39,
-        i1: 80, //cambiar más adelante
-        i2: 79, //cambiar más adelante
+        w: 73,
+        a: 74,
+        s: 75,
+        d: 76,
+        i1: 79, //cambiar más adelante
+        i2: 85, //cambiar más adelante
         //personaje seleccionado
         ch: 'SSElfa1'
     },
@@ -47,32 +47,32 @@ var cont = {
 //funciones de música por aquí
 
 var mus_menu = new Audio();
-mus_menu.src = "../assets/audio/mus_menu.ogg";
+mus_menu.src = "src/assets/audio/mus_menu.ogg";
 mus_menu.loop = true;
 mus_menu.volume = cont.mus_vol;
 
 var mus_game = new Audio();
-mus_game.src = "../assets/audio/mus_game.ogg";
+mus_game.src = "src/assets/audio/mus_game.ogg";
 mus_game.loop = false;
 mus_game.volume = cont.mus_vol;
 
 var mus_victory = new Audio();
-mus_victory.src = "../assets/audio/mus_victory.ogg";
+mus_victory.src = "src/assets/audio/mus_victory.ogg";
 mus_victory.loop = false;
 mus_victory.volume = cont.mus_vol;
 
 var mus_defeat = new Audio();
-mus_defeat.src = "../assets/audio/mus_defeat.ogg";
+mus_defeat.src = "src/assets/audio/mus_defeat.ogg";
 mus_defeat.loop = false;
 mus_defeat.volume = cont.mus_vol;
 
 var mus_tutorial = new Audio();
-mus_tutorial.src = "../assets/audio/mus_tutorial.ogg";
+mus_tutorial.src = "src/assets/audio/mus_tutorial.ogg";
 mus_tutorial.loop = true;
 mus_tutorial.volume = cont.mus_vol;
 
 var snd_yunque = new Audio();
-snd_yunque.src = "../assets/audio/snd_yunque.ogg";
+snd_yunque.src = "src/assets/audio/snd_yunque.ogg";
 snd_yunque.loop = false;
 snd_yunque.volume = cont.snd_vol;
 
