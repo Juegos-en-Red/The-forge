@@ -119,14 +119,19 @@ Al no utilizar clases en la implementación de nuestro juego, preguntamos qué h
 El fichero Core contiene a todas escenas del proyecto. Y el archivo "Global" contiene variables globales que las escenas señaladas en el diagrama emplean. Hemos considerado que si de una escena se podía pasar a otra y viceversa, podría considerarse como asociación en base a tomar las escenas como clases. 
 Aunque antes no estaba presente en el documento, los cambios con respecto a la fase anterior vienen a ser la existencia de nuevas escenas con las que implementar los mencionados créditos, la sección de "próximamente" y toda la escena online, cuyo funcionamiento se explica a continuación con el diagrama UML de navegación por la aplicación API REST.
 
+![Diagrama de navegación uml de las clases de Phaser](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/uml_phaser2.PNG)
+Lo nuevo que se añadido o modificado está en color negro. Se ha eliminado la escena Next, que contenía una descripción de funcionalidades que podríamos aplicar en el futuro, y se ha reemplazado por por una escena Tutorial. Además, se han añadido las escenas jugarOnline y seleccionPersonajeOnline, a las que se accede desde la lobby. La antigua escena "disconnect" ahora se ha sustituido por disconnectOverlay, a partir de la cual podremos volver a la escena menuPrincipal. 
+Cabe mencionar que ahora la guía es accesible desde juegoLocal y juegoOnline. Otra cosa que hay que clarificar es que desde la guía del menú principal no se puede acceder a juegoOnline ni juegoLocal, hemos puesto la flecha doble porque si abrimos la guía desde juegoLocal podremos volver a nuestra escena juegoLocal y lo mismo parajuegoOnline. Que Guia pase por lobby no significa nada, es que la aplicación no permitía otro modo de introducir la flecha.
+
 ![Diagrama de navegación uml de las clases de API REST](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/uml%20api2.PNG)
 
 A la hora de desarrollar la aplicación de Spring para poner nuestro proyecto a funcionar con su correspondiente servidor se han creado cuatro clases distintas. Como su nombre indica, PlayerController es la clase controlador encargada de ejecutar los métodos HTTP. Esta se nutre mediante relaciones de asociación y composición del resto de clases, usadas principalmente para administrar el estado de los jugadores y del chat disponible en el menú de juego online.
 Mencionar que la clase App, que aparentemente no depende de nada, es la encargada de lanzar la aplicación de Spring que compone el esqueleto del programa, y que será donde posteriormente maniobrará PlayerController.
 
 
-![Diagrama de navegación uml de las clases de WebSockets]()
-Inserte explicación aquí.
+![Diagrama uml de las clases de WebSockets](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/uml_websockets.PNG)
+App implementa una interfaz de tipo WebSocketConfigurer y contiene atributo(s) que son de tipoWebSocketEchoHandler, que a su vez contiene atributo(s) de tipo Room, que también contiene un atributo de tipo Stage.
+WebSocketEchoHandler hereda de TextWebSocketEchoHandler.
 
 ## MUESTRAS DEL DISEÑO Y LA NAVEGACIÓN
 ![CAPTURA DE PANTALLA DEL MENÚ](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/CapturaMenu.PNG)
