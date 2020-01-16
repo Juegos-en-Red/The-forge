@@ -27,6 +27,7 @@ sc_onlineIP.create = function() {
             sc_onlineIP.scene.start("MenuPrincipal");
             if (cont.connection != undefined) {
                 cont.connection.close();
+                console.log("CLOSING WEBSOCKET...");
                 cont.connection = undefined;
             }
     });

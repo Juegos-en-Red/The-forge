@@ -1989,6 +1989,7 @@ function onlineGameVictory(player) {
     sc_juegoOnline.botonSalir.on('pointerup', function () {
         if (cont.connection != undefined) {
             cont.connection.close();
+            console.log("CLOSING WEBSOCKET...");
             cont.connection = undefined;
         }
         cont.playing = false;

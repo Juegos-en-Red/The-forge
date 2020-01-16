@@ -33,6 +33,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 		switch (node.get("message_type").asText()) {
 			case "OPEN":
 				rooms.put(node.get("player_name").asText(), new Room(session, node.get("player_name").asText(), node.get("opponent_name").asText(),node.get("player_character").asText()));
+				System.out.println("Created room: " + node.get("player_name").asText() + " vs " + node.get("opponent_name").asText());
 				System.out.println("User's name: " + node.get("player_name").asText());
 				System.out.println("Opponent's name: " + node.get("opponent_name").asText());
 			break;
@@ -41,6 +42,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 				System.out.println("Opponent's name: " + node.get("opponent_name").asText());
 				for (Room r : rooms.values()) {
 					if (r.getP1Name().equals(node.get("opponent_name").asText()) && r.getP2Name().equals(node.get("player_name").asText())) {
+						System.out.println("ROOM LOCATED");
 						if (!r.isP2Online()) {
 							//Si el jugador no está conectado, le metemos de forma normal
 							if (r.getP2Character() == null) {
@@ -58,14 +60,14 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 							if (r.getP2Session() != null) if (r.getP2Session().isOpen()) r.getP2Session().sendMessage(new TextMessage(sendNode.toString()));
 							
 							//Enviar al cliente la trampa
-							ObjectNode sendTrap = createSendTrapMessage(mapper, r);
+							/*ObjectNode sendTrap = createSendTrapMessage(mapper, r);
 							try {
 								System.out.println("Sending message " + sendTrap.toString());
 								if (r.getP1Session() != null) if (r.getP1Session().isOpen()) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
 								if (r.getP2Session() != null) if (r.getP2Session().isOpen()) r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
 							} catch (IOException e) {
 								//System.out.println(e);
-							}
+							}*/
 							
 							//Enviar a los clientes las posiciones de ambos
 							ObjectNode sendPos = mapper.createObjectNode();
@@ -74,13 +76,13 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 							sendPos.put("player1_y",r.getP1y());
 							sendPos.put("player2_x",r.getP2x());
 							sendPos.put("player2_y",r.getP2y());
-							try {
+							/*try {
 								System.out.println("Sending message " + sendPos.toString());
 								if (r.getP1Session() != null) if (r.getP1Session().isOpen()) r.getP1Session().sendMessage(new TextMessage(sendPos.toString()));
 								if (r.getP2Session() != null) if (r.getP2Session().isOpen()) r.getP2Session().sendMessage(new TextMessage(sendPos.toString()));
 							} catch (IOException e) {
 								//System.out.println(e);
-							}
+							}*/
 							
 						} else {
 							//Si el jugador ya estaba conectado, le sustituimos
@@ -92,17 +94,17 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 							r.getP2Session().sendMessage(new TextMessage(sendNode.toString()));
 							
 							//Enviar al cliente la trampa
-							ObjectNode sendTrap = createSendTrapMessage(mapper, r);
+							/*ObjectNode sendTrap = createSendTrapMessage(mapper, r);
 							try {
 								System.out.println("Sending message " + sendTrap.toString());
 								if (r.getP1Session() != null) if (r.getP1Session().isOpen()) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
 								if (r.getP2Session() != null) if (r.getP2Session().isOpen()) r.getP2Session().sendMessage(new TextMessage(sendTrap.toString()));
 							} catch (IOException e) {
 								//System.out.println(e);
-							}
+							}*/
 							
 							//Enviar a los clientes las posiciones de ambos
-							ObjectNode sendPos = mapper.createObjectNode();
+							/*ObjectNode sendPos = mapper.createObjectNode();
 							sendPos.put("message_type","player_move");
 							sendPos.put("player1_x",r.getP1x());
 							sendPos.put("player1_y",r.getP1y());
@@ -114,7 +116,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 								if (r.getP2Session() != null) if (r.getP2Session().isOpen()) r.getP2Session().sendMessage(new TextMessage(sendPos.toString()));
 							} catch (IOException e) {
 								//System.out.println(e);
-							}
+							}*/
 							
 						}
 					} else if (r.getP2Name().equals(node.get("opponent_name").asText()) && r.getP1Name().equals(node.get("player_name").asText())) {
@@ -129,7 +131,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 							r.setFull(true);
 							
 							//Enviar al cliente la trampa
-							ObjectNode sendTrap = createSendTrapMessage(mapper, r);
+							/*ObjectNode sendTrap = createSendTrapMessage(mapper, r);
 							try {
 								System.out.println("Sending message " + sendTrap.toString());
 								if (r.getP1Session() != null) if (r.getP1Session().isOpen()) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
@@ -151,7 +153,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 								if (r.getP2Session() != null) if (r.getP2Session().isOpen()) r.getP2Session().sendMessage(new TextMessage(sendPos.toString()));
 							} catch (IOException e) {
 								//System.out.println(e);
-							}
+							}*/
 							
 							
 						} else {
@@ -164,7 +166,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 							r.getP1Session().sendMessage(new TextMessage(sendNode.toString()));
 							
 							//Enviar al cliente la trampa
-							ObjectNode sendTrap = createSendTrapMessage(mapper, r);
+							/*ObjectNode sendTrap = createSendTrapMessage(mapper, r);
 							try {
 								System.out.println("Sending message " + sendTrap.toString());
 								if (r.getP1Session() != null) if (r.getP1Session().isOpen()) r.getP1Session().sendMessage(new TextMessage(sendTrap.toString()));
@@ -186,7 +188,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 								if (r.getP2Session() != null) if (r.getP2Session().isOpen()) r.getP2Session().sendMessage(new TextMessage(sendPos.toString()));
 							} catch (IOException e) {
 								//System.out.println(e);
-							}
+							}*/
 						}
 					}
 				}
@@ -419,9 +421,9 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 			case "SURRENDER":
 				for (Room r : rooms.values()) {
 					if (r.getP1Name().equals(node.get("player_name").asText())) {
-						gameOver(2,r);
+						r.setForceLose(2);
 					} else if (r.getP2Name().equals(node.get("player_name").asText())) {
-						gameOver(1,r);
+						r.setForceLose(1);
 					}
 				}
 			break;
@@ -465,6 +467,13 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 					//Sólo debería ocurrir si alguien se desconecta y ha perdido, aunque complicado lo veo, ya que el juego le haría no irse del lobby y ya.
 					
 				} else {
+					
+					if (r.getForceLose() == 1) {
+						gameOver(1,r);
+					} else if (r.getForceLose() == 2) {
+						gameOver(2,r);
+					}
+					
 					
 					if (r.getP1Timeout() > 0) {
 						r.setP1Timeout(r.getP1Timeout()-25);

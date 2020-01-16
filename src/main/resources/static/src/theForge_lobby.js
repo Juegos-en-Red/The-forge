@@ -53,6 +53,7 @@ sc_lobby.create = function() {
         });
         if (cont.connection != undefined) {
             cont.connection.close();
+            console.log("CLOSING WEBSOCKET...");
             cont.connection = undefined;
         }
     });
@@ -175,8 +176,9 @@ sc_lobby.update = function() {
                 if (prosiga) {
                     
                     if (cont.connection != undefined) {
-                        if (cont.connection.readyState !== WebSocket.CLOSED) {
+                        if (cont.connection.readyState === WebSocket.OPEN) {
                             cont.connection.close();
+                            console.log("CLOSING WEBSOCKET...");
                         }
                     }
 
@@ -208,9 +210,9 @@ sc_lobby.update = function() {
                     cont.connection.onclose = function(e) {
                         cont.connection = undefined;
                         console.log("Websocket closed.");
-                        /*if ((sc_juegoOnline.scene.isActive() || sc_Guia.scene.isActive()) && onlineUsers[cont.id].inGame) { //Esto debería cubrir todos los casos en los que el jugador pueda desconectarse
-                            sc_juegoOnline.scene.start("Lobby");
-                        }*/ //hay que pulirlo un poquitillo más igual
+                        if (cont.playing) {
+                            cont.playing = false; //Igual sí que va a hacer falta al final
+                        }
                     }
                 } else {
                     console.log("You are in game, your websocket should already be opened. I hope.");
@@ -259,7 +261,10 @@ sc_lobby.update = function() {
                         }).success(function (item) {
                             console.log("Challenge accepted.");
                             if (cont.connection != undefined) {
-                                cont.connection.close();
+                                if (cont.connection.readyState === WebSocket.OPEN) {
+                                    cont.connection.close();
+                                    console.log("CLOSING WEBSOCKET...");
+                                }
                             }
                             var wsUrl;
                             if (cont.server_ip.slice(0,4) == "http") {
@@ -294,7 +299,11 @@ sc_lobby.update = function() {
                                 websocketOnMessage(msg);
                             }
                             cont.connection.onclose = function() {
+                                cont.connection = undefined;
                                 console.log("Websocket closed.");
+                                if (cont.playing) {
+                                    cont.playing = false; //Igual sí que va a hacer falta al final
+                                }
                             }
                         }).error(function(e) {
                             console.log("Couldn't accept that challenge.");
@@ -309,8 +318,10 @@ sc_lobby.update = function() {
                     sc_lobby.declineButton.opponentName = onlineUsers[i].opponentName;
 
                     sc_lobby.declineButton.on('pointerdown', function (event) {
+                        cont.playing = false;
                         if (cont.connection != undefined) {
                             cont.connection.close();
+                            console.log("CLOSING WEBSOCKET...");
                         }
                         $.ajax({
                             method: "DELETE",
@@ -641,6 +652,7 @@ function websocketOnMessage(msg) {
         }
         if (message.message_type == "winner") {
             cont.connection.close();
+            console.log("CLOSING WEBSOCKET...");
             cont.connection = undefined;
             if (message.winner == "none") {
                 cont.victoryState = 0;

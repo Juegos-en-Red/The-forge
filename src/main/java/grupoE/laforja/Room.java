@@ -46,6 +46,7 @@ public class Room {
 	private String p2Trap;
 	private boolean trapActive;
 	private HashMap<String,Station> stations;
+	private int forceLose;
 
 	public Room() {}
 	
@@ -90,6 +91,7 @@ public class Room {
 		p2MHeldObject2 = "none";
 		p2MHeldObject3 = "none";
 		p2MHeldObject4 = "none";
+		forceLose = 0;
 		
 		//Vamos a generar las recetas
 	
@@ -497,6 +499,14 @@ public class Room {
 
 	public void setP2Dir(String p2Dir) {
 		this.p2Dir = p2Dir;
+	}
+
+	public int getForceLose() {
+		return forceLose;
+	}
+
+	public void setForceLose(int forceLose) {
+		this.forceLose = forceLose;
 	}
 	
 	
