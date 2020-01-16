@@ -5,6 +5,14 @@ Juego de la asignatura de Juegos en red desarrollado por:
 * Javier Sendarrubias Otero. Correo: ja.sendarrubias.2017@alumnos.urjc.es, Github: [Javierso1](https://github.com/Javierso1)
 * Jorge Sendarrubias Otero. Correo: j.sendarrubias.2017@alumnos.urjc.es, Github: [JorgeURJC](https://github.com/JorgeURJC)
 
+## VIDEO SOBRE EL USO DEL JUEGO ONLINE
+[![](http://img.youtube.com/vi/Hzufct9Ceo4/0.jpg)](http://www.youtube.com/watch?v=Hzufct9Ceo4 "")
+
+## CAMBIOS EN EL DOCUMENTO DE DISEÑO V1.3
+Se ha implementado el tercer personaje. Al estar en la versión final del juego, también se ha actualizado lo referente a este en los apartados de HISTORIA y PERSONAJES, de tal forma que ahora solo aparecen en el contexto los tres personajes seleccionables durante las partidas. 
+Se ha actualizado la sección de DIAGRAMAS con uno referente a la implementación de WebSockets. Además se ha añadido un apartado referente a la documentación de WebSockets resumiendo los cambios y la comunicación que se ha realizado para la fase 4 llamado DOCUMENTACION y se ha actualizado la sección de MUESTRAS DEL DISEÑO Y LA NAVEGACIÓN con nuevas capturas de pantalla referente a las actualizaciones de las pantallas en ambas fases, 4 y 5. 
+También se han modificado los controles del segundo jugador en la fase 5. De este cambio se deja constancia en la sección "Controles".
+
 ## CAMBIOS EN EL DOCUMENTO DE DISEÑO V1.2
 El concepto general del juego se mantiene sin cambios. Dentro del menú principal se han introducido dos nuevas opciones de selección: una sección de cambios que existirán en un futuro donde se recogen las sugerencias o mejoras que pretendemos introducir en fases futuras del desarrollo del juego y un botón de créditos donde se especifica el trabajo realizado por cada miembro del equipo. Dentro del documento se ha actualizado la anterior sección de "DIAGRAMAS DE NAVEGACIÓN" por una denominada "DIAGRAMAS" en la que, junto a este, incluimos el diagrama de clases de la aplicación y el diagrama de clases de API REST, ambos en formato UML. También se ha actualizado el apartado de "MUESTRAS DE DISEÑO" para que ahora incluya las explicaciones y pantallazos referentes a la navegación.
 
@@ -26,12 +34,11 @@ Juego de simulación de una herrería no realista competitivo. Basado en una Eda
 Este juego está dirigido a jugadores con un amplio rango de edades, de forma que pueda ser jugado esporádicamente, sin progresión y compitiendo contra otros jugadores, ya sean estos amigos o usuarios online.
 ## HISTORIA
 En una Edad Media fantástica llena de dragones, hadas y brujos, un rey con una guerra en ciernes, busca al mejor herrero de sus tierras, aquel elegido que pueda forjar las armas capaces de salvaguardar la corona.  
-Dentro de sus dominios, cuatro condes proponen cada uno a un campeón, sus más hábiles trabajadores. Estas cuatro regiones se enfrentarán entre sí para decidir quién será aquel que se alce con el puesto del favorito del rey y les lleve a la victoria en las futuras contiendas contra imperios vecinos.  
+Dentro de sus dominios, tres condes proponen cada uno a un campeón, sus más hábiles trabajadores. Estas tres regiones se enfrentarán entre sí para decidir quién será aquel que se alce con el puesto del favorito del rey y les lleve a la victoria en las futuras contiendas contra imperios vecinos.  
 El ganador regresará a su hogar con grandes honores, tierras y tesoros para su gente y su familia. Cada duque manda a su campeón acompañado de un monstruo folclórico con el que competir contra el resto.  
 El trabajo del herrero será forjar las armas que llevará equipadas la criatura, quien dependerá completamente de su trabajo para ganar la cruenta batalla.
-Estas cuatro regiones son:  
+Estas tres regiones son:  
 * El pueblo del hielo, que mandará a un elegido de gélido temperamento acompañado de un imponente yeti.
-* El pueblo del fuego; llevará su herrero al encuentro montado en un imponente y fiero dragón.
 * El pueblo de los elfos oscuros, que con su magia invocan a los demonios más poderosos del infierno.
 * El pueblo de los nigromantes, torcidos humanos capaces de crear zombies con habilidades que superan toda lógica.
 ## DISEÑO DE NIVELES
@@ -73,9 +80,8 @@ Aunque como tal solo exista un escenario por partida, que será el campo en el q
 Los personajes mostrados en el juego serán los herreros elegidos por cada reino y sus monstruos correspondientes. Nos fijamos sobre todo en estilo de los trazos de *Hollow Knight*,el estilo de los personajes de *The Swords of Ditto*, o algunas ilustraciones de *Shovel Knight* y *Octopath Traveler*, todos ellos adaptados al estilo medieval ya mencionado anteriormente. Aunque estén dentro de una misma línea estética, cada uno tendrá un estilo distintivo según su región de origen. Por el momento solo se pueden elegir dos reinos de los cuatro planeados.
 ![](https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/3c6ad2b7-76a1-4e34-b92a-0431101f82f8/ddbz6j3-277d7737-0026-43c7-a802-17bb3fb6c11a.png/v1/fill/w_1280,h_1280,q_80,strp/hollow_knight_characters_studies_2_by_art_revolver_ddbz6j3-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTI4MCIsInBhdGgiOiJcL2ZcLzNjNmFkMmI3LTc2YTEtNGUzNC1iOTJhLTA0MzExMDFmODJmOFwvZGRiejZqMy0yNzdkNzczNy0wMDI2LTQzYzctYTgwMi0xN2JiM2ZiNmMxMWEucG5nIiwid2lkdGgiOiI8PTEyODAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.SJhbkCYVSAYNPyNWjua9tW-oFFCRU2JfZ6Z_L6e36TY) ![](https://pbs.twimg.com/media/Di91nr5UUAA9J4o.jpg)
 1. Pueblo del hielo: Quizá los únicos detalles de colores fríos del juego, su herrero será un hombre de constitución imponente ataviado con pieles, todo en tonos blancos que reflejarán lo gélido del hielo en consonancia con su monstruo, un yeti todavía más grande que el campeón elegido.
-2. Pueblo del fuego: Representados por una mujer de piel morena, aparentarán haber llegado del desierto o de unas montañas rocosas. Basado en la clásica representación del dragón medieval, rojo y con ojos de serpiente. 
-3. Elfos oscuros: Al más puro estilo de los drow de Dungeons & Dragons, estos elfos son representados por una herrera acompañada de un demonio. Vienen de la mano con ellos los colores oscuros y las formas afiladas. Esto quedará reflejado sobre todo en la creación de armas pequeñas y letales y en la forja de armaduras oscuras decoradas con pinchos y otros detalles tétricos.
-4. Nigromantes: También en una clave de color más basada en los tonos oscuros y fantasmagóricos, se diferencian de los elfos en que su campeón será un mago herrero que maneja a un zombie con él. Este aporte de la magia permitirá incluir tonos o colores más brillantes y antinaturales en su equipamiento, diseño y animaciones.  
+2. Elfos oscuros: Al más puro estilo de los drow de Dungeons & Dragons, estos elfos son representados por una herrera acompañada de un demonio. Vienen de la mano con ellos los colores oscuros y las formas afiladas. Esto quedará reflejado sobre todo en la creación de armas pequeñas y letales y en la forja de armaduras oscuras decoradas con pinchos y otros detalles tétricos.
+3. Nigromantes: También en una clave de color más basada en los tonos oscuros y fantasmagóricos, se diferencian de los elfos en que su campeón será un mago herrero que maneja a un zombie con él. Este aporte de la magia permitirá incluir tonos o colores más brillantes y antinaturales en su equipamiento, diseño y animaciones.  
 ## SONIDO Y MÚSICA
 La música que sonará durante la partida será una música medieval épica.
 Los efectos de sonidos serán los apropiados para cada momento: martillazos y similares mientras se forjan las armas, y rugidos y golpes para las batallas entre las criaturas
@@ -97,10 +103,11 @@ Los controles al jugar online serán los mismos que los del primer jugador en mo
 * Q: Lanzar objetos
 
 El segundo jugador tendrá los siguientes controles:
-* Flechas de dirección: Movimiento del personaje
+* I,K,L,J: Movimiento del personaje
 * O: Coger objetos
-* P: Lanzar objetos
+* U: Lanzar objetos
 
+## DOCUMENTACION
 
 ## DIAGRAMAS
 ![Diagrama de navegación entre las distintas pantallas](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/DiagramaActualizado.png)
@@ -112,10 +119,19 @@ Al no utilizar clases en la implementación de nuestro juego, preguntamos qué h
 El fichero Core contiene a todas escenas del proyecto. Y el archivo "Global" contiene variables globales que las escenas señaladas en el diagrama emplean. Hemos considerado que si de una escena se podía pasar a otra y viceversa, podría considerarse como asociación en base a tomar las escenas como clases. 
 Aunque antes no estaba presente en el documento, los cambios con respecto a la fase anterior vienen a ser la existencia de nuevas escenas con las que implementar los mencionados créditos, la sección de "próximamente" y toda la escena online, cuyo funcionamiento se explica a continuación con el diagrama UML de navegación por la aplicación API REST.
 
+![Diagrama de navegación uml de las clases de Phaser en la última fase](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/uml_phaser2.PNG)
+Lo nuevo que se añadido o modificado está en color negro. Se ha eliminado la escena Next, que contenía una descripción de funcionalidades que podríamos aplicar en el futuro, y se ha reemplazado por por una escena Tutorial. Además, se han añadido las escenas jugarOnline y seleccionPersonajeOnline, a las que se accede desde la lobby. La antigua escena "disconnect" ahora se ha sustituido por disconnectOverlay, a partir de la cual podremos volver a la escena menuPrincipal. 
+Cabe mencionar que ahora la guía es accesible desde juegoLocal y juegoOnline. Otra cosa que hay que clarificar es que desde la guía del menú principal no se puede acceder a juegoOnline ni juegoLocal, hemos puesto la flecha doble porque si abrimos la guía desde juegoLocal podremos volver a nuestra escena juegoLocal y lo mismo parajuegoOnline. Con Guia y su conexión con disconnectOverlay queremos puntualizar que solo es posible el paso de Guia a esta escena si nos encontramos en el modo Online. Que Guia pase por lobby no significa nada, es que la aplicación no permitía otro modo de introducir la flecha.
+
 ![Diagrama de navegación uml de las clases de API REST](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/uml%20api2.PNG)
 
 A la hora de desarrollar la aplicación de Spring para poner nuestro proyecto a funcionar con su correspondiente servidor se han creado cuatro clases distintas. Como su nombre indica, PlayerController es la clase controlador encargada de ejecutar los métodos HTTP. Esta se nutre mediante relaciones de asociación y composición del resto de clases, usadas principalmente para administrar el estado de los jugadores y del chat disponible en el menú de juego online.
 Mencionar que la clase App, que aparentemente no depende de nada, es la encargada de lanzar la aplicación de Spring que compone el esqueleto del programa, y que será donde posteriormente maniobrará PlayerController.
+
+
+![Diagrama uml de las clases de WebSockets](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/uml_websockets.PNG)
+App implementa una interfaz de tipo WebSocketConfigurer y contiene atributo(s) que son de tipoWebSocketEchoHandler, que a su vez contiene atributo(s) de tipo Room, que también contiene un atributo de tipo Stage.
+WebSocketEchoHandler hereda de TextWebSocketEchoHandler.
 
 ## MUESTRAS DEL DISEÑO Y LA NAVEGACIÓN
 ![CAPTURA DE PANTALLA DEL MENÚ](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/CapturaMenu.PNG)
@@ -186,6 +202,77 @@ Escena que muestra los créditos del juego.
 
 Desde el menú principal, pulsando en el botón de "Próximamente" se accede a una nueva pantalla en la que quedan reflejados los cambios o mejoras que se pretenden introducir en un futuro.
 
+![CAPTURA DE PANTALLA DEL MENÚ DEFINITIVO](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/MENU%20PRINCIPAL.PNG)
+
+Se ha eliminado el botón de "Próximamente" y se ha sustituido por el de "Tutorial", implementando sus respectivas funcionalidades. Además, con el objetivo de colgarlo en internet, se han actualizado todos los textos del juego al inglés, como se irá viendo en las distintas muestras del juego.
+
+![CAPTURA DE PANTALLA DE LA GUÍA TRADUCIDA](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/MUESTRAGUIA.PNG)
+
+Se han actualizado los controles del segundo jugador y se ha traducido al inglés. Se mantiene el contenido general, pero también se han intercambiado las capturas de pantalla con unas correspondientes al juego actual. 
+
+![CAPTURA DE PANTALLA DEL TUTORIAL](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/MUESTRATUTORIAL.PNG)
+
+El tutorial es una funcionalidad completamente nueva implementada para la fase 5. Se trata de una partida en solitario guiada donde una serie de textos van indicándole al jugador las acciones que tiene que realizar paso por paso para ganar la partida.
+
+![CAPTURA DE PANTALLA DEL MENÚ DE SELECCIÓN DE PERSONAJES](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/MENUSELECCION.PNG)
+
+Se ha introducido un nuevo personaje seleccionable. Junto a él se verá en la partida a su correspondiente monstruo.
+
+![CAPTURA DE PANTALLA DE LA PARTIDA ACTUALIZADA](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/PARTIDA.PNG)
+
+Se han hecho una serie de cambios desde la partida para mejorar la fase 2. En el aspecto visual, se han introducido partículas junto al movimiento de los personajes, se ha cambiado el sprite del yunque doble para hacerlo más diferenciable del yunque normal y se han eliminado los signos de prohibido del contenedor de basura. Se ha hecho más reconocible el icono del menú de pausa y se ha cambiado la distribución de las recetas. Además, en la parte superior de la pantalla se han incluido para cada jugador un área que muestre la trampa que posee cada usuario en cada momento, un cronómetro que lleva la cuenta de la duración máxima de la partida y otro que actualiza el progreso de la armadura. 
+Por último, se han implementado pantallas de derrota y empate.
+
+![CAPTURA DE PANTALLA DEL MENÚ DE PAUSA](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/MENUDEPAUSA.PNG)
+
+Ahora se dispone de un menú de pausa que permite acceder a la guía, salir de la partida y volver a esta.
+
+![CAPTURA DE PANTALLA DEL LOBBY ACTUALIZADO](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/NUEVOLOBBY.PNG)
+
+Se han mejorado los gráficos referentes al chat y a la lista de jugadores, que marca el estado de cada usuario en función a su disponibilidad para realizar una partida. Ahora existe un perfil del jugador. Este mismo es visible para otros jugadore al hacer click sobre el nombre de un usuario e incluye la posibilidad de desafiarlo. Si el jugador es desafiado, le llegará un mensaje que puede aceptar o rechazar. 
+
+![CAPTURA DE PANTALLA DEL LA PARTIDA ONLINE](https://github.com/Juegos-en-Red/The-forge/blob/master/TheForge/partidaOnline.PNG)
+
+Equivalente a la partida local. La mayor diferencia es que el sprite del oponente aparece en un color distinto para diferenciarlo del propio. Aquí también se dispone de un menú de pausa y de todas las funcionalidades de la partida local.
+
+## PROTOCOLO UTILIZADO SOBRE WEBSOCKETS
+Todos los mensajes enviados por websockets están en formato JSON, y contienen un parámetro llamado message_type.
+
+Dependiendo del tipo de mensaje, se ejecutarán unas acciones u otras.
+
+Cuando un jugador recibe un desafío y pulsa el botón aceptar, abre un websocket y envía un mensaje de tipo "OPEN".
+
+El servidor, al recibirlo, crea una sala para ese jugador y su oponente.
+
+Cuando el otro jugador sabe que está en partida, abre websocket y envía un mensaje de tipo "OPEN2".
+
+Cuando el servidor recibe ese mensaje, busca una sala en la que ya esté y le mete.
+
+Una vez están los dos jugadores dentro de la sala, el servidor envía un mensaje de tipo "begin_game", que indica a ambos jugadores que la partida ha comenzado.
+
+Una vez dentro de la partida, el servidor enviará una serie de mensajes cada 100ms (25 en algunos casos, como la posición de jugadores)
+
+Los mensajes que puede enviar el servidor son:
+- "trap_change": Envía a los clientes las trampas de ambos jugadores y del altar
+- "estaciones": Envía a los clientes todos los tiempos y objetos de todas las estaciones de trabajo, los jugadores y los monstruos
+- "winner": Envía a los clientes el nombre del ganador
+- "player_move": Envía a los clientes la posición de ambos jugadores
+- "player_move_single": Envía a un cliente la posición, velocidad y dirección del otro cliente
+- "timeout": Envía a un cliente el tiempo que le queda al otro para reconectarse antes de perder
+- "recetas": Envía a ambos clientes los arrays que contienen las recetas restantes de los dos jugadores
+- "game_time": Envía a los clientes el tiempo que le queda a la partida
+
+Los mensajes que pueden mandar los clientes son:
+- "GRAB TRAP": El servidor asigna al jugador indicado la trampa que tenga el altar, si es que tiene alguna. Después, elimina la trampa del altar
+- "USE TRAP": El servidor elimina la trampa del jugador indicado, si es que tiene alguna, y asigna los tiempos correspondientes a la trampa eliminada
+- "PLAYER MOVE": El servidor actualiza la posición, velocidad y dirección del jugador indicado
+- "INTERACT": Asigna al jugador y estación de trabajo seleccionadas los tiempos y objetos correspondientes, según los que ya tuvieran
+- "INTERACT_TIMER": Similar al anterior, pero sólo modifica tiempos
+- "INTERACT_MONSTER": Si el jugador tiene el objeto que necesita el monstruo, se realizan todas las acciones necesarias para eliminar el objeto de la receta y asignárselo al monstruo. Si un jugador gana, se enviará el mensaje apropiado a los clientes
+- "SURRENDER": El jugador indicado se rinde, por lo que se envía un mensaje de victoria con el otro jugador como ganador
+
+
+
 ## INSTRUCCIONES DE EJECUCCIÓN
 A la hora de ejecutar el proyecto existen dos maneras. 
 
@@ -198,7 +285,7 @@ Hecho esto se inicia el servidor al que se conectará el navegador.
 
 La otra forma de ejecutarlo es utilizando un archivo .jar, ya sea el que viene incluido u otro que se compile a partir del código fuente. Para compilar un archivo .jar, es necesario tener instalado el JDK. Desde Spring, se debe utilizar el comando "run as: Maven Build.." y en Goals se debe introducir "package". 
 
-Al pulsar el botón "Run", se empezará a compilar el servidor en un archivo .jar. Una vez esté compilado, se puede o abrir directamente o, desde la línea de comandos y en la carpeta en la que se encuentre el .jar, ejecutar "java -jar laforja-0.0.1-SNAPSHOT.jar".
+Al pulsar el botón "Run", se empezará a compilar el servidor en un archivo .jar. Una vez esté compilado, se puede o abrir directamente o, desde la línea de comandos y en la carpeta en la que se encuentre el .jar, ejecutar "java -jar laforja-final.jar". El comando cambiará según el nombre del archivo .jar.
 
 
 Una vez el servidor se esté ejecutando, desde el navegador se accede a la IP del servidor que está activo, que será la del equipo con el puerto 8080. Desde el equipo en el que se esté ejecutando, basta con entrar en localhost:8080.
@@ -218,6 +305,21 @@ https://drive.google.com/open?id=1rvBCVqbPnGor9RUyLEz24A49ELa_eSHKa5emECI2Yok
 
 Fase 3:
 https://drive.google.com/open?id=1rvBCVqbPnGor9RUyLEz24A49ELa_eSHKa5emECI2Yok
+
+Fases 4 y 5:
+https://drive.google.com/open?id=1rvBCVqbPnGor9RUyLEz24A49ELa_eSHKa5emECI2Yok
+
+## ENLACE A LAS PÁGINAS WEB EN LAS QUE ESTÁ SUBIDO EL JUEGO
+
+Como parte de la fase 5, The Forge se puede encontrar disponible en los siguientes enlaces:
+ 
+ https://zeus-guy.itch.io/the-forge
+ 
+ https://gamejolt.com/games/theforge/462495
+ 
+ https://www.newgrounds.com/portal/view/746102
+ 
+ https://play.idevgames.co.uk/game/the-forge
 
 ## FUENTES
 1. Imagen *Overcooked*: https://steamcdn-a.akamaihd.net/steam/apps/448510/ss_058c688a6f07a4624b4f775b3e71df8037ef4df2.1920x1080.jpg?t=1567203965
